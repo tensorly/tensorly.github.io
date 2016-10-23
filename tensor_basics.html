@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. Tensor basics &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="index.html"/>
+        <link rel="up" title="User guide: table of contents" href="user_guide.html"/>
+        <link rel="next" title="API reference" href="modules/api.html"/>
+        <link rel="prev" title="User guide: table of contents" href="user_guide.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing tensorly</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="user_guide.html">User guide: table of contents</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Tensor basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-tensor">1.1. Creating a tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unfolding">1.2. Unfolding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folding">1.3. Folding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">1.4. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="user_guide.html">User guide: table of contents</a> &raquo;</li>
+      
+    <li>1. Tensor basics</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tensor-basics">
+<h1>1. Tensor basics<a class="headerlink" href="#tensor-basics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-tensor">
+<h2>1.1. Creating a tensor<a class="headerlink" href="#creating-a-tensor" title="Permalink to this headline">¶</a></h2>
+<p>A tensor is nothing more than a multi-dimensional array.</p>
+<p>Let&#8217;s take for this example the tensor <img class="math" src="_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> defined by its frontal slices:</p>
+<div class="math">
+<p><img src="_images/math/156d8aaa0cfdc7f1a5ade95a5f8b3edac463b36e.png" alt="X_1 =
+\left[
+\begin{matrix}
+0  &amp; 2  &amp; 4  &amp; 6\\
+8  &amp; 10 &amp; 12 &amp; 14\\
+16 &amp; 18 &amp; 20 &amp; 22
+\end{matrix}
+\right]
+
+\text{and}
+
+X_2 =
+\left[
+\begin{matrix}
+1  &amp; 3  &amp; 5  &amp; 7\\
+9  &amp; 11 &amp; 13 &amp; 15\\
+17 &amp; 19 &amp; 21 &amp; 23
+\end{matrix}
+\right]"/></p>
+</div><p>In Python, this array can be expressed as a numpy array:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You can view the frontal slices by fixing the last axis:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">array([[ 0,  2,  4,  6],</span>
+<span class="go">       [ 8, 10, 12, 14],</span>
+<span class="go">       [16, 18, 20, 22]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="go">array([[ 1,  3,  5,  7],</span>
+<span class="go">       [ 9, 11, 13, 15],</span>
+<span class="go">       [17, 19, 21, 23]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unfolding">
+<h2>1.2. Unfolding<a class="headerlink" href="#unfolding" title="Permalink to this headline">¶</a></h2>
+<p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
+<p>For a tensor of size <img class="math" src="_images/math/f33d071a0177a6de5aeb8ef309d4422050f32951.png" alt="(I_1, I_2, \cdots, I_n)"/>, the k-mode unfolding of this tensor will be of size <img class="math" src="_images/math/76db4fbc1bdc423391123b79113d815398d47ea4.png" alt="(I_k, I_1 \times \cdots \times I_{k-1} \times I_{k+1} \cdots \times I_n)"/>.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference" href="#id2" id="id1">[1]</a> for better performance.</p>
+<p>Given a tensor <img class="math" src="_images/math/f00c36eeaeaac68ff272f6331d79de6090fd28e5.png" alt="\tilde X \in \mathbb{R}^{I_1 \times I_2 \times \cdots \times I_N}"/>, the
+mode-n unfolding of <img class="math" src="_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> is a matrix <img class="math" src="_images/math/c8282623371a19f8d007046376ac1a06da22a431.png" alt="\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}"/>,
+with <img class="math" src="_images/math/b246931d798a1451cb0551c598fc2508fbc6c87c.png" alt="M = \prod_{\substack{k=1,\\k \neq n}}^N I_k"/> and is defined by
+the mapping from element <img class="math" src="_images/math/d6db3e4eef4247d19ea368e06ce76c7a04f4fc15.png" alt="(i_1, i_2, \cdots, i_N)"/> to <img class="math" src="_images/math/2df9e791ca8c2ef6ce4f8ece1c02499c34ded3b9.png" alt="(i_n, j)"/>, with</p>
+<div class="last math">
+<p><img src="_images/math/796b2ba24f08cba759a9d9366c6720a395d003e2.png" alt="j = \sum_{\substack{k=1,\\k \neq n}}^N i_k \times \prod_{m=k+1}^N I_m."/></p>
+</div></div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Traditionally, mode-1 unfolding denotes the unfolding along the first dimension.
+However, to be consistent with the Python indexing that always starts at zero,
+in tensorly, unfolding also starts at zero!</p>
+<p class="last">Therefore <cite>unfold(tensor, 0)</cite> will unfold said tensor along its first dimension!</p>
+</div>
+<p>For instance, using the <img class="math" src="_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> previously defined, the 0-mode unfolding of <img class="math" src="_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/>:</p>
+<div class="math">
+<p><img src="_images/math/9a1d3a1e2e7e39edfbb28b53cf28a55404a12dae.png" alt="\tilde X_{[0]} =
+\left[ \begin{matrix}
+   0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6 &amp; 7\\
+   8 &amp; 9 &amp; 10 &amp; 11 &amp; 12 &amp; 13 &amp; 14 &amp; 15\\
+   16 &amp; 17 &amp; 18 &amp; 19 &amp; 20 &amp; 21 &amp; 22 &amp; 23\\
+\end{matrix} \right]"/></p>
+</div><p>The 1-mode unfolding is given by:</p>
+<div class="math">
+<p><img src="_images/math/40ae01e261a76440c66308e5b61a5e4e274546e8.png" alt="\tilde X_{[1]} =
+\left[ \begin{matrix}
+   0 &amp; 1 &amp; 8 &amp; 9 &amp; 16 &amp; 17\\
+   2 &amp; 3 &amp; 10 &amp; 11 &amp; 18 &amp; 19\\
+   4 &amp; 5 &amp; 12 &amp; 13 &amp; 20 &amp; 21\\
+   6 &amp; 7 &amp; 14 &amp; 15 &amp; 22 &amp; 23\\
+\end{matrix} \right]"/></p>
+</div><p>Finally, the 2-mode unfolding is the unfolding along the last axis:</p>
+<div class="math">
+<p><img src="_images/math/64ede0db8d80078ead61988dcec0911f028c8fea.png" alt="\tilde X_{[2]} =
+\left[ \begin{matrix}
+   0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 &amp; 14 &amp; 16 &amp; 18 &amp; 20 &amp; 22\\
+   1 &amp; 3 &amp; 5 &amp; 7 &amp; 9 &amp; 11 &amp; 13 &amp; 15 &amp; 17 &amp; 19 &amp; 21 &amp; 23\\
+\end{matrix} \right]"/></p>
+</div><p>In tensorly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># mode-1 unfolding</span>
+<span class="go">array([[ 0,  1,  2,  3,  4,  5,  6,  7],</span>
+<span class="go">       [ 8,  9, 10, 11, 12, 13, 14, 15],</span>
+<span class="go">       [16, 17, 18, 19, 20, 21, 22, 23]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># mode-2 unfolding</span>
+<span class="go">array([[ 0,  1,  8,  9, 16, 17],</span>
+<span class="go">       [ 2,  3, 10, 11, 18, 19],</span>
+<span class="go">       [ 4,  5, 12, 13, 20, 21],</span>
+<span class="go">       [ 6,  7, 14, 15, 22, 23]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># mode-3 unfolding</span>
+<span class="go">array([[ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18, 20, 22],</span>
+<span class="go">       [ 1,  3,  5,  7,  9, 11, 13, 15, 17, 19, 21, 23]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="folding">
+<h2>1.3. Folding<a class="headerlink" href="#folding" title="Permalink to this headline">¶</a></h2>
+<p>You can <strong>fold</strong> an unfolded tensor back from matrix to full tensor using the <a class="reference internal" href="modules/generated/tensorly.base.fold.html#tensorly.base.fold" title="tensorly.base.fold"><code class="xref py py-func docutils literal"><span class="pre">tensorly.base.fold</span></code></a> function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">fold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_shape</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fold</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">original_shape</span><span class="p">)</span>
+<span class="go">array([[[ 0,  1],</span>
+<span class="go">     [ 2,  3],</span>
+<span class="go">     [ 4,  5],</span>
+<span class="go">     [ 6,  7]],</span>
+
+<span class="go">    [[ 8,  9],</span>
+<span class="go">     [10, 11],</span>
+<span class="go">     [12, 13],</span>
+<span class="go">     [14, 15]],</span>
+
+<span class="go">    [[16, 17],</span>
+<span class="go">     [18, 19],</span>
+<span class="go">     [20, 21],</span>
+<span class="go">     [22, 23]]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>1.4. References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules/api.html" class="btn btn-neutral float-right" title="API reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user_guide.html" class="btn btn-neutral" title="User guide: table of contents" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

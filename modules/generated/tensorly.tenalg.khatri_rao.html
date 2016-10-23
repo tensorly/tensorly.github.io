@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tensorly.tenalg.khatri_rao &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="../../index.html"/>
+        <link rel="up" title="API reference" href="../api.html"/>
+        <link rel="next" title="tensorly.tenalg.kronecker" href="tensorly.tenalg.kronecker.html"/>
+        <link rel="prev" title="tensorly.tucker.tucker_to_vec" href="tensorly.tucker.tucker_to_vec.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User guide: table of contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="docutils literal"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal"><code class="docutils literal"><span class="pre">tensorly.kruskal</span></code>: Kruskal tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker"><code class="docutils literal"><span class="pre">tensorly.tucker</span></code>: Tucker tensors</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.kronecker.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.kronecker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.mode_dot.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.mode_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.norm.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.norm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.multi_mode_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.soft_thresholding.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholing.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="docutils literal"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="docutils literal"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="docutils literal"><span class="pre">tensorly.datasets</span></code>: Creating and loading data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.utils"><code class="docutils literal"><span class="pre">tensorly.utils</span></code>: Utility functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../api.html">API reference</a> &raquo;</li>
+      
+    <li><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tensorly-tenalg-khatri-rao">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.tenalg</span></code></a>.khatri_rao<a class="headerlink" href="#tensorly-tenalg-khatri-rao" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="tensorly.tenalg.khatri_rao">
+<code class="descclassname">tensorly.tenalg.</code><code class="descname">khatri_rao</code><span class="sig-paren">(</span><em>matrices</em>, <em>skip_matrix=None</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tensorly.tenalg.khatri_rao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Khatri-Rao product of a list of matrices</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>This can be seen as a column-wise kronecker product</dt>
+<dd>(see <a class="reference internal" href="#r2525" id="id1">[R2525]</a> for more details).</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>matrices</strong> : ndarray list</p>
+<blockquote>
+<div><p>list of matrices with the same number of columns, i.e.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>for i in len(matrices):
+    matrices[i] is a matrix of shape `(n_i, m)`
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>skip_matrix</strong> : None or int, optional, default is None</p>
+<blockquote>
+<div><p>if not None, index of a matrix to skip</p>
+</div></blockquote>
+<p><strong>reverse</strong> : bool, optional</p>
+<blockquote>
+<div><p>if True, the order of the matrices is reversed</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">khatri_rao_product: matrix of shape <cite>(prod(n_i), m)</cite></p>
+<blockquote class="last">
+<div><p>where <cite>prod(n_i) = prod([m.shape[0] for m in matrices])</cite>
+i.e. the product of the number of rows of all the matrices in the product.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Mathematically:</p>
+<div class="math">
+<p><img src="../../_images/math/94909d514842ec6223a4beaebec4c57d32d70b7e.png" alt="\text{If every matrix } U_k \text{ is of size } (I_k \times R),\\
+\text{Then } \left(U_1 \bigodot \cdots \bigodot U_n \right) \text{ is of size } (\prod_{k=1}^n I_k \times R)"/></p>
+</div><p>A more intuitive but slower implementation is:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">kr_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_columns</span><span class="p">):</span>
+    <span class="n">cum_prod</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">i</span><span class="p">]</span>  <span class="c1"># Acuumulates the khatri-rao product of the i-th columns</span>
+    <span class="k">for</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">cum_prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,j-&gt;ij&#39;</span><span class="p">,</span> <span class="n">cum_prod</span><span class="p">,</span> <span class="n">matrix</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="c1"># the i-th column corresponds to the kronecker product of all the i-th columns of all matrices:</span>
+    <span class="n">kr_product</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cum_prod</span>
+
+<span class="k">return</span> <span class="n">kr_product</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r2525" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[R2525]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="clearer"></div></div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tensorly.tenalg.kronecker.html" class="btn btn-neutral float-right" title="tensorly.tenalg.kronecker" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tensorly.tucker.tucker_to_vec.html" class="btn btn-neutral" title="tensorly.tucker.tucker_to_vec" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tensorly.tenalg._khatri_rao &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide: table of contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>tensorly.tenalg._khatri_rao</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tensorly.tenalg._khatri_rao</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1"># Author: Jean Kossaifi</span>
+
+
+<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Khatri-Rao product of a list of matrices</span>
+
+<span class="sd">        This can be seen as a column-wise kronecker product</span>
+<span class="sd">         (see [1]_ for more details).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrices : ndarray list</span>
+<span class="sd">        list of matrices with the same number of columns, i.e.::</span>
+
+<span class="sd">            for i in len(matrices):</span>
+<span class="sd">                matrices[i] is a matrix of shape `(n_i, m)`</span>
+
+<span class="sd">    skip_matrix : None or int, optional, default is None</span>
+<span class="sd">        if not None, index of a matrix to skip</span>
+
+<span class="sd">    reverse : bool, optional</span>
+<span class="sd">        if True, the order of the matrices is reversed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    khatri_rao_product: matrix of shape `(prod(n_i), m)`</span>
+<span class="sd">        where `prod(n_i) = prod([m.shape[0] for m in matrices])`</span>
+<span class="sd">        i.e. the product of the number of rows of all the matrices in the product.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Mathematically:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">         \\text{If every matrix } U_k \\text{ is of size } (I_k \\times R),\\\\</span>
+<span class="sd">         \\text{Then } \\left(U_1 \\bigodot \\cdots \\bigodot U_n \\right) \\text{ is of size } (\\prod_{k=1}^n I_k \\times R)</span>
+
+<span class="sd">    A more intuitive but slower implementation is::</span>
+
+<span class="sd">        kr_product = np.zeros((n_rows, n_columns))</span>
+<span class="sd">        for i in range(n_columns):</span>
+<span class="sd">            cum_prod = matrices[0][:, i]  # Acuumulates the khatri-rao product of the i-th columns</span>
+<span class="sd">            for matrix in matrices[1:]:</span>
+<span class="sd">                cum_prod = np.einsum(&#39;i,j-&gt;ij&#39;, cum_prod, matrix[:, i]).ravel()</span>
+<span class="sd">            # the i-th column corresponds to the kronecker product of all the i-th columns of all matrices:</span>
+<span class="sd">            kr_product[:, i] = cum_prod</span>
+
+<span class="sd">        return kr_product</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
+
+    <span class="n">n_columns</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Optional part, testing whether the matrices have the proper size</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the matrices must have exactly 2 dimensions!&#39;</span>
+                             <span class="s1">&#39;Matrix {} has dimension {} != 2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All matrices must have same number of columns!&#39;</span>
+                             <span class="s1">&#39;Matrix {} has {} columns != {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_columns</span><span class="p">))</span>
+
+    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+        <span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Note: we do NOT use .reverse() which would reverse matrices even outside this function</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="n">common_dim</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_factors</span><span class="p">))</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">common_dim</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">operation</span> <span class="o">=</span> <span class="n">source</span><span class="o">+</span><span class="s1">&#39;-&gt;&#39;</span><span class="o">+</span><span class="n">target</span><span class="o">+</span><span class="n">common_dim</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">matrices</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

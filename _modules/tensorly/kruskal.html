@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tensorly.kruskal &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User guide: table of contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>tensorly.kruskal</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tensorly.kruskal</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span>
+
+<span class="c1"># Author: Jean Kossaifi</span>
+
+
+<div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal.kruskal_to_tensor.html#tensorly.kruskal.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns the Khatri-product of matrices into a full tensor</span>
+
+<span class="sd">        :math:`factor_matrices = [|U_1, ... U_n|]` becomes</span>
+<span class="sd">        a tensor shape `(U[1].shape[0], U[2].shape[0], ... U[-1].shape[0])`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">        list of factor matrices, all with the same number of columns</span>
+<span class="sd">        i.e. for all matrix U in factor_matrices:</span>
+<span class="sd">        U has shape ``(s_i, R)``, where R is fixed and s_i varies with i</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        full tensor of shape (U[1].shape[0], ... U[-1].shape[0])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This version works by first computing the mode-0 unfolding of the tensor</span>
+<span class="sd">    and then refolding it.</span>
+<span class="sd">    There are other possible and equivalent alternate implementation.</span>
+
+<span class="sd">    Version slower but closer to the mathematical definition</span>
+<span class="sd">    of a tensor decomposition:</span>
+
+<span class="sd">    &gt;&gt;&gt; from functools import reduce</span>
+<span class="sd">    &gt;&gt;&gt; def kt_to_tensor(factors):</span>
+<span class="sd">    ...     for r in range(factors[0].shape[1]):</span>
+<span class="sd">    ...         vecs = np.ix_(*[u[:, r] for u in factors])</span>
+<span class="sd">    ...         if r:</span>
+<span class="sd">    ...             res += reduce(np.multiply, vecs)</span>
+<span class="sd">    ...         else:</span>
+<span class="sd">    ...             res = reduce(np.multiply, vecs)</span>
+<span class="sd">    ...     return res</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">factor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+    <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">full_tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="kruskal_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal.kruskal_to_unfolded.html#tensorly.kruskal.kruskal_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_unfolded</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into an unfolded tensor</span>
+
+<span class="sd">        turns ``factors = [|U_1, ... U_n|]`` into a mode-`mode`</span>
+<span class="sd">        unfolding of the tensor</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">        list of matrices, all with the same number of columns</span>
+<span class="sd">        ie for all u in factor_matrices:</span>
+<span class="sd">        u[i] has shape (s_u_i, R), where R is fixed</span>
+<span class="sd">    mode: int</span>
+<span class="sd">        mode of the desired unfolding</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        unfolded tensor of shape (tensor_shape[mode], -1)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Writing factors = [U_1, ..., U_n], we exploit the fact that</span>
+<span class="sd">    ``U_k = U[k].dot(khatri_rao(U_1, ..., U_k-1, U_k+1, ..., U_n))``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="kruskal_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal.kruskal_to_vec.html#tensorly.kruskal.kruskal_to_vec">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_vec</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into a vector</span>
+
+<span class="sd">        (the tensor ``factors = [|U_1, ... U_n|]``</span>
+<span class="sd">        is converted into a raveled mode-0 unfolding)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">        list of matrices, all with the same number of columns</span>
+<span class="sd">        ie for all u in U: u[i] has shape (s_i, R), where R is fixed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        vectorised tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

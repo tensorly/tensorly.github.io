@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tensorly.regression.tucker_regression &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide: table of contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>tensorly.regression.tucker_regression</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tensorly.regression.tucker_regression</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">kronecker</span>
+<span class="kn">from</span> <span class="nn">..tucker</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">tucker_to_vec</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
+
+<span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
+
+
+<div class="viewcode-block" id="TuckerRegressor"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor">[docs]</a><span class="k">class</span> <span class="nc">TuckerRegressor</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Tucker tensor regression</span>
+
+<span class="sd">        Learns a low rank Tucker weight for the regression</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weight_ranks : int list</span>
+<span class="sd">        dimension of each mode of the core Tucker weight</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        convergence value</span>
+<span class="sd">    reg_W : int, optional, default is 1</span>
+<span class="sd">        regularisation on the weights</span>
+<span class="sd">    n_iter_max : int, optional, default is 100</span>
+<span class="sd">        maximum number of iteration</span>
+<span class="sd">    random_state : None, int or RandomState, optional, default is None</span>
+<span class="sd">    verbose : int, default is 1</span>
+<span class="sd">        level of verbosity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_ranks</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_ranks</span> <span class="o">=</span> <span class="n">weight_ranks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">=</span> <span class="n">reg_W</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+<div class="viewcode-block" id="TuckerRegressor.get_params"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary of parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;weight_ranks&#39;</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">,</span> <span class="s1">&#39;reg_W&#39;</span><span class="p">,</span> <span class="s1">&#39;n_iter_max&#39;</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">params</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="TuckerRegressor.set_params"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the value of the provided parameters&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="TuckerRegressor.fit"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fits the model to the data (X, y)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray of shape (n_samples, N1, ..., NS)</span>
+<span class="sd">            tensor data</span>
+<span class="sd">        y : array of shape (n_samples)</span>
+<span class="sd">            labels associated with each sample</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+        <span class="c1"># Initialise randomly the weights</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_ranks</span><span class="p">)</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>  <span class="c1"># First dimension of X = number of samples</span>
+            <span class="n">W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]))</span>
+
+        <span class="c1"># Norm of the weight tensor at each iteration</span>
+        <span class="n">norm_W</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">):</span>
+
+            <span class="c1"># Optimise modes of W</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">)):</span>
+                <span class="n">phi</span> <span class="o">=</span> <span class="n">partial_tensor_to_vec</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+                                   <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kronecker</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">i</span><span class="p">),</span>
+                                          <span class="n">unfold</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+                <span class="c1"># Regress phi on y: we could call a package here, e.g. scikit-learn</span>
+                <span class="n">inv_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">W_i</span> <span class="o">=</span> <span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">inv_term</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span>
+                                    <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">W_i</span>
+
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">kronecker</span><span class="p">(</span><span class="n">W</span><span class="p">))</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+            <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+            <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+            <span class="c1"># Convergence check</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">weight_evolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">weight_evolution</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Converged in {} iterations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+                    <span class="k">break</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">weight_tensor_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tucker_weight_</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span> <span class="o">=</span> <span class="n">tucker_to_vec</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iterations_</span> <span class="o">=</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_W_</span> <span class="o">=</span> <span class="n">norm_W</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="TuckerRegressor.predict"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the predicted labels for a new data tensor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray</span>
+<span class="sd">            tensor data of shape (n_samples, N1, ..., NS)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

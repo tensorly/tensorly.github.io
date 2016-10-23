@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tensorly.tenalg.proximal &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide: table of contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>tensorly.tenalg.proximal</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tensorly.tenalg.proximal</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">svd</span>
+
+<span class="c1"># Author: Jean Kossaifi</span>
+
+
+<div class="viewcode-block" id="soft_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding">[docs]</a><span class="k">def</span> <span class="nf">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Soft-thresholding operator</span>
+
+<span class="sd">        sign(tensor)*max(abs(tensor) - threshold, 0)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    threshold : float or ndarray with shape tensor.shape</span>
+<span class="sd">        * If float the threshold is applied to the whole tensor</span>
+<span class="sd">        * If ndarray, one theshold is applied per elements, 0 values are ignored</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        thresholded tensor on which the operator has been applied</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic shrinkage</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.tenalg.proximal import soft_thresholding</span>
+<span class="sd">    &gt;&gt;&gt; tensor = np.array([[1, -2, 1.5], [-4, 3, -0.5]])</span>
+<span class="sd">    &gt;&gt;&gt; soft_thresholding(tensor, 1.1)</span>
+<span class="sd">    array([[ 0. , -0.9,  0.4],</span>
+<span class="sd">           [-2.9,  1.9,  0. ]])</span>
+
+
+<span class="sd">    Example with missing values</span>
+
+<span class="sd">    &gt;&gt;&gt; mask = np.array([[0, 0, 1], [1, 0, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; soft_thresholding(tensor, mask*1.1)</span>
+<span class="sd">    array([[ 1. , -2. ,  0.4],</span>
+<span class="sd">           [-2.9,  3. ,  0. ]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">signs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">signs</span><span class="o">*</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">signs</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">inplace_soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inplace version of the shrinkage operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    threshold : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        tensor on which the operator has been applied inplace</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This version is memory efficient.</span>
+<span class="sd">    For a faster but less memory efficient version, you can use this function:</span>
+
+<span class="sd">    &gt;&gt;&gt; def soft_thresholding(tensor, threshold):</span>
+<span class="sd">    ...     return np.maximum(0, tensor - threshold) - np.maximum(0, -tensor - threshold)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index_shrink</span> <span class="o">=</span> <span class="p">((</span><span class="n">tensor</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="n">threshold</span><span class="p">))</span>
+    <span class="n">index_more</span> <span class="o">=</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="n">index_less</span> <span class="o">=</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">threshold</span><span class="p">)</span>
+    <span class="n">tensor</span><span class="p">[</span><span class="n">index_shrink</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">tensor</span><span class="p">[</span><span class="n">index_more</span><span class="p">]</span> <span class="o">-=</span> <span class="n">threshold</span>
+    <span class="n">tensor</span><span class="p">[</span><span class="n">index_less</span><span class="p">]</span> <span class="o">+=</span> <span class="n">threshold</span>
+    <span class="k">return</span> <span class="n">tensor</span>
+
+
+<div class="viewcode-block" id="svd_thresholing"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.svd_thresholing.html#tensorly.tenalg.proximal.svd_thresholing">[docs]</a><span class="k">def</span> <span class="nf">svd_thresholing</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Singular value thresholding operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : ndarray</span>
+<span class="sd">    threshold : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        matrix on which the operator has been applied</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">soft_thresholding</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">V</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">procrustes</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Procrustes operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : ndarray</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        matrix on which the Procrustes operator has been applied</span>
+<span class="sd">        has the same shape as the original tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
