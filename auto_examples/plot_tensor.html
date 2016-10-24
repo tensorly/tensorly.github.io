@@ -195,59 +195,18 @@
 </div>
 <p>Re-folding the tensor is as easy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
-    <span class="n">unfolded</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;* mode-{} unfolding:</span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+    <span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="n">folded</span> <span class="o">=</span> <span class="n">fold</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">folded</span> <span class="o">==</span> <span class="n">tensor</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">0</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[[</span> <span class="mi">0</span>  <span class="mi">1</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">2</span>  <span class="mi">3</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">4</span>  <span class="mi">5</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">6</span>  <span class="mi">7</span><span class="p">]]</span>
-
- <span class="p">[[</span> <span class="mi">8</span>  <span class="mi">9</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">10</span> <span class="mi">11</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">12</span> <span class="mi">13</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">14</span> <span class="mi">15</span><span class="p">]]</span>
-
- <span class="p">[[</span><span class="mi">16</span> <span class="mi">17</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">18</span> <span class="mi">19</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">20</span> <span class="mi">21</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">22</span> <span class="mi">23</span><span class="p">]]]</span>
-<span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[[</span> <span class="mi">0</span>  <span class="mi">1</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">2</span>  <span class="mi">3</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">4</span>  <span class="mi">5</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">6</span>  <span class="mi">7</span><span class="p">]]</span>
-
- <span class="p">[[</span> <span class="mi">8</span>  <span class="mi">9</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">10</span> <span class="mi">11</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">12</span> <span class="mi">13</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">14</span> <span class="mi">15</span><span class="p">]]</span>
-
- <span class="p">[[</span><span class="mi">16</span> <span class="mi">17</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">18</span> <span class="mi">19</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">20</span> <span class="mi">21</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">22</span> <span class="mi">23</span><span class="p">]]]</span>
-<span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">2</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[[</span> <span class="mi">0</span>  <span class="mi">1</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">2</span>  <span class="mi">3</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">4</span>  <span class="mi">5</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mi">6</span>  <span class="mi">7</span><span class="p">]]</span>
-
- <span class="p">[[</span> <span class="mi">8</span>  <span class="mi">9</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">10</span> <span class="mi">11</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">12</span> <span class="mi">13</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">14</span> <span class="mi">15</span><span class="p">]]</span>
-
- <span class="p">[[</span><span class="mi">16</span> <span class="mi">17</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">18</span> <span class="mi">19</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">20</span> <span class="mi">21</span><span class="p">]</span>
-  <span class="p">[</span><span class="mi">22</span> <span class="mi">23</span><span class="p">]]]</span>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="kc">True</span>
+<span class="kc">True</span>
+<span class="kc">True</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.006 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.004 seconds)</p>
 <div class="sphx-glr-footer container">
 <div class="sphx-glr-download container">
 <a class="reference download internal" href="../_downloads/plot_tensor.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tensor.py</span></code></a></div>

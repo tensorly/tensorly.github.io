@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. Tensor decomposition &mdash; tensorly</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="tensorly" href="index.html"/>
+        <link rel="up" title="User guide: table of contents" href="user_guide.html"/>
+        <link rel="next" title="API reference" href="modules/api.html"/>
+        <link rel="prev" title="1. Tensor basics" href="tensor_basics.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tensorly
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing tensorly</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="user_guide.html">User guide: table of contents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">1. Tensor basics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Tensor decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#candecomp-parafac">2.1. CANDECOMP-PARAFAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">2.2. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">People</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">tensorly</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="user_guide.html">User guide: table of contents</a> &raquo;</li>
+      
+    <li>2. Tensor decomposition</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tensor-decomposition">
+<h1>2. Tensor decomposition<a class="headerlink" href="#tensor-decomposition" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial we will go over how to perform tensor decomposition.
+Refer to <a class="footnote-reference" href="#id2" id="id1">[1]</a> for more information on tensor decomposition.</p>
+<div class="section" id="candecomp-parafac">
+<h2>2.1. CANDECOMP-PARAFAC<a class="headerlink" href="#candecomp-parafac" title="Permalink to this headline">¶</a></h2>
+<p>First, let&#8217;s create a second order tensor that is zero everywhere except in a swiss shape that is one.</p>
+<p>We will now apply a rank-2 CANDECOMP-PARAFAC (<a class="reference internal" href="modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal"><span class="pre">tensorly.decomposition.parafac</span></code></a>) decomposition on <cite>tensor</cite>
+to decompose this into a kruskal tensor.</p>
+<p>A Parafac decompositions expresses the tensor as a kruskal tensor that can be represented as a list of factors (matrices).
+The <code class="xref py py-func docutils literal"><span class="pre">parafac</span></code> function therefore returns a list of factors.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="k">import</span> <span class="n">parafac</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+<span class="go">[(12, 2), (12, 2)]</span>
+</pre></div>
+</div>
+<p>From this <strong>kruskal tensor</strong> (presented as a list of matrices) you can reconstruct a full tensor:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+<span class="go">[[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  0.]</span>
+<span class="go"> [ 0.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  0.]</span>
+<span class="go"> [ 0.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  0.]</span>
+<span class="go"> [ 0.  1.  1.  1.  1.  1.  1.  1.  1.  1.  1.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
+<span class="go"> [ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.]]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>2.2. References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules/api.html" class="btn btn-neutral float-right" title="API reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tensor_basics.html" class="btn btn-neutral" title="1. Tensor basics" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Jean Kossaifi 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+     
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+
+
+
+</body>
+</html>
