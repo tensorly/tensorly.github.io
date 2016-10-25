@@ -163,11 +163,8 @@
 <code class="descclassname">tensorly.tenalg.</code><code class="descname">khatri_rao</code><span class="sig-paren">(</span><em>matrices</em>, <em>skip_matrix=None</em>, <em>reverse=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tensorly.tenalg.khatri_rao" title="Permalink to this definition">¶</a></dt>
 <dd><p>Khatri-Rao product of a list of matrices</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>This can be seen as a column-wise kronecker product</dt>
-<dd>(see <a class="reference internal" href="#r2525" id="id1">[R2525]</a> for more details).</dd>
-</dl>
-</div></blockquote>
+<div>This can be seen as a column-wise kronecker product.
+(see <a class="reference internal" href="#r1717" id="id1">[R1717]</a> for more details).</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -175,8 +172,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>matrices</strong> : ndarray list</p>
 <blockquote>
 <div><p>list of matrices with the same number of columns, i.e.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>for i in len(matrices):
-    matrices[i] is a matrix of shape `(n_i, m)`
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
+    <span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_i</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -190,9 +187,9 @@
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">khatri_rao_product: matrix of shape <cite>(prod(n_i), m)</cite></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">khatri_rao_product: matrix of shape <code class="docutils literal"><span class="pre">(prod(n_i),</span> <span class="pre">m)</span></code></p>
 <blockquote class="last">
-<div><p>where <cite>prod(n_i) = prod([m.shape[0] for m in matrices])</cite>
+<div><p>where <code class="docutils literal"><span class="pre">prod(n_i)</span> <span class="pre">=</span> <span class="pre">prod([m.shape[0]</span> <span class="pre">for</span> <span class="pre">m</span> <span class="pre">in</span> <span class="pre">matrices])</span></code>
 i.e. the product of the number of rows of all the matrices in the product.</p>
 </div></blockquote>
 </td>
@@ -202,7 +199,7 @@ i.e. the product of the number of rows of all the matrices in the product.</p>
 <p class="rubric">Notes</p>
 <p>Mathematically:</p>
 <div class="math">
-<p><img src="../../_images/math/94909d514842ec6223a4beaebec4c57d32d70b7e.png" alt="\text{If every matrix } U_k \text{ is of size } (I_k \times R),\\
+<p><img src="../../_images/math/2ea755407e8d21a8cabd0d7c38b0342ffe1e386a.png" alt="\text{If every matrix } U_k \text{ is of size } (I_k \times R),\\
 \text{Then } \left(U_1 \bigodot \cdots \bigodot U_n \right) \text{ is of size } (\prod_{k=1}^n I_k \times R)"/></p>
 </div><p>A more intuitive but slower implementation is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">kr_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">))</span>
@@ -217,10 +214,10 @@ i.e. the product of the number of rows of all the matrices in the product.</p>
 </pre></div>
 </div>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="r2525" rules="none">
+<table class="docutils citation" frame="void" id="r1717" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[R2525]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
+<tr><td class="label">[R1717]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
 </tbody>
 </table>

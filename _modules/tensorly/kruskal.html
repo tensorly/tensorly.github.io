@@ -134,11 +134,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for tensorly.kruskal</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Core operations on Kruskal tensors.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
+
+<span class="c1"># License: BSD 3 clause</span>
 
 
 <div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal.kruskal_to_tensor.html#tensorly.kruskal.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
@@ -222,7 +228,12 @@
 <span class="sd">    ----------</span>
 <span class="sd">    factors : ndarray list</span>
 <span class="sd">        list of matrices, all with the same number of columns</span>
-<span class="sd">        ie for all u in U: u[i] has shape (s_i, R), where R is fixed</span>
+<span class="sd">        i.e.::</span>
+
+<span class="sd">            for u in U:</span>
+<span class="sd">                u[i].shape == (s_i, R)</span>
+<span class="sd">                </span>
+<span class="sd">        where `R` is fixed while `s_i` can vary with `i`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>

@@ -134,16 +134,16 @@
            <div itemprop="articleBody">
             
   <h1>Source code for tensorly.tenalg._khatri_rao</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
 
-<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Khatri-Rao product of a list of matrices</span>
 
-<span class="sd">        This can be seen as a column-wise kronecker product</span>
-<span class="sd">         (see [1]_ for more details).</span>
+<span class="sd">        This can be seen as a column-wise kronecker product.</span>
+<span class="sd">        (see [1]_ for more details).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -151,7 +151,7 @@
 <span class="sd">        list of matrices with the same number of columns, i.e.::</span>
 
 <span class="sd">            for i in len(matrices):</span>
-<span class="sd">                matrices[i] is a matrix of shape `(n_i, m)`</span>
+<span class="sd">                matrices[i].shape = (n_i, m)</span>
 
 <span class="sd">    skip_matrix : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
@@ -161,8 +161,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    khatri_rao_product: matrix of shape `(prod(n_i), m)`</span>
-<span class="sd">        where `prod(n_i) = prod([m.shape[0] for m in matrices])`</span>
+<span class="sd">    khatri_rao_product: matrix of shape ``(prod(n_i), m)``</span>
+<span class="sd">        where ``prod(n_i) = prod([m.shape[0] for m in matrices])``</span>
 <span class="sd">        i.e. the product of the number of rows of all the matrices in the product.</span>
 
 <span class="sd">    Notes</span>
@@ -191,7 +191,7 @@
 <span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
 <span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
 
     <span class="n">n_columns</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -200,11 +200,11 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the matrices must have exactly 2 dimensions!&#39;</span>
-                             <span class="s1">&#39;Matrix {} has dimension {} != 2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has dimension </span><span class="si">{}</span><span class="s1"> != 2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                                  <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All matrices must have same number of columns!&#39;</span>
-                             <span class="s1">&#39;Matrix {} has {} columns != {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has </span><span class="si">{}</span><span class="s1"> columns != </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                                  <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_columns</span><span class="p">))</span>
 
     <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">)</span>
