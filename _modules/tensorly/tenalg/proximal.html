@@ -51,19 +51,15 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> tensorly
+            <a href="../../../index.html">
           
 
+          
+            
+            <img src="../../../_static/TensorLy_logo.png" class="logo" />
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                0.1
-              </div>
-            
           
 
           
@@ -115,29 +111,47 @@
 
 
 
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>tensorly.tenalg.proximal</li>
+        
+      <li>tensorly.tenalg.proximal</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for tensorly.tenalg.proximal</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">svd</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">svd</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
+
+<span class="c1"># License: BSD 3 clause</span>
+
 
 
 <div class="viewcode-block" id="soft_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding">[docs]</a><span class="k">def</span> <span class="nf">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
@@ -176,13 +190,17 @@
 <span class="sd">    array([[ 1. , -2. ,  0.4],</span>
 <span class="sd">           [-2.9,  3. ,  0. ]])</span>
 
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    inplace_soft_thresholding : Inplace version of the soft-thresholding operator</span>
+<span class="sd">    svd_thresholding : SVD-thresholding operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">signs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">signs</span><span class="o">*</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">threshold</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">signs</span><span class="o">*</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">inplace_soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+<div class="viewcode-block" id="inplace_soft_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.inplace_soft_thresholding.html#tensorly.tenalg.proximal.inplace_soft_thresholding">[docs]</a><span class="k">def</span> <span class="nf">inplace_soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Inplace version of the shrinkage operator</span>
 
 <span class="sd">    Parameters</span>
@@ -195,13 +213,10 @@
 <span class="sd">    ndarray</span>
 <span class="sd">        tensor on which the operator has been applied inplace</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This version is memory efficient.</span>
-<span class="sd">    For a faster but less memory efficient version, you can use this function:</span>
-
-<span class="sd">    &gt;&gt;&gt; def soft_thresholding(tensor, threshold):</span>
-<span class="sd">    ...     return np.maximum(0, tensor - threshold) - np.maximum(0, -tensor - threshold)</span>
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    soft_thresholding : less memory-efficient but fast soft-thresholding operator</span>
+<span class="sd">    svd_thresholding : SVD-thresholding operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index_shrink</span> <span class="o">=</span> <span class="p">((</span><span class="n">tensor</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="n">threshold</span><span class="p">))</span>
     <span class="n">index_more</span> <span class="o">=</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
@@ -209,10 +224,10 @@
     <span class="n">tensor</span><span class="p">[</span><span class="n">index_shrink</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">tensor</span><span class="p">[</span><span class="n">index_more</span><span class="p">]</span> <span class="o">-=</span> <span class="n">threshold</span>
     <span class="n">tensor</span><span class="p">[</span><span class="n">index_less</span><span class="p">]</span> <span class="o">+=</span> <span class="n">threshold</span>
-    <span class="k">return</span> <span class="n">tensor</span>
+    <span class="k">return</span> <span class="n">tensor</span></div>
 
 
-<div class="viewcode-block" id="svd_thresholing"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.svd_thresholing.html#tensorly.tenalg.proximal.svd_thresholing">[docs]</a><span class="k">def</span> <span class="nf">svd_thresholing</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+<div class="viewcode-block" id="svd_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding">[docs]</a><span class="k">def</span> <span class="nf">svd_thresholding</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Singular value thresholding operator</span>
 
 <span class="sd">    Parameters</span>
@@ -224,12 +239,16 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        matrix on which the operator has been applied</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    procrustes : procrustes operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">soft_thresholding</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="n">V</span><span class="p">)</span></div>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">soft_thresholding</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">V</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">procrustes</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+<div class="viewcode-block" id="procrustes"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.procrustes.html#tensorly.tenalg.proximal.procrustes">[docs]</a><span class="k">def</span> <span class="nf">procrustes</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Procrustes operator</span>
 
 <span class="sd">    Parameters</span>
@@ -241,9 +260,14 @@
 <span class="sd">    ndarray</span>
 <span class="sd">        matrix on which the Procrustes operator has been applied</span>
 <span class="sd">        has the same shape as the original tensor</span>
+
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    svd_thresholding : SVD-thresholding operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span></div>
 
 </pre></div>
 
@@ -304,6 +328,10 @@
   </script>
   
      
+
+	
+	<a href="https://github.com/tensorly/tensorly"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
+	</a>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

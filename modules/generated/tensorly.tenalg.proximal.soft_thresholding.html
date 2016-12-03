@@ -34,7 +34,7 @@
   
     <link rel="top" title="tensorly" href="../../index.html"/>
         <link rel="up" title="API reference" href="../api.html"/>
-        <link rel="next" title="tensorly.tenalg.proximal.svd_thresholing" href="tensorly.tenalg.proximal.svd_thresholing.html"/>
+        <link rel="next" title="tensorly.tenalg.proximal.inplace_soft_thresholding" href="tensorly.tenalg.proximal.inplace_soft_thresholding.html"/>
         <link rel="prev" title="tensorly.tenalg.multi_mode_dot" href="tensorly.tenalg.multi_mode_dot.html"/> 
 
   
@@ -53,19 +53,15 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> tensorly
+            <a href="../../index.html">
           
 
+          
+            
+            <img src="../../_static/TensorLy_logo.png" class="logo" />
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                0.1
-              </div>
-            
           
 
           
@@ -99,7 +95,10 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.multi_mode_dot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholing.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.inplace_soft_thresholding.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.inplace_soft_thresholding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.partial_svd.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.partial_svd</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
@@ -134,23 +133,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../api.html">API reference</a> &raquo;</li>
-      
-    <li><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</li>
+        
+      <li><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -186,6 +200,15 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="tensorly.tenalg.proximal.inplace_soft_thresholding.html#tensorly.tenalg.proximal.inplace_soft_thresholding" title="tensorly.tenalg.proximal.inplace_soft_thresholding"><code class="xref py py-obj docutils literal"><span class="pre">inplace_soft_thresholding</span></code></a></dt>
+<dd>Inplace version of the soft-thresholding operator</dd>
+<dt><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding" title="tensorly.tenalg.proximal.svd_thresholding"><code class="xref py py-obj docutils literal"><span class="pre">svd_thresholding</span></code></a></dt>
+<dd>SVD-thresholding operator</dd>
+</dl>
+</div>
 <p class="rubric">Examples</p>
 <p>Basic shrinkage</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -214,7 +237,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="tensorly.tenalg.proximal.svd_thresholing.html" class="btn btn-neutral float-right" title="tensorly.tenalg.proximal.svd_thresholing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="tensorly.tenalg.proximal.inplace_soft_thresholding.html" class="btn btn-neutral float-right" title="tensorly.tenalg.proximal.inplace_soft_thresholding" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="tensorly.tenalg.multi_mode_dot.html" class="btn btn-neutral" title="tensorly.tenalg.multi_mode_dot" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -274,6 +297,10 @@
   </script>
   
      
+
+	
+	<a href="https://github.com/tensorly/tensorly"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
+	</a>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
