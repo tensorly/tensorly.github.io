@@ -86,7 +86,8 @@
 <li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">1. Tensor basics</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">2. Tensor decomposition</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#candecomp-parafac">2.1. CANDECOMP-PARAFAC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#references">2.2. References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tucker">2.2. Tucker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">2.3. References</a></li>
 </ul>
 </li>
 </ul>
@@ -157,9 +158,10 @@
   <div class="section" id="tensor-decomposition">
 <h1>2. Tensor decomposition<a class="headerlink" href="#tensor-decomposition" title="Permalink to this headline">¶</a></h1>
 <p>In this tutorial we will go over how to perform tensor decomposition.
-Refer to <a class="footnote-reference" href="#id2" id="id1">[1]</a> for more information on tensor decomposition.</p>
+Refer to <a class="footnote-reference" href="#id3" id="id1">[1]</a> for more information on tensor decomposition.</p>
 <div class="section" id="candecomp-parafac">
 <h2>2.1. CANDECOMP-PARAFAC<a class="headerlink" href="#candecomp-parafac" title="Permalink to this headline">¶</a></h2>
+<p>We demonstrate here how to perform a Canonical Polyadic Decomposition (also known as CANDECOMP-PARAFAC, CP, or PARAFAC decomposition). A rank-r Parafac decomposes a tensor into a linear combination of r rank-1 tensors (See <a class="footnote-reference" href="#id3" id="id2">[1]</a> for more details).</p>
 <p>First, let&#8217;s create a second order tensor that is zero everywhere except in a swiss shape that is one.</p>
 <p>We will now apply a rank-2 CANDECOMP-PARAFAC (<a class="reference internal" href="modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal"><span class="pre">tensorly.decomposition.parafac</span></code></a>) decomposition on <cite>tensor</cite>
 to decompose this into a kruskal tensor.</p>
@@ -190,12 +192,47 @@ The <code class="xref py py-func docutils literal"><span class="pre">parafac</sp
 </pre></div>
 </div>
 </div>
+<div class="section" id="tucker">
+<h2>2.2. Tucker<a class="headerlink" href="#tucker" title="Permalink to this headline">¶</a></h2>
+<p>The Tucker decomposition can be seen as a generalisation of the CP decomposition: it decomposes the tensor into a small core tensor and factor matrices. CP can be seen as a Tucker decomposition with a super-diagonal core.</p>
+<p>Tucker (classical and non-negative) are available in TensorLy (<a class="reference internal" href="modules/generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-func docutils literal"><span class="pre">tensorly.decomposition.tucker</span></code></a> and <a class="reference internal" href="modules/generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-func docutils literal"><span class="pre">tensorly.decomposition.non_negative_tucker</span></code></a>).</p>
+<p>Using the same tensor as previously, we will perform a rank [2, 3]-decomposition of <cite>tensor</cite>:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="k">import</span> <span class="n">tucker</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go"># The core is a smaller tensor of size (2, 3):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">core</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+<span class="go">[(12, 2), (12, 3)]</span>
+</pre></div>
+</div>
+<p>As previously, we can reconstruct a full tensor from our Tucker decomposition:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="k">import</span> <span class="n">tucker_to_tensor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
+<span class="go">[  0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [  7.746e-17   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   0.000e+00]</span>
+<span class="go"> [  7.746e-17   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   0.000e+00]</span>
+<span class="go"> [  7.746e-17   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   0.000e+00]</span>
+<span class="go"> [  7.746e-17   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   1.000e+00   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [ -7.340e-17   2.617e-16   1.914e-16   2.475e-16   1.000e+00   1.000e+00   1.000e+00   1.000e+00   2.475e-16   2.475e-16   2.475e-16   0.000e+00]</span>
+<span class="go"> [  0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00]]</span>
+</pre></div>
+</div>
+<p>Note that some coefficients are almost zero (10e-16) but not exactly due to numerical approximations.</p>
+</div>
 <div class="section" id="references">
-<h2>2.2. References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+<h2>2.3. References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> T.G.Kolda and B.W.Bader, &#8220;Tensor Decompositions and Applications&#8221;,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
 </tbody>
 </table>
@@ -243,7 +280,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.2',
+            VERSION:'0.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
