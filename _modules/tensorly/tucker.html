@@ -32,6 +32,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="tensorly" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
@@ -111,34 +112,19 @@
 
 
 
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-      <li>tensorly.tucker</li>
-    
-    
+      
+    <li>tensorly.tucker</li>
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -149,16 +135,16 @@
 <span class="sd">Core operations on Tucker tensors.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">multi_mode_dot</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">kronecker</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">multi_mode_dot</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">kronecker</span>
 
 <span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="tucker_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_tensor.html#tensorly.tucker.tucker_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_tensor.html#tensorly.tucker.tucker_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts the Tucker tensor into a full tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -193,7 +179,7 @@
     <span class="k">return</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tucker_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_unfolded.html#tensorly.tucker.tucker_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_unfolded</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_unfolded.html#tensorly.tucker.tucker_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_unfolded</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts the Tucker decomposition into an unfolded tensor (i.e. a matrix)</span>
 
 <span class="sd">    Parameters</span>
@@ -217,7 +203,7 @@
     <span class="k">return</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tucker_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_vec.html#tensorly.tucker.tucker_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_vec</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker.tucker_to_vec.html#tensorly.tucker.tucker_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_vec</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts a Tucker decomposition into a vectorised tensor</span>
 
 <span class="sd">    Parameters</span>

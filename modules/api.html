@@ -32,9 +32,10 @@
   
 
   
+        <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="tensorly" href="../index.html"/>
         <link rel="next" title="tensorly.base.tensor_from_frontal_slices" href="generated/tensorly.base.tensor_from_frontal_slices.html"/>
-        <link rel="prev" title="2. Tensor decomposition" href="../tensor_decomposition.html"/> 
+        <link rel="prev" title="3. Tensor regression" href="../tensor_regression.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -126,6 +127,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac.html"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>.non_negative_parafac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.decomposition.tucker.html"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>.tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>.robust_pca</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.regression"><code class="docutils literal"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a><ul>
@@ -136,6 +138,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.metrics"><code class="docutils literal"><span class="pre">tensorly.metrics</span></code>: Performance measures</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.metrics.regression.MSE.html"><code class="docutils literal"><span class="pre">tensorly.metrics.regression</span></code>.MSE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.metrics.regression.RMSE.html"><code class="docutils literal"><span class="pre">tensorly.metrics.regression</span></code>.RMSE</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tensorly.random"><code class="docutils literal"><span class="pre">tensorly.random</span></code>: Sampling random tensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/tensorly.random.cp_tensor.html"><code class="docutils literal"><span class="pre">tensorly.random</span></code>.cp_tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/tensorly.random.tucker_tensor.html"><code class="docutils literal"><span class="pre">tensorly.random</span></code>.tucker_tensor</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.datasets"><code class="docutils literal"><span class="pre">tensorly.datasets</span></code>: Creating and loading data</a><ul>
@@ -173,36 +180,21 @@
         <div class="rst-content">
           
 
-
-
-
-
-
-
-
-
-
+ 
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-      <li>API reference</li>
-    
-    
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>API reference</li>
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -219,7 +211,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.base.tensor_from_frontal_slices.html#tensorly.base.tensor_from_frontal_slices" title="tensorly.base.tensor_from_frontal_slices"><code class="xref py py-obj docutils literal"><span class="pre">tensor_from_frontal_slices</span></code></a>(*matrices)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.base.tensor_from_frontal_slices.html#tensorly.base.tensor_from_frontal_slices" title="tensorly.base.tensor_from_frontal_slices"><code class="xref py py-obj docutils literal"><span class="pre">tensor_from_frontal_slices</span></code></a>(\*matrices)</td>
 <td>Creates a third order tensor from a list of matrices (frontal slices)</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.base.unfold.html#tensorly.base.unfold" title="tensorly.base.unfold"><code class="xref py py-obj docutils literal"><span class="pre">unfold</span></code></a>(tensor[,&nbsp;mode])</td>
@@ -360,6 +352,9 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal"><span class="pre">non_negative_tucker</span></code></a>(tensor,&nbsp;ranks[,&nbsp;...])</td>
 <td>Non-negative Tucker decomposition</td>
 </tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal"><span class="pre">robust_pca</span></code></a>(X[,&nbsp;mask,&nbsp;tol,&nbsp;reg_E,&nbsp;reg_J,&nbsp;...])</td>
+<td>Robust Tensor PCA via ALM</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -397,6 +392,24 @@ Regression.</p>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE" title="tensorly.metrics.regression.RMSE"><code class="xref py py-obj docutils literal"><span class="pre">regression.RMSE</span></code></a>(y_true,&nbsp;y_pred)</td>
 <td>Returns the regularised mean squared error between the two predictions</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-tensorly.random">
+<span id="tensorly-random-sampling-random-tensors"></span><h2><a class="reference internal" href="#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.random</span></code></a>: Sampling random tensors<a class="headerlink" href="#module-tensorly.random" title="Permalink to this headline">¶</a></h2>
+<p>Module to sample random tensors</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.random.cp_tensor.html#tensorly.random.cp_tensor" title="tensorly.random.cp_tensor"><code class="xref py py-obj docutils literal"><span class="pre">cp_tensor</span></code></a>(shape,&nbsp;rank[,&nbsp;full,&nbsp;random_state])</td>
+<td>Generates a random CP tensor</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/tensorly.random.tucker_tensor.html#tensorly.random.tucker_tensor" title="tensorly.random.tucker_tensor"><code class="xref py py-obj docutils literal"><span class="pre">tucker_tensor</span></code></a>(shape,&nbsp;rank[,&nbsp;full,&nbsp;random_state])</td>
+<td>Generates a random Tucker tensor</td>
 </tr>
 </tbody>
 </table>
@@ -445,7 +458,7 @@ developers</p>
         <a href="generated/tensorly.base.tensor_from_frontal_slices.html" class="btn btn-neutral float-right" title="tensorly.base.tensor_from_frontal_slices" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../tensor_decomposition.html" class="btn btn-neutral" title="2. Tensor decomposition" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../tensor_regression.html" class="btn btn-neutral" title="3. Tensor regression" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

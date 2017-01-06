@@ -32,6 +32,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="tensorly" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
@@ -111,43 +112,28 @@
 
 
 
-
-
-
-
-
-
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
-
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
-        
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
-      <li>tensorly.tenalg._partial_svd</li>
-    
-    
+      
+    <li>tensorly.tenalg._partial_svd</li>
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for tensorly.tenalg._partial_svd</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">svd</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">eigsh</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">svd</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">import</span> <span class="n">eigsh</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
@@ -155,7 +141,7 @@
 
 
 
-<div class="viewcode-block" id="partial_svd"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.partial_svd.html#tensorly.tenalg.partial_svd">[docs]</a><span class="k">def</span> <span class="nf">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="partial_svd"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.partial_svd.html#tensorly.tenalg.partial_svd">[docs]</a><span class="k">def</span> <span class="nf">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Computes a fast partial SVD on `matrix`</span>
 
 <span class="sd">        if `n_eigenvecs` is specified, sparse eigendecomposition</span>
@@ -181,14 +167,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check that matrix is... a matrix!</span>
     <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;matrix be a matrix. matrix.ndim is {} != 2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;matrix be a matrix. matrix.ndim is </span><span class="si">{}</span><span class="s1"> != 2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
 
     <span class="c1"># Choose what to do depending on the params</span>
     <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">min_dim</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;=</span> <span class="n">min_dim</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;=</span> <span class="n">min_dim</span><span class="p">:</span>
         <span class="c1"># Default on standard SVD</span>
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">S</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">V</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="p">:]</span>
@@ -200,11 +186,11 @@
         <span class="k">if</span> <span class="n">dim_1</span> <span class="o">&lt;</span> <span class="n">dim_2</span><span class="p">:</span>
             <span class="n">S</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">eigsh</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;LM&#39;</span><span class="p">)</span>
             <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-            <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">eigsh</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;LM&#39;</span><span class="p">)</span>
             <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-            <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="o">/</span><span class="n">S</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># WARNING: here, V is still the transpose of what it should be</span>
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">S</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">V</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
