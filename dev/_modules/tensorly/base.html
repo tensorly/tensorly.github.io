@@ -169,6 +169,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    1D-array</span>
 <span class="sd">        vectorised tensor of shape ``(i_1 * i_2 * ... * i_n)``</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    vec_to_tensor</span>
+<span class="sd">    fold </span>
+<span class="sd">    unfold</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span></div>
 
@@ -187,6 +193,12 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        tensor of shape `shape` = ``(i_1, ..., i_n)``</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    tensor_to_vec</span>
+<span class="sd">    fold </span>
+<span class="sd">    unfold</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
@@ -204,6 +216,11 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        unfolded_tensor of shape ``(tensor.shape[mode], -1)``</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    fold</span>
+<span class="sd">    tensor_to_vec</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
 
@@ -227,6 +244,11 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        folded_tensor of shape `shape`</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    unfold</span>
+<span class="sd">    tensor_to_vec</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">full_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">mode_dim</span> <span class="o">=</span> <span class="n">full_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
@@ -258,6 +280,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        partially unfolded tensor</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    partial_fold</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ravel_tensors</span><span class="p">:</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -293,6 +319,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        partially re-folded tensor</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    partial_unfold</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">transposed_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">mode_dim</span> <span class="o">=</span> <span class="n">transposed_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">skip_begin</span><span class="o">+</span><span class="n">mode</span><span class="p">)</span>
@@ -304,7 +334,8 @@
 <div class="viewcode-block" id="partial_tensor_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec">[docs]</a><span class="k">def</span> <span class="nf">partial_tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Partially vectorises a tensor</span>
 
-<span class="sd">        Partially vectorises a tensor while ignoring the specified dimension at the beginning and the end</span>
+<span class="sd">        In other words, vectorises the subtensors of `tensor` obtained by</span>
+<span class="sd">        ignoring the specified dimension at the beginning and the end</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -319,6 +350,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        partially vectorised tensor with the `skip_begin` first and `skip_end` last dimensions untouched</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    partial_vec_to_tensor : invert the partial_tensor_to_vec operation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
@@ -341,6 +376,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        full tensor</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    partial_tensor_to_vec : invert the partial_vec_to_tensor operation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">partial_fold</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span><span class="p">)</span></div>
 </pre></div>
