@@ -1,0 +1,233 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../_static/base.min.css" />
+        <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../home.html">
+            TensorLy
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
+    </div>
+
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
+
+			<a class="navbar-item" href="../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../authors.html">
+				People
+			</a>
+		</div>
+
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
+
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
+
+		</div>
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-quarter is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="backend.html">1. TensorLy’s backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">2. Tensor basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">3. Tensor decomposition</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Tensor regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting">4.1. Setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">4.2. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">People</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content main-content">
+
+                    
+
+  <div class="section" id="tensor-regression">
+<h1>4. Tensor regression</h1>
+<p>TensorLy also allows you to perform Tensor Regression.</p>
+<div class="section" id="setting">
+<h2>4.1. Setting</h2>
+<p>Tensor regression is available in the module <a class="reference internal" href="../modules/api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.regression</span></code></a>.</p>
+<p>Given a series of <img class="math" src="../_images/math/a23b17dfcf3ded1ae3d34f1efe0578e7e057a66d.png" alt="N"/> tensor samples/observations, <img class="math" src="../_images/math/72129dbb41f61133da9f6b09d2038aeca92329e9.png" alt="\tilde X_i, i={1, \cdots, N}"/>, and corresponding labels <img class="math" src="../_images/math/0c5235dd42e4b5d867b2c7a45e11e72b07b16377.png" alt="y_i, i={1, \cdots, N}"/>, we want to find the weight tesor <img class="math" src="../_images/math/47c2aac354995d8e7fa590e4e2ba25146d686647.png" alt="\tilde W"/> such that, for each <img class="math" src="../_images/math/29e0839063b914bf331dee429eaafebb32509bc4.png" alt="i={1, \cdots, N}"/>:</p>
+<div class="math">
+<p><img src="../_images/math/76368bb21677e6fa5bad24169a4d02e82e4608ee.png" alt="y_i = \langle \tilde X_i, \tilde W \rangle"/></p>
+</div><p>We additionally impose that <img class="math" src="../_images/math/47c2aac354995d8e7fa590e4e2ba25146d686647.png" alt="\tilde W"/> be a rank-r CP decomposition (Kruskal regression) or a rank <img class="math" src="../_images/math/a2c8367776789c97b074cd162c58c3e7f8390433.png" alt="(r_1, \cdots, r_N)"/>-Tucker decomposition (Tucker regression).
+For a detailed explanation on tensor regression, please refer to <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p>TensorLy implements both types of tensor regression as scikit-learn-like estimators.</p>
+<p>For instance, Krusal regression is available through the <code class="xref py py-class docutils literal"><span class="pre">tensorly.regression.KruskalRegression</span></code> object. This implements a fit method that takes as parameters <cite>X</cite>, the data tensor which first dimension is the number of samples, and <cite>y</cite>, the corresponding vector of labels.</p>
+<p>Given a set of testing samples, you can use the predict method to obtain the corresponding predictions from the model.</p>
+</div>
+<div class="section" id="references">
+<h2>4.2. References</h2>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>W. Guo, I. Kotsia, and I. Patras. “Tensor Learning for Regression”,
+IEEE Transactions on Image Processing 21.2 (2012), pp. 816–827</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+
+                    <nav class="pagination">
+    
+    
+    <a class="button is-medium pagination-previous" href="tensor_decomposition.html" title="3. Tensor decomposition" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Previous</span>
+    </a>
+    
+    
+    <a class="button is-medium pagination-next" href="../modules/api.html" title="API reference" accesskey="n">
+        <span>Next </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2017, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>

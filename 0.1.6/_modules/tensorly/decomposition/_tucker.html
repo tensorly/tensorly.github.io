@@ -1,0 +1,378 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/base.min.css" />
+        <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="nav is-dark has-shadow top" id="top">
+    <div class="nav-left">
+        <a class="nav-item nav-title" href="../../../home.html">
+            TensorLy
+        </a>
+
+        <a class="nav-item is-tab tooltip is-right" href="../../../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <span class="tooltiptext">Home page</span>
+        </a>
+        <a class="nav-item is-tab tooltip is-right" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="tooltiptext">Open project on Github</span>
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+    </div>
+
+
+
+    <span class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </span>
+
+
+    <div class="nav-right nav-menu">
+        <a class="nav-item is-tab" href="../../../installation.html">
+            Install
+        </a>
+        <a class="nav-item is-tab" href="../../../user_guide.html">
+            User guide
+        </a>
+        <a class="nav-item is-tab" href="../../../modules/api.html">
+            API
+        </a>
+        <a class="nav-item is-tab" href="../../../auto_examples/index.html">
+            Examples
+        </a>
+        <a class="nav-item is-tab" href="../../../authors.html">
+            People
+        </a>
+        
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-thrid is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="container search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">People</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content is-medium main-content">
+
+                    
+
+  <h1>Source code for tensorly.decomposition._tucker</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">unfold</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">mode_dot</span><span class="p">,</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">partial_svd</span>
+<span class="kn">from</span> <span class="nn">..tucker</span> <span class="k">import</span> <span class="n">tucker_to_tensor</span>
+<span class="kn">from</span> <span class="nn">..random</span> <span class="k">import</span> <span class="n">check_random_state</span>
+
+<span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
+
+<span class="c1"># License: BSD 3 clause</span>
+
+<div class="viewcode-block" id="partial_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker">[docs]</a><span class="k">def</span> <span class="nf">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+           <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</span>
+
+<span class="sd">        Decomposes `tensor` into a Tucker decomposition exclusively along the provided modes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    modes : int list</span>
+<span class="sd">            list of the modes on which to perform the decomposition</span>
+<span class="sd">    ranks : None or int list</span>
+<span class="sd">            size of the core tensor, ``(len(ranks) == len(modes))``</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">                 maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">          tolerance: the algorithm stops when the variation in</span>
+<span class="sd">          the reconstruction error is less than the tolerance</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    core : ndarray </span>
+<span class="sd">            core tensor of the Tucker decomposition</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">            list of factors of the Tucker decomposition.</span>
+<span class="sd">            with ``core.shape[i] == (tensor.shape[i], ranks[i]) for i in modes``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ranks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">]</span>
+
+    <span class="c1"># SVD init</span>
+    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;svd&#39;</span><span class="p">:</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
+            <span class="n">eigenvecs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">partial_svd</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">ranks</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvecs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">ranks</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span> <span class="k">for</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">)]</span>
+
+    <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
+            <span class="n">core_approximation</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">eigenvecs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">partial_svd</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">core_approximation</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">ranks</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvecs</span>
+
+        <span class="n">core</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># The factors are orthonormal and therefore do not affect the reconstructed tensor&#39;s norm</span>
+        <span class="n">rec_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">norm</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
+        <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconsturction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+            <span class="k">if</span> <span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span></div>
+
+
+<div class="viewcode-block" id="tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker">[docs]</a><span class="k">def</span> <span class="nf">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+           <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</span>
+
+<span class="sd">        Decomposes `tensor` into a Tucker decomposition:</span>
+<span class="sd">        ``tensor = [| core; factors[0], ...factors[-1] |]`` [1]_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    ranks : None or int list</span>
+<span class="sd">            size of the core tensor, ``(len(ranks) == tensor.ndim)``</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">                 maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">          tolerance: the algorithm stops when the variation in</span>
+<span class="sd">          the reconstruction error is less than the tolerance</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    core : ndarray of size `ranks`</span>
+<span class="sd">            core tensor of the Tucker decomposition</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">            list of factors of the Tucker decomposition.</span>
+<span class="sd">            Its ``i``-th element is of shape ``(tensor.shape[i], ranks[i])``</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="n">ranks</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
+                          <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="non_negative_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker">[docs]</a><span class="k">def</span> <span class="nf">non_negative_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Non-negative Tucker decomposition</span>
+
+<span class="sd">        Iterative multiplicative update, see [2]_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ``ndarray``</span>
+<span class="sd">    rank   : int</span>
+<span class="sd">            number of components</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">                 maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    core : ndarray</span>
+<span class="sd">            positive core of the Tucker decomposition</span>
+<span class="sd">            has shape `ranks`</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">            list of factors of the CP decomposition</span>
+<span class="sd">            element `i` is of shape ``(tensor.shape[i], rank)``</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [2] Yong-Deok Kim and Seungjin Choi,</span>
+<span class="sd">       &quot;Nonnegative tucker decomposition&quot;,</span>
+<span class="sd">       IEEE Conference on Computer Vision and Pattern Recognition s(CVPR),</span>
+<span class="sd">       pp 1–8, 2007</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">10</span><span class="n">e</span><span class="o">-</span><span class="mi">12</span>
+
+    <span class="c1"># Initialisation</span>
+    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;svd&#39;</span><span class="p">:</span>
+        <span class="n">core</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)</span>
+        <span class="n">nn_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="n">nn_core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">core</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.01</span>  <span class="c1"># Check this</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)]</span>
+        <span class="n">nn_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="n">nn_core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">core</span><span class="p">)</span>
+
+    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">)</span>
+    <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">nn_core</span><span class="p">,</span> <span class="n">nn_factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">B</span><span class="p">)</span>
+            <span class="n">numerator</span> <span class="o">=</span> <span class="n">numerator</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+            <span class="n">denominator</span> <span class="o">=</span> <span class="n">denominator</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">nn_factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">nn_factors</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">numerator</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">denominator</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">denominator</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">nn_core</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">denominator</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
+        <span class="n">nn_core</span> <span class="o">*=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+
+        <span class="n">rec_error</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">nn_core</span><span class="p">,</span> <span class="n">nn_factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
+        <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconsturction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">nn_core</span><span class="p">,</span> <span class="n">nn_factors</span></div>
+</pre></div>
+
+
+
+                    <nav class="pagination">
+    
+    
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2017, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../../../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>

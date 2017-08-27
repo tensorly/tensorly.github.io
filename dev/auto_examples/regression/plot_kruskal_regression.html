@@ -30,48 +30,60 @@
 
     <body>
         
-        <nav class="nav is-dark has-shadow top" id="top">
-    <div class="nav-left">
-        <a class="nav-item nav-title" href="../../home.html">
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../home.html">
             TensorLy
         </a>
 
-        <a class="nav-item is-tab tooltip is-right" href="../../index.html">
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
             <i class="fa fa-home" aria-hidden="true"></i>
-            <span class="tooltiptext">Home page</span>
         </a>
-        <a class="nav-item is-tab tooltip is-right" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="tooltiptext">Open project on Github</span>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
             <span class="icon"><i class="fa fa-github"></i></span>
         </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
     </div>
 
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
 
+			<a class="navbar-item" href="../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../authors.html">
+				People
+			</a>
+		</div>
 
-    <span class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </span>
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
 
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
 
-    <div class="nav-right nav-menu">
-        <a class="nav-item is-tab" href="../../installation.html">
-            Install
-        </a>
-        <a class="nav-item is-tab" href="../../user_guide.html">
-            User guide
-        </a>
-        <a class="nav-item is-tab" href="../../modules/api.html">
-            API
-        </a>
-        <a class="nav-item is-tab" href="../index.html">
-            Examples
-        </a>
-        <a class="nav-item is-tab" href="../../authors.html">
-            People
-        </a>
-        
+		</div>
     </div>
 </nav>
  
@@ -79,10 +91,10 @@
         
         <div class="columns">
             
-            <div class="column is-one-thrid is-hidden-mobile aside">
+            <div class="column is-one-quarter is-hidden-mobile aside">
                 <div class="sidebar" id="sidebar">
                     
-                    <div class="container search">
+                    <div class="search">
                         <div class="search-title">
                             Search in TensorLy
                         </div>
@@ -109,7 +121,7 @@
                     
                         <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General examples</a></li>
@@ -133,7 +145,7 @@
 
             
             <div class="column is-three-quarters main-column">
-                <div class="content is-medium main-content">
+                <div class="content main-content">
 
                     
 
@@ -144,8 +156,9 @@
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.base</span> <span class="kn">import</span> <span class="n">tensor_to_vec</span><span class="p">,</span> <span class="n">partial_tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">tensorly.datasets.synthetic</span> <span class="kn">import</span> <span class="n">gen_image</span>
-<span class="kn">from</span> <span class="nn">tensorly.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 <span class="kn">from</span> <span class="nn">tensorly.regression.kruskal_regression</span> <span class="kn">import</span> <span class="n">KruskalRegressor</span>
+<span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="kn">as</span> <span class="nn">T</span>
 
 <span class="c1"># Parameter of the experiment</span>
 <span class="n">image_height</span> <span class="o">=</span> <span class="mi">25</span>
@@ -157,7 +170,7 @@
 
 <span class="c1"># Generate random samples</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
 
 <span class="c1"># Paramters of the plot, deduced from the data</span>
@@ -170,13 +183,14 @@
 
     <span class="c1"># Generate the original image</span>
     <span class="n">weight_img</span> <span class="o">=</span> <span class="n">gen_image</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">image_height</span><span class="o">=</span><span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="o">=</span><span class="n">image_width</span><span class="p">)</span>
+    <span class="n">weight_img</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weight_img</span><span class="p">)</span>
 
     <span class="c1"># Generate the labels</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">weight_img</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">weight_img</span><span class="p">))</span>
 
     <span class="c1"># Plot the original weights</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">weight_img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">weight_img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original</span><span class="se">\n</span><span class="s1">weights&#39;</span><span class="p">)</span>
@@ -190,7 +204,7 @@
         <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
         <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -200,14 +214,14 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  6.348 seconds)</p>
-<div class="sphx-glr-footer container">
-<div class="sphx-glr-download container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  31.401 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_kruskal_regression.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_kruskal_regression.py</span></code></a></div>
-<div class="sphx-glr-download container">
+<div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_kruskal_regression.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_kruskal_regression.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
 </div>
 
 

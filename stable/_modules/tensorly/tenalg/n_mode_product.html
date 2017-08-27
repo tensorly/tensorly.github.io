@@ -30,48 +30,60 @@
 
     <body>
         
-        <nav class="nav is-dark has-shadow top" id="top">
-    <div class="nav-left">
-        <a class="nav-item nav-title" href="../../../home.html">
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../../home.html">
             TensorLy
         </a>
 
-        <a class="nav-item is-tab tooltip is-right" href="../../../index.html">
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../../index.html">
             <i class="fa fa-home" aria-hidden="true"></i>
-            <span class="tooltiptext">Home page</span>
         </a>
-        <a class="nav-item is-tab tooltip is-right" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="tooltiptext">Open project on Github</span>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
             <span class="icon"><i class="fa fa-github"></i></span>
         </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
     </div>
 
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
 
+			<a class="navbar-item" href="../../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../../authors.html">
+				People
+			</a>
+		</div>
 
-    <span class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </span>
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
 
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
 
-    <div class="nav-right nav-menu">
-        <a class="nav-item is-tab" href="../../../installation.html">
-            Install
-        </a>
-        <a class="nav-item is-tab" href="../../../user_guide.html">
-            User guide
-        </a>
-        <a class="nav-item is-tab" href="../../../modules/api.html">
-            API
-        </a>
-        <a class="nav-item is-tab" href="../../../auto_examples/index.html">
-            Examples
-        </a>
-        <a class="nav-item is-tab" href="../../../authors.html">
-            People
-        </a>
-        
+		</div>
     </div>
 </nav>
  
@@ -79,10 +91,10 @@
         
         <div class="columns">
             
-            <div class="column is-one-thrid is-hidden-mobile aside">
+            <div class="column is-one-quarter is-hidden-mobile aside">
                 <div class="sidebar" id="sidebar">
                     
-                    <div class="container search">
+                    <div class="search">
                         <div class="search-title">
                             Search in TensorLy
                         </div>
@@ -109,7 +121,7 @@
                     
                         <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
@@ -125,19 +137,13 @@
 
             
             <div class="column is-three-quarters main-column">
-                <div class="content is-medium main-content">
+                <div class="content main-content">
 
                     
 
   <h1>Source code for tensorly.tenalg.n_mode_product</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">unfold</span>
-
-<span class="c1"># Author: Jean Kossaifi</span>
-
-<span class="c1"># License: BSD 3 clause</span>
-
-
+<span></span><span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span>
 
 <div class="viewcode-block" id="mode_dot"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot">[docs]</a><span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;n-mode product of a tensor by a matrix at the specified mode.</span>
@@ -161,6 +167,8 @@
 <span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
 <span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the mode along which to fold might decrease if we take product with a vector</span>
+        <span class="n">fold_mode</span> <span class="o">=</span> <span class="n">mode</span>
         <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
@@ -171,7 +179,6 @@
                         <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">))</span>
             <span class="n">new_shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">factor_is_vec</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">elif</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
             <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
@@ -180,21 +187,18 @@
                         <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">new_shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">new_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+                <span class="n">fold_mode</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">factor_is_vec</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can only take n_mode_product with a vector or a matrix.&#39;</span>
                              <span class="s1">&#39;Provided array of dimension </span><span class="si">{}</span><span class="s1"> not in [1, 2].&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
 
-        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="n">factor_is_vec</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
-
+        <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="multi_mode_dot"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;n-mode product of a tensor and several matrices or vectors</span>

@@ -30,48 +30,60 @@
 
     <body>
         
-        <nav class="nav is-dark has-shadow top" id="top">
-    <div class="nav-left">
-        <a class="nav-item nav-title" href="../../../home.html">
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../../home.html">
             TensorLy
         </a>
 
-        <a class="nav-item is-tab tooltip is-right" href="../../../index.html">
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../../index.html">
             <i class="fa fa-home" aria-hidden="true"></i>
-            <span class="tooltiptext">Home page</span>
         </a>
-        <a class="nav-item is-tab tooltip is-right" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="tooltiptext">Open project on Github</span>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
             <span class="icon"><i class="fa fa-github"></i></span>
         </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
     </div>
 
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
 
+			<a class="navbar-item" href="../../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../../authors.html">
+				People
+			</a>
+		</div>
 
-    <span class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </span>
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
 
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
 
-    <div class="nav-right nav-menu">
-        <a class="nav-item is-tab" href="../../../installation.html">
-            Install
-        </a>
-        <a class="nav-item is-tab" href="../../../user_guide.html">
-            User guide
-        </a>
-        <a class="nav-item is-tab" href="../../../modules/api.html">
-            API
-        </a>
-        <a class="nav-item is-tab" href="../../../auto_examples/index.html">
-            Examples
-        </a>
-        <a class="nav-item is-tab" href="../../../authors.html">
-            People
-        </a>
-        
+		</div>
     </div>
 </nav>
  
@@ -79,10 +91,10 @@
         
         <div class="columns">
             
-            <div class="column is-one-thrid is-hidden-mobile aside">
+            <div class="column is-one-quarter is-hidden-mobile aside">
                 <div class="sidebar" id="sidebar">
                     
-                    <div class="container search">
+                    <div class="search">
                         <div class="search-title">
                             Search in TensorLy
                         </div>
@@ -109,7 +121,7 @@
                     
                         <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
@@ -125,17 +137,17 @@
 
             
             <div class="column is-three-quarters main-column">
-                <div class="content is-medium main-content">
+                <div class="content main-content">
 
                     
 
   <h1>Source code for tensorly.regression.kruskal_regression</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">solve</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
-<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">norm</span><span class="p">,</span>  <span class="n">khatri_rao</span>
-<span class="kn">from</span> <span class="nn">..kruskal</span> <span class="k">import</span> <span class="n">kruskal_to_tensor</span><span class="p">,</span> <span class="n">kruskal_to_vec</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span>  <span class="n">khatri_rao</span>
+<span class="kn">from</span> <span class="nn">..kruskal_tensor</span> <span class="k">import</span> <span class="n">kruskal_to_tensor</span><span class="p">,</span> <span class="n">kruskal_to_vec</span>
 <span class="kn">from</span> <span class="nn">..random</span> <span class="k">import</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
@@ -163,7 +175,7 @@
 <span class="sd">        level of verbosity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="n">e</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span> <span class="o">=</span> <span class="n">weight_rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">=</span> <span class="n">reg_W</span>
@@ -211,12 +223,15 @@
 
             <span class="c1"># Optimise each factor of W</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">)):</span>
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">partial_unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-                <span class="n">inv_term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">inv_term</span><span class="p">,</span> <span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span><span class="p">))</span>
+                <span class="n">phi</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                          <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                                <span class="n">khatri_rao</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">i</span><span class="p">)),</span>
+                      <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">inv_term</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">inv_term</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span><span class="p">))</span>
 
             <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
-            <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="c1"># Convergence check</span>
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -243,7 +258,7 @@
 <span class="sd">        X : ndarray</span>
 <span class="sd">            tensor data of shape (n_samples, N1, ..., NS)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span><span class="p">)</span></div></div>
 </pre></div>
 
 
