@@ -182,7 +182,7 @@
 <span class="sd">    summing over r and updating an outer product of vectors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">factor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
-    <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])))</span>
     <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">full_tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
 
@@ -211,7 +211,7 @@
 <span class="sd">    Writing factors = [U_1, ..., U_n], we exploit the fact that</span>
 <span class="sd">    ``U_k = U[k].dot(khatri_rao(U_1, ..., U_k-1, U_k+1, ..., U_n))``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="kruskal_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_vec.html#tensorly.kruskal_tensor.kruskal_to_vec">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_vec</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
