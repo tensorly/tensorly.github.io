@@ -70,6 +70,10 @@
 			<a class="navbar-item" href="../../../authors.html">
 				People
 			</a>
+			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly_notebooks">
+				Notebooks
+			</a>
+
 		</div>
 
 		<div class="navbar-end">
@@ -125,6 +129,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly_notebooks">Jupyter notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">People</a></li>
 </ul>
 
@@ -155,6 +160,8 @@
 
 <span class="sd">        This can be seen as a column-wise kronecker product.</span>
 <span class="sd">        (see [1]_ for more details).</span>
+
+<span class="sd">        If one matrix only is given, that matrix is directly returned.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -205,14 +212,18 @@
     <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
 
+    <span class="c1"># Khatri-rao of only one matrix: just return that matrix</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
     <span class="n">n_columns</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="c1"># Optional part, testing whether the matrices have the proper size</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the matrices must have exactly 2 dimensions!&#39;</span>
                              <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has dimension </span><span class="si">{}</span><span class="s1"> != 2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                 <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All matrices must have same number of columns!&#39;</span>
                              <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has </span><span class="si">{}</span><span class="s1"> columns != </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
