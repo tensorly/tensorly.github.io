@@ -148,12 +148,11 @@
 
   <h1>Source code for tensorly.metrics.regression</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
 
 <span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
 
 
-<div class="viewcode-block" id="MSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE">[docs]</a><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<div class="viewcode-block" id="MSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE">[docs]</a><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the mean squared error between the two predictions</span>
 
 <span class="sd">    Parameters</span>
@@ -167,10 +166,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="RMSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE">[docs]</a><span class="k">def</span> <span class="nf">RMSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<div class="viewcode-block" id="RMSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE">[docs]</a><span class="k">def</span> <span class="nf">RMSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the regularised mean squared error between the two predictions</span>
 <span class="sd">    (the square-root is applied to the mean_squared_error)</span>
 
@@ -185,8 +184,54 @@
 <span class="sd">    -------</span>
 <span class="sd">    float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span></div>
 
+
+<span class="k">def</span> <span class="nf">reflective_correlation_coefficient</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reflective variant of Pearson&#39;s product moment correlation coefficient</span>
+<span class="sd">    where the predictions are not centered around their mean values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y_true : array of shape (n_samples, )</span>
+<span class="sd">        Ground truth (correct) target values.</span>
+<span class="sd">    y_pred : array of shape (n_samples, )</span>
+<span class="sd">        Estimated target values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float: reflective correlation coefficient</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_true</span><span class="o">*</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">/</span><span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_true</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">covariance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">centered_true</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">centered_pred</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># TODO: write a function to do this..</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span>
+        <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">centered_true</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">centered_true</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">y_pred</span><span class="p">))</span>
+        <span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">centered_pred</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">centered_pred</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">centered_true</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">centered_pred</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">variance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">covariance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">standard_deviation</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">correlation</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pearson&#39;s product moment correlation coefficient&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">covariance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span><span class="o">/</span><span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">variance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span><span class="o">*</span><span class="n">variance</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="p">))</span>
 </pre></div>
 
 
@@ -203,7 +248,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>

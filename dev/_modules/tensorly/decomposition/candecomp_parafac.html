@@ -148,6 +148,7 @@
 
   <h1>Source code for tensorly.decomposition.candecomp_parafac</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">..random</span> <span class="k">import</span> <span class="n">check_random_state</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">unfold</span>
@@ -155,48 +156,78 @@
 <span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span>
 
 <span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
+<span class="c1"># Author: Chris Swierczewski &lt;csw@amazon.com&gt;</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a><span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span>
-            <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</span>
+<span class="k">def</span> <span class="nf">normalize_factors</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalizes factors to unit length and returns factor magnitudes</span>
 
-<span class="sd">        Computes a rank-`rank` decomposition of `tensor` [1]_ such that:</span>
-<span class="sd">        ``tensor = [| factors[0], ..., factors[-1] |]``</span>
+<span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
+<span class="sd">    where the columns of each `V_k` are normalized to unit Euclidean length</span>
+<span class="sd">    from the columns of `U_k` with the normalizing constants absorbed into</span>
+<span class="sd">    `weights`. In the special case of a symmetric tensor, `weights` holds the</span>
+<span class="sd">    eigenvalues of the tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">        list of matrices, all with the same number of columns</span>
+<span class="sd">        i.e.::</span>
+<span class="sd">            for u in U:</span>
+<span class="sd">                u[i].shape == (s_i, R)</span>
+
+<span class="sd">        where `R` is fixed while `s_i` can vary with `i`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    normalized_factors : list of ndarrays</span>
+<span class="sd">        list of matrices with the same shape as `factors`</span>
+<span class="sd">    weights : ndarray</span>
+<span class="sd">        vector of length `R` holding normalizing constants</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># allocate variables for weights, and normalized factors</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+    <span class="n">normalized_factors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># normalize columns of factor matrices</span>
+    <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
+        <span class="n">scales</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">*=</span> <span class="n">scales</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">)),</span> <span class="n">scales</span><span class="p">)</span>
+        <span class="n">normalized_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span><span class="o">/</span><span class="n">scales_non_zero</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">normalized_factors</span><span class="p">,</span> <span class="n">weights</span>
+
+
+<span class="k">def</span> <span class="nf">initialize_factors</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize factors used in `parafac`.</span>
+
+<span class="sd">    The type of initialization is set using `init`. If `init == &#39;random&#39;` then</span>
+<span class="sd">    initialize factor matrices using `random_state`. If `init == &#39;svd&#39;` then</span>
+<span class="sd">    initialize the `m`th factor matrix using the `rank` left singular vectors</span>
+<span class="sd">    of the `m`th unfolding of the input tensor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
-<span class="sd">    rank  : int</span>
-<span class="sd">            number of components</span>
-<span class="sd">    n_iter_max : int</span>
-<span class="sd">                 maximum number of iteration</span>
+<span class="sd">    rank : int</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">    tol : float, optional</span>
-<span class="sd">          tolerance: the algorithm stops when the variation in</span>
-<span class="sd">          the reconstruction error is less than the tolerance</span>
-<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
-<span class="sd">    verbose : int, optional</span>
-<span class="sd">        level of verbosity</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    factors : ndarray list</span>
-<span class="sd">            list of factors of the CP decomposition</span>
-<span class="sd">            element `i` is of shape (tensor.shape[i], rank)</span>
+<span class="sd">        List of initialized factors of the CP decomposition where element `i`</span>
+<span class="sd">        is of shape (tensor.shape[i], rank)</span>
 
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
-<span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">init</span> <span class="ow">is</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
-        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))]</span>
-
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">factors</span>
     <span class="k">elif</span> <span class="n">init</span> <span class="ow">is</span> <span class="s1">&#39;svd&#39;</span><span class="p">:</span>
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
@@ -204,18 +235,65 @@
 
             <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
                 <span class="c1"># TODO: this is a hack but it seems to do the job for now</span>
-                <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span><span class="p">)))</span>
-                <span class="n">factor</span><span class="p">[:,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span> <span class="o">-</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">])))</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+                <span class="n">factor</span><span class="p">[:,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span> <span class="o">-</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">])),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
                 <span class="n">factor</span><span class="p">[:,</span> <span class="p">:</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]]</span> <span class="o">=</span> <span class="n">U</span>
                 <span class="n">U</span> <span class="o">=</span> <span class="n">factor</span>
             <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">rank</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">factors</span>
 
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Initialization method &quot;</span><span class="si">{}</span><span class="s1">&quot; not recognized&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">init</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a><span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</span>
+
+<span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
+
+<span class="sd">        ``tensor = [| factors[0], ..., factors[-1] |]``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    rank  : int</span>
+<span class="sd">        Number of components.</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        (Default: 1e-6) Relative reconstruction error tolerance. The</span>
+<span class="sd">        algorithm is considered to have found the global minimum when the</span>
+<span class="sd">        reconstruction error is less than `tol`.</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        Level of verbosity</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">        List of factors of the CP decomposition element `i` is of shape</span>
+<span class="sd">        (tensor.shape[i], rank)</span>
+<span class="sd">    weights : ndarray, optional</span>
+<span class="sd">        Array of length `rank` of weights for each factor matrix. See the</span>
+<span class="sd">        `with_weights` keyword attribute.</span>
+<span class="sd">    errors : list</span>
+<span class="sd">        A list of reconstruction errors at each iteration of the algorithms.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_factors</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
-            <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">)))</span>
+            <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
                     <span class="n">pseudo_inverse</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">pseudo_inverse</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span><span class="p">)</span>
@@ -282,7 +360,7 @@
         <span class="n">nn_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-        <span class="n">nn_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">))))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">]</span>
+        <span class="n">nn_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">))),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">]</span>
 
     <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">)</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -333,7 +411,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>

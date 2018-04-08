@@ -163,6 +163,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.tenalg.proximal.soft_thresholding.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.tenalg.proximal.svd_thresholding.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/tensorly.tenalg.proximal.procrustes.html"><code class="docutils literal"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/tensorly.tenalg.inner.html"><code class="docutils literal"><span class="pre">tensorly.tenalg</span></code>.inner</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.decomposition"><code class="docutils literal"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a><ul>
@@ -198,7 +199,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development_guide/index.html">Development guide</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">notebooks</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">People</a></li>
 </ul>
 
@@ -278,7 +279,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor" title="tensorly.kruskal_tensor.kruskal_to_tensor"><code class="xref py py-obj docutils literal"><span class="pre">kruskal_to_tensor</span></code></a>(factors)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor" title="tensorly.kruskal_tensor.kruskal_to_tensor"><code class="xref py py-obj docutils literal"><span class="pre">kruskal_to_tensor</span></code></a>(factors[,&nbsp;weights])</td>
 <td>Turns the Khatri-product of matrices into a full tensor</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_unfolded.html#tensorly.kruskal_tensor.kruskal_to_unfolded" title="tensorly.kruskal_tensor.kruskal_to_unfolded"><code class="xref py py-obj docutils literal"><span class="pre">kruskal_to_unfolded</span></code></a>(factors,&nbsp;mode)</td>
@@ -328,10 +329,10 @@ operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
 <td>Kronecker product of a list of matrices</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot" title="tensorly.tenalg.mode_dot"><code class="xref py py-obj docutils literal"><span class="pre">mode_dot</span></code></a>(tensor,&nbsp;matrix_or_vector,&nbsp;mode)</td>
-<td>n-mode product of a tensor by a matrix at the specified mode.</td>
+<td>n-mode product of a tensor and a matrix or vector at the specified mode</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot" title="tensorly.tenalg.multi_mode_dot"><code class="xref py py-obj docutils literal"><span class="pre">multi_mode_dot</span></code></a>(tensor,&nbsp;matrix_or_vec_list[,&nbsp;…])</td>
-<td>n-mode product of a tensor and several matrices or vectors</td>
+<td>n-mode product of a tensor and several matrices or vectors over several modes</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding" title="tensorly.tenalg.proximal.soft_thresholding"><code class="xref py py-obj docutils literal"><span class="pre">proximal.soft_thresholding</span></code></a>(tensor,&nbsp;threshold)</td>
 <td>Soft-thresholding operator</td>
@@ -341,6 +342,9 @@ operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.tenalg.proximal.procrustes.html#tensorly.tenalg.proximal.procrustes" title="tensorly.tenalg.proximal.procrustes"><code class="xref py py-obj docutils literal"><span class="pre">proximal.procrustes</span></code></a>(matrix)</td>
 <td>Procrustes operator</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="generated/tensorly.tenalg.inner.html#tensorly.tenalg.inner" title="tensorly.tenalg.inner"><code class="xref py py-obj docutils literal"><span class="pre">inner</span></code></a>(tensor1,&nbsp;tensor2[,&nbsp;n_modes])</td>
+<td>Generalised inner products between tensors</td>
 </tr>
 </tbody>
 </table>
@@ -371,7 +375,7 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <td>Non-negative Tucker decomposition</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal"><span class="pre">robust_pca</span></code></a>(X[,&nbsp;mask,&nbsp;tol,&nbsp;reg_E,&nbsp;reg_J,&nbsp;…])</td>
-<td>Robust Tensor PCA via ALM</td>
+<td>Robust Tensor PCA via ALM with support for missing values</td>
 </tr>
 </tbody>
 </table>
@@ -405,10 +409,10 @@ Regression.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE" title="tensorly.metrics.regression.MSE"><code class="xref py py-obj docutils literal"><span class="pre">regression.MSE</span></code></a>(y_true,&nbsp;y_pred)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE" title="tensorly.metrics.regression.MSE"><code class="xref py py-obj docutils literal"><span class="pre">regression.MSE</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;axis])</td>
 <td>Returns the mean squared error between the two predictions</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE" title="tensorly.metrics.regression.RMSE"><code class="xref py py-obj docutils literal"><span class="pre">regression.RMSE</span></code></a>(y_true,&nbsp;y_pred)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE" title="tensorly.metrics.regression.RMSE"><code class="xref py py-obj docutils literal"><span class="pre">regression.RMSE</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;axis])</td>
 <td>Returns the regularised mean squared error between the two predictions</td>
 </tr>
 </tbody>
@@ -422,7 +426,7 @@ Regression.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.random.cp_tensor.html#tensorly.random.cp_tensor" title="tensorly.random.cp_tensor"><code class="xref py py-obj docutils literal"><span class="pre">cp_tensor</span></code></a>(shape,&nbsp;rank[,&nbsp;full,&nbsp;random_state])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/tensorly.random.cp_tensor.html#tensorly.random.cp_tensor" title="tensorly.random.cp_tensor"><code class="xref py py-obj docutils literal"><span class="pre">cp_tensor</span></code></a>(shape,&nbsp;rank[,&nbsp;full,&nbsp;orthogonal,&nbsp;…])</td>
 <td>Generates a random CP tensor</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="generated/tensorly.random.tucker_tensor.html#tensorly.random.tucker_tensor" title="tensorly.random.tucker_tensor"><code class="xref py py-obj docutils literal"><span class="pre">tucker_tensor</span></code></a>(shape,&nbsp;rank[,&nbsp;full,&nbsp;random_state])</td>
@@ -458,7 +462,7 @@ create synthetic data, e.g. for testing purposes.</p>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="../user_guide/tensor_regression.html" title="4. Tensor regression" accesskey="p">
+    <a class="button is-medium pagination-previous" href="../user_guide/tensor_regression.html" title="5. Tensor regression" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -481,7 +485,7 @@ create synthetic data, e.g. for testing purposes.</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>

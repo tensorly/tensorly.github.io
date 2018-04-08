@@ -149,7 +149,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">notebooks</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
 </ul>
 
@@ -170,11 +170,11 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.decomposition</span></code></a>.parafac</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.parafac">
-<code class="descname">parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=1e-06</em>, <em>random_state=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=1e-07</em>, <em>random_state=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</p>
+<p>Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r1717" id="id1">[R1717]</a> such that,</p>
 <blockquote>
-<div>Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r1717" id="id1">[R1717]</a> such that:
-<code class="docutils literal"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code>.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -182,29 +182,42 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tensor</strong> : ndarray</p>
 <p><strong>rank</strong> : int</p>
 <blockquote>
-<div><p>number of components</p>
+<div><p>Number of components.</p>
 </div></blockquote>
 <p><strong>n_iter_max</strong> : int</p>
 <blockquote>
-<div><p>maximum number of iteration</p>
+<div><p>Maximum number of iteration</p>
 </div></blockquote>
 <p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
+<blockquote>
+<div><p>Type of factor matrix initialization. See <cite>initialize_factors</cite>.</p>
+</div></blockquote>
 <p><strong>tol</strong> : float, optional</p>
 <blockquote>
-<div><p>tolerance: the algorithm stops when the variation in
-the reconstruction error is less than the tolerance</p>
+<div><p>(Default: 1e-6) Relative reconstruction error tolerance. The
+algorithm is considered to have found the global minimum when the
+reconstruction error is less than <cite>tol</cite>.</p>
 </div></blockquote>
 <p><strong>random_state</strong> : {None, int, np.random.RandomState}</p>
 <p><strong>verbose</strong> : int, optional</p>
 <blockquote>
-<div><p>level of verbosity</p>
+<div><p>Level of verbosity</p>
 </div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>factors</strong> : ndarray list</p>
+<blockquote>
+<div><p>List of factors of the CP decomposition element <cite>i</cite> is of shape
+(tensor.shape[i], rank)</p>
+</div></blockquote>
+<p><strong>weights</strong> : ndarray, optional</p>
+<blockquote>
+<div><p>Array of length <cite>rank</cite> of weights for each factor matrix. See the
+<cite>with_weights</cite> keyword attribute.</p>
+</div></blockquote>
+<p><strong>errors</strong> : list</p>
 <blockquote class="last">
-<div><p>list of factors of the CP decomposition
-element <cite>i</cite> is of shape (tensor.shape[i], rank)</p>
+<div><p>A list of reconstruction errors at each iteration of the algorithms.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -228,7 +241,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.tenalg.proximal.procrustes.html" title="tensorly.tenalg.proximal.procrustes" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tenalg.inner.html" title="tensorly.tenalg.inner" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -251,7 +264,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>

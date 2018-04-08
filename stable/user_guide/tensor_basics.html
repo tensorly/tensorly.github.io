@@ -126,22 +126,23 @@
                         <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="backend.html">1. TensorLy’s backend</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Tensor basics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#creating-a-tensor">2.1. Creating a tensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#unfolding">2.2. Unfolding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#folding">2.3. Folding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#references">2.4. References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html">1. Quick-Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend.html">2. TensorLy’s backend system</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Tensor basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-tensor">3.1. Creating a tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unfolding">3.2. Unfolding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folding">3.3. Folding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">3.4. References</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">3. Tensor decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tensor_regression.html">4. Tensor regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">4. Tensor decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor_regression.html">5. Tensor regression</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development_guide/index.html">Development guide</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">notebooks</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">People</a></li>
 </ul>
 
@@ -159,9 +160,9 @@
                     
 
   <div class="section" id="tensor-basics">
-<h1>2. Tensor basics</h1>
+<h1>3. Tensor basics</h1>
 <div class="section" id="creating-a-tensor">
-<h2>2.1. Creating a tensor</h2>
+<h2>3.1. Creating a tensor</h2>
 <p>A tensor is nothing more than a multi-dimensional array.</p>
 <p>Let’s take for this example the tensor <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> defined by its frontal slices:</p>
 <div class="math">
@@ -204,7 +205,7 @@ X_2 =
 </div>
 </div>
 <div class="section" id="unfolding">
-<h2>2.2. Unfolding</h2>
+<h2>3.2. Unfolding</h2>
 <p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
 <p>For a tensor of size <img class="math" src="../_images/math/8b5dfc8459e555517354e0adeaedcea6fa70aee9.png" alt="(I_1, I_2, \cdots, I_N)"/>, the n-mode unfolding of this tensor will be of size <img class="math" src="../_images/math/bfd1d16a9ad633df05c32d008aa3a7ed690c70e2.png" alt="(I_n, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)"/>.</p>
 <div class="admonition important">
@@ -268,7 +269,7 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </div>
 <div class="section" id="folding">
-<h2>2.3. Folding</h2>
+<h2>3.3. Folding</h2>
 <p>You can <strong>fold</strong> an unfolded tensor back from matrix to full tensor using the <a class="reference internal" href="../modules/generated/tensorly.base.fold.html#tensorly.base.fold" title="tensorly.base.fold"><code class="xref py py-func docutils literal"><span class="pre">tensorly.base.fold</span></code></a> function.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">fold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -292,7 +293,7 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </div>
 <div class="section" id="references">
-<h2>2.4. References</h2>
+<h2>3.4. References</h2>
 <table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
@@ -309,7 +310,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="backend.html" title="1. TensorLy’s backend" accesskey="p">
+    <a class="button is-medium pagination-previous" href="backend.html" title="2. TensorLy’s backend system" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -317,7 +318,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensor_decomposition.html" title="3. Tensor decomposition" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensor_decomposition.html" title="4. Tensor decomposition" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -332,7 +333,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>

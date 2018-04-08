@@ -160,7 +160,7 @@
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+<div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns the Khatri-product of matrices into a full tensor</span>
 
 <span class="sd">        ``factor_matrices = [|U_1, ... U_n|]`` becomes</span>
@@ -186,8 +186,11 @@
 <span class="sd">    There are other possible and equivalent alternate implementation, e.g.</span>
 <span class="sd">    summing over r and updating an outer product of vectors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">factor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
-    <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])))</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:])))</span>
     <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">full_tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
 
@@ -258,7 +261,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2017, Jean Kossaifi.
+                &copy; 2016 - 2018, Jean Kossaifi.
         </p> 
     </div>
 </footer>
