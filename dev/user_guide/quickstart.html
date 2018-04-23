@@ -167,7 +167,7 @@
 <div class="section" id="tensor-operations">
 <h2>1.1. Tensor operations</h2>
 <p>First import TensorLy:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
 </pre></div>
 </div>
 <p>In the code written in TensorLy, you may notice we use function from tensorly rather than, say, NumPy. This is because we support several backends and we want the correct function to be called depending on the backend.
@@ -178,14 +178,14 @@ For instance <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch 
 For more information on the backend, refer to <a class="reference internal" href="backend.html"><span class="doc">TensorLy’s backend system</span></a>.</p>
 </div>
 <p>Tensors can be created, e.g. from numpy arrays:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="c1"># create a random 10x10x10 tensor</span>
 <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>You can then easily perform basic tensor operations:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># mode-1 unfolding (i.e. zeroth mode)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mode-1 unfolding (i.e. zeroth mode)</span>
 <span class="n">unfolded</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="c1"># refold the unfolded tensor</span>
 <span class="n">tl</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -194,12 +194,12 @@ For more information on the backend, refer to <a class="reference internal" href
 </div>
 <div class="section" id="tensor-algebra">
 <h2>1.2. Tensor algebra</h2>
-<p>More ‘<em>advanced</em>’ tensor algebra functions are located in the aptly named <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.tenalg</span></code></a> module.</p>
+<p>More ‘<em>advanced</em>’ tensor algebra functions are located in the aptly named <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a> module.</p>
 </div>
 <div class="section" id="tensor-decomposition">
 <h2>1.3. Tensor decomposition</h2>
-<p>Decompositions are in the <a class="reference internal" href="../modules/api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.decomposition</span></code></a> module.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">tucker</span><span class="p">,</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_tucker</span>
+<p>Decompositions are in the <a class="reference internal" href="../modules/api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a> module.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">tucker</span><span class="p">,</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_tucker</span>
 
 <span class="c1"># decompositions are one-liners:</span>
 <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -210,15 +210,15 @@ For more information on the backend, refer to <a class="reference internal" href
 </div>
 <div class="section" id="tensor-regressions">
 <h2>1.4. Tensor regressions</h2>
-<p>Located in the <a class="reference internal" href="../modules/api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.regression</span></code></a> module, tensor regression are objects that have a scikit-learn-like API, with a fit method for optimising the parameters and a predict one for applyting the method to new unseen data.</p>
+<p>Located in the <a class="reference internal" href="../modules/api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a> module, tensor regression are objects that have a scikit-learn-like API, with a fit method for optimising the parameters and a predict one for applyting the method to new unseen data.</p>
 </div>
 <div class="section" id="metrics">
 <h2>1.5. Metrics</h2>
-<p>Whether you are training a tensor regression method or combining deep learning and tensor methods, you will need metrics to train and assess your method. These are implemented in the <a class="reference internal" href="../modules/api.html#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.metrics</span></code></a> module</p>
+<p>Whether you are training a tensor regression method or combining deep learning and tensor methods, you will need metrics to train and assess your method. These are implemented in the <a class="reference internal" href="../modules/api.html#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a> module</p>
 </div>
 <div class="section" id="sampling-random-tensors">
 <h2>1.6. Sampling random tensors</h2>
-<p>To create random tensors, you can use the <a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.random</span></code></a> module.</p>
+<p>To create random tensors, you can use the <a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a> module.</p>
 </div>
 </div>
 

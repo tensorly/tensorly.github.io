@@ -171,9 +171,9 @@
 <div class="section" id="backend-compatibility">
 <h2>Backend compatibility</h2>
 <p>We want algorithms to run transparently with NumPy, MXNet, PyTorch and any other backend added later on!</p>
-<p>To do so, we only use functions wrapped in <code class="xref py py-mod docutils literal"><span class="pre">tensorly.backend</span></code>, such as <cite>partial_svd</cite>, etc. If the function you need doesn’t exist, either try using other existing ones, or, if you cannot do otherwise, add the required function to all backends.</p>
+<p>To do so, we only use functions wrapped in <code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.backend</span></code>, such as <cite>partial_svd</cite>, etc. If the function you need doesn’t exist, either try using other existing ones, or, if you cannot do otherwise, add the required function to all backends.</p>
 <p>An other aspect, when developing a new function or algorithm, is to make sure you perform the computation on the correct context specified by the user. To do so, always get the context from tensors you get as input, and use it for the tensors you create.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 <span class="c1"># when creating a new tensor we use these as parameters</span>
 <span class="n">new_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tensor</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
 </pre></div>
