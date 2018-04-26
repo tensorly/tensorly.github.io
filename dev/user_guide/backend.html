@@ -132,6 +132,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#why-backends">2.2. Why backends?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-do-i-change-the-backend">2.3. How do I change the backend?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#context-of-a-tensor">2.4. Context of a tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-functions">2.5. Basic functions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">3. Tensor basics</a></li>
@@ -203,6 +204,26 @@ However, to keep dependencies as minimal as possible, and to not complexify inst
    <span class="k">return</span> <span class="n">new_tensor</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="basic-functions">
+<h2>2.5. Basic functions</h2>
+<p>We have isolated the basic functions required for tensor methods in the backend, and provide a uniform API using wrappers when necessary.
+In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <cite>reshape</cite>, etc, are accessible from the backend:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">tl</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">)</span> <span class="c1"># or any other backend</span>
+
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+
+<span class="c1"># This will call the correct function depending on the backend</span>
+<span class="n">min_value</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+
+<span class="n">unfolding</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will allow your code to work transparently with any of the backend.</p>
 </div>
 </div>
 
