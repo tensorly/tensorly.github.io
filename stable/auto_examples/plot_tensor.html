@@ -156,58 +156,58 @@
 
   <div class="section" id="basic-tensor-operations">
 <span id="sphx-glr-auto-examples-plot-tensor-py"></span><h1>Basic tensor operations</h1>
-<p>Example on how to use <a class="reference internal" href="../modules/api.html#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal"><span class="pre">tensorly.base</span></code></a> to perform basic tensor operations.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<p>Example on how to use <a class="reference internal" href="../modules/api.html#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code></a> to perform basic tensor operations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="kn">as</span> <span class="nn">T</span>
 </pre></div>
 </div>
 <p>A tensor is simply a numpy array</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;* original tensor:</span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">original</span> <span class="n">tensor</span><span class="p">:</span>
-<span class="p">[[[</span>  <span class="mf">0.</span>   <span class="mf">1.</span><span class="p">]</span>
-  <span class="p">[</span>  <span class="mf">2.</span>   <span class="mf">3.</span><span class="p">]</span>
-  <span class="p">[</span>  <span class="mf">4.</span>   <span class="mf">5.</span><span class="p">]</span>
-  <span class="p">[</span>  <span class="mf">6.</span>   <span class="mf">7.</span><span class="p">]]</span>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">original</span> <span class="n">tensor</span><span class="p">:</span>
+<span class="p">[[[</span> <span class="mf">0.</span>  <span class="mf">1.</span><span class="p">]</span>
+  <span class="p">[</span> <span class="mf">2.</span>  <span class="mf">3.</span><span class="p">]</span>
+  <span class="p">[</span> <span class="mf">4.</span>  <span class="mf">5.</span><span class="p">]</span>
+  <span class="p">[</span> <span class="mf">6.</span>  <span class="mf">7.</span><span class="p">]]</span>
 
- <span class="p">[[</span>  <span class="mf">8.</span>   <span class="mf">9.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">10.</span>  <span class="mf">11.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">12.</span>  <span class="mf">13.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">14.</span>  <span class="mf">15.</span><span class="p">]]</span>
+ <span class="p">[[</span> <span class="mf">8.</span>  <span class="mf">9.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">10.</span> <span class="mf">11.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">12.</span> <span class="mf">13.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">14.</span> <span class="mf">15.</span><span class="p">]]</span>
 
- <span class="p">[[</span> <span class="mf">16.</span>  <span class="mf">17.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">18.</span>  <span class="mf">19.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">20.</span>  <span class="mf">21.</span><span class="p">]</span>
-  <span class="p">[</span> <span class="mf">22.</span>  <span class="mf">23.</span><span class="p">]]]</span>
+ <span class="p">[[</span><span class="mf">16.</span> <span class="mf">17.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">18.</span> <span class="mf">19.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">20.</span> <span class="mf">21.</span><span class="p">]</span>
+  <span class="p">[</span><span class="mf">22.</span> <span class="mf">23.</span><span class="p">]]]</span>
 </pre></div>
 </div>
 <p>Unfolding a tensor is easy</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;* mode-{} unfolding:</span><span class="se">\n</span><span class="s1">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">0</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[</span>  <span class="mf">0.</span>   <span class="mf">1.</span>   <span class="mf">2.</span>   <span class="mf">3.</span>   <span class="mf">4.</span>   <span class="mf">5.</span>   <span class="mf">6.</span>   <span class="mf">7.</span><span class="p">]</span>
- <span class="p">[</span>  <span class="mf">8.</span>   <span class="mf">9.</span>  <span class="mf">10.</span>  <span class="mf">11.</span>  <span class="mf">12.</span>  <span class="mf">13.</span>  <span class="mf">14.</span>  <span class="mf">15.</span><span class="p">]</span>
- <span class="p">[</span> <span class="mf">16.</span>  <span class="mf">17.</span>  <span class="mf">18.</span>  <span class="mf">19.</span>  <span class="mf">20.</span>  <span class="mf">21.</span>  <span class="mf">22.</span>  <span class="mf">23.</span><span class="p">]]</span>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">0</span> <span class="n">unfolding</span><span class="p">:</span>
+<span class="p">[[</span> <span class="mf">0.</span>  <span class="mf">1.</span>  <span class="mf">2.</span>  <span class="mf">3.</span>  <span class="mf">4.</span>  <span class="mf">5.</span>  <span class="mf">6.</span>  <span class="mf">7.</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">8.</span>  <span class="mf">9.</span> <span class="mf">10.</span> <span class="mf">11.</span> <span class="mf">12.</span> <span class="mf">13.</span> <span class="mf">14.</span> <span class="mf">15.</span><span class="p">]</span>
+ <span class="p">[</span><span class="mf">16.</span> <span class="mf">17.</span> <span class="mf">18.</span> <span class="mf">19.</span> <span class="mf">20.</span> <span class="mf">21.</span> <span class="mf">22.</span> <span class="mf">23.</span><span class="p">]]</span>
 <span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[</span>  <span class="mf">0.</span>   <span class="mf">1.</span>   <span class="mf">8.</span>   <span class="mf">9.</span>  <span class="mf">16.</span>  <span class="mf">17.</span><span class="p">]</span>
- <span class="p">[</span>  <span class="mf">2.</span>   <span class="mf">3.</span>  <span class="mf">10.</span>  <span class="mf">11.</span>  <span class="mf">18.</span>  <span class="mf">19.</span><span class="p">]</span>
- <span class="p">[</span>  <span class="mf">4.</span>   <span class="mf">5.</span>  <span class="mf">12.</span>  <span class="mf">13.</span>  <span class="mf">20.</span>  <span class="mf">21.</span><span class="p">]</span>
- <span class="p">[</span>  <span class="mf">6.</span>   <span class="mf">7.</span>  <span class="mf">14.</span>  <span class="mf">15.</span>  <span class="mf">22.</span>  <span class="mf">23.</span><span class="p">]]</span>
+<span class="p">[[</span> <span class="mf">0.</span>  <span class="mf">1.</span>  <span class="mf">8.</span>  <span class="mf">9.</span> <span class="mf">16.</span> <span class="mf">17.</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">2.</span>  <span class="mf">3.</span> <span class="mf">10.</span> <span class="mf">11.</span> <span class="mf">18.</span> <span class="mf">19.</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">4.</span>  <span class="mf">5.</span> <span class="mf">12.</span> <span class="mf">13.</span> <span class="mf">20.</span> <span class="mf">21.</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">6.</span>  <span class="mf">7.</span> <span class="mf">14.</span> <span class="mf">15.</span> <span class="mf">22.</span> <span class="mf">23.</span><span class="p">]]</span>
 <span class="o">*</span> <span class="n">mode</span><span class="o">-</span><span class="mi">2</span> <span class="n">unfolding</span><span class="p">:</span>
-<span class="p">[[</span>  <span class="mf">0.</span>   <span class="mf">2.</span>   <span class="mf">4.</span>   <span class="mf">6.</span>   <span class="mf">8.</span>  <span class="mf">10.</span>  <span class="mf">12.</span>  <span class="mf">14.</span>  <span class="mf">16.</span>  <span class="mf">18.</span>  <span class="mf">20.</span>  <span class="mf">22.</span><span class="p">]</span>
- <span class="p">[</span>  <span class="mf">1.</span>   <span class="mf">3.</span>   <span class="mf">5.</span>   <span class="mf">7.</span>   <span class="mf">9.</span>  <span class="mf">11.</span>  <span class="mf">13.</span>  <span class="mf">15.</span>  <span class="mf">17.</span>  <span class="mf">19.</span>  <span class="mf">21.</span>  <span class="mf">23.</span><span class="p">]]</span>
+<span class="p">[[</span> <span class="mf">0.</span>  <span class="mf">2.</span>  <span class="mf">4.</span>  <span class="mf">6.</span>  <span class="mf">8.</span> <span class="mf">10.</span> <span class="mf">12.</span> <span class="mf">14.</span> <span class="mf">16.</span> <span class="mf">18.</span> <span class="mf">20.</span> <span class="mf">22.</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">1.</span>  <span class="mf">3.</span>  <span class="mf">5.</span>  <span class="mf">7.</span>  <span class="mf">9.</span> <span class="mf">11.</span> <span class="mf">13.</span> <span class="mf">15.</span> <span class="mf">17.</span> <span class="mf">19.</span> <span class="mf">21.</span> <span class="mf">23.</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>Re-folding the tensor is as easy:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">):</span>
     <span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
     <span class="n">folded</span> <span class="o">=</span> <span class="n">fold</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">T</span><span class="o">.</span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">folded</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
@@ -216,9 +216,9 @@
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.004 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_tensor.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tensor.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_tensor.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tensor.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_tensor.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_tensor.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_tensor.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_tensor.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
 </div>
