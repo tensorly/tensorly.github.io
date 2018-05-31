@@ -475,7 +475,7 @@
 
 
 <div class="viewcode-block" id="randomised_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac">[docs]</a><span class="k">def</span> <span class="nf">randomised_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span>
-                       <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">max_stagnation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                       <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">max_stagnation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Randomised CP decomposition via sampled ALS</span>
 
 <span class="sd">    Parameters</span>
@@ -491,9 +491,9 @@
 <span class="sd">    tol : float, optional</span>
 <span class="sd">          tolerance: the algorithm stops when the variation in</span>
 <span class="sd">          the reconstruction error is less than the tolerance</span>
-<span class="sd">    max_stagnation: int, optional</span>
-<span class="sd">                    the maximum allowed number of iterations with no decrease</span>
-<span class="sd">                    in fit</span>
+<span class="sd">    max_stagnation: int, optional, default is 0</span>
+<span class="sd">                    if not zero, the maximum allowed number</span>
+<span class="sd">                    of iterations with no decrease in fit</span>
 <span class="sd">    random_state : {None, int, np.random.RandomState}, default is None</span>
 <span class="sd">    verbose : int, optional</span>
 <span class="sd">        level of verbosity</span>
@@ -534,24 +534,25 @@
             <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">,</span> <span class="n">factor</span><span class="p">))</span>
             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span>
             
-        <span class="n">rec_error</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">min_error</span> <span class="ow">or</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
-            <span class="n">min_error</span> <span class="o">=</span> <span class="n">rec_error</span>
-            <span class="n">stagnation</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">stagnation</span> <span class="o">+=</span> <span class="mi">1</span>
-                
-        <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_stagnation</span> <span class="ow">or</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="n">rec_error</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">min_error</span> <span class="ow">or</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
+                <span class="n">min_error</span> <span class="o">=</span> <span class="n">rec_error</span>
+                <span class="n">stagnation</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">stagnation</span> <span class="o">+=</span> <span class="mi">1</span>
+                    
+            <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">or</span> \
-               <span class="p">(</span><span class="n">stagnation</span> <span class="o">&gt;</span> <span class="n">max_stagnation</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
-                <span class="k">break</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">or</span> \
+                   <span class="p">(</span><span class="n">stagnation</span> <span class="ow">and</span> <span class="p">(</span><span class="n">stagnation</span> <span class="o">&gt;</span> <span class="n">max_stagnation</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+                    <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">factors</span></div>
 </pre></div>

@@ -172,7 +172,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.randomised_parafac</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.randomised_parafac">
-<code class="descname">randomised_parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_samples</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=1e-06</em>, <em>max_stagnation=20</em>, <em>random_state=None</em>, <em>verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#randomised_parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">randomised_parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_samples</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=1e-06</em>, <em>max_stagnation=0</em>, <em>random_state=None</em>, <em>verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#randomised_parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Randomised CP decomposition via sampled ALS</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -197,10 +197,10 @@
 <div><p>tolerance: the algorithm stops when the variation in
 the reconstruction error is less than the tolerance</p>
 </div></blockquote>
-<p><strong>max_stagnation: int, optional</strong></p>
+<p><strong>max_stagnation: int, optional, default is 0</strong></p>
 <blockquote>
-<div><p>the maximum allowed number of iterations with no decrease
-in fit</p>
+<div><p>if not zero, the maximum allowed number
+of iterations with no decrease in fit</p>
 </div></blockquote>
 <p><strong>random_state</strong> : {None, int, np.random.RandomState}, default is None</p>
 <p><strong>verbose</strong> : int, optional</p>
