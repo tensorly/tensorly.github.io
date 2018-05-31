@@ -136,11 +136,11 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.non_negative_parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_parafac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.sample_khatri_rao.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.sample_khatri_rao</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.randomised_parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.randomised_parafac</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.randomised_parafac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.partial_tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.partial_tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.non_negative_tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.robust_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.robust_pca.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.robust_pca</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
@@ -168,92 +168,65 @@
 
                     
 
-  <div class="section" id="tensorly-decomposition-robust-pca">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.robust_pca</h1>
+  <div class="section" id="tensorly-decomposition-randomised-parafac">
+<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.randomised_parafac</h1>
 <dl class="function">
-<dt id="tensorly.decomposition.robust_pca">
-<code class="descname">robust_pca</code><span class="sig-paren">(</span><em>X</em>, <em>mask=None</em>, <em>tol=1e-06</em>, <em>reg_E=1</em>, <em>reg_J=1</em>, <em>mu_init=0.0001</em>, <em>mu_max=10000000000.0</em>, <em>learning_rate=1.1</em>, <em>n_iter_max=100</em>, <em>random_state=None</em>, <em>verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/robust_decomposition.html#robust_pca"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Robust Tensor PCA via ALM with support for missing values</p>
-<blockquote>
-<div>Decomposes a tensor <cite>X</cite> into the sum of a low-rank component <cite>D</cite>
-and a sparse component <cite>E</cite>.</div></blockquote>
+<dt id="tensorly.decomposition.randomised_parafac">
+<code class="descname">randomised_parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_samples</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=1e-06</em>, <em>max_stagnation=20</em>, <em>random_state=None</em>, <em>verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#randomised_parafac"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Randomised CP decomposition via sampled ALS</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : ndarray</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tensor</strong> : ndarray</p>
+<p><strong>rank</strong> : int</p>
 <blockquote>
-<div><p>tensor data of shape (n_samples, N1, …, NS)</p>
+<div><p>number of components</p>
 </div></blockquote>
-<p><strong>mask</strong> : ndarray</p>
+<p><strong>n_samples</strong> : int</p>
 <blockquote>
-<div><p>array of booleans with the same shape as <cite>X</cite>
-should be zero where the values are missing and 1 everywhere else</p>
+<div><p>number of samples per ALS step</p>
 </div></blockquote>
-<p><strong>tol</strong> : float</p>
-<blockquote>
-<div><p>convergence value</p>
-</div></blockquote>
-<p><strong>reg_E</strong> : float, optional, default is 1</p>
-<blockquote>
-<div><p>regularisation on the sparse part <cite>E</cite></p>
-</div></blockquote>
-<p><strong>reg_J</strong> : float, optional, default is 1</p>
-<blockquote>
-<div><p>regularisation on the low rank part <cite>D</cite></p>
-</div></blockquote>
-<p><strong>mu_init</strong> : float, optional, default is 10e-5</p>
-<blockquote>
-<div><p>initial value for mu</p>
-</div></blockquote>
-<p><strong>mu_max</strong> : float, optional, default is 10e9</p>
-<blockquote>
-<div><p>maximal value for mu</p>
-</div></blockquote>
-<p><strong>learning_rate</strong> : float, optional, default is 1.1</p>
-<blockquote>
-<div><p>percentage increase of mu at each iteration</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int, optional, default is 100</p>
+<p><strong>n_iter_max</strong> : int</p>
 <blockquote>
 <div><p>maximum number of iteration</p>
 </div></blockquote>
-<p><strong>random_state</strong> : None, int or RandomState, optional, default is None</p>
-<p><strong>verbose</strong> : int, default is 1</p>
+<p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
+<p><strong>tol</strong> : float, optional</p>
+<blockquote>
+<div><p>tolerance: the algorithm stops when the variation in
+the reconstruction error is less than the tolerance</p>
+</div></blockquote>
+<p><strong>max_stagnation: int, optional</strong></p>
+<blockquote>
+<div><p>the maximum allowed number of iterations with no decrease
+in fit</p>
+</div></blockquote>
+<p><strong>random_state</strong> : {None, int, np.random.RandomState}, default is None</p>
+<p><strong>verbose</strong> : int, optional</p>
 <blockquote>
 <div><p>level of verbosity</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(D, E)</p>
-<blockquote>
-<div><p>Robust decomposition of <cite>X</cite></p>
-</div></blockquote>
-<p><strong>D</strong> : <cite>X</cite>-like array</p>
-<blockquote>
-<div><p>low-rank part</p>
-</div></blockquote>
-<p><strong>E</strong> : <cite>X</cite>-like array</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>factors</strong> : ndarray list</p>
 <blockquote class="last">
-<div><p>sparse error part</p>
+<div><p>list of positive factors of the CP decomposition
+element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>The problem we solve is, for an input tensor <img class="math" src="../../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/>:</p>
-<div class="math">
-<p><img src="../../_images/math/38dd83cb260817f35f85407417aa8d23c27afe8e.png" alt="\begin{equation*}
- \begin{aligned}
-    &amp; \min_{\{J_i\}, \tilde D, \tilde E} 
-    &amp; &amp; \sum_{i=1}^N  \text{reg}_J \|J_i\|_* + \text{reg}_E \|E\|_1 \\
-    &amp; \text{subject to} 
-    &amp; &amp; \tilde X  = \tilde A + \tilde E \\
-    &amp; &amp; &amp; A_{[i]} =  J_i,  \text{ for each } i \in \{1, 2, \cdots, N\}\\
- \end{aligned}
- \end{equation*}"/></p>
-</div></dd></dl>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[R13]</a></td><td>Casey Battaglino, Grey Ballard and Tamara G. Kolda,
+“A Practical Randomized CP Tensor Decomposition”,</td></tr>
+</tbody>
+</table>
+</dd></dl>
 
 <div class="clearer"></div></div>
 
@@ -263,7 +236,7 @@ should be zero where the values are missing and 1 everywhere else</p>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.non_negative_tucker.html" title="tensorly.decomposition.non_negative_tucker" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.sample_khatri_rao.html" title="tensorly.decomposition.sample_khatri_rao" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -271,7 +244,7 @@ should be zero where the values are missing and 1 everywhere else</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.regression.tucker_regression.TuckerRegressor.html" title="tensorly.regression.tucker_regression.TuckerRegressor" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.tucker.html" title="tensorly.decomposition.tucker" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
