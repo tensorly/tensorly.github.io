@@ -249,7 +249,7 @@
 
 
 <div class="viewcode-block" id="parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a><span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
-            <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</span>
 
 <span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
@@ -272,6 +272,8 @@
 <span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 <span class="sd">    verbose : int, optional</span>
 <span class="sd">        Level of verbosity</span>
+<span class="sd">    return_errors : bool, optional</span>
+<span class="sd">        Activate return of iteration errors</span>
 
 
 <span class="sd">    Returns</span>
@@ -279,9 +281,6 @@
 <span class="sd">    factors : ndarray list</span>
 <span class="sd">        List of factors of the CP decomposition element `i` is of shape</span>
 <span class="sd">        (tensor.shape[i], rank)</span>
-<span class="sd">    weights : ndarray, optional</span>
-<span class="sd">        Array of length `rank` of weights for each factor matrix. See the</span>
-<span class="sd">        `with_weights` keyword attribute.</span>
 <span class="sd">    errors : list</span>
 <span class="sd">        A list of reconstruction errors at each iteration of the algorithms.</span>
 
@@ -323,8 +322,11 @@
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
                     <span class="k">break</span>
-
-    <span class="k">return</span> <span class="n">factors</span></div>
+                    
+    <span class="k">if</span> <span class="n">return_errors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">factors</span><span class="p">,</span> <span class="n">rec_errors</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">factors</span></div>
 
 
 <div class="viewcode-block" id="non_negative_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac">[docs]</a><span class="k">def</span> <span class="nf">non_negative_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span>
