@@ -128,20 +128,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.unfold.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.unfold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.fold.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.fold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.tensor_to_vec.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.tensor_to_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.vec_to_tensor.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.vec_to_tensor</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.partial_unfold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.partial_fold.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.partial_fold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.partial_tensor_to_vec.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.partial_tensor_to_vec</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.base.partial_vec_to_tensor.html"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>.partial_vec_to_tensor</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.mps_tensor.mps_to_unfolded.html"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_unfolded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.mps_tensor.mps_to_vec.html"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_vec</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
@@ -169,45 +164,28 @@
 
                     
 
-  <div class="section" id="tensorly-base-partial-unfold">
-<h1><a class="reference internal" href="../api.html#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code></a>.partial_unfold</h1>
+  <div class="section" id="tensorly-mps-tensor-mps-to-tensor">
+<h1><a class="reference internal" href="../api.html#module-tensorly.mps_tensor" title="tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code></a>.mps_to_tensor</h1>
 <dl class="function">
-<dt id="tensorly.base.partial_unfold">
-<code class="descname">partial_unfold</code><span class="sig-paren">(</span><em>tensor</em>, <em>mode=0</em>, <em>skip_begin=1</em>, <em>skip_end=0</em>, <em>ravel_tensors=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/base.html#partial_unfold"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Partially unfolds a tensor while ignoring the specified number of dimensions at the beginning and the end.</p>
+<dt id="tensorly.mps_tensor.mps_to_tensor">
+<code class="descname">mps_to_tensor</code><span class="sig-paren">(</span><em>factors</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/mps_tensor.html#mps_to_tensor"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the full tensor whose MPS decomposition is given by ‘factors’</p>
 <blockquote>
-<div>For instance, if the first dimension of the tensor is the number of samples, to unfold each sample, you would
-set skip_begin=1.
-This would, for each i in <code class="docutils literal notranslate"><span class="pre">range(tensor.shape[0])</span></code>, unfold <code class="docutils literal notranslate"><span class="pre">tensor[i,</span> <span class="pre">...]</span></code>.</div></blockquote>
+<div>Re-assembles ‘factors’, which represent a tensor in MPS/TT format
+into the corresponding full tensor</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tensor</strong> : ndarray</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>factors: list of 3D-arrays</strong></p>
 <blockquote>
-<div><p>tensor of shape n_samples x n_1 x n_2 x … x n_i</p>
-</div></blockquote>
-<p><strong>mode</strong> : int</p>
-<blockquote>
-<div><p>indexing starts at 0, therefore mode is in range(0, tensor.ndim)</p>
-</div></blockquote>
-<p><strong>skip_begin</strong> : int, optional</p>
-<blockquote>
-<div><p>number of dimensions to leave untouched at the beginning</p>
-</div></blockquote>
-<p><strong>skip_end</strong> : int, optional</p>
-<blockquote>
-<div><p>number of dimensions to leave untouched at the end</p>
-</div></blockquote>
-<p><strong>ravel_tensors</strong> : bool, optional</p>
-<blockquote>
-<div><p>if True, the unfolded tensors are also flattened</p>
+<div><p>MPS factors (known as core in TT terminology)</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ndarray</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">output_tensor: ndarray</p>
 <blockquote class="last">
-<div><p>partially unfolded tensor</p>
+<div><p>tensor whose MPS/TT decomposition was given by ‘factors’</p>
 </div></blockquote>
 </td>
 </tr>
@@ -223,7 +201,7 @@ This would, for each i in <code class="docutils literal notranslate"><span class
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.base.vec_to_tensor.html" title="tensorly.base.vec_to_tensor" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tucker_tensor.tucker_to_vec.html" title="tensorly.tucker_tensor.tucker_to_vec" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -231,7 +209,7 @@ This would, for each i in <code class="docutils literal notranslate"><span class
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.base.partial_fold.html" title="tensorly.base.partial_fold" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.mps_tensor.mps_to_unfolded.html" title="tensorly.mps_tensor.mps_to_unfolded" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
