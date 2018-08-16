@@ -174,7 +174,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.partial_tucker</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.partial_tucker">
-<code class="descname">partial_tucker</code><span class="sig-paren">(</span><em>tensor</em>, <em>modes</em>, <em>rank=None</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=0.0001</em>, <em>random_state=None</em>, <em>verbose=False</em>, <em>ranks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#partial_tucker"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">partial_tucker</code><span class="sig-paren">(</span><em>tensor</em>, <em>modes</em>, <em>rank=None</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=0.0001</em>, <em>svd='numpy_svd'</em>, <em>random_state=None</em>, <em>verbose=False</em>, <em>ranks=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#partial_tucker"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p>
 <blockquote>
 <div>Decomposes <cite>tensor</cite> into a Tucker decomposition exclusively along the provided modes.</div></blockquote>
@@ -196,6 +196,11 @@
 <div><p>maximum number of iteration</p>
 </div></blockquote>
 <p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
+<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
+<blockquote>
+<div><p>function to use to compute the SVD,
+acceptable values in tensorly.SVD_FUNS</p>
+</div></blockquote>
 <p><strong>tol</strong> : float, optional</p>
 <blockquote>
 <div><p>tolerance: the algorithm stops when the variation in
