@@ -180,23 +180,22 @@
     <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_size</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_dim</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">elif</span> <span class="n">n_dim</span><span class="o">+</span><span class="mi">1</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided incorrect number of ranks. Should verify len(rank) == tl.ndim(tensor)+1, but len(rank) = </span><span class="si">{}</span><span class="s1"> while tl.ndim(tensor) + 1  = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="n">n_dim</span><span class="p">)</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="n">n_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
 
     <span class="c1"># Make sure it&#39;s not a tuple but a list</span>
     <span class="n">rank</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
 
-    <span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">)</span>
-
     <span class="c1"># Initialization</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Provided rank[0] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[0] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided rank[0] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[0] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Provided rank[-1] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided rank[-1] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="n">unfolding</span> <span class="o">=</span> <span class="n">input_tensor</span>
     <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_dim</span>
