@@ -153,7 +153,17 @@
 <span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="k">import</span> <span class="n">tucker_to_tensor</span>
 <span class="kn">from</span> <span class="nn">..mps_tensor</span> <span class="k">import</span> <span class="n">mps_to_tensor</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="k">def</span> <span class="nf">cp_tensor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;cp_tensor&#39; is depreciated, please use &#39;random_kruskal&#39; instead&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">random_kruskal</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">tucker_tensor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;tucker_tensor&#39; is depreciated, please use &#39;tucker_tensor&#39; instead&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">random_tucker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="check_random_state"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.check_random_state.html#tensorly.random.check_random_state">[docs]</a><span class="k">def</span> <span class="nf">check_random_state</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns a valid RandomState</span>
