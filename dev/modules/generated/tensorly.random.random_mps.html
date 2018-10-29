@@ -139,8 +139,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling random tensors</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="tensorly.random.random_kruskal.html"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_kruskal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.random.random_tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_tucker</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.random.random_mps.html"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_mps</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.check_random_state</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_mps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.random.check_random_state.html"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>.check_random_state</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Creating and loading data</a></li>
@@ -166,24 +166,49 @@
 
                     
 
-  <div class="section" id="tensorly-random-check-random-state">
-<h1><a class="reference internal" href="../api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a>.check_random_state</h1>
+  <div class="section" id="tensorly-random-random-mps">
+<h1><a class="reference internal" href="../api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a>.random_mps</h1>
 <dl class="function">
-<dt id="tensorly.random.check_random_state">
-<code class="descname">check_random_state</code><span class="sig-paren">(</span><em>seed</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/random/base.html#check_random_state"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Returns a valid RandomState</p>
+<dt id="tensorly.random.random_mps">
+<code class="descname">random_mps</code><span class="sig-paren">(</span><em>shape</em>, <em>rank</em>, <em>full=False</em>, <em>random_state=None</em>, <em>**context</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/random/base.html#random_mps"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Generates a random MPS/ttrain tensor</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seed</strong> : None or instance of int or np.random.RandomState(), default is None</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>shape</strong> : tuple</p>
+<blockquote>
+<div><p>shape of the tensor to generate</p>
+</div></blockquote>
+<p><strong>rank</strong> : int</p>
+<blockquote>
+<div><p>rank of the MPS decomposition
+must verify rank[0] == rank[-1] ==1 (boundary conditions)
+and len(rank) == len(shape)+1</p>
+</div></blockquote>
+<p><strong>full</strong> : bool, optional, default is False</p>
+<blockquote>
+<div><p>if True, a full tensor is returned
+otherwise, the decomposed tensor is returned</p>
+</div></blockquote>
+<p><strong>random_state</strong> : <cite>np.random.RandomState</cite></p>
+<p><strong>context</strong> : dict</p>
+<blockquote>
+<div><p>context in which to create the tensor</p>
+</div></blockquote>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Valid instance np.random.RandomState</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>MPS_tensor</strong> : ND-array or 3D-array list</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>ND-array : full tensor if <cite>full</cite> is True</li>
+<li>3D-array list : list of factors otherwise</li>
+</ul>
+</div></blockquote>
+</td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>Inspired by the scikit-learn eponymous function</p>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -194,7 +219,7 @@
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.random.random_mps.html" title="tensorly.random.random_mps" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.random.random_tucker.html" title="tensorly.random.random_tucker" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -202,7 +227,7 @@
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.datasets.synthetic.gen_image.html" title="tensorly.datasets.synthetic.gen_image" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.random.check_random_state.html" title="tensorly.random.check_random_state" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
