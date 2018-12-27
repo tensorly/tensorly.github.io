@@ -129,22 +129,27 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.kruskal</span></code>: Tensors in the Kruskal format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.tucker</span></code>: Tensors in Tucker format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.non_negative_parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_parafac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.sample_khatri_rao.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.sample_khatri_rao</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.randomised_parafac.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.randomised_parafac</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.partial_tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.partial_tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.non_negative_tucker.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.robust_pca.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.robust_pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.matrix_product_state.html"><code class="docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.matrix_product_state</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling random tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Creating and loading data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib"><code class="docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
@@ -170,11 +175,11 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.tucker</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.tucker">
-<code class="descname">tucker</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank=None</em>, <em>ranks=None</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>tol=0.0001</em>, <em>random_state=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#tucker"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">tucker</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank=None</em>, <em>ranks=None</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>svd='numpy_svd'</em>, <em>tol=0.0001</em>, <em>random_state=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#tucker"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p>
 <blockquote>
 <div>Decomposes <cite>tensor</cite> into a Tucker decomposition:
-<code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">core;</span> <span class="pre">factors[0],</span> <span class="pre">...factors[-1]</span> <span class="pre">|]</span></code> <a class="reference internal" href="#r10" id="id1">[R10]</a></div></blockquote>
+<code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">core;</span> <span class="pre">factors[0],</span> <span class="pre">...factors[-1]</span> <span class="pre">|]</span></code> <a class="reference internal" href="#r18" id="id1">[R18]</a></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -189,6 +194,11 @@
 <div><p>maximum number of iteration</p>
 </div></blockquote>
 <p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
+<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
+<blockquote>
+<div><p>function to use to compute the SVD,
+acceptable values in tensorly.SVD_FUNS</p>
+</div></blockquote>
 <p><strong>tol</strong> : float, optional</p>
 <blockquote>
 <div><p>tolerance: the algorithm stops when the variation in
@@ -215,10 +225,10 @@ Its <code class="docutils literal notranslate"><span class="pre">i</span></code>
 </tbody>
 </table>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="r10" rules="none">
+<table class="docutils citation" frame="void" id="r18" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[R10]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+<tr><td class="label">[R18]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> tl.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
 </tbody>
 </table>
@@ -232,7 +242,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.non_negative_parafac.html" title="tensorly.decomposition.non_negative_parafac" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.randomised_parafac.html" title="tensorly.decomposition.randomised_parafac" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>

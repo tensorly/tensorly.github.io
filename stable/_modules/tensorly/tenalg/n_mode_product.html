@@ -150,6 +150,8 @@
 <span></span><span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span>
 
+<span class="kn">from</span> <span class="nn">tensorly</span> <span class="k">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
+
 <div class="viewcode-block" id="mode_dot"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot">[docs]</a><span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;n-mode product of a tensor and a matrix or vector at the specified mode</span>
 
@@ -188,6 +190,7 @@
                         <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">))</span>
             <span class="n">new_shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
             <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
@@ -197,9 +200,9 @@
                     <span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">new_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-                <span class="n">fold_mode</span> <span class="o">-=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can only take n_mode_product with a vector or a matrix.&#39;</span>
@@ -207,7 +210,11 @@
 
         <span class="n">res</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">vec</span><span class="p">:</span> <span class="c1"># We contracted with a vector, leading to a vector</span>
+            <span class="k">return</span> <span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># tensor times vec: refold the unfolding</span>
+            <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="multi_mode_dot"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;n-mode product of a tensor and several matrices or vectors over several modes</span>
@@ -249,7 +256,10 @@
 
     <span class="n">res</span> <span class="o">=</span> <span class="n">tensor</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">matrix_or_vec</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="p">)):</span>
+    <span class="c1"># Order of mode dots doesn&#39;t matter for different modes</span>
+    <span class="c1"># Sorting by mode shouldn&#39;t change order for equal modes</span>
+    <span class="n">factors_modes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">matrix_or_vec</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors_modes</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">skip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">skip</span><span class="p">):</span>
             <span class="k">continue</span>
 
@@ -259,7 +269,7 @@
             <span class="n">res</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">matrix_or_vec</span><span class="p">,</span> <span class="n">mode</span> <span class="o">-</span> <span class="n">decrement</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vec</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">decrement</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">decrement</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
 </pre></div>
