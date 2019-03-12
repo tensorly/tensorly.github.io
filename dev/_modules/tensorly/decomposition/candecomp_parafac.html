@@ -156,9 +156,10 @@
 <span class="kn">from</span> <span class="nn">..kruskal_tensor</span> <span class="k">import</span> <span class="n">kruskal_to_tensor</span>
 <span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span>
 
-<span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
-<span class="c1"># Author: Chris Swierczewski &lt;csw@amazon.com&gt;</span>
-<span class="c1"># Author: Sam Schneider &lt;samjohnschneider@gmail.com&gt;</span>
+<span class="c1"># Authors: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
+<span class="c1">#          Chris Swierczewski &lt;csw@amazon.com&gt;</span>
+<span class="c1">#          Sam Schneider &lt;samjohnschneider@gmail.com&gt;</span>
+<span class="c1">#          Aaron Meurer &lt;asmeurer@gmail.com&gt;</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
@@ -237,7 +238,6 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">factors</span>
-
     <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;svd&#39;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span><span class="p">[</span><span class="n">svd</span><span class="p">]</span>
@@ -267,7 +267,8 @@
 
 
 <div class="viewcode-block" id="parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a><span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
-            <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</span>
 
 <span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
@@ -294,7 +295,8 @@
 <span class="sd">        Level of verbosity</span>
 <span class="sd">    return_errors : bool, optional</span>
 <span class="sd">        Activate return of iteration errors</span>
-
+<span class="sd">    non_negative : bool, optional</span>
+<span class="sd">        Perform non_negative PARAFAC. See :func:`non_negative_parafac`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -309,10 +311,14 @@
 <span class="sd">    .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
 <span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">10e-12</span>
+
     <span class="k">if</span> <span class="n">orthogonalise</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orthogonalise</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">orthogonalise</span> <span class="o">=</span> <span class="n">n_iter_max</span>
 
-    <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_factors</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_factors</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
+                                 <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                                 <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">)</span>
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -320,20 +326,50 @@
         <span class="k">if</span> <span class="n">orthogonalise</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;=</span> <span class="n">orthogonalise</span><span class="p">:</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
 
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting iteration&quot;</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+                <span class="n">accum</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># khatri_rao(factors).tl.dot(khatri_rao(factors))</span>
+                <span class="c1"># simplifies to multiplications</span>
+                <span class="n">sub_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_indices</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+                        <span class="n">accum</span> <span class="o">*=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">e</span><span class="p">]),</span> <span class="n">factors</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">accum</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">e</span><span class="p">]),</span> <span class="n">factors</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>
+
             <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
                     <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">pseudo_inverse</span><span class="o">*</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span><span class="p">)</span>
-            <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
-            <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">)))</span>
+
+            <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+                <span class="n">numerator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">denominator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">accum</span><span class="p">)</span>
+                <span class="n">denominator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">)))</span>
+
             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span>
 
         <span class="k">if</span> <span class="n">tol</span><span class="p">:</span>
-            <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
+            <span class="c1"># ||tensor - rec||^2 = ||tensor||^2 + ||rec||^2 - 2*&lt;tensor, rec&gt;</span>
+            <span class="c1"># This is ||kruskal_to_tensor(factors)||^2</span>
+            <span class="n">factors_norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="c1"># mttkrp and factor for the last mode. This is equivalent to the</span>
+            <span class="c1"># inner product &lt;tensor, factorization&gt;</span>
+            <span class="n">iprod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mttkrp</span><span class="o">*</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">iprod</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
             <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
@@ -342,7 +378,10 @@
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
                     <span class="k">break</span>
-                    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
     <span class="k">if</span> <span class="n">return_errors</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">factors</span><span class="p">,</span> <span class="n">rec_errors</span>
     <span class="k">else</span><span class="p">:</span>
@@ -351,9 +390,12 @@
 
 <div class="viewcode-block" id="non_negative_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac">[docs]</a><span class="k">def</span> <span class="nf">non_negative_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                          <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Non-negative CP decomposition</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Non-negative CP decomposition</span>
 
-<span class="sd">        Uses multiplicative updates, see [2]_</span>
+<span class="sd">    Uses multiplicative updates, see [2]_</span>
+
+<span class="sd">    This is the same as parafac(non_negative=True).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -385,47 +427,11 @@
 <span class="sd">       In Proceedings of the International Conference on Machine Learning (ICML),</span>
 <span class="sd">       pp 792-799, ICML, 2005</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">10e-12</span>
-
-    <span class="n">nn_factors</span> <span class="o">=</span> <span class="n">initialize_factors</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">)</span>
-    <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
-            <span class="c1"># khatri_rao(factors).tl.dot(khatri_rao(factors))</span>
-            <span class="c1"># simplifies to multiplications</span>
-            <span class="n">sub_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_factors</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_indices</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
-                    <span class="n">accum</span> <span class="o">=</span> <span class="n">accum</span><span class="o">*</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">[</span><span class="n">e</span><span class="p">]),</span> <span class="n">nn_factors</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">accum</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">[</span><span class="n">e</span><span class="p">]),</span> <span class="n">nn_factors</span><span class="p">[</span><span class="n">e</span><span class="p">])</span>
-
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">accum</span><span class="p">)</span>
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">nn_factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">nn_factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">*</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
-
-        <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">nn_factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
-        <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-
-        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
-            <span class="k">break</span>
-
-    <span class="k">return</span> <span class="n">nn_factors</span></div>
+    <span class="k">return</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
+                   <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="sample_khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+<div class="viewcode-block" id="sample_khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">return_sampled_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Random subsample of the Khatri-Rao product of the given list of matrices</span>
 
@@ -438,17 +444,17 @@
 
 <span class="sd">            for i in len(matrices):</span>
 <span class="sd">                matrices[i].shape = (n_i, m)</span>
-<span class="sd">                </span>
+
 <span class="sd">    n_samples : int</span>
 <span class="sd">        number of samples to be taken from the Khatri-Rao product</span>
 
 <span class="sd">    skip_matrix : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
-<span class="sd">        </span>
-<span class="sd">    random_state : None, int or numpy.random.RandomState </span>
+
+<span class="sd">    random_state : None, int or numpy.random.RandomState</span>
 <span class="sd">        if int, used to set the seed of the random number generator</span>
 <span class="sd">        if numpy.random.RandomState, used to generate random_samples</span>
-<span class="sd">    </span>
+
 <span class="sd">    returned_sampled_rows : bool, default is False</span>
 <span class="sd">        if True, also returns a list of the rows sampled from the full</span>
 <span class="sd">        khatri-rao product</span>
@@ -457,10 +463,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    sampled_Khatri_Rao : ndarray</span>
 <span class="sd">        The sampled matricised tensor Khatri-Rao with `n_samples` rows</span>
-<span class="sd">        </span>
+
 <span class="sd">    indices : tuple list</span>
 <span class="sd">        a list of indices sampled for each mode</span>
-<span class="sd">    </span>
+
 <span class="sd">    indices_kr : int list</span>
 <span class="sd">        list of length `n_samples` containing the sampled row indices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -474,8 +480,7 @@
 
     <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
-     
-    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">)</span>
+
     <span class="n">rank</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">]</span>
 
@@ -486,12 +491,12 @@
         <span class="n">indices_kr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_samples</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">indices_list</span><span class="p">):</span>
             <span class="n">indices_kr</span> <span class="o">=</span> <span class="n">indices_kr</span><span class="o">*</span><span class="n">size</span> <span class="o">+</span> <span class="n">indices</span>
-    
+
     <span class="c1"># Compute the Khatri-Rao product for the chosen indices</span>
     <span class="n">sampled_kr</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">for</span> <span class="n">indices</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">indices_list</span><span class="p">,</span> <span class="n">matrices</span><span class="p">):</span>
         <span class="n">sampled_kr</span> <span class="o">=</span> <span class="n">sampled_kr</span><span class="o">*</span><span class="n">matrix</span><span class="p">[</span><span class="n">indices</span><span class="p">,</span> <span class="p">:]</span>
-        
+
     <span class="k">if</span> <span class="n">return_sampled_rows</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">sampled_kr</span><span class="p">,</span> <span class="n">indices_list</span><span class="p">,</span> <span class="n">indices_kr</span>
     <span class="k">else</span><span class="p">:</span>
@@ -553,20 +558,20 @@
             <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
                 <span class="n">sampled_unfolding</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">[</span><span class="n">indices_list</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sampled_unfolding</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">[</span><span class="n">indices_list</span><span class="p">])</span> 
-                
+                <span class="n">sampled_unfolding</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">[</span><span class="n">indices_list</span><span class="p">])</span>
+
             <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">kr_prod</span><span class="p">),</span> <span class="n">kr_prod</span><span class="p">)</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">kr_prod</span><span class="p">),</span> <span class="n">sampled_unfolding</span><span class="p">)</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">,</span> <span class="n">factor</span><span class="p">))</span>
             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span>
-            
+
         <span class="k">if</span> <span class="n">max_stagnation</span> <span class="ow">or</span> <span class="n">tol</span><span class="p">:</span>
             <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">norm_tensor</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">min_error</span> <span class="ow">or</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
                 <span class="n">min_error</span> <span class="o">=</span> <span class="n">rec_error</span>
                 <span class="n">stagnation</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
             <span class="n">stagnation</span> <span class="o">+=</span> <span class="mi">1</span>
-                    
+
             <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
