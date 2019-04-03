@@ -233,6 +233,7 @@
 
 <span class="sd">    transpose : bool, optional, default is False</span>
 <span class="sd">        if True, the matrices or vectors in in the list are transposed</span>
+<span class="sd">        (the conjugate is used for complex tensors)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -264,7 +265,7 @@
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix_or_vec</span><span class="p">),</span> <span class="n">mode</span> <span class="o">-</span> <span class="n">decrement</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix_or_vec</span><span class="p">)),</span> <span class="n">mode</span> <span class="o">-</span> <span class="n">decrement</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">mode_dot</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">matrix_or_vec</span><span class="p">,</span> <span class="n">mode</span> <span class="o">-</span> <span class="n">decrement</span><span class="p">)</span>
 
