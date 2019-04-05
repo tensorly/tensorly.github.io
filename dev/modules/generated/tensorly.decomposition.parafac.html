@@ -175,9 +175,9 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.parafac</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.parafac">
-<code class="descname">parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>svd='numpy_svd'</em>, <em>tol=1e-08</em>, <em>orthogonalise=False</em>, <em>random_state=None</em>, <em>verbose=False</em>, <em>return_errors=False</em>, <em>non_negative=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>svd='numpy_svd'</em>, <em>tol=1e-08</em>, <em>orthogonalise=False</em>, <em>random_state=None</em>, <em>verbose=False</em>, <em>return_errors=False</em>, <em>non_negative=False</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</p>
-<p>Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r16" id="id1">[R16]</a> such that,</p>
+<p>Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r17" id="id1">[R17]</a> such that,</p>
 <blockquote>
 <div><code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code>.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -220,6 +220,13 @@ reconstruction error is less than <cite>tol</cite>.</p>
 <blockquote>
 <div><p>Perform non_negative PARAFAC. See <a class="reference internal" href="tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac" title="tensorly.decomposition.non_negative_parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></a>.</p>
 </div></blockquote>
+<p><strong>mask</strong> : ndarray</p>
+<blockquote>
+<div><p>array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">tensor</span></code> should be 0 where
+the values are missing and 1 everywhere else. Note:  if tensor is
+sparse, then mask should also be sparse with a fill value of 1 (or
+True). Allows for missing values <a class="reference internal" href="#r18" id="id2">[R18]</a></p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>factors</strong> : ndarray list</p>
@@ -236,11 +243,18 @@ reconstruction error is less than <cite>tol</cite>.</p>
 </tbody>
 </table>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="r16" rules="none">
+<table class="docutils citation" frame="void" id="r17" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[R16]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>)</em> tl.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+<tr><td class="label">[R17]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[R18]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.” 
+Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</td></tr>
 </tbody>
 </table>
 </dd></dl>
