@@ -137,6 +137,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">4. Tensor decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_regression.html">5. Tensor regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html">6. Sparse Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#usage">7. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#example">8. Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
@@ -166,12 +169,12 @@
 <p>A tensor is nothing more than a multi-dimensional array.</p>
 <p>Let’s take for this example the tensor <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> defined by its frontal slices:</p>
 <div class="math">
-<p><img src="../_images/math/b2ada1e18a01af469d537d25ffec47e08bebf178.png" alt="X_1 =
+<p><img src="../_images/math/34178f7221c2c67bbc8b48379b01f495cc8ab357.png" alt="X_1 =
 \left[
 \begin{matrix}
 0  &amp; 2  &amp; 4  &amp; 6\\
 8  &amp; 10 &amp; 12 &amp; 14\\
-16 &amp; 18 &amp; 20 &amp; 22
+16 &amp; 18 &amp; 20 &amp; 22\\
 \end{matrix}
 \right]
 
@@ -182,7 +185,7 @@ X_2 =
 \begin{matrix}
 1  &amp; 3  &amp; 5  &amp; 7\\
 9  &amp; 11 &amp; 13 &amp; 15\\
-17 &amp; 19 &amp; 21 &amp; 23
+17 &amp; 19 &amp; 21 &amp; 23\\
 \end{matrix}
 \right]"/></p>
 </div><p>In Python, this array can be expressed as a numpy array:</p>
@@ -227,17 +230,17 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 <p>For instance, using the <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> previously defined, the 0-mode unfolding of <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/>:</p>
 <div class="math">
-<p><img src="../_images/math/951bb7545df3edd415b00e44fa2e4a406eeb5efc.png" alt="\tilde X_{[0]} =
+<p><img src="../_images/math/64b7a8ddde603a37027744c97f1f68c0de1c8fdd.png" alt="\tilde X_{[0]} =
 \left[ \begin{matrix}
-   0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6 &amp; 7\\
-   8 &amp; 9 &amp; 10 &amp; 11 &amp; 12 &amp; 13 &amp; 14 &amp; 15\\
+   0  &amp; 1  &amp; 2  &amp; 3  &amp;  4 &amp; 5  &amp; 6  &amp; 7\\
+   8  &amp; 9  &amp; 10 &amp; 11 &amp; 12 &amp; 13 &amp; 14 &amp; 15\\
    16 &amp; 17 &amp; 18 &amp; 19 &amp; 20 &amp; 21 &amp; 22 &amp; 23\\
 \end{matrix} \right]"/></p>
 </div><p>The 1-mode unfolding is given by:</p>
 <div class="math">
-<p><img src="../_images/math/393d5963beeee42fe1fb6598b98b340a4f9d5668.png" alt="\tilde X_{[1]} =
+<p><img src="../_images/math/be1ecb133f5486a2e804cd6bb95b7bd365e1500c.png" alt="\tilde X_{[1]} =
 \left[ \begin{matrix}
-   0 &amp; 1 &amp; 8 &amp; 9 &amp; 16 &amp; 17\\
+   0 &amp; 1 &amp; 8  &amp; 9  &amp; 16 &amp; 17\\
    2 &amp; 3 &amp; 10 &amp; 11 &amp; 18 &amp; 19\\
    4 &amp; 5 &amp; 12 &amp; 13 &amp; 20 &amp; 21\\
    6 &amp; 7 &amp; 14 &amp; 15 &amp; 22 &amp; 23\\
