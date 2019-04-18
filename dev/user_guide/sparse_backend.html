@@ -186,10 +186,10 @@ as the sparse representation.</p>
 <div class="section" id="algorithms">
 <h2>6.2. Algorithms</h2>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">parafac</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">partial_tucker</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parafac</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">partial_tucker</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></p></li>
 </ul>
 </div>
 </div>
@@ -238,13 +238,13 @@ where the value is missing and <code class="docutils literal notranslate"><span 
 the <code class="docutils literal notranslate"><span class="pre">parafac()</span></code> function via the <code class="docutils literal notranslate"><span class="pre">mask</span></code> parameter.</p>
 <p>When using masks with sparse tensors, there are two important caveats:</p>
 <ul class="simple">
-<li>The mask itself should be sparse. In the algorithm, the memory used will be
+<li><p>The mask itself should be sparse. In the algorithm, the memory used will be
 proportional to the number of missing values. Values of the original sparse
 tensor that are <code class="docutils literal notranslate"><span class="pre">0</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> (i.e., non-missing) in the
-mask.</li>
-<li>Sparse mask support is currently only supported with the sparse backend
+mask.</p></li>
+<li><p>Sparse mask support is currently only supported with the sparse backend
 <code class="docutils literal notranslate"><span class="pre">parafac</span></code> (<code class="docutils literal notranslate"><span class="pre">tensor.contrib.sparse.decomposition.parafac</span></code>). The dense
-backend <code class="docutils literal notranslate"><span class="pre">parafac</span></code> will densify the array.</li>
+backend <code class="docutils literal notranslate"><span class="pre">parafac</span></code> will densify the array.</p></li>
 </ul>
 </div>
 </div>
@@ -252,7 +252,7 @@ backend <code class="docutils literal notranslate"><span class="pre">parafac</sp
 <h1>8. Example</h1>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="mi">1002</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="mi">1002</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rank</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">starting_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">sparse</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">rank</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">starting_factors</span>

@@ -212,21 +212,21 @@ X_2 =
 <p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
 <p>For a tensor of size <img class="math" src="../_images/math/050f5c691525fc045ac3dd8b16e85975eef0c8ae.png" alt="(I_0, I_1, \cdots, I_N)"/>, the n-mode unfolding of this tensor will be of size <img class="math" src="../_images/math/56e37cad23287df3e5abde504443c41d74c50c16.png" alt="(I_n, I_0, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)"/>.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference" href="#id2" id="id1">[1]</a> for better performance.</p>
+<p class="admonition-title">Important</p>
+<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1">1</a> for better performance.</p>
 <p>Given a tensor <img class="math" src="../_images/math/7c257941f22e9470a3f9066df0d1d326ad4eef11.png" alt="\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}"/>, the
 mode-n unfolding of <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> is a matrix <img class="math" src="../_images/math/c8282623371a19f8d007046376ac1a06da22a431.png" alt="\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}"/>,
 with <img class="math" src="../_images/math/5a4b2cbb484bd54d616b0661de136b0e88e16f99.png" alt="M = \prod_{\substack{k=0,\\k \neq n}}^N I_k"/> and is defined by
 the mapping from element <img class="math" src="../_images/math/a5928c7bd32256d44267648313f93e67d5cc4f37.png" alt="(i_0, i_1, \cdots, i_N)"/> to <img class="math" src="../_images/math/2df9e791ca8c2ef6ce4f8ece1c02499c34ded3b9.png" alt="(i_n, j)"/>, with</p>
-<div class="last math">
+<div class="math">
 <p><img src="../_images/math/ffe755b90a5eb7f124314d1bd90d689aff3c8f4f.png" alt="j = \sum_{\substack{k=0,\\k \neq n}}^N i_k \times \prod_{\substack{m=k+1,\\ k \neq n}}^N I_m."/></p>
 </div></div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="admonition-title">Warning</p>
 <p>Traditionally, mode-1 unfolding denotes the unfolding along the first dimension.
 However, to be consistent with the Python indexing that always starts at zero,
 in tensorly, unfolding also starts at zero!</p>
-<p class="last">Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
+<p>Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
 </div>
 <p>For instance, using the <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/> previously defined, the 0-mode unfolding of <img class="math" src="../_images/math/38004221e6ec31d852cc3a1130eeb9a80d418ec2.png" alt="\tilde X"/>:</p>
 <div class="math">
@@ -297,13 +297,12 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 <div class="section" id="references">
 <h2>3.4. References</h2>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
-SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
+</dd>
+</dl>
 </div>
 </div>
 
