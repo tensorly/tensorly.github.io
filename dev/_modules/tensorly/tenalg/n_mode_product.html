@@ -274,64 +274,6 @@
 
     <span class="k">return</span> <span class="n">res</span></div>
 
-<span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    tensor : tl.tensor</span>
-<span class="sd">        tensor to unfold</span>
-<span class="sd">    factors : tl.tensor list</span>
-<span class="sd">        list of matrices of which to the khatri-rao product</span>
-<span class="sd">    mode : int</span>
-<span class="sd">        mode on which to unfold `tensor`</span>
-<span class="sd">    </span>
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    mttkrp</span>
-<span class="sd">        dot(unfold(tensor, mode), khatri-rao(factors))</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This is a variant of::</span>
-<span class="sd">    </span>
-<span class="sd">        unfolded = unfold(tensor, mode)</span>
-<span class="sd">        kr_factors = khatri_rao(factors, skip_matrix=mode)</span>
-<span class="sd">        mttkrp2 = tl.dot(unfolded, kr_factors)</span>
-
-<span class="sd">    Multiplying with the Khatri-Rao product is equivalent to multiplying,</span>
-<span class="sd">    for each rank, with the kronecker product of each factor. </span>
-<span class="sd">    In code::</span>
-
-<span class="sd">        mttkrp_parts = []</span>
-<span class="sd">        for r in range(rank):</span>
-<span class="sd">            component = tl.tenalg.multi_mode_dot(tensor, [f[:, r] for f in factors], skip=mode)</span>
-<span class="sd">            mttkrp_parts.append(component)</span>
-<span class="sd">        mttkrp = tl.stack(mttkrp_parts, axis=1)</span>
-<span class="sd">        return mttkrp </span>
-<span class="sd">    </span>
-<span class="sd">    The same idea could be expressed using einsum::</span>
-<span class="sd">    </span>
-<span class="sd">        ndims = tl.ndim(tensor)</span>
-<span class="sd">        tensor_idx = &#39;&#39;.join(chr(ord(&#39;a&#39;) + i) for i in range(ndims))</span>
-<span class="sd">        rank = chr(ord(&#39;a&#39;) + ndims + 1)</span>
-<span class="sd">        op = tensor_idx</span>
-<span class="sd">        for i in range(ndims):</span>
-<span class="sd">            if i != mode:</span>
-<span class="sd">                op += &#39;,&#39; + &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">            else:</span>
-<span class="sd">                result = &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">        op += &#39;-&gt;&#39; + result</span>
-<span class="sd">        factors = [f for (i, f) in enumerate(factors) if i != mode]</span>
-<span class="sd">        return tl_einsum(op, tensor, *factors)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">projected</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">ndims</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">mode</span>  <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndims</span><span class="p">)])</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">projected</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
 

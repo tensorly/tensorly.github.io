@@ -378,7 +378,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.qr.html#tensorly.qr" title="tensorly.qr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qr</span></code></a>(a)</p></td>
 <td><p>Compute the qr factorization of a matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kr.html#tensorly.kr" title="tensorly.kr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kr</span></code></a>(matrices[, mask])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kr.html#tensorly.kr" title="tensorly.kr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kr</span></code></a>(matrices[, weights, mask])</p></td>
 <td><p>Khatri-Rao product of a list of matrices</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.partial_svd.html#tensorly.partial_svd" title="tensorly.partial_svd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_svd</span></code></a>(matrix[, n_eigenvecs])</p></td>
@@ -431,13 +431,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor" title="tensorly.kruskal_tensor.kruskal_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_tensor</span></code></a>(factors[, weights, mask])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor" title="tensorly.kruskal_tensor.kruskal_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_tensor</span></code></a>(kruskal_tensor)</p></td>
 <td><p>Turns the Khatri-product of matrices into a full tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_unfolded.html#tensorly.kruskal_tensor.kruskal_to_unfolded" title="tensorly.kruskal_tensor.kruskal_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_unfolded</span></code></a>(factors, mode)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_unfolded.html#tensorly.kruskal_tensor.kruskal_to_unfolded" title="tensorly.kruskal_tensor.kruskal_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_unfolded</span></code></a>(kruskal_tensor, mode)</p></td>
 <td><p>Turns the khatri-product of matrices into an unfolded tensor</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_vec.html#tensorly.kruskal_tensor.kruskal_to_vec" title="tensorly.kruskal_tensor.kruskal_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_vec</span></code></a>(factors)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kruskal_tensor.kruskal_to_vec.html#tensorly.kruskal_tensor.kruskal_to_vec" title="tensorly.kruskal_tensor.kruskal_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kruskal_to_vec</span></code></a>(kruskal_tensor)</p></td>
 <td><p>Turns the khatri-product of matrices into a vector</p></td>
 </tr>
 </tbody>
@@ -495,7 +495,7 @@ operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao" title="tensorly.tenalg.khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">khatri_rao</span></code></a>(matrices[, skip_matrix, reverse, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao" title="tensorly.tenalg.khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">khatri_rao</span></code></a>(matrices[, weights, skip_matrix, …])</p></td>
 <td><p>Khatri-Rao product of a list of matrices</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.kronecker.html#tensorly.tenalg.kronecker" title="tensorly.tenalg.kronecker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kronecker</span></code></a>(matrices[, skip_matrix, reverse])</p></td>
@@ -536,7 +536,7 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac</span></code></a>(tensor, rank[, n_iter_max, init, …])</p></td>
-<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</p></td>
+<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <span>[R3]</span> such that,</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac" title="tensorly.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></a>(tensor, rank[, …])</p></td>
 <td><p>Non-negative CP decomposition</p></td>

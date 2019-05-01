@@ -175,7 +175,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.khatri_rao</h1>
 <dl class="function">
 <dt id="tensorly.tenalg.khatri_rao">
-<code class="descname">khatri_rao</code><span class="sig-paren">(</span><em>matrices</em>, <em>skip_matrix=None</em>, <em>reverse=False</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">khatri_rao</code><span class="sig-paren">(</span><em>matrices</em>, <em>weights=None</em>, <em>skip_matrix=None</em>, <em>reverse=False</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Khatri-Rao product of a list of matrices</p>
 <blockquote>
 <div><p>This can be seen as a column-wise kronecker product.
@@ -184,13 +184,18 @@
 </div></blockquote>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>matrices</strong> : ndarray list</p>
+<dd class="field-odd"><p><strong>matrices</strong> : 2D-array list</p>
 <blockquote>
 <div><p>list of matrices with the same number of columns, i.e.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
     <span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_i</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 </pre></div>
 </div>
+</div></blockquote>
+<p><strong>weights</strong> : 1D-array</p>
+<blockquote>
+<div><p>array of weights for each rank, of length m, the number of column of the factors
+(i.e. m == factor[i].shape[1] for any factor)</p>
 </div></blockquote>
 <p><strong>skip_matrix</strong> : None or int, optional, default is None</p>
 <blockquote>

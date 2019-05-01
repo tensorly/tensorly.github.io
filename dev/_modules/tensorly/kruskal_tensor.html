@@ -153,16 +153,147 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Mapping</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
+<span class="k">class</span> <span class="nc">KruskalTensor</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Turns the Khatri-product of matrices into a full tensor</span>
+        <span class="n">shape</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+
+        <span class="c1"># Should we allow None weights?</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+
+    
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;You tried to access index </span><span class="si">{}</span><span class="s1"> of a Kruskal tensor.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;You can only access index 0 and 1 of a Kruskal tensor&#39;</span>
+                             <span class="s1">&#39;(corresponding respectively to the weights and factors)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
+        
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span>
+    
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors) : rank-</span><span class="si">{}</span><span class="s1"> KruskalTensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">message</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validates a kruskal_tensor in the form (weights, factors)</span>
+<span class="sd">    </span>
+<span class="sd">        Returns the rank and shape of the validated tensor</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kruskal_tensor : KruskalTensor or (weights, factors)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (shape, rank) : (int tuple, int)</span>
+<span class="sd">        size of the full tensor and rank of the Kruskal tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">KruskalTensor</span><span class="p">):</span>
+        <span class="c1"># it&#39;s already been validated at creation</span>
+        <span class="k">return</span> <span class="n">kruskal_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="o">.</span><span class="n">rank</span>
+
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+            
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Kruskal tensor should be composed of at least two factors.&#39;</span>
+                         <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factor was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+        <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the factors of a Kruskal tensor should have the same number of column.&#39;</span>
+                             <span class="s1">&#39;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s1"> but factors[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_mode_size</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given factors for a rank-</span><span class="si">{}</span><span class="s1"> Kruskal tensor but len(weights)=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)))</span>
+        
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span>
+
+
+<span class="k">def</span> <span class="nf">kruskal_normalise</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns kruskal_tensor with factors normalised to unit length</span>
+
+<span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
+<span class="sd">    where the columns of each `V_k` are normalized to unit Euclidean length</span>
+<span class="sd">    from the columns of `U_k` with the normalizing constants absorbed into</span>
+<span class="sd">    `weights`. In the special case of a symmetric tensor, `weights` holds the</span>
+<span class="sd">    eigenvalues of the tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kruskal_tensor : KruskalTensor = (weight, factors)</span>
+<span class="sd">        factors is list of matrices, all with the same number of columns</span>
+<span class="sd">        i.e.::</span>
+<span class="sd">            for u in U:</span>
+<span class="sd">                u[i].shape == (s_i, R)</span>
+
+<span class="sd">        where `R` is fixed while `s_i` can vary with `i`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    KruskalTensor = (normalisation_weights, normalised_factors)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># allocate variables for weights, and normalized factors</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">copy</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Provided copy=False and weights=None: a new KruskalTensor&#39;</span>
+                      <span class="s1">&#39;with new weights and factors normalised inplace will be returned.&#39;</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    
+    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">weights</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">weights</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
+        <span class="n">scales</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">*=</span> <span class="n">scales</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">scales</span><span class="p">)</span>
+        <span class="n">factor</span> <span class="o">/=</span> <span class="n">scales_non_zero</span>
+        
+    <span class="k">return</span> <span class="n">KruskalTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+    
+
+<div class="viewcode-block" id="kruskal_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_tensor.html#tensorly.kruskal_tensor.kruskal_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns the Khatri-product of matrices into a full tensor</span>
 
 <span class="sd">        ``factor_matrices = [|U_1, ... U_n|]`` becomes</span>
 <span class="sd">        a tensor shape ``(U[1].shape[0], U[2].shape[0], ... U[-1].shape[0])``</span>
@@ -192,7 +323,9 @@
 <span class="sd">    summing over r and updating an outer product of vectors.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+    <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span>
                              <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span>
@@ -202,7 +335,7 @@
     <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">full_tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="kruskal_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_unfolded.html#tensorly.kruskal_tensor.kruskal_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_unfolded</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<div class="viewcode-block" id="kruskal_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_unfolded.html#tensorly.kruskal_tensor.kruskal_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_unfolded</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into an unfolded tensor</span>
 
 <span class="sd">        turns ``factors = [|U_1, ... U_n|]`` into a mode-`mode`</span>
@@ -227,10 +360,16 @@
 <span class="sd">    Writing factors = [U_1, ..., U_n], we exploit the fact that</span>
 <span class="sd">    ``U_k = U[k].dot(khatri_rao(U_1, ..., U_k-1, U_k+1, ..., U_n))``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span></div>
+    <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span></div>
 
 
-<div class="viewcode-block" id="kruskal_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_vec.html#tensorly.kruskal_tensor.kruskal_to_vec">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_vec</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+<div class="viewcode-block" id="kruskal_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_to_vec.html#tensorly.kruskal_tensor.kruskal_to_vec">[docs]</a><span class="k">def</span> <span class="nf">kruskal_to_vec</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into a vector</span>
 
 <span class="sd">        (the tensor ``factors = [|U_1, ... U_n|]``</span>
@@ -252,7 +391,143 @@
 <span class="sd">    ndarray</span>
 <span class="sd">        vectorised tensor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">kruskal_mode_dot</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;n-mode product of a Kruskal tensor and a matrix or vector at the specified mode</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        kruskal_tensor : tl.KruskalTensor or (core, factors)</span>
+<span class="sd">                        </span>
+<span class="sd">        matrix_or_vector : ndarray</span>
+<span class="sd">            1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
+<span class="sd">            matrix or vectors to which to n-mode multiply the tensor</span>
+<span class="sd">        mode : int</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        KruskalTensor = (core, factors)</span>
+<span class="sd">            `mode`-mode product of `tensor` by `matrix_or_vector`</span>
+<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
+<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        kruskal_multi_mode_dot : chaining several mode_dot in one call</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+        <span class="n">contract</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
+            <span class="c1"># Test for the validity of the operation</span>
+            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned in mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (dim 1 of matrix)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
+            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned for mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (vector size)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_dim</span><span class="p">:</span>
+                <span class="n">contract</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># Contract over that mode</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can only take n_mode_product with a vector or a matrix.&#39;</span><span class="p">)</span>
+                             
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>   
+            
+        <span class="k">if</span> <span class="n">contract</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mode</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
+        <span class="k">else</span><span class="p">:</span>
+             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">KruskalTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+    
+
+<span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tl.tensor</span>
+<span class="sd">        tensor to unfold</span>
+<span class="sd">    factors : tl.tensor list</span>
+<span class="sd">        list of matrices of which to the khatri-rao product</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        mode on which to unfold `tensor`</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mttkrp</span>
+<span class="sd">        dot(unfold(tensor, mode), khatri-rao(factors))</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a variant of::</span>
+<span class="sd">    </span>
+<span class="sd">        unfolded = unfold(tensor, mode)</span>
+<span class="sd">        kr_factors = khatri_rao(factors, skip_matrix=mode)</span>
+<span class="sd">        mttkrp2 = tl.dot(unfolded, kr_factors)</span>
+
+<span class="sd">    Multiplying with the Khatri-Rao product is equivalent to multiplying,</span>
+<span class="sd">    for each rank, with the kronecker product of each factor. </span>
+<span class="sd">    In code::</span>
+
+<span class="sd">        mttkrp_parts = []</span>
+<span class="sd">        for r in range(rank):</span>
+<span class="sd">            component = tl.tenalg.multi_mode_dot(tensor, [f[:, r] for f in factors], skip=mode)</span>
+<span class="sd">            mttkrp_parts.append(component)</span>
+<span class="sd">        mttkrp = tl.stack(mttkrp_parts, axis=1)</span>
+<span class="sd">        return mttkrp </span>
+
+<span class="sd">    This can be done by taking n-mode-product with the full factors </span>
+<span class="sd">    (faster but more memory consumming)::</span>
+
+<span class="sd">        projected = multi_mode_dot(tensor, factors, skip=mode, transpose=True)</span>
+<span class="sd">        ndims = T.ndim(tensor)</span>
+<span class="sd">        res = []</span>
+<span class="sd">        for i in range(factors[0].shape[1]):</span>
+<span class="sd">            index = tuple([slice(None) if k == mode  else i for k in range(ndims)])</span>
+<span class="sd">            res.append(projected[index])</span>
+<span class="sd">        return T.stack(res, axis=-1)</span>
+
+<span class="sd">    </span>
+<span class="sd">    The same idea could be expressed using einsum::</span>
+<span class="sd">    </span>
+<span class="sd">        ndims = tl.ndim(tensor)</span>
+<span class="sd">        tensor_idx = &#39;&#39;.join(chr(ord(&#39;a&#39;) + i) for i in range(ndims))</span>
+<span class="sd">        rank = chr(ord(&#39;a&#39;) + ndims + 1)</span>
+<span class="sd">        op = tensor_idx</span>
+<span class="sd">        for i in range(ndims):</span>
+<span class="sd">            if i != mode:</span>
+<span class="sd">                op += &#39;,&#39; + &#39;&#39;.join([tensor_idx[i], rank])</span>
+<span class="sd">            else:</span>
+<span class="sd">                result = &#39;&#39;.join([tensor_idx[i], rank])</span>
+<span class="sd">        op += &#39;-&gt;&#39; + result</span>
+<span class="sd">        factors = [f for (i, f) in enumerate(factors) if i != mode]</span>
+<span class="sd">        return tl_einsum(op, tensor, *factors)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mttkrp_parts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
+        <span class="n">component</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">f</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">mttkrp_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+    <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mttkrp</span> 
+
+
 </pre></div>
 
 

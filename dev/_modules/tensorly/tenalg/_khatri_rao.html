@@ -155,7 +155,7 @@
 
 
 
-<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Khatri-Rao product of a list of matrices</span>
 
 <span class="sd">        This can be seen as a column-wise kronecker product.</span>
@@ -165,11 +165,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    matrices : ndarray list</span>
+<span class="sd">    matrices : 2D-array list</span>
 <span class="sd">        list of matrices with the same number of columns, i.e.::</span>
 
 <span class="sd">            for i in len(matrices):</span>
 <span class="sd">                matrices[i].shape = (n_i, m)</span>
+<span class="sd">    </span>
+<span class="sd">    weights : 1D-array</span>
+<span class="sd">        array of weights for each rank, of length m, the number of column of the factors</span>
+<span class="sd">        (i.e. m == factor[i].shape[1] for any factor)</span>
 
 <span class="sd">    skip_matrix : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
@@ -232,8 +236,8 @@
     <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
         <span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="c1"># Note: we do NOT use .reverse() which would reverse matrices even outside this function</span>
-
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">kr</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span></div>
+        
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">kr</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span></div>
 </pre></div>
 
 
