@@ -187,15 +187,13 @@
 
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
 
-<div class="viewcode-block" id="tucker_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_tensor.html#tensorly.tucker_tensor.tucker_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_tensor.html#tensorly.tucker_tensor.tucker_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_tensor</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts the Tucker tensor into a full tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    core : ndarray</span>
-<span class="sd">       core tensor</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">       list of matrices of shape ``(s_i, core.shape[i])``</span>
+<span class="sd">    tucker_tensor : tl.TuckerTensor or (core, factors)</span>
+<span class="sd">        core tensor and list of factor matrices</span>
 <span class="sd">    skip_factor : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
 <span class="sd">        Note that in any case, `modes`, if provided, should have a lengh of ``tensor.ndim``</span>
@@ -207,18 +205,17 @@
 <span class="sd">    2D-array</span>
 <span class="sd">       full tensor of shape ``(factors[0].shape[0], ..., factors[-1].shape[0])``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">tucker_tensor</span>
     <span class="k">return</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tucker_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_unfolded.html#tensorly.tucker_tensor.tucker_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_unfolded</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_unfolded.html#tensorly.tucker_tensor.tucker_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_unfolded</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts the Tucker decomposition into an unfolded tensor (i.e. a matrix)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    core : ndarray</span>
-<span class="sd">        core tensor</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">        list of matrices</span>
+<span class="sd">    tucker_tensor : tl.TuckerTensor or (core, factors)</span>
+<span class="sd">        core tensor and list of factor matrices</span>
 <span class="sd">    mode : None or int list, optional, default is None</span>
 <span class="sd">    skip_factor : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
@@ -231,18 +228,16 @@
 <span class="sd">    2D-array</span>
 <span class="sd">        unfolded tensor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tucker_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_vec.html#tensorly.tucker_tensor.tucker_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_vec</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_vec.html#tensorly.tucker_tensor.tucker_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_vec</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts a Tucker decomposition into a vectorised tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    core : ndarray</span>
-<span class="sd">        core tensor</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">        list of factor matrices</span>
+<span class="sd">    tucker_tensor : tl.TuckerTensor or (core, factors)</span>
+<span class="sd">        core tensor and list of factor matrices</span>
 <span class="sd">    skip_factor : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
 <span class="sd">        Note that in any case, `modes`, if provided, should have a lengh of ``tensor.ndim``</span>
@@ -262,12 +257,10 @@
 <span class="sd">    &gt;&gt;&gt; def tucker_to_vec(core, factors):</span>
 <span class="sd">    ...     return kronecker(factors).dot(tensor_to_vec(core))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">))</span></div>
 
 
-<span class="kn">import</span> <span class="nn">warnings</span>
-
-<span class="k">def</span> <span class="nf">tucker_mode_dot</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tucker_mode_dot"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_mode_dot.html#tensorly.tucker_tensor.tucker_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">tucker_mode_dot</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;n-mode product of a Tucker tensor and a matrix or vector at the specified mode</span>
 
 <span class="sd">        Parameters</span>
@@ -329,7 +322,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>            
 
-        <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span>
+        <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span></div>
         <span class="c1">#return TuckerTensor(core, factors)</span>
     
 </pre></div>

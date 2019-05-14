@@ -130,13 +130,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_tensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.mps_tensor.mps_to_unfolded.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_unfolded</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.mps_tensor.mps_to_vec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>.mps_to_vec</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tucker_tensor.tucker_to_tensor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_to_tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tucker_tensor.tucker_to_unfolded.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_to_unfolded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tucker_tensor.tucker_to_vec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_to_vec</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_mode_dot</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
@@ -165,30 +166,38 @@
 
                     
 
-  <div class="section" id="tensorly-mps-tensor-mps-to-tensor">
-<h1><a class="reference internal" href="../api.html#module-tensorly.mps_tensor" title="tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code></a>.mps_to_tensor</h1>
+  <div class="section" id="tensorly-tucker-tensor-tucker-mode-dot">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>.tucker_mode_dot</h1>
 <dl class="function">
-<dt id="tensorly.mps_tensor.mps_to_tensor">
-<code class="descname">mps_to_tensor</code><span class="sig-paren">(</span><em>factors</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/mps_tensor.html#mps_to_tensor"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Returns the full tensor whose MPS decomposition is given by ‘factors’</p>
-<blockquote>
-<div><p>Re-assembles ‘factors’, which represent a tensor in MPS/TT format
-into the corresponding full tensor</p>
-</div></blockquote>
+<dt id="tensorly.tucker_tensor.tucker_mode_dot">
+<code class="descname">tucker_mode_dot</code><span class="sig-paren">(</span><em>tucker_tensor</em>, <em>matrix_or_vector</em>, <em>mode</em>, <em>keep_dim=False</em>, <em>copy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tucker_tensor.html#tucker_mode_dot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>n-mode product of a Tucker tensor and a matrix or vector at the specified mode</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>factors: list of 3D-arrays</strong></p>
+<dd class="field-odd"><p><strong>tucker_tensor</strong> : tl.TuckerTensor or (core, factors)</p>
+<p><strong>matrix_or_vector</strong> : ndarray</p>
 <blockquote>
-<div><p>MPS factors (known as core in TT terminology)</p>
+<div><p>1D or 2D array of shape <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">i_k)</span></code> or <code class="docutils literal notranslate"><span class="pre">(i_k,</span> <span class="pre">)</span></code>
+matrix or vectors to which to n-mode multiply the tensor</p>
 </div></blockquote>
+<p><strong>mode</strong> : int</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>output_tensor: ndarray</p>
+<dd class="field-even"><p>TuckerTensor = (core, factors)</p>
 <blockquote>
-<div><p>tensor whose MPS/TT decomposition was given by ‘factors’</p>
+<div><p><cite>mode</cite>-mode product of <cite>tensor</cite> by <cite>matrix_or_vector</cite>
+* of shape <img class="math" src="../../_images/math/59ab95c0db3f262e13b68397feb54c23dbaebe96.png" alt="(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)"/> if matrix_or_vector is a matrix
+* of shape <img class="math" src="../../_images/math/59f9c0438750ceda8b60b0e3a57b2d2903fa606a.png" alt="(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)"/> if matrix_or_vector is a vector</p>
 </div></blockquote>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_multi_mode_dot</span></code></dt><dd><p>chaining several mode_dot in one call</p>
+</dd>
+</dl>
+</div>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -199,7 +208,7 @@ into the corresponding full tensor</p>
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.tucker_tensor.tucker_mode_dot.html" title="tensorly.tucker_tensor.tucker_mode_dot" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tucker_tensor.tucker_to_vec.html" title="tensorly.tucker_tensor.tucker_to_vec" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -207,7 +216,7 @@ into the corresponding full tensor</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.mps_tensor.mps_to_unfolded.html" title="tensorly.mps_tensor.mps_to_unfolded" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.mps_tensor.mps_to_tensor.html" title="tensorly.mps_tensor.mps_to_tensor" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>

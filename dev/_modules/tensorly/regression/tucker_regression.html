@@ -246,7 +246,7 @@
                                         <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
                                       <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">y</span><span class="p">)),</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-            <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+            <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
             <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="c1"># Convergence check</span>
@@ -260,7 +260,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">weight_tensor_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tucker_weight_</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span> <span class="o">=</span> <span class="n">tucker_to_vec</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span> <span class="o">=</span> <span class="n">tucker_to_vec</span><span class="p">((</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iterations_</span> <span class="o">=</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">norm_W_</span> <span class="o">=</span> <span class="n">norm_W</span>
 

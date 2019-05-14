@@ -300,8 +300,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">        list of factor matrices, all with the same number of columns</span>
+<span class="sd">    kruskal_tensor : KruskalTensor = (weight, factors)</span>
+<span class="sd">        factors is a list of factor matrices, all with the same number of columns</span>
 <span class="sd">        i.e. for all matrix U in factor_matrices:</span>
 <span class="sd">        U has shape ``(s_i, R)``, where R is fixed and s_i varies with i</span>
 
@@ -343,8 +343,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">        list of matrices, all with the same number of columns</span>
+<span class="sd">    kruskal_tensor : KruskalTensor = (weight, factors)</span>
+<span class="sd">        factors is a list of matrices, all with the same number of columns</span>
 <span class="sd">        ie for all u in factor_matrices:</span>
 <span class="sd">        u[i] has shape (s_u_i, R), where R is fixed</span>
 <span class="sd">    mode: int</span>
@@ -377,8 +377,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factors : ndarray list</span>
-<span class="sd">        list of matrices, all with the same number of columns</span>
+<span class="sd">    kruskal_tensor : KruskalTensor = (weight, factors)</span>
+<span class="sd">        factors is a list of matrices, all with the same number of columns</span>
 <span class="sd">        i.e.::</span>
 
 <span class="sd">            for u in U:</span>
@@ -394,7 +394,7 @@
     <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">))</span></div>
 
 
-<span class="k">def</span> <span class="nf">kruskal_mode_dot</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="kruskal_mode_dot"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.kruskal_mode_dot.html#tensorly.kruskal_tensor.kruskal_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">kruskal_mode_dot</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;n-mode product of a Kruskal tensor and a matrix or vector at the specified mode</span>
 
 <span class="sd">        Parameters</span>
@@ -452,10 +452,10 @@
         <span class="k">else</span><span class="p">:</span>
              <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">KruskalTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">KruskalTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
     
 
-<span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<div class="viewcode-block" id="unfolding_dot_khatri_rao"><a class="viewcode-back" href="../../modules/generated/tensorly.kruskal_tensor.unfolding_dot_khatri_rao.html#tensorly.kruskal_tensor.unfolding_dot_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -525,7 +525,7 @@
         <span class="n">component</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">f</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
         <span class="n">mttkrp_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
     <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">mttkrp</span> 
+    <span class="k">return</span> <span class="n">mttkrp</span> </div>
 
 
 </pre></div>
