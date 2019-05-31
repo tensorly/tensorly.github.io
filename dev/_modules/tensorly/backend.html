@@ -306,8 +306,7 @@
     <span class="n">name</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
 
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">backend</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_LOCAL_STATE</span><span class="p">,</span> <span class="s1">&#39;backend&#39;</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_get_backend_method</span><span class="p">(</span><span class="n">name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># We don&#39;t use `functools.wraps` here because some of the dispatched</span>
     <span class="c1"># methods include the backend (`self`) as a parameter. Instead we manually</span>
