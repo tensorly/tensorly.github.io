@@ -252,8 +252,12 @@ backend <code class="docutils literal notranslate"><span class="pre">parafac</sp
 <h1>8. Example</h1>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="mi">1002</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.contrib.sparse</span> <span class="kn">as</span> <span class="nn">stl</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">sparse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1001</span><span class="p">,</span> <span class="mi">1002</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rank</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">starting_weights</span> <span class="o">=</span> <span class="n">stl</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">starting_weights</span>
+<span class="go">&lt;COO: shape=(5,), dtype=float64, nnz=0, fill_value=1.0&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">starting_factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">sparse</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">rank</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">starting_factors</span>
 <span class="go">[&lt;COO: shape=(1000, 5), dtype=float64, nnz=50, fill_value=0.0&gt;, &lt;COO: shape=(1001, 5), dtype=float64, nnz=50, fill_value=0.0&gt;, &lt;COO: shape=(1002, 5), dtype=float64, nnz=50, fill_value=0.0&gt;]</span>
@@ -264,7 +268,7 @@ a recomposed tensor will be dense, but for our constructed example it is
 sparse, so we can use <code class="docutils literal notranslate"><span class="pre">kruskal_to_tensor</span></code> without worrying about using too
 much memory.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.contrib.sparse.kruskal_tensor</span> <span class="k">import</span> <span class="n">kruskal_to_tensor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">starting_factors</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">kruskal_to_tensor</span><span class="p">((</span><span class="n">starting_weights</span><span class="p">,</span> <span class="n">starting_factors</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span>
 <span class="go">&lt;COO: shape=(1000, 1001, 1002), dtype=float64, nnz=5044, fill_value=0.0&gt;</span>
 </pre></div>

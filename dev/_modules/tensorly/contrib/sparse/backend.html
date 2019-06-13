@@ -1,0 +1,310 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/base.min.css" />
+        <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../../../home.html">
+            TensorLy
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../../../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
+    </div>
+
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
+
+			<a class="navbar-item" href="../../../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../../../authors.html">
+				People
+			</a>
+			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+				Notebooks
+			</a>
+
+		</div>
+
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
+
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
+
+		</div>
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-quarter is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../authors.html">People</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content main-content">
+
+                    
+
+  <h1>Source code for tensorly.contrib.sparse.backend</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">from</span> <span class="nn">....backend</span> <span class="k">import</span> <span class="n">backend_context</span><span class="p">,</span> <span class="n">get_backend</span><span class="p">,</span> <span class="n">override_module_dispatch</span>
+<span class="kn">from</span> <span class="nn">....</span> <span class="k">import</span> <span class="n">backend</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">mps_tensor</span>
+
+
+<span class="n">_KNOWN_BACKENDS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;numpy&#39;</span><span class="p">:</span> <span class="s1">&#39;NumpySparseBackend&#39;</span><span class="p">}</span>
+<span class="n">_LOADED_BACKENDS</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">sparse_context</span><span class="p">():</span>
+    <span class="n">backend_name</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_LOADED_BACKENDS</span><span class="p">:</span>
+        <span class="n">register_sparse_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">backend_context</span><span class="p">(</span><span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">]):</span>
+        <span class="k">yield</span>
+
+<span class="k">def</span> <span class="nf">register_sparse_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Registers a new backend by importing the corresponding module </span>
+<span class="sd">        and adding the correspond `Backend` class in Backend._LOADED_BACKEND</span>
+<span class="sd">        under the key `backend_name`</span>
+<span class="sd">    </span>
+<span class="sd">    Parameterss</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend_name : str, name of the backend to load</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `backend_name` does not correspond to one listed</span>
+<span class="sd">            in `_KNOWN_BACKEND`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">in</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;tensorly.contrib.sparse.backend.</span><span class="si">{0}</span><span class="s1">_backend&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">backend_name</span><span class="p">))</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">])()</span>
+        <span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">backend</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Unknown backend name </span><span class="si">{0!r}</span><span class="s2">, known backends are [</span><span class="si">{1}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">backend_name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_backend_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">):</span>
+    <span class="n">backend_name</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_LOADED_BACKENDS</span><span class="p">:</span>
+        <span class="n">register_sparse_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">],</span> <span class="n">method_name</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_backend_dir</span><span class="p">():</span>
+    <span class="n">backend_name</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_LOADED_BACKENDS</span><span class="p">:</span>
+        <span class="n">register_sparse_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+
+<span class="n">override_module_dispatch</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">_get_backend_method</span><span class="p">,</span> <span class="n">_get_backend_dir</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">dispatch_sparse</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">assigned</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__qualname__&#39;</span><span class="p">,</span>
+                                     <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__annotations__&#39;</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">sparse_context</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+<span class="n">is_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">)</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+<span class="n">to_numpy</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">)</span>
+<span class="n">copy</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+<span class="n">concatenate</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">concatenate</span><span class="p">)</span>
+<span class="n">reshape</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">reshape</span><span class="p">)</span>
+<span class="n">moveaxis</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">)</span>
+<span class="n">transpose</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">transpose</span><span class="p">)</span>
+<span class="n">arange</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">arange</span><span class="p">)</span>
+<span class="n">ones</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">ones</span><span class="p">)</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">zeros</span><span class="p">)</span>
+<span class="n">zeros_like</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">)</span>
+<span class="n">eye</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">eye</span><span class="p">,)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">clip</span><span class="p">)</span>
+<span class="n">where</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+<span class="nb">max</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+<span class="nb">min</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+<span class="nb">all</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">all</span><span class="p">)</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+<span class="nb">sum</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+<span class="n">prod</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">prod</span><span class="p">)</span>
+<span class="n">sign</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
+<span class="nb">abs</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">abs</span><span class="p">)</span>
+<span class="n">sqrt</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">sqrt</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">dot</span><span class="p">)</span>
+<span class="n">kron</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">kron</span><span class="p">)</span>
+<span class="n">kr</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">kr</span><span class="p">)</span>
+<span class="n">solve</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">solve</span><span class="p">)</span>
+<span class="n">qr</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">qr</span><span class="p">)</span>
+<span class="n">partial_svd</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">)</span>
+<span class="n">unfold</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">unfold</span><span class="p">)</span>
+<span class="n">fold</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">fold</span><span class="p">)</span>
+<span class="n">tensor_to_vec</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">)</span>
+<span class="n">vec_to_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">vec_to_tensor</span><span class="p">)</span>
+<span class="n">partial_unfold</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">partial_unfold</span><span class="p">)</span>
+<span class="n">partial_fold</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">partial_fold</span><span class="p">)</span>
+<span class="n">partial_tensor_to_vec</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">partial_tensor_to_vec</span><span class="p">)</span>
+<span class="n">partial_vec_to_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">partial_vec_to_tensor</span><span class="p">)</span>
+<span class="n">kruskal_to_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">)</span>
+<span class="n">kruskal_to_unfolded</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="o">.</span><span class="n">kruskal_to_unfolded</span><span class="p">)</span>
+<span class="n">kruskal_to_vec</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="o">.</span><span class="n">kruskal_to_vec</span><span class="p">)</span>
+<span class="n">tucker_to_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">)</span>
+<span class="n">tucker_to_unfolded</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="o">.</span><span class="n">tucker_to_unfolded</span><span class="p">)</span>
+<span class="n">tucker_to_vec</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="o">.</span><span class="n">tucker_to_vec</span><span class="p">)</span>
+<span class="n">mps_to_tensor</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">mps_tensor</span><span class="o">.</span><span class="n">mps_to_tensor</span><span class="p">)</span>
+<span class="n">mps_to_unfolded</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">mps_tensor</span><span class="o">.</span><span class="n">mps_to_unfolded</span><span class="p">)</span>
+<span class="n">mps_to_vec</span> <span class="o">=</span> <span class="n">dispatch_sparse</span><span class="p">(</span><span class="n">mps_tensor</span><span class="o">.</span><span class="n">mps_to_vec</span><span class="p">)</span>
+</pre></div>
+
+
+
+                    <nav class="pagination">
+    
+    
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2019, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../../../../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>
