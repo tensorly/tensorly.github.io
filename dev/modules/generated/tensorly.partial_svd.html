@@ -202,7 +202,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.partial_svd</h1>
 <dl class="function">
 <dt id="tensorly.partial_svd">
-<code class="sig-name descname">partial_svd</code><span class="sig-paren">(</span><em class="sig-param">matrix</em>, <em class="sig-param">n_eigenvecs=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-name descname">partial_svd</code><span class="sig-paren">(</span><em class="sig-param">matrix</em>, <em class="sig-param">n_eigenvecs=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Computes a fast partial SVD on <cite>matrix</cite></p>
 <p>If <cite>n_eigenvecs</cite> is specified, sparse eigendecomposition is used on
 either matrix.dot(matrix.T) or matrix.T.dot(matrix).</p>
@@ -215,6 +215,14 @@ either matrix.dot(matrix.T) or matrix.T.dot(matrix).</p>
 <p><strong>n_eigenvecs</strong> : int, optional, default is None</p>
 <blockquote>
 <div><p>If specified, number of eigen[vectors-values] to return.</p>
+</div></blockquote>
+<p><strong>random_state: {None, int, np.random.RandomState}</strong></p>
+<blockquote>
+<div><p>If specified, use it for sampling starting vector in a partial SVD(scipy.sparse.linalg.eigsh)</p>
+</div></blockquote>
+<p><strong>**kwargs</strong> : optional</p>
+<blockquote>
+<div><p>kwargs are used to absorb the difference of parameters among the other SVD functions</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
