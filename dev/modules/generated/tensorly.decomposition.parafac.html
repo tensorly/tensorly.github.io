@@ -175,7 +175,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.parafac</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.parafac">
-<code class="sig-name descname">parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">normalize_factors=False</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">orthogonalise=False</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">return_errors=False</em>, <em class="sig-param">non_negative=False</em>, <em class="sig-param">mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">normalize_factors=False</em>, <em class="sig-param">orthogonalise=False</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">return_errors=False</em>, <em class="sig-param">non_negative=False</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">cvg_criterion='abs_rec_error'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
 Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r27" id="id1"><span>[R27]</span></a> such that,</p>
 <blockquote>
@@ -229,6 +229,12 @@ reconstruction error is less than <cite>tol</cite>.</p>
 the values are missing and 1 everywhere else. Note:  if tensor is
 sparse, then mask should also be sparse with a fill value of 1 (or
 True). Allows for missing values <a class="reference internal" href="#r28" id="id2"><span>[R28]</span></a></p>
+</div></blockquote>
+<p><strong>cvg_criterion</strong> : {‘abs_rec_error’, ‘rec_error’}, optional</p>
+<blockquote>
+<div><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None. 
+If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
+If ‘abs_rec_error’, ALS terminates when <a href="#id5"><span class="problematic" id="id6">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
 </div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
