@@ -151,19 +151,19 @@
 <span class="sd">Core operations on Kruskal tensors.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="k">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">inner</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">inner</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="k">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
 <span class="k">class</span> <span class="nc">KruskalTensor</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="n">shape</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_kruskal_tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
@@ -179,7 +179,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
 
     
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -189,14 +189,14 @@
                              <span class="s1">&#39;You can only access index 0 and 1 of a Kruskal tensor&#39;</span>
                              <span class="s1">&#39;(corresponding respectively to the weights and factors)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
     
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
         
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span>
     
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors) : rank-</span><span class="si">{}</span><span class="s1"> KruskalTensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">message</span>
 

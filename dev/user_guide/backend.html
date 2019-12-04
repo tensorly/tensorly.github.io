@@ -194,7 +194,7 @@ However, to keep dependencies as minimal as possible, and to not complexify inst
 <p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
 <p>For instance:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 <span class="k">def</span> <span class="nf">trivial_fun</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot; Trivial function that takes a tensor and create a new one</span>
@@ -212,8 +212,8 @@ However, to keep dependencies as minimal as possible, and to not complexify inst
 <h2>2.5. Basic functions</h2>
 <p>We have isolated the basic functions required for tensor methods in the backend, and provide a uniform API using wrappers when necessary.
 In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <cite>reshape</cite>, etc, are accessible from the backend:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">tl</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">)</span> <span class="c1"># or any other backend</span>
 
