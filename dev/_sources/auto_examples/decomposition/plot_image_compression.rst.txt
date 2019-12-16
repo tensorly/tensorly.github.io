@@ -11,12 +11,8 @@ Example on how to use :func:`tensorly.decomposition.parafac`and :func:`tensorly.
 
 
 
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "/home/travis/build/tensorly/tensorly/examples/decomposition/plot_image_compression.py", line 11, in <module>
-        from scipy.misc import face, imresize
-    ImportError: cannot import name 'imresize' from 'scipy.misc' (/home/travis/miniconda/envs/test-environment/lib/python3.7/site-packages/scipy/misc/__init__.py)
+.. image:: /auto_examples/decomposition/images/sphx_glr_plot_image_compression_001.png
+    :align: center
 
 
 
@@ -28,7 +24,8 @@ Example on how to use :func:`tensorly.decomposition.parafac`and :func:`tensorly.
     import matplotlib.pyplot as plt
     import tensorly as tl
     import numpy as np
-    from scipy.misc import face, imresize
+    from scipy.misc import face
+    from scipy.ndimage import zoom
     from tensorly.decomposition import parafac
     from tensorly.decomposition import tucker
     from math import ceil
@@ -36,7 +33,8 @@ Example on how to use :func:`tensorly.decomposition.parafac`and :func:`tensorly.
 
     random_state = 12345
 
-    image = tl.tensor(imresize(face(), 0.3), dtype='float64')
+    image = face()
+    image = tl.tensor(zoom(face(), (0.3, 0.3, 1)), dtype='float64')
 
     def to_image(tensor):
         """A convenience function to convert from a float dtype back to uint8"""
@@ -80,7 +78,7 @@ Example on how to use :func:`tensorly.decomposition.parafac`and :func:`tensorly.
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.000 seconds)
+**Total running time of the script:** ( 0 minutes  3.476 seconds)
 
 
 
