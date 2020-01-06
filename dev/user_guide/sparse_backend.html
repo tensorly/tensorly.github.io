@@ -164,7 +164,7 @@
                     
 
   <div class="section" id="sparse-backend">
-<span id="id1"></span><h1>6. Sparse Backend</h1>
+<span id="id1"></span><h1><span class="section-number">6. </span>Sparse Backend</h1>
 <p>TensorLy supports sparse tensors for some backends and algorithms.</p>
 <p>When selecting a backend to be used for tensorly, this backend will also
 be applied to the sparse implementations. This is because many backends
@@ -173,7 +173,7 @@ TensorFlow and PyTorch both have (some) support for sparse tensors.
 Using TensorLy’s dense or sparse interfaces will give you
 appropriate objects for the selected backend.</p>
 <div class="section" id="why-a-separate-sparse-backend">
-<h2>6.1. Why a separate sparse backend?</h2>
+<h2><span class="section-number">6.1. </span>Why a separate sparse backend?</h2>
 <p>Some algorithms need to be adapted to be <em>sparse-safe</em>.</p>
 <p>In addition, not all backends have a native sparse representation. For instance,
 NumPy lacks a sparse array structure.
@@ -184,7 +184,7 @@ backend, the <a class="reference external" href="https://sparse.pydata.org">PyDa
 as the sparse representation.</p>
 </div>
 <div class="section" id="algorithms">
-<h2>6.2. Algorithms</h2>
+<h2><span class="section-number">6.2. </span>Algorithms</h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">parafac</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></p></li>
@@ -194,7 +194,7 @@ as the sparse representation.</p>
 </div>
 </div>
 <div class="section" id="usage">
-<h1>7. Usage</h1>
+<h1><span class="section-number">7. </span>Usage</h1>
 <p>The sparse sub-package in <code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse</span></code> contains a mirror of the
 interfaces in the usual, dense <code class="docutils literal notranslate"><span class="pre">tensorly</span></code> package. For example, unfolding a
 sparse tensor would use:</p>
@@ -231,7 +231,7 @@ if the input tensor is sparse. Thus, using the sparse <code class="docutils lite
 memory than the dense version (<code class="docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code>) for a
 sparse input tensor.</p>
 <div class="section" id="missing-values">
-<h2>7.1. Missing Values</h2>
+<h2><span class="section-number">7.1. </span>Missing Values</h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function supports masks for missing values. A mask should be a
 boolean array of the same shape as the original tensor that is <code class="docutils literal notranslate"><span class="pre">False</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code>
 where the value is missing and <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> where it is not. It is passed to
@@ -249,7 +249,7 @@ backend <code class="docutils literal notranslate"><span class="pre">parafac</sp
 </div>
 </div>
 <div class="section" id="example">
-<h1>8. Example</h1>
+<h1><span class="section-number">8. </span>Example</h1>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.contrib.sparse</span> <span class="k">as</span> <span class="nn">stl</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">sparse</span>
@@ -267,7 +267,7 @@ rank (by construction), and decompose it with parafac.</p>
 a recomposed tensor will be dense, but for our constructed example it is
 sparse, so we can use <code class="docutils literal notranslate"><span class="pre">kruskal_to_tensor</span></code> without worrying about using too
 much memory.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.contrib.sparse.kruskal_tensor</span> <span class="kn">import</span> <span class="n">kruskal_to_tensor</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.contrib.sparse.kruskal_tensor</span> <span class="kn">import</span> <span class="n">kruskal_to_tensor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">kruskal_to_tensor</span><span class="p">((</span><span class="n">starting_weights</span><span class="p">,</span> <span class="n">starting_factors</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span>
 <span class="go">&lt;COO: shape=(1000, 1001, 1002), dtype=float64, nnz=5044, fill_value=0.0&gt;</span>
@@ -275,7 +275,7 @@ much memory.</p>
 </div>
 <p>This is how much memory the sparse array takes up, vs. how much it would take
 up if it were represented densly.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="c1"># Actual memory usage in GB</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="c1"># Actual memory usage in GB</span>
 <span class="go">0.000161408</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="c1"># Memory usage if array was dense, in GB</span>
@@ -283,14 +283,14 @@ up if it were represented densly.</p>
 </pre></div>
 </div>
 <p>Now to decompose the tensor.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span> <span class="c1"># The dense version</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span> <span class="c1"># The dense version</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">();</span> <span class="n">dense_kruskal</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">);</span> <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
 <span class="go">1.3858051300048828</span>
 </pre></div>
 </div>
 <p>Note that the decomposition takes much longer when using the sparse variant.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.contrib.sparse.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span> <span class="k">as</span> <span class="n">sparse_parafac</span> <span class="c1"># The sparse version</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.contrib.sparse.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span> <span class="k">as</span> <span class="n">sparse_parafac</span> <span class="c1"># The sparse version</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">();</span> <span class="n">sparse_kruskal</span> <span class="o">=</span> <span class="n">sparse_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">);</span> <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
 <span class="go">14.053689002990723</span>
 </pre></div>
@@ -333,7 +333,7 @@ intermediate matrices.</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>

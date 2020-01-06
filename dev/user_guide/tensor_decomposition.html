@@ -163,16 +163,16 @@
                     
 
   <div class="section" id="tensor-decomposition">
-<h1>4. Tensor decomposition</h1>
+<h1><span class="section-number">4. </span>Tensor decomposition</h1>
 <p>One of the greatest features of tensors is that they can be represented compactly in decomposed forms and we have powerful methods with guarantees to obtain these decompositions.</p>
 <p>In this tutorial we will go over these decomposed forms and how to perform tensor decomposition.
 Refer to <a class="footnote-reference brackets" href="#id3" id="id1">1</a> for more information on tensor decomposition.</p>
 <div class="section" id="kruskal-form-of-a-tensor">
-<h2>4.1. Kruskal form of a tensor</h2>
+<h2><span class="section-number">4.1. </span>Kruskal form of a tensor</h2>
 <p>The idea is to express the tensor as a sum of rank one tensors. That is, a sum of outer product of vectors.
 Such representation can be obtained by applying Canonical Polyadic Decomposition (also known as CANDECOMP-PARAFAC, CP, or PARAFAC decomposition).</p>
 <div class="section" id="candecomp-parafac-decomposition">
-<h3>4.1.1. CANDECOMP-PARAFAC decomposition</h3>
+<h3><span class="section-number">4.1.1. </span>CANDECOMP-PARAFAC decomposition</h3>
 <p>We demonstrate here how to perform a Canonical Polyadic Decomposition. A rank-r Parafac decomposes a tensor into a linear combination of r rank-1 tensors (See <a class="footnote-reference brackets" href="#id3" id="id2">1</a> for more details).</p>
 <p>First, let’s create a second order tensor that is zero everywhere except in a swiss shape that is one.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -222,11 +222,11 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </div>
 </div>
 <div class="section" id="tucker-form-of-a-tensor">
-<h2>4.2. Tucker form of a tensor</h2>
+<h2><span class="section-number">4.2. </span>Tucker form of a tensor</h2>
 <p>The Tucker decomposition can be seen as a generalisation of the CP decomposition: it decomposes the tensor into a small core tensor and factor matrices. CP can be seen as a Tucker decomposition with a super-diagonal core.</p>
 <p>A tensor in its decomposed Tucker form is therefore nothing more than a core tensor with the same order as the original tensor and a list of projection matrices, one for each mode of the core tensor.</p>
 <div class="section" id="tucker-decomposition">
-<h3>4.2.1. Tucker decomposition</h3>
+<h3><span class="section-number">4.2.1. </span>Tucker decomposition</h3>
 <p>Tucker (classical and non-negative) are available in TensorLy (<a class="reference internal" href="../modules/generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.tucker</span></code></a> and <a class="reference internal" href="../modules/generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.non_negative_tucker</span></code></a>).</p>
 <p>Using the same tensor as previously, we will perform a rank [2, 3]-decomposition of <cite>tensor</cite>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">tucker</span>
@@ -261,13 +261,13 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </div>
 </div>
 <div class="section" id="matrix-product-state-tensor-train-decomposition">
-<h2>4.3. Matrix-Product-State / Tensor-Train Decomposition</h2>
+<h2><span class="section-number">4.3. </span>Matrix-Product-State / Tensor-Train Decomposition</h2>
 <p>The tensor-train decomposition, also known as matrix product state in physics community, is a way of decompositing high order tensors into third order ones. For a order d tensor A[i1,…,id], it splits each dimension into a order 3 sub-tensor, which we called factors or cores. One of the dimension of the sub-tensor is the real physical dimension, while the other two are edges connecting the cores before and after it.</p>
 <div class="math">
 <p><img src="../_images/math/fcdb4cdf192ddb1386b413b62c576921590180b0.png" alt="A[i_1, \ldots, i_d] \approx \sum_{\alpha_1}\cdots\sum_{\alpha_{d-1}}G_1(i_1, \alpha_1)G_2(\alpha_1, i_2, \alpha_2)G_3(\alpha_2, i_3, \alpha_3)\cdots G_d(\alpha_{d-1},i_d)"/></p>
 </div><p>The advantage of the MPS/tensor-train decomposition is that both of its number of entries (storage) and computational time is linear in the number of dimensions, making high dimensional problem more easily addressable.</p>
 <div class="section" id="implementations">
-<h3>4.3.1. Implementations</h3>
+<h3><span class="section-number">4.3.1. </span>Implementations</h3>
 <p>Two versions tensor train decompositions are available in TensorLy: and SVD-based decomposition method (<code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.mps_decomposition</span></code> and a cross approximation-based method <code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.contrib.mps_decomposition_cross</span></code>).</p>
 <p>Using the same tensor as previously, we will perform a rank [1,2,1]-decomposition of the shape (12,12) <cite>tensor</cite> meaning the first core has shape (1,12,2) and the second has (2,12,1).:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">matrix_product_state</span>
@@ -298,7 +298,7 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </div>
 </div>
 <div class="section" id="references">
-<h2>4.4. References</h2>
+<h2><span class="section-number">4.4. </span>References</h2>
 <dl class="footnote brackets">
 <dt class="label" id="id3"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
 <dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
@@ -337,7 +337,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>

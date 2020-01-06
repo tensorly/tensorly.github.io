@@ -164,18 +164,18 @@
                     
 
   <div class="section" id="tensorly-s-backend-system">
-<span id="user-guide-backend"></span><h1>2. TensorLy’s backend system</h1>
+<span id="user-guide-backend"></span><h1><span class="section-number">2. </span>TensorLy’s backend system</h1>
 <div class="section" id="backend">
-<h2>2.1. Backend?</h2>
+<h2><span class="section-number">2.1. </span>Backend?</h2>
 <p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), MXNet, and PyTorch.
 For the end user, the interface is exactly the same, but under the hood, a different library is used to represent multi-dimensional arrays and perform computations on these. In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or MXNet.</p>
 </div>
 <div class="section" id="why-backends">
-<h2>2.2. Why backends?</h2>
+<h2><span class="section-number">2.2. </span>Why backends?</h2>
 <p>The goal of TensorLy is to make tensor methods accessible. While NumPy needs no introduction, the MXNet and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU. Last but not least, using MXNet or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
 </div>
 <div class="section" id="how-do-i-change-the-backend">
-<h2>2.3. How do I change the backend?</h2>
+<h2><span class="section-number">2.3. </span>How do I change the backend?</h2>
 <p>To change the backend, e.g. to NumPy, you can change the value of <code class="docutils literal notranslate"><span class="pre">default_backend</span></code> in tensorly/__init__.
 Alternatively during the execution, assuming you have imported TensorLy as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">tensorly</span> <span class="pre">as</span> <span class="pre">tl</span></code>, you can change the backend in your code by calling <code class="docutils literal notranslate"><span class="pre">tl.set_backend('numpy')</span></code>.</p>
 <div class="admonition important">
@@ -190,7 +190,7 @@ However, to keep dependencies as minimal as possible, and to not complexify inst
 <p>Once you change the backend, all the computation is done using that backend.</p>
 </div>
 <div class="section" id="context-of-a-tensor">
-<h2>2.4. Context of a tensor</h2>
+<h2><span class="section-number">2.4. </span>Context of a tensor</h2>
 <p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
 <p>For instance:</p>
@@ -209,7 +209,7 @@ However, to keep dependencies as minimal as possible, and to not complexify inst
 </div>
 </div>
 <div class="section" id="basic-functions">
-<h2>2.5. Basic functions</h2>
+<h2><span class="section-number">2.5. </span>Basic functions</h2>
 <p>We have isolated the basic functions required for tensor methods in the backend, and provide a uniform API using wrappers when necessary.
 In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <cite>reshape</cite>, etc, are accessible from the backend:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -259,7 +259,7 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>
