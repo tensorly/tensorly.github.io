@@ -148,11 +148,10 @@
 
   <h1>Source code for tensorly.decomposition.robust_decomposition</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">unfold</span>
-<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span>
-<span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
-<span class="kn">from</span> <span class="nn">..tenalg.proximal</span> <span class="kn">import</span> <span class="n">soft_thresholding</span><span class="p">,</span> <span class="n">svd_thresholding</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">unfold</span>
+<span class="kn">from</span> <span class="nn">..tenalg.proximal</span> <span class="kn">import</span> <span class="n">soft_thresholding</span><span class="p">,</span> <span class="n">svd_thresholding</span>
+
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
@@ -161,7 +160,7 @@
 
 <div class="viewcode-block" id="robust_pca"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca">[docs]</a><span class="k">def</span> <span class="nf">robust_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_E</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">reg_J</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                <span class="n">mu_init</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">mu_max</span><span class="o">=</span><span class="mf">10e9</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
-               <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+               <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Robust Tensor PCA via ALM with support for missing values</span>
 
 <span class="sd">        Decomposes a tensor `X` into the sum of a low-rank component `D`</span>
@@ -188,7 +187,6 @@
 <span class="sd">        percentage increase of mu at each iteration</span>
 <span class="sd">    n_iter_max : int, optional, default is 100</span>
 <span class="sd">        maximum number of iteration</span>
-<span class="sd">    random_state : None, int or RandomState, optional, default is None</span>
 <span class="sd">    verbose : int, default is 1</span>
 <span class="sd">        level of verbosity</span>
 
@@ -262,7 +260,7 @@
 
         <span class="c1"># Convergence check</span>
         <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">rec_X</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_D</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">rec_X</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_D</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Converged in </span><span class="si">{}</span><span class="s1"> iterations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
                 <span class="k">break</span>
