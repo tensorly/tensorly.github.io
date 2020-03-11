@@ -482,16 +482,6 @@
             <span class="n">iprod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mttkrp</span><span class="o">*</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span>
             <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">iprod</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
             <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
-
-            <span class="c1"># if iteration &gt;= 1:</span>
-            <span class="c1">#     if verbose:</span>
-            <span class="c1">#         print(&#39;reconstruction error={}, variation={}.&#39;.format(</span>
-            <span class="c1">#             rec_errors[-1], rec_errors[-2] - rec_errors[-1]))</span>
-
-            <span class="c1">#     if tol and abs(rec_errors[-2] - rec_errors[-1]) &lt; tol:</span>
-            <span class="c1">#         if verbose:</span>
-            <span class="c1">#             print(&#39;converged in {} iterations.&#39;.format(iteration))</span>
-            <span class="c1">#         break </span>
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">rec_error_decrease</span> <span class="o">=</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 
