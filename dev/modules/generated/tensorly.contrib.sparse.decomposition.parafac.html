@@ -150,7 +150,7 @@
 <h1>tensorly.contrib.sparse.decomposition.parafac</h1>
 <dl class="function">
 <dt id="tensorly.contrib.sparse.decomposition.parafac">
-<code class="sig-name descname">parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">normalize_factors=False</em>, <em class="sig-param">orthogonalise=False</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">return_errors=False</em>, <em class="sig-param">l2_reg=0</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">cvg_criterion='abs_rec_error'</em><span class="sig-paren">)</span></dt>
+<code class="sig-name descname">parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">normalize_factors=False</em>, <em class="sig-param">orthogonalise=False</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">return_errors=False</em>, <em class="sig-param">non_negative=False</em>, <em class="sig-param">sparsity=None</em>, <em class="sig-param">l2_reg=0</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">cvg_criterion='abs_rec_error'</em><span class="sig-paren">)</span></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
 Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r21" id="id1"><span>[R21]</span></a> such that,</p>
 <blockquote>
@@ -207,6 +207,10 @@ True). Allows for missing values <a class="reference internal" href="#r22" id="i
 If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
 If ‘abs_rec_error’, ALS terminates when <a href="#id5"><span class="problematic" id="id6">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
 </div></blockquote>
+<p><strong>sparsity</strong> : float or int</p>
+<blockquote>
+<div><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
+</div></blockquote>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>KruskalTensor</strong> : (weight, factors)</p>
@@ -223,6 +227,7 @@ weights of the (normalized) factors otherwise</p>
 </dd>
 </dl>
 </li>
+<li><p>sparse_component : nD array of shape tensor.shape. Returns only if <cite>sparsity</cite> is not None.</p></li>
 </ul>
 </div></blockquote>
 <p><strong>errors</strong> : list</p>
