@@ -150,103 +150,89 @@
 <h1>tensorly.contrib.sparse.decomposition.parafac</h1>
 <dl class="function">
 <dt id="tensorly.contrib.sparse.decomposition.parafac">
-<code class="sig-name descname">parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">normalize_factors=False</em>, <em class="sig-param">orthogonalise=False</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">return_errors=False</em>, <em class="sig-param">non_negative=False</em>, <em class="sig-param">sparsity=None</em>, <em class="sig-param">l2_reg=0</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">cvg_criterion='abs_rec_error'</em><span class="sig-paren">)</span></dt>
+<code class="descname">parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>svd='numpy_svd'</em>, <em>normalize_factors=False</em>, <em>orthogonalise=False</em>, <em>tol=1e-08</em>, <em>random_state=None</em>, <em>verbose=0</em>, <em>return_errors=False</em>, <em>non_negative=False</em>, <em>sparsity=None</em>, <em>l2_reg=0</em>, <em>mask=None</em>, <em>cvg_criterion='abs_rec_error'</em><span class="sig-paren">)</span></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
-Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r21" id="id1"><span>[R21]</span></a> such that,</p>
+Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r8eaaee98a9c3-1" id="id1">[1]</a> such that,</p>
 <blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|weights;</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code>.</p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> : ndarray</p>
-<p><strong>rank</strong> : int</p>
-<blockquote>
-<div><p>Number of components.</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int</p>
-<blockquote>
-<div><p>Maximum number of iteration</p>
-</div></blockquote>
-<p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
-<blockquote>
-<div><p>Type of factor matrix initialization. See <cite>initialize_factors</cite>.</p>
-</div></blockquote>
-<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
-<blockquote>
-<div><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
-</div></blockquote>
-<p><strong>normalize_factors</strong> : if True, aggregate the weights of each factor in a 1D-tensor</p>
-<blockquote>
-<div><p>of shape (rank, ), which will contain the norms of the factors</p>
-</div></blockquote>
-<p><strong>tol</strong> : float, optional</p>
-<blockquote>
-<div><p>(Default: 1e-6) Relative reconstruction error tolerance. The
+<div><code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|weights;</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code>.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>Number of components.</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>Maximum number of iteration</p>
+</dd>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd><p>Type of factor matrix initialization. See <cite>initialize_factors</cite>.</p>
+</dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
+</dd>
+<dt><strong>normalize_factors</strong><span class="classifier">if True, aggregate the weights of each factor in a 1D-tensor</span></dt><dd><p>of shape (rank, ), which will contain the norms of the factors</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>(Default: 1e-6) Relative reconstruction error tolerance. The
 algorithm is considered to have found the global minimum when the
 reconstruction error is less than <cite>tol</cite>.</p>
-</div></blockquote>
-<p><strong>random_state</strong> : {None, int, np.random.RandomState}</p>
-<p><strong>verbose</strong> : int, optional</p>
-<blockquote>
-<div><p>Level of verbosity</p>
-</div></blockquote>
-<p><strong>return_errors</strong> : bool, optional</p>
-<blockquote>
-<div><p>Activate return of iteration errors</p>
-</div></blockquote>
-<p><strong>mask</strong> : ndarray</p>
-<blockquote>
-<div><p>array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">tensor</span></code> should be 0 where
+</dd>
+<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>Level of verbosity</p>
+</dd>
+<dt><strong>return_errors</strong><span class="classifier">bool, optional</span></dt><dd><p>Activate return of iteration errors</p>
+</dd>
+<dt><strong>mask</strong><span class="classifier">ndarray</span></dt><dd><p>array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">tensor</span></code> should be 0 where
 the values are missing and 1 everywhere else. Note:  if tensor is
 sparse, then mask should also be sparse with a fill value of 1 (or
-True). Allows for missing values <a class="reference internal" href="#r22" id="id2"><span>[R22]</span></a></p>
-</div></blockquote>
-<p><strong>cvg_criterion</strong> : {‘abs_rec_error’, ‘rec_error’}, optional</p>
-<blockquote>
-<div><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None. 
+True). Allows for missing values <a class="reference internal" href="#r8eaaee98a9c3-2" id="id2">[2]</a></p>
+</dd>
+<dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None. 
 If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
 If ‘abs_rec_error’, ALS terminates when <a href="#id5"><span class="problematic" id="id6">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
-</div></blockquote>
-<p><strong>sparsity</strong> : float or int</p>
-<blockquote>
-<div><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
-</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>KruskalTensor</strong> : (weight, factors)</p>
-<blockquote>
-<div><ul>
-<li><dl class="simple">
+<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>KruskalTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul>
+<li><dl class="first docutils">
 <dt>weights<span class="classifier">1D array of shape (rank, )</span></dt><dd><p>all ones if normalize_factors is False (default), 
 weights of the (normalized) factors otherwise</p>
 </dd>
 </dl>
 </li>
-<li><dl>
+<li><dl class="first docutils">
 <dt>factors<span class="classifier">List of factors of the CP decomposition element <cite>i</cite> is of shape</span></dt><dd><p>(tensor.shape[i], rank)</p>
 </dd>
 </dl>
 </li>
-<li><p>sparse_component : nD array of shape tensor.shape. Returns only if <cite>sparsity</cite> is not None.</p></li>
+<li><p class="first">sparse_component : nD array of shape tensor.shape. Returns only if <cite>sparsity</cite> is not None.</p>
+</li>
 </ul>
-</div></blockquote>
-<p><strong>errors</strong> : list</p>
-<blockquote>
-<div><p>A list of reconstruction errors at each iteration of the algorithms.</p>
-</div></blockquote>
+</dd>
+<dt><strong>errors</strong><span class="classifier">list</span></dt><dd><p>A list of reconstruction errors at each iteration of the algorithms.</p>
 </dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r21"><span class="brackets">R21</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
-<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
-SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
-</dd>
-<dt class="label" id="r22"><span class="brackets">R22</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id4">2</a>)</span></dt>
-<dd><p>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.” 
-Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</p>
-</dd>
-</dl>
+<table class="docutils citation" frame="void" id="r8eaaee98a9c3-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r8eaaee98a9c3-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.” 
+Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

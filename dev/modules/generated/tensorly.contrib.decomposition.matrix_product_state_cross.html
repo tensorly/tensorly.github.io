@@ -168,84 +168,82 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib.decomposition</span></code>.matrix_product_state_cross</h1>
 <dl class="function">
 <dt id="tensorly.contrib.decomposition.matrix_product_state_cross">
-<code class="sig-name descname">matrix_product_state_cross</code><span class="sig-paren">(</span><em class="sig-param">input_tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">tol=1e-05</em>, <em class="sig-param">n_iter_max=100</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/contrib/decomposition/mps_decomposition_cross.html#matrix_product_state_cross"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">matrix_product_state_cross</code><span class="sig-paren">(</span><em>input_tensor</em>, <em>rank</em>, <em>tol=1e-05</em>, <em>n_iter_max=100</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/contrib/decomposition/mps_decomposition_cross.html#matrix_product_state_cross"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>MPS (tensor-train) decomposition via cross-approximation (TTcross) [1]</p>
 <blockquote>
 <div><p>Decomposes <cite>input_tensor</cite> into a sequence of order-3 tensors of given rank. (factors/cores)
 Rather than directly decompose the whole tensor, we sample fibers based on skeleton decomposition.
 We initialize a random tensor-train and sweep from left to right and right to left.
 On each core, we shape the core as a matrix and choose the fibers indices by finding maximum-volume submatrix and update the core.</p>
-<dl class="simple">
-<dt>Advantage: faster</dt><dd><p>The main advantage of TTcross is that it doesn’t need to evaluate all the entries of the tensor.
-For a tensor_shape^tensor_order tensor, SVD needs O(tensor_shape^tensor_order) runtime, but TTcross’ runtime is linear in tensor_shape and tensor_order, which makes it feasible in high dimension.</p>
-</dd>
-<dt>Disadvantage: less accurate</dt><dd><p>TTcross may underestimate the error, since it only evaluates partial entries of the tensor.
-Besides, in contrast to its practical fast performance, there is no theoretical guarantee of it convergence.</p>
-</dd>
+<dl class="docutils">
+<dt>Advantage: faster</dt><dd>The main advantage of TTcross is that it doesn’t need to evaluate all the entries of the tensor.
+For a tensor_shape^tensor_order tensor, SVD needs O(tensor_shape^tensor_order) runtime, but TTcross’ runtime is linear in tensor_shape and tensor_order, which makes it feasible in high dimension.</dd>
+<dt>Disadvantage: less accurate</dt><dd>TTcross may underestimate the error, since it only evaluates partial entries of the tensor.
+Besides, in contrast to its practical fast performance, there is no theoretical guarantee of it convergence.</dd>
 </dl>
 </div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_tensor</strong> : tensorly.tensor</p>
-<blockquote>
-<div><p>The tensor to decompose.</p>
-</div></blockquote>
-<p><strong>rank</strong> : {int, int list}</p>
-<blockquote>
-<div><p>maximum allowable MPS rank of the factors
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>input_tensor</strong><span class="classifier">tensorly.tensor</span></dt><dd><p>The tensor to decompose.</p>
+</dd>
+<dt><strong>rank</strong><span class="classifier">{int, int list}</span></dt><dd><p>maximum allowable MPS rank of the factors
 if int, then this is the same for all the factors
 if int list, then rank[k] is the rank of the kth factor</p>
-</div></blockquote>
-<p><strong>tol</strong> : float</p>
-<blockquote>
-<div><p>accuracy threshold for outer while-loop</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int</p>
-<blockquote>
-<div><p>maximum iterations of outer while-loop (the ‘crosses’ or ‘sweeps’ sampled)</p>
-</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>factors</strong> : MPS factors</p>
-<blockquote>
-<div><p>order-3 tensors of the MPS decomposition</p>
-</div></blockquote>
+<dt><strong>tol</strong><span class="classifier">float</span></dt><dd><p>accuracy threshold for outer while-loop</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum iterations of outer while-loop (the ‘crosses’ or ‘sweeps’ sampled)</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>factors</strong><span class="classifier">MPS factors</span></dt><dd><p>order-3 tensors of the MPS decomposition</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Pseudo-code [2]:
 1. Initialization tensor_order cores and column indices
 2. while (error &gt; tol)
 3.    update the tensor-train from left to right:</p>
 <blockquote>
-<div><dl class="simple">
-<dt>for Core 1 to Core tensor_order</dt><dd><p>approximate the skeleton-decomposition by QR and maxvol</p>
-</dd>
+<div><dl class="docutils">
+<dt>for Core 1 to Core tensor_order</dt><dd>approximate the skeleton-decomposition by QR and maxvol</dd>
 </dl>
 </div></blockquote>
 <ol class="arabic simple" start="4">
-<li><dl class="simple">
-<dt>update the tensor-train from right to left:</dt><dd><dl class="simple">
-<dt>for Core tensor_order to Core 1</dt><dd><p>approximate the skeleton-decomposition by QR and maxvol</p>
-</dd>
+<li><dl class="first docutils">
+<dt>update the tensor-train from right to left:</dt><dd><dl class="docutils">
+<dt>for Core tensor_order to Core 1</dt><dd>approximate the skeleton-decomposition by QR and maxvol</dd>
 </dl>
 </dd>
 </dl>
 </li>
-<li><p>end while</p></li>
+<li>end while</li>
 </ol>
 <p>Acknowledgement: the main body of the code is modified based on TensorToolbox by Daniele Bigoni</p>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r17"><span class="brackets"><a class="fn-backref" href="#id1">R17</a></span></dt>
-<dd><p>Ivan Oseledets and Eugene Tyrtyshnikov.  Tt-cross approximation for multidimensional arrays.
-LinearAlgebra and its Applications, 432(1):70–88, 2010.</p>
-</dd>
-<dt class="label" id="r18"><span class="brackets"><a class="fn-backref" href="#id2">R18</a></span></dt>
-<dd><p>Sergey Dolgov and Robert Scheichl. A hybrid alternating least squares–tt cross algorithm for parametricpdes.
-arXiv preprint arXiv:1707.04562, 2017.</p>
-</dd>
-</dl>
+<table class="docutils citation" frame="void" id="refef29d28d3e-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>Ivan Oseledets and Eugene Tyrtyshnikov.  Tt-cross approximation for multidimensional arrays.
+LinearAlgebra and its Applications, 432(1):70–88, 2010.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="refef29d28d3e-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>Sergey Dolgov and Robert Scheichl. A hybrid alternating least squares–tt cross algorithm for parametricpdes.
+arXiv preprint arXiv:1707.04562, 2017.</td></tr>
+</tbody>
+</table>
 <p class="rubric">Examples</p>
 <p>Generate a 5^3 tensor, and decompose it into tensor-train of 3 factors, with rank = [1,3,3,1]
 &gt;&gt;&gt; tensor = tl.tensor(np.arange(5**3).reshape(5,5,5))
@@ -255,11 +253,10 @@ print the first core:
 &gt;&gt;&gt; print(factors[0])
 .[[[ 24.   0.   4.]</p>
 <blockquote>
-<div><p>[ 49.  25.  29.]
+<div>[ 49.  25.  29.]
 [ 74.  50.  54.]
 [ 99.  75.  79.]
-[124. 100. 104.]]]</p>
-</div></blockquote>
+[124. 100. 104.]]]</div></blockquote>
 </dd></dl>
 
 <div class="clearer"></div></div>

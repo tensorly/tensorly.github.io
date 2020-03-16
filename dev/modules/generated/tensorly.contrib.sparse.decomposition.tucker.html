@@ -150,63 +150,55 @@
 <h1>tensorly.contrib.sparse.decomposition.tucker</h1>
 <dl class="function">
 <dt id="tensorly.contrib.sparse.decomposition.tucker">
-<code class="sig-name descname">tucker</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank=None</em>, <em class="sig-param">ranks=None</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span></dt>
+<code class="descname">tucker</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank=None</em>, <em>ranks=None</em>, <em>n_iter_max=100</em>, <em>init='svd'</em>, <em>svd='numpy_svd'</em>, <em>tol=0.0001</em>, <em>random_state=None</em>, <em>verbose=False</em><span class="sig-paren">)</span></dt>
 <dd><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p>
 <blockquote>
-<div><p>Decomposes <cite>tensor</cite> into a Tucker decomposition:
-<code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">core;</span> <span class="pre">factors[0],</span> <span class="pre">...factors[-1]</span> <span class="pre">|]</span></code> <a class="reference internal" href="#r23" id="id1"><span>[R23]</span></a></p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> : ndarray</p>
-<p><strong>ranks</strong> : None or int list</p>
-<blockquote>
-<div><p>size of the core tensor, <code class="docutils literal notranslate"><span class="pre">(len(ranks)</span> <span class="pre">==</span> <span class="pre">tensor.ndim)</span></code></p>
-</div></blockquote>
-<p><strong>rank</strong> : None or int</p>
-<blockquote>
-<div><p>number of components</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int</p>
-<blockquote>
-<div><p>maximum number of iteration</p>
-</div></blockquote>
-<p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
-<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
-<blockquote>
-<div><p>function to use to compute the SVD,
+<div>Decomposes <cite>tensor</cite> into a Tucker decomposition:
+<code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|</span> <span class="pre">core;</span> <span class="pre">factors[0],</span> <span class="pre">...factors[-1]</span> <span class="pre">|]</span></code> <a class="reference internal" href="#r78dc9fa0ce06-1" id="id1">[1]</a></div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>ranks</strong><span class="classifier">None or int list</span></dt><dd><p>size of the core tensor, <code class="docutils literal notranslate"><span class="pre">(len(ranks)</span> <span class="pre">==</span> <span class="pre">tensor.ndim)</span></code></p>
+</dd>
+<dt><strong>rank</strong><span class="classifier">None or int</span></dt><dd><p>number of components</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
+</dd>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD,
 acceptable values in tensorly.SVD_FUNS</p>
-</div></blockquote>
-<p><strong>tol</strong> : float, optional</p>
-<blockquote>
-<div><p>tolerance: the algorithm stops when the variation in
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>tolerance: the algorithm stops when the variation in
 the reconstruction error is less than the tolerance</p>
-</div></blockquote>
-<p><strong>random_state</strong> : {None, int, np.random.RandomState}</p>
-<p><strong>verbose</strong> : int, optional</p>
-<blockquote>
-<div><p>level of verbosity</p>
-</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>core</strong> : ndarray of size <cite>ranks</cite></p>
-<blockquote>
-<div><p>core tensor of the Tucker decomposition</p>
-</div></blockquote>
-<p><strong>factors</strong> : ndarray list</p>
-<blockquote>
-<div><p>list of factors of the Tucker decomposition.
+<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>level of verbosity</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>core</strong><span class="classifier">ndarray of size <cite>ranks</cite></span></dt><dd><p>core tensor of the Tucker decomposition</p>
+</dd>
+<dt><strong>factors</strong><span class="classifier">ndarray list</span></dt><dd><p>list of factors of the Tucker decomposition.
 Its <code class="docutils literal notranslate"><span class="pre">i</span></code>-th element is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">ranks[i])</span></code></p>
-</div></blockquote>
 </dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r23"><span class="brackets">R23</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>tl.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
-SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
-</dd>
-</dl>
+<table class="docutils citation" frame="void" id="r78dc9fa0ce06-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>tl.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

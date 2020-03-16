@@ -170,32 +170,35 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>.tucker_mode_dot</h1>
 <dl class="function">
 <dt id="tensorly.tucker_tensor.tucker_mode_dot">
-<code class="sig-name descname">tucker_mode_dot</code><span class="sig-paren">(</span><em class="sig-param">tucker_tensor</em>, <em class="sig-param">matrix_or_vector</em>, <em class="sig-param">mode</em>, <em class="sig-param">keep_dim=False</em>, <em class="sig-param">copy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tucker_tensor.html#tucker_mode_dot"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">tucker_mode_dot</code><span class="sig-paren">(</span><em>tucker_tensor</em>, <em>matrix_or_vector</em>, <em>mode</em>, <em>keep_dim=False</em>, <em>copy=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tucker_tensor.html#tucker_mode_dot"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>n-mode product of a Tucker tensor and a matrix or vector at the specified mode</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tucker_tensor</strong> : tl.TuckerTensor or (core, factors)</p>
-<p><strong>matrix_or_vector</strong> : ndarray</p>
-<blockquote>
-<div><p>1D or 2D array of shape <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">i_k)</span></code> or <code class="docutils literal notranslate"><span class="pre">(i_k,</span> <span class="pre">)</span></code>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tucker_tensor</strong><span class="classifier">tl.TuckerTensor or (core, factors)</span></dt><dd></dd>
+<dt><strong>matrix_or_vector</strong><span class="classifier">ndarray</span></dt><dd><p>1D or 2D array of shape <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">i_k)</span></code> or <code class="docutils literal notranslate"><span class="pre">(i_k,</span> <span class="pre">)</span></code>
 matrix or vectors to which to n-mode multiply the tensor</p>
-</div></blockquote>
-<p><strong>mode</strong> : int</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>TuckerTensor = (core, factors)</p>
-<blockquote>
-<div><p><cite>mode</cite>-mode product of <cite>tensor</cite> by <cite>matrix_or_vector</cite>
+<dt><strong>mode</strong><span class="classifier">int</span></dt><dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>TuckerTensor = (core, factors)</dt><dd><p><cite>mode</cite>-mode product of <cite>tensor</cite> by <cite>matrix_or_vector</cite>
 * of shape <img class="math" src="../../_images/math/dff3be44c981381be24d1d9c6040c7bde12e79db.png" alt="(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)"/> if matrix_or_vector is a matrix
 * of shape <img class="math" src="../../_images/math/f1ef44a8ac7f20c194e0905450031d192ed45621.png" alt="(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)"/> if matrix_or_vector is a vector</p>
-</div></blockquote>
 </dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_multi_mode_dot</span></code></dt><dd><p>chaining several mode_dot in one call</p>
-</dd>
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_multi_mode_dot</span></code></dt><dd>chaining several mode_dot in one call</dd>
 </dl>
 </div>
 </dd></dl>

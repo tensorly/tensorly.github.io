@@ -202,44 +202,38 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.partial_svd</h1>
 <dl class="function">
 <dt id="tensorly.partial_svd">
-<code class="sig-name descname">partial_svd</code><span class="sig-paren">(</span><em class="sig-param">matrix</em>, <em class="sig-param">n_eigenvecs=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
+<code class="descname">partial_svd</code><span class="sig-paren">(</span><em>matrix</em>, <em>n_eigenvecs=None</em>, <em>random_state=None</em>, <em>**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Computes a fast partial SVD on <cite>matrix</cite></p>
 <p>If <cite>n_eigenvecs</cite> is specified, sparse eigendecomposition is used on
 either matrix.dot(matrix.T) or matrix.T.dot(matrix).</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>matrix</strong> : tensor</p>
-<blockquote>
-<div><p>A 2D tensor.</p>
-</div></blockquote>
-<p><strong>n_eigenvecs</strong> : int, optional, default is None</p>
-<blockquote>
-<div><p>If specified, number of eigen[vectors-values] to return.</p>
-</div></blockquote>
-<p><strong>random_state: {None, int, np.random.RandomState}</strong></p>
-<blockquote>
-<div><p>If specified, use it for sampling starting vector in a partial SVD(scipy.sparse.linalg.eigsh)</p>
-</div></blockquote>
-<p><strong>**kwargs</strong> : optional</p>
-<blockquote>
-<div><p>kwargs are used to absorb the difference of parameters among the other SVD functions</p>
-</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>matrix</strong><span class="classifier">tensor</span></dt><dd><p>A 2D tensor.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>U</strong> : 2-D tensor, shape (matrix.shape[0], n_eigenvecs)</p>
-<blockquote>
-<div><p>Contains the right singular vectors</p>
-</div></blockquote>
-<p><strong>S</strong> : 1-D tensor, shape (n_eigenvecs, )</p>
-<blockquote>
-<div><p>Contains the singular values of <cite>matrix</cite></p>
-</div></blockquote>
-<p><strong>V</strong> : 2-D tensor, shape (n_eigenvecs, matrix.shape[1])</p>
-<blockquote>
-<div><p>Contains the left singular vectors</p>
-</div></blockquote>
+<dt><strong>n_eigenvecs</strong><span class="classifier">int, optional, default is None</span></dt><dd><p>If specified, number of eigen[vectors-values] to return.</p>
+</dd>
+<dt><strong>random_state: {None, int, np.random.RandomState}</strong></dt><dd><p>If specified, use it for sampling starting vector in a partial SVD(scipy.sparse.linalg.eigsh)</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">optional</span></dt><dd><p>kwargs are used to absorb the difference of parameters among the other SVD functions</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>U</strong><span class="classifier">2-D tensor, shape (matrix.shape[0], n_eigenvecs)</span></dt><dd><p>Contains the right singular vectors</p>
+</dd>
+<dt><strong>S</strong><span class="classifier">1-D tensor, shape (n_eigenvecs, )</span></dt><dd><p>Contains the singular values of <cite>matrix</cite></p>
+</dd>
+<dt><strong>V</strong><span class="classifier">2-D tensor, shape (n_eigenvecs, matrix.shape[1])</span></dt><dd><p>Contains the left singular vectors</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="clearer"></div></div>

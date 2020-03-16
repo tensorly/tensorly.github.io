@@ -171,32 +171,33 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor" title="tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code></a>.kruskal_to_unfolded</h1>
 <dl class="function">
 <dt id="tensorly.kruskal_tensor.kruskal_to_unfolded">
-<code class="sig-name descname">kruskal_to_unfolded</code><span class="sig-paren">(</span><em class="sig-param">kruskal_tensor</em>, <em class="sig-param">mode</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/kruskal_tensor.html#kruskal_to_unfolded"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">kruskal_to_unfolded</code><span class="sig-paren">(</span><em>kruskal_tensor</em>, <em>mode</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/kruskal_tensor.html#kruskal_to_unfolded"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Turns the khatri-product of matrices into an unfolded tensor</p>
 <blockquote>
-<div><p>turns <code class="docutils literal notranslate"><span class="pre">factors</span> <span class="pre">=</span> <span class="pre">[|U_1,</span> <span class="pre">...</span> <span class="pre">U_n|]</span></code> into a mode-<cite>mode</cite>
-unfolding of the tensor</p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>kruskal_tensor</strong> : KruskalTensor = (weight, factors)</p>
-<blockquote>
-<div><p>factors is a list of matrices, all with the same number of columns
+<div>turns <code class="docutils literal notranslate"><span class="pre">factors</span> <span class="pre">=</span> <span class="pre">[|U_1,</span> <span class="pre">...</span> <span class="pre">U_n|]</span></code> into a mode-<cite>mode</cite>
+unfolding of the tensor</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>kruskal_tensor</strong><span class="classifier">KruskalTensor = (weight, factors)</span></dt><dd><p>factors is a list of matrices, all with the same number of columns
 ie for all u in factor_matrices:
 u[i] has shape (s_u_i, R), where R is fixed</p>
-</div></blockquote>
-<p><strong>mode: int</strong></p>
-<blockquote>
-<div><p>mode of the desired unfolding</p>
-</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ndarray</p>
-<blockquote>
-<div><p>unfolded tensor of shape (tensor_shape[mode], -1)</p>
-</div></blockquote>
+<dt><strong>mode: int</strong></dt><dd><p>mode of the desired unfolding</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>ndarray</dt><dd><p>unfolded tensor of shape (tensor_shape[mode], -1)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Notes</p>
 <p>Writing factors = [U_1, …, U_n], we exploit the fact that
 <code class="docutils literal notranslate"><span class="pre">U_k</span> <span class="pre">=</span> <span class="pre">U[k].dot(khatri_rao(U_1,</span> <span class="pre">...,</span> <span class="pre">U_k-1,</span> <span class="pre">U_k+1,</span> <span class="pre">...,</span> <span class="pre">U_n))</span></code></p>

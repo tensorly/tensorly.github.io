@@ -235,16 +235,14 @@ is implemented by the <code class="docutils literal notranslate"><span class="pr
 function.
 This is done in two ways:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt><strong>For Python &gt;= 3.7.0</strong>: using module’s _getattr__ and __dir__ as defined by</dt><dd><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0562/">PEP 562</a></p>
-</dd>
+<li><dl class="first docutils">
+<dt><strong>For Python &gt;= 3.7.0</strong>: using module’s _getattr__ and __dir__ as defined by</dt><dd><a class="reference external" href="https://www.python.org/dev/peps/pep-0562/">PEP 562</a></dd>
 </dl>
 </li>
-<li><dl class="simple">
-<dt><strong>For Python &lt; 3.7.0</strong>: by overwriting</dt><dd><p>sys.modules[module_name].__class__ with a custom class,
+<li><dl class="first docutils">
+<dt><strong>For Python &lt; 3.7.0</strong>: by overwriting</dt><dd>sys.modules[module_name].__class__ with a custom class,
 subclassing <code class="docutils literal notranslate"><span class="pre">types.ModuleType</span></code> for which we have overrridden the
-<code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> and <code class="docutils literal notranslate"><span class="pre">__dir__</span></code> methods.</p>
-</dd>
+<code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> and <code class="docutils literal notranslate"><span class="pre">__dir__</span></code> methods.</dd>
 </dl>
 </li>
 </ul>

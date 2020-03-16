@@ -175,59 +175,52 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.randomised_parafac</h1>
 <dl class="function">
 <dt id="tensorly.decomposition.randomised_parafac">
-<code class="sig-name descname">randomised_parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_samples</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='random'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">tol=1e-08</em>, <em class="sig-param">max_stagnation=20</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#randomised_parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">randomised_parafac</code><span class="sig-paren">(</span><em>tensor</em>, <em>rank</em>, <em>n_samples</em>, <em>n_iter_max=100</em>, <em>init='random'</em>, <em>svd='numpy_svd'</em>, <em>tol=1e-08</em>, <em>max_stagnation=20</em>, <em>random_state=None</em>, <em>verbose=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#randomised_parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Randomised CP decomposition via sampled ALS</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> : ndarray</p>
-<p><strong>rank</strong> : int</p>
-<blockquote>
-<div><p>number of components</p>
-</div></blockquote>
-<p><strong>n_samples</strong> : int</p>
-<blockquote>
-<div><p>number of samples per ALS step</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int</p>
-<blockquote>
-<div><p>maximum number of iteration</p>
-</div></blockquote>
-<p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
-<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
-<blockquote>
-<div><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
-</div></blockquote>
-<p><strong>tol</strong> : float, optional</p>
-<blockquote>
-<div><p>tolerance: the algorithm stops when the variation in
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>number of components</p>
+</dd>
+<dt><strong>n_samples</strong><span class="classifier">int</span></dt><dd><p>number of samples per ALS step</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
+</dd>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>tolerance: the algorithm stops when the variation in
 the reconstruction error is less than the tolerance</p>
-</div></blockquote>
-<p><strong>max_stagnation: int, optional, default is 0</strong></p>
-<blockquote>
-<div><p>if not zero, the maximum allowed number
+</dd>
+<dt><strong>max_stagnation: int, optional, default is 0</strong></dt><dd><p>if not zero, the maximum allowed number
 of iterations with no decrease in fit</p>
-</div></blockquote>
-<p><strong>random_state</strong> : {None, int, np.random.RandomState}, default is None</p>
-<p><strong>verbose</strong> : int, optional</p>
-<blockquote>
-<div><p>level of verbosity</p>
-</div></blockquote>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>factors</strong> : ndarray list</p>
-<blockquote>
-<div><p>list of positive factors of the CP decomposition
+<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}, default is None</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>level of verbosity</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>factors</strong><span class="classifier">ndarray list</span></dt><dd><p>list of positive factors of the CP decomposition
 element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
-</div></blockquote>
 </dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r31"><span class="brackets"><a class="fn-backref" href="#id1">R31</a></span></dt>
-<dd><p>Casey Battaglino, Grey Ballard and Tamara G. Kolda,
-“A Practical Randomized CP Tensor Decomposition”,</p>
-</dd>
-</dl>
+<table class="docutils citation" frame="void" id="rfe3f26443c3b-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td>Casey Battaglino, Grey Ballard and Tamara G. Kolda,
+“A Practical Randomized CP Tensor Decomposition”,</td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="clearer"></div></div>
