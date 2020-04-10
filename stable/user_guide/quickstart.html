@@ -139,6 +139,9 @@
 <li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">3. Tensor basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">4. Tensor decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_regression.html">5. Tensor regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html">6. Sparse Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#usage">7. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#example">8. Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
@@ -167,18 +170,18 @@
 <div class="section" id="tensor-operations">
 <h2>1.1. Tensor operations</h2>
 <p>First import TensorLy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="kn">as</span> <span class="nn">tl</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 </pre></div>
 </div>
 <p>In the code written in TensorLy, you may notice we use function from tensorly rather than, say, NumPy. This is because we support several backends and we want the correct function to be called depending on the backend.
 For instance <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch version depending on the backend. There are other subtlties that are handled by the backend to allow a common API regardless of the backend use.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">By default, the backend is set to NumPy. You can change the backend using <cite>tensorly.set_backend</cite>.
+<p class="admonition-title">Note</p>
+<p>By default, the backend is set to NumPy. You can change the backend using <cite>tensorly.set_backend</cite>.
 For more information on the backend, refer to <a class="reference internal" href="backend.html"><span class="doc">TensorLy’s backend system</span></a>.</p>
 </div>
 <p>Tensors can be created, e.g. from numpy arrays:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># create a random 10x10x10 tensor</span>
 <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
@@ -251,7 +254,7 @@ For more information on the backend, refer to <a class="reference internal" href
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2018, Jean Kossaifi.
+                &copy; 2016 - 2019, Jean Kossaifi.
         </p> 
     </div>
 </footer>

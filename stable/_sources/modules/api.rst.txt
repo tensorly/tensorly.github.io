@@ -5,21 +5,53 @@ API reference
 :mod:`tensorly`: Manipulating the backend with a unified interface
 ==================================================================
 
-In addition to the basic functions such as `shape`, `reshape`, `where`, `min`, etc, each backend provides the following functions:
+For each backend, tensorly provides the following uniform functions:
 
 .. automodule:: tensorly
     :no-members:
     :no-inherited-members:
 
-.. autosummary:: 
+.. autosummary::
     :toctree: generated
     :template: function.rst
 
     set_backend
     get_backend
     context
+    tensor
+    is_tensor
+    shape
+    ndim
     to_numpy
+    copy
+    concatenate
+    reshape
+    transpose
+    moveaxis
+    arange
+    ones
+    zeros
+    zeros_like
+    eye
+    where
+    clip
+    max
+    min
+    all
+    mean
+    sum
+    prod
+    sign
+    abs
+    sqrt
+    norm
+    dot
+    kron
+    solve
+    qr
+    kr
     partial_svd
+
 
 :mod:`tensorly.base`: Core tensor functions
 ============================================
@@ -60,6 +92,9 @@ In addition to the basic functions such as `shape`, `reshape`, `where`, `min`, e
     kruskal_to_tensor
     kruskal_to_unfolded
     kruskal_to_vec
+    kruskal_mode_dot
+    unfolding_dot_khatri_rao
+
 
 :mod:`tensorly.tucker_tensor`: Tensors in Tucker format
 =======================================================
@@ -77,6 +112,8 @@ In addition to the basic functions such as `shape`, `reshape`, `where`, `min`, e
     tucker_to_tensor
     tucker_to_unfolded
     tucker_to_vec
+    tucker_mode_dot
+
 
 :mod:`tensorly.mps_tensor`: Tensors in Matrix-Product-State format
 ==================================================================
@@ -94,7 +131,6 @@ In addition to the basic functions such as `shape`, `reshape`, `where`, `min`, e
     mps_to_tensor
     mps_to_unfolded
     mps_to_vec
-
 
 
 :mod:`tensorly.tenalg`: Tensor algebra
@@ -229,5 +265,25 @@ In addition to the basic functions such as `shape`, `reshape`, `where`, `min`, e
     :template: function.rst
 
     decomposition.matrix_product_state_cross
+
+Sparse tensor operations
+------------------------
+
+Enables tensor operations on sparse tensors.
+Currently, the following decomposition methods are supported (for the NumPy backend, using Sparse):
+
+.. automodule:: tensorly.contrib.sparse
+
+.. currentmodule:: tensorly.contrib
+
+.. autosummary::
+    :toctree: generated/
+
+   sparse.decomposition.tucker
+   sparse.decomposition.partial_tucker
+   sparse.decomposition.non_negative_tucker
+   sparse.decomposition.robust_pca
+   sparse.decomposition.parafac
+   sparse.decomposition.non_negative_parafac
 
 

@@ -147,7 +147,7 @@
                     
 
   <h1>Source code for tensorly.tenalg.proximal</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
@@ -165,7 +165,7 @@
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">    threshold : float or ndarray with shape tensor.shape</span>
 <span class="sd">        * If float the threshold is applied to the whole tensor</span>
-<span class="sd">        * If ndarray, one theshold is applied per elements, 0 values are ignored</span>
+<span class="sd">        * If ndarray, one threshold is applied per elements, 0 values are ignored</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -178,7 +178,7 @@
 
 <span class="sd">    &gt;&gt;&gt; import tensorly.backend as T</span>
 <span class="sd">    &gt;&gt;&gt; from tensorly.tenalg.proximal import soft_thresholding</span>
-<span class="sd">    &gt;&gt;&gt; tensor = T.tensor([[1, -2, 1.5], [-4, 3, -0.5]])</span>
+<span class="sd">    &gt;&gt;&gt; tensor = tl.tensor([[1, -2, 1.5], [-4, 3, -0.5]])</span>
 <span class="sd">    &gt;&gt;&gt; soft_thresholding(tensor, 1.1)</span>
 <span class="sd">    array([[ 0. , -0.9,  0.4],</span>
 <span class="sd">           [-2.9,  1.9,  0. ]])</span>
@@ -186,7 +186,7 @@
 
 <span class="sd">    Example with missing values</span>
 
-<span class="sd">    &gt;&gt;&gt; mask = T.tensor([[0, 0, 1], [1, 0, 1]])</span>
+<span class="sd">    &gt;&gt;&gt; mask = tl.tensor([[0, 0, 1], [1, 0, 1]])</span>
 <span class="sd">    &gt;&gt;&gt; soft_thresholding(tensor, mask*1.1)</span>
 <span class="sd">    array([[ 1. , -2. ,  0.4],</span>
 <span class="sd">           [-2.9,  3. ,  0. ]])</span>
@@ -196,7 +196,7 @@
 <span class="sd">    inplace_soft_thresholding : Inplace version of the soft-thresholding operator</span>
 <span class="sd">    svd_thresholding : SVD-thresholding operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">*</span><span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="svd_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding">[docs]</a><span class="k">def</span> <span class="nf">svd_thresholding</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
@@ -216,8 +216,8 @@
 <span class="sd">    --------</span>
 <span class="sd">    procrustes : procrustes operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">soft_thresholding</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">threshold</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">V</span><span class="p">)</span></div>
+    <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">soft_thresholding</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">threshold</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">V</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="procrustes"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.procrustes.html#tensorly.tenalg.proximal.procrustes">[docs]</a><span class="k">def</span> <span class="nf">procrustes</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
@@ -238,8 +238,8 @@
 <span class="sd">    --------</span>
 <span class="sd">    svd_thresholding : SVD-thresholding operator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span></div>
+    <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span></div>
 
 </pre></div>
 
@@ -257,7 +257,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2018, Jean Kossaifi.
+                &copy; 2016 - 2019, Jean Kossaifi.
         </p> 
     </div>
 </footer>

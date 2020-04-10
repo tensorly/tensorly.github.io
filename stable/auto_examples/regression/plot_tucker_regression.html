@@ -183,12 +183,12 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.base</span> <span class="kn">import</span> <span class="n">tensor_to_vec</span><span class="p">,</span> <span class="n">partial_tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">tensorly.datasets.synthetic</span> <span class="kn">import</span> <span class="n">gen_image</span>
 <span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 <span class="kn">from</span> <span class="nn">tensorly.regression.tucker_regression</span> <span class="kn">import</span> <span class="n">TuckerRegressor</span>
-<span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="kn">as</span> <span class="nn">T</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 <span class="c1"># Parameter of the experiment</span>
 <span class="n">image_height</span> <span class="o">=</span> <span class="mi">25</span>
@@ -200,9 +200,9 @@
 
 <span class="c1"># Generate random samples</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="c1"># Paramters of the plot, deduced from the data</span>
+<span class="c1"># Parameters of the plot, deduced from the data</span>
 <span class="n">n_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">patterns</span><span class="p">)</span>
 <span class="n">n_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="c1"># Plot the three images</span>
@@ -210,24 +210,24 @@
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">patterns</span><span class="p">):</span>
 
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;fitting pattern n.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fitting pattern n.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 
     <span class="c1"># Generate the original image</span>
     <span class="n">weight_img</span> <span class="o">=</span> <span class="n">gen_image</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">image_height</span><span class="o">=</span><span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="o">=</span><span class="n">image_width</span><span class="p">)</span>
-    <span class="n">weight_img</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weight_img</span><span class="p">)</span>
+    <span class="n">weight_img</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weight_img</span><span class="p">)</span>
 
     <span class="c1"># Generate the labels</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">weight_img</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">weight_img</span><span class="p">))</span>
 
     <span class="c1"># Plot the original weights</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">weight_img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">weight_img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original</span><span class="se">\n</span><span class="s1">weights&#39;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranks</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;fitting for rank = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fitting for rank = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
 
         <span class="c1"># Create a tensor Regressor estimator</span>
         <span class="n">estimator</span> <span class="o">=</span> <span class="n">TuckerRegressor</span><span class="p">(</span><span class="n">weight_ranks</span><span class="o">=</span><span class="p">[</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">],</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -236,22 +236,24 @@
         <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
         <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Learned</span><span class="se">\n</span><span class="s1">rank = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Learned</span><span class="se">\n</span><span class="s1">rank = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Tucker tensor regression&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.894 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  3.251 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/2d69da00240818e10ed44e15809f01a2/plot_tucker_regression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tucker_regression.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/83776b8a7dbe4858882c8c190f93bdb0/plot_tucker_regression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tucker_regression.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/f2295c2300b2cf44d6423e12b331f692/plot_tucker_regression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_tucker_regression.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/ba9ab31b668e2e402c959f74d1c232fd/plot_tucker_regression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_tucker_regression.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
 </div>
@@ -285,7 +287,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2018, Jean Kossaifi.
+                &copy; 2016 - 2019, Jean Kossaifi.
         </p> 
     </div>
 </footer>

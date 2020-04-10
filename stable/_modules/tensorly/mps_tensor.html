@@ -154,6 +154,50 @@
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 
+<span class="k">def</span> <span class="nf">_validate_mps_tensor</span><span class="p">(</span><span class="n">mps_tensor</span><span class="p">):</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">mps_tensor</span>
+    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">n_factors</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Matrix-Product-State (ttrain) tensor should be composed of at least two factors and a core.&#39;</span>
+                         <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factor was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_factors</span><span class="p">))</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+        <span class="n">current_rank</span><span class="p">,</span> <span class="n">current_shape</span><span class="p">,</span> <span class="n">next_rank</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+
+        <span class="c1"># Check that factors are third order tensors</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;MPS expresses a tensor as third order factors (tt-cores).</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;However, tl.ndim(factors[</span><span class="si">{}</span><span class="s1">]) = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">index</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">factor</span><span class="p">)))</span>
+        <span class="c1"># Consecutive factors should have matching ranks</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">and</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current_rank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Consecutive factors should have matching ranks</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39; -- e.g. tl.shape(factors[0])[2]) == tl.shape(factors[1])[0])</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;However, tl.shape(factor[</span><span class="si">{}</span><span class="s1">])[2] == </span><span class="si">{}</span><span class="s1"> but&#39;</span>
+                             <span class="s1">&#39; tl.shape(factor[</span><span class="si">{}</span><span class="s1">])[0] == </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                              <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])[</span><span class="mi">2</span><span class="p">],</span> <span class="n">index</span><span class="p">,</span> <span class="n">current_rank</span><span class="p">))</span>
+        <span class="c1"># Check for boundary conditions</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Boundary conditions dictate factor[0].shape[0] == 1.&#39;</span>
+                             <span class="s1">&#39;However, got factor[0].shape[0] = </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                              <span class="n">current_rank</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">==</span> <span class="n">n_factors</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">next_rank</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Boundary conditions dictate factor[-1].shape[2] == 1.&#39;</span>
+                             <span class="s1">&#39;However, got factor[</span><span class="si">{}</span><span class="s1">].shape[2] = </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                              <span class="n">n_factors</span><span class="p">,</span> <span class="n">next_rank</span><span class="p">))</span>
+    
+        <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_shape</span><span class="p">)</span>
+        <span class="n">rank</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_rank</span><span class="p">)</span>
+        
+    <span class="c1"># Add last rank (boundary condition)</span>
+    <span class="n">rank</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_rank</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="mps_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.mps_tensor.mps_to_tensor.html#tensorly.mps_tensor.mps_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">mps_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the full tensor whose MPS decomposition is given by &#39;factors&#39;</span>
 
@@ -236,7 +280,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2018, Jean Kossaifi.
+                &copy; 2016 - 2019, Jean Kossaifi.
         </p> 
     </div>
 </footer>

@@ -148,12 +148,12 @@
 
   <h1>Source code for tensorly.regression.tucker_regression</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
-<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="k">import</span> <span class="n">kronecker</span>
-<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="k">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">tucker_to_vec</span>
-<span class="kn">from</span> <span class="nn">..random</span> <span class="k">import</span> <span class="n">check_random_state</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">kronecker</span>
+<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">tucker_to_vec</span>
+<span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
@@ -181,7 +181,7 @@
 <span class="sd">        level of verbosity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_ranks</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_ranks</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_ranks</span> <span class="o">=</span> <span class="n">weight_ranks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">=</span> <span class="n">reg_W</span>
@@ -246,7 +246,7 @@
                                         <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
                                       <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">y</span><span class="p">)),</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-            <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+            <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
             <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="c1"># Convergence check</span>
@@ -260,7 +260,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">weight_tensor_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tucker_weight_</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span> <span class="o">=</span> <span class="n">tucker_to_vec</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span> <span class="o">=</span> <span class="n">tucker_to_vec</span><span class="p">((</span><span class="n">G</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iterations_</span> <span class="o">=</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">norm_W_</span> <span class="o">=</span> <span class="n">norm_W</span>
 
@@ -291,7 +291,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2018, Jean Kossaifi.
+                &copy; 2016 - 2019, Jean Kossaifi.
         </p> 
     </div>
 </footer>
