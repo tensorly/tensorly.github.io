@@ -160,6 +160,13 @@
 <span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
 
 
+<span class="k">class</span> <span class="nc">Index</span><span class="p">():</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">indices</span>
+
+
 <span class="k">class</span> <span class="nc">Backend</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">register_method</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
@@ -716,6 +723,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">descending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a sorted copy of an array</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : tensor</span>
+<span class="sd">            An N-D tensor</span>
+<span class="sd">        axis : int or None</span>
+<span class="sd">            Axis along which to sort. If None, the array is flattened before sorting. The default is -1, which sorts along the last axis.</span>
+<span class="sd">        descending : bool</span>
+<span class="sd">            If True, values are sorted in descending order, otherwise in ascending.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sorted_tensor : tensor</span>
+<span class="sd">            An N-D array, sorted copy of input tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
     <span class="k">def</span> <span class="nf">kron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Kronecker product of two tensors.</span>
 
@@ -885,27 +913,89 @@
             <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="o">**</span><span class="n">ctx</span><span class="p">)</span>
             <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="o">**</span><span class="n">ctx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
-    
-    
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">descending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a sorted copy of an array</span>
+
+    <span class="k">def</span> <span class="nf">truncated_svd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes a truncated SVD on `matrix` using pytorch&#39;s SVD</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        tensor : tensor</span>
-<span class="sd">            An N-D tensor</span>
-<span class="sd">        axis : int or None</span>
-<span class="sd">            Axis along which to sort. If None, the array is flattened before sorting. The default is -1, which sorts along the last axis.</span>
-<span class="sd">        descending : bool</span>
-<span class="sd">            If True, values are sorted in descending order, otherwise in ascending.</span>
+<span class="sd">        matrix : 2D-array</span>
+<span class="sd">        n_eigenvecs : int, optional, default is None</span>
+<span class="sd">            if specified, number of eigen[vectors-values] to return</span>
+<span class="sd">        **kwargs : optional</span>
+<span class="sd">            kwargs are used to absorb the difference of parameters among the other SVD functions</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        sorted_tensor : tensor</span>
-<span class="sd">            An N-D array, sorted copy of input tensor</span>
+<span class="sd">        U : 2D-array</span>
+<span class="sd">            of shape (matrix.shape[0], n_eigenvecs)</span>
+<span class="sd">            contains the right singular vectors</span>
+<span class="sd">        S : 1D-array</span>
+<span class="sd">            of shape (n_eigenvecs, )</span>
+<span class="sd">            contains the singular values of `matrix`</span>
+<span class="sd">        V : 2D-array</span>
+<span class="sd">            of shape (n_eigenvecs, matrix.shape[1])</span>
+<span class="sd">            contains the left singular vectors</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">if</span> <span class="n">dim_1</span> <span class="o">&lt;=</span> <span class="n">dim_2</span><span class="p">:</span>
+            <span class="n">min_dim</span> <span class="o">=</span> <span class="n">dim_1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_dim</span> <span class="o">=</span> <span class="n">dim_2</span>
+
+        <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;</span> <span class="n">min_dim</span><span class="p">:</span>
+            <span class="n">full_matrices</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">full_matrices</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">S</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">V</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="n">Index</span><span class="p">()</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">index_update</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates the value of tensors in the specified indices</span>
+<span class="sd">            Should be used as::</span>
+
+<span class="sd">                index_update(tensor, tensorly.index[:, 3:5], values)</span>
+
+<span class="sd">            Equivalent of::</span>
+<span class="sd">            </span>
+<span class="sd">                tensor[:, 3:5] = values</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : tensorly.tensor</span>
+<span class="sd">            intput tensor which values to update</span>
+<span class="sd">        indices : tensorly.index</span>
+<span class="sd">            indices to update</span>
+<span class="sd">        values : tensorly.tensor</span>
+<span class="sd">            values to use to fill tensor[indices]</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tensor</span>
+<span class="sd">            updated tensor</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import tensorly as tl</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; tensor = tl.tensor([[1, 2, 3], [4, 5, 6]])</span>
+<span class="sd">        &gt;&gt;&gt; cpy = tensor.copy()</span>
+<span class="sd">        &gt;&gt;&gt; tensor[:, 1] = 0</span>
+<span class="sd">        &gt;&gt;&gt; tensor</span>
+<span class="sd">        array([[1, 0, 3],</span>
+<span class="sd">                [4, 0, 6]])</span>
+<span class="sd">        &gt;&gt;&gt; tl.index_update(tensor, tl.index[:, 1], 0)</span>
+<span class="sd">        array([[1, 0, 3],</span>
+<span class="sd">               [4, 0, 6]])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tensor</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="k">return</span> <span class="n">tensor</span>
 </pre></div>
 
 

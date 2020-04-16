@@ -161,7 +161,8 @@
                    <span class="s1">&#39;mxnet&#39;</span><span class="p">:</span><span class="s1">&#39;MxnetBackend&#39;</span><span class="p">,</span> 
                    <span class="s1">&#39;pytorch&#39;</span><span class="p">:</span><span class="s1">&#39;PyTorchBackend&#39;</span><span class="p">,</span> 
                    <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span><span class="s1">&#39;TensorflowBackend&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;cupy&#39;</span><span class="p">:</span><span class="s1">&#39;CupyBackend&#39;</span><span class="p">}</span>
+                   <span class="s1">&#39;cupy&#39;</span><span class="p">:</span><span class="s1">&#39;CupyBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;jax&#39;</span><span class="p">:</span> <span class="s1">&#39;JaxBackend&#39;</span><span class="p">}</span>
 
 <span class="n">_LOADED_BACKENDS</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">_LOCAL_STATE</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
@@ -365,7 +366,8 @@
 <span class="n">kr</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">kr</span><span class="p">)</span>
 <span class="n">partial_svd</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">)</span>
 <span class="n">sort</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>
-
+<span class="c1"># index = dispatch(Backend.index)</span>
+<span class="n">index_update</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">index_update</span><span class="p">)</span>
 
 <span class="c1"># Initialise the backend to the default one</span>
 <span class="n">initialize_backend</span><span class="p">()</span>
