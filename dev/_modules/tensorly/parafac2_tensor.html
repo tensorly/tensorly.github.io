@@ -1,0 +1,701 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
+        <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../home.html">
+            TensorLy
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
+    </div>
+
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
+
+			<a class="navbar-item" href="../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../authors.html">
+				People
+			</a>
+			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+				Notebooks
+			</a>
+
+		</div>
+
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
+
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
+
+		</div>
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-quarter is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content main-content">
+
+                    
+
+  <h1>Source code for tensorly.parafac2_tensor</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Core operations on PARAFAC2 tensors whose second mode evolve over their first.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Authors: Marie Roald</span>
+<span class="c1">#          Yngve Mardal Moe</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+
+
+<span class="k">class</span> <span class="nc">Parafac2Tensor</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A wrapper class for the PARAFAC2 decomposition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parafac2_tensor</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">shape</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">projections</span> <span class="o">=</span> <span class="n">projections</span>
+        
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_kruskaltensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kruskal_tensor</span><span class="p">,</span> <span class="n">parafac2_tensor_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Parafac2Tensor from a KruskalTensor</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        kruskal_tensor: KruskalTensor or Parafac2Tensor</span>
+<span class="sd">            If it is a Parafac2Tensor, then the argument ``parafac2_tensor_ok`` must be True&#39;</span>
+<span class="sd">        parafac2_tensor: bool (optional)</span>
+<span class="sd">            Whether or not Parafac2Tensors can be used as input.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        Parafac2Tensor</span>
+<span class="sd">            Parafac2Tensor with factor matrices and weigths extracted from a KruskalTensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parafac2_tensor_ok</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">kruskal_tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input is not a KruskalTensor. If it is a Parafac2Tensor, then the argument ``parafac2_tensor_ok`` must be True&#39;</span><span class="p">)</span>
+        
+        <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span> <span class="o">=</span> <span class="n">kruskal_tensor</span>
+        <span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">Q</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">A</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">R</span>
+        <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;You tried to access index </span><span class="si">{}</span><span class="s1"> of a PARAFAC2 tensor.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                             <span class="s1">&#39;You can only access index 0, 1 and 2 of a PARAFAC2 tensor&#39;</span>
+                             <span class="s1">&#39;(corresponding respectively to the weights, factors and projections)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span>
+        
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">3</span>
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors, projections) : rank-</span><span class="si">{}</span><span class="s1"> Parafac2Tensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">message</span>
+
+
+<span class="k">def</span> <span class="nf">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validates a parafac2_tensor in the form (weights, factors)</span>
+<span class="sd">    </span>
+<span class="sd">        Returns the rank and shape of the validated tensor</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor or (weights, factors)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (shape, rank) : (int tuple, int)</span>
+<span class="sd">        size of the full tensor and rank of the Kruskal tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">Parafac2Tensor</span><span class="p">):</span>
+        <span class="c1"># it&#39;s already been validated at creation</span>
+        <span class="k">return</span> <span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">rank</span>
+
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+            
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A PARAFAC2 tensor should be composed of exactly three factors.&#39;</span>
+                         <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factors was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">)</span> <span class="o">!=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A PARAFAC2 tensor should have one projection matrix for each horisontal&#39;</span>
+                         <span class="s1">&#39; slice. However, </span><span class="si">{}</span><span class="s1"> projection matrices was given and the first mode has&#39;</span>
+                         <span class="s1">&#39;length </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">),</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">projection</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">projections</span><span class="p">):</span>
+        <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;All the projection matrices of a PARAFAC2 tensor should have the same number of &#39;</span>
+                <span class="s1">&#39;columns as the rank. However, rank=</span><span class="si">{}</span><span class="s1"> but projections[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">inner_product</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">projection</span><span class="p">),</span> <span class="n">projection</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">))))</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;All the projection matrices must be orthonormal, that is, P.T@P = I. &#39;</span>
+                <span class="s1">&#39;However, T.norm(projection[</span><span class="si">{}</span><span class="s1">].T@projection[</span><span class="si">{}</span><span class="s1">] - T.eye(rank)) = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">)))</span> 
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_mode_size</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]))</span>  <span class="c1"># Tuple unpacking to possibly support higher order PARAFAC2 tensors in the future</span>
+
+    
+    <span class="c1"># Skip first factor matrix since the rank is extracted from it.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the factors of a PARAFAC2 tensor should have the same number of columns.&#39;</span>
+                             <span class="s1">&#39;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s1"> but factors[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given factors for a rank-</span><span class="si">{}</span><span class="s1"> PARAFAC2 tensor but len(weights)=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+        
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span>
+
+
+<span class="k">def</span> <span class="nf">parafac2_normalise</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns parafac2_tensor with factors normalised to unit length</span>
+
+<span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
+<span class="sd">    where the columns of each `V_k` are normalized to unit Euclidean length</span>
+<span class="sd">    from the columns of `U_k` with the normalizing constants absorbed into</span>
+<span class="sd">    `weights`. In the special case of a symmetric tensor, `weights` holds the</span>
+<span class="sd">    eigenvalues of the tensor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor = (weight, factors, projections)</span>
+<span class="sd">        factors is list of matrices, all with the same number of columns</span>
+<span class="sd">        i.e.::</span>
+<span class="sd">            for u in U:</span>
+<span class="sd">                u[i].shape == (s_i, R)</span>
+
+<span class="sd">        where `R` is fixed while `s_i` can vary with `i`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Parafac2Tensor = (normalisation_weights, normalised_factors, normalised_projections)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># allocate variables for weights, and normalized factors</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+    
+    <span class="c1"># if (not copy) and (weights is None):</span>
+    <span class="c1">#     warnings.warn(&#39;Provided copy=False and weights=None: a new Parafac2Tensor&#39;</span>
+    <span class="c1">#                   &#39;with new weights and factors normalised inplace will be returned.&#39;)</span>
+    <span class="c1">#     weights = T.ones(rank, **T.context(factors[0]))</span>
+    
+    <span class="c1"># The if test below was added to enable inplace edits</span>
+    <span class="c1"># however, TensorFlow does not support inplace edits</span>
+    <span class="c1"># so this is always set to True</span>
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>  
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+        <span class="n">scales</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="n">scales</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">scales</span><span class="p">)</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span><span class="o">/</span><span class="n">scales_non_zero</span>
+        
+    <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">apply_parafac2_projections</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply the projection matrices to the evolving factor.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (weights, factors) : ndarray, tuple</span>
+<span class="sd">        A tensor decomposition on the form A [B_i] C such that</span>
+<span class="sd">        the :math:`X_{ijk}` is given by :math:`\sum_r A_{ir} [B_i]_{jr} C_{kr}`.</span>
+
+<span class="sd">        This is also equivalent to a coupled matrix factorisation, where</span>
+<span class="sd">        each matrix, :math:`X_i = C diag([a_{i1}, ..., a_{ir}] B_i)`.</span>
+
+<span class="sd">        The first element of factors is the A matrix, the second element is</span>
+<span class="sd">        a list of B-matrices and the third element is the C matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+
+    <span class="n">evolving_factor</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">projection</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">evolving_factor</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="parafac2_to_slice"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_slice.html#tensorly.parafac2_tensor.parafac2_to_slice">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_slice</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">slice_idx</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a single slice along the first mode from the PARAFAC2 tensor.</span>
+
+<span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
+<span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_i = P_i B,</span>
+
+<span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">    :math:`R \times R` matrix.</span>
+
+<span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">    :math:`X_{ijk}` is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">    </span>
+<span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor - (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the factors</span>
+<span class="sd">        * factors : List of factors of the PARAFAC2 decomposition</span>
+<span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
+<span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">            factors.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Full tensor of shape [P[slice_idx].shape[1], C.shape[1]], where</span>
+<span class="sd">        P is the projection matrices and C is the last factor matrix of</span>
+<span class="sd">        the Parafac2Tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+        <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">slice_idx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">weights</span>
+
+    <span class="n">Ct</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+    <span class="n">B_i</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">projections</span><span class="p">[</span><span class="n">slice_idx</span><span class="p">],</span> <span class="n">B</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B_i</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">Ct</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parafac2_to_slices"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_slices.html#tensorly.parafac2_tensor.parafac2_to_slices">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_slices</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate all slices along the first mode from a PARAFAC2 tensor.</span>
+
+<span class="sd">    Generates a list of all slices from a PARAFAC2 tensor. A list is returned</span>
+<span class="sd">    since the tensor might have varying size along the second mode. To return</span>
+<span class="sd">    a tensor, see the ``parafac2_to_tensor`` function instead.shape</span>
+
+<span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
+<span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_i = P_i B,</span>
+
+<span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">    :math:`R \times R` matrix.</span>
+
+<span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">    :math:`X_{ijk}` is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">    </span>
+<span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor - (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the factors</span>
+<span class="sd">        * factors : List of factors of the PARAFAC2 decomposition</span>
+<span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
+<span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">            factors.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List[ndarray]</span>
+<span class="sd">        A list of full tensors of shapes [P[i].shape[1], C.shape[1]], where</span>
+<span class="sd">        P is the projection matrices and C is the last factor matrix of the</span>
+<span class="sd">        Parafac2Tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+        <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">weights</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">decomposition</span> <span class="o">=</span> <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span>
+    <span class="n">I</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">parafac2_to_slice</span><span class="p">(</span><span class="n">decomposition</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="parafac2_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_tensor.html#tensorly.parafac2_tensor.parafac2_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a full tensor from a PARAFAC2 decomposition.</span>
+
+<span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
+<span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_i = P_i B,</span>
+
+<span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">    :math:`R \times R` matrix.</span>
+
+<span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">    :math:`X_{ijk}` is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">    </span>
+<span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor - (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the factors</span>
+<span class="sd">        * factors : List of factors of the PARAFAC2 decomposition</span>
+<span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
+<span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">            factors.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Full constructed tensor. Uneven slices are padded with zeros.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="n">parafac2_to_slices</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
+    <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">projection</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
+    
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="n">lengths</span><span class="p">),</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>  <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">slice_</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)):</span>
+        <span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">length</span><span class="p">],</span> <span class="n">slice_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tensor</span></div>
+
+
+<div class="viewcode-block" id="parafac2_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_unfolded.html#tensorly.parafac2_tensor.parafac2_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_unfolded</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct an unfolded tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
+
+<span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
+<span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_i = P_i B,</span>
+
+<span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">    :math:`R \times R` matrix.</span>
+
+<span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">    :math:`X_{ijk}` is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">    </span>
+<span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor - (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the factors</span>
+<span class="sd">        * factors : List of factors of the PARAFAC2 decomposition</span>
+<span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
+<span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">            factors.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Full constructed tensor. Uneven slices are padded with zeros.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">unfold</span><span class="p">(</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parafac2_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_vec.html#tensorly.parafac2_tensor.parafac2_to_vec">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_vec</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a vectorized tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
+
+<span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
+<span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">    </span>
+<span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        B_i = P_i B,</span>
+
+<span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">    :math:`R \times R` matrix.</span>
+
+<span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">    :math:`X_{ijk}` is given by</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">    </span>
+<span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parafac2_tensor : Parafac2Tensor - (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the factors</span>
+<span class="sd">        * factors : List of factors of the PARAFAC2 decomposition</span>
+<span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
+<span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">            factors.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Full constructed tensor. Uneven slices are padded with zeros.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">))</span></div>
+</pre></div>
+
+
+
+                    <nav class="pagination">
+    
+    
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2020, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>
