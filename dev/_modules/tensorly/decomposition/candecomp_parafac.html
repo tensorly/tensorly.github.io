@@ -269,7 +269,8 @@
             <span class="n">non_negative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>\
             <span class="n">sparsity</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>\
             <span class="n">l2_reg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>  <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
-            <span class="n">cvg_criterion</span> <span class="o">=</span> <span class="s1">&#39;abs_rec_error&#39;</span><span class="p">):</span>
+            <span class="n">cvg_criterion</span> <span class="o">=</span> <span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>\
+            <span class="n">fixed_modes</span> <span class="o">=</span> <span class="p">[]):</span>
     <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)</span>
 <span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
 
@@ -308,6 +309,9 @@
 <span class="sd">       If &#39;abs_rec_error&#39;, ALS terminates when |previous rec_error - current rec_error| &lt; tol.</span>
 <span class="sd">    sparsity : float or int</span>
 <span class="sd">        If `sparsity` is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). `sparsity` denotes desired fraction or number of non-zero elements in the sparse_component of the `tensor`.</span>
+<span class="sd">        fixed_modes : list, default is []</span>
+<span class="sd">            A list of modes for which the initial value is not modified.</span>
+<span class="sd">            The last mode cannot be fixed due to error computation.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -348,20 +352,25 @@
     <span class="n">weights</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
     <span class="n">Id</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span><span class="o">*</span><span class="n">l2_reg</span>
 
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You asked for fixing the last mode, which is not supported.</span><span class="se">\n</span><span class="s1"> The last mode will not be fixed. Consider using tl.moveaxis()&#39;</span><span class="p">)</span>
+        <span class="n">fixed_modes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">modes_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">]</span>
+
     <span class="k">if</span> <span class="n">sparsity</span><span class="p">:</span>
         <span class="n">sparse_component</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sparsity</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="n">sparsity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sparsity</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sparsity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sparsity</span><span class="p">)</span>
-            
+
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">orthogonalise</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;=</span> <span class="n">orthogonalise</span><span class="p">:</span>
             <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="n">rank</span> <span class="k">else</span> <span class="n">f</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting iteration&quot;</span><span class="p">,</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 
@@ -443,7 +452,8 @@
 
 <div class="viewcode-block" id="non_negative_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac">[docs]</a><span class="k">def</span> <span class="nf">non_negative_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                          <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">):</span>
+                         <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
+                         <span class="n">fixed_modes</span><span class="o">=</span><span class="p">[]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Non-negative CP decomposition</span>
 
@@ -467,6 +477,9 @@
 <span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 <span class="sd">    verbose : int, optional</span>
 <span class="sd">        level of verbosity</span>
+<span class="sd">    fixed_modes : list, default is []</span>
+<span class="sd">        A list of modes for which the initial value is not modified.</span>
+<span class="sd">        The last mode cannot be fixed due to error computation.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -498,6 +511,11 @@
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You asked for fixing the last mode, which is not supported while tol is fixed.</span><span class="se">\n</span><span class="s1"> The last mode will not be fixed. Consider using tl.moveaxis()&#39;</span><span class="p">)</span>
+        <span class="n">fixed_modes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">modes_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">]</span>
+
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">orthogonalise</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;=</span> <span class="n">orthogonalise</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
@@ -506,7 +524,7 @@
 
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting iteration&quot;</span><span class="p">,</span> <span class="n">iteration</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 
