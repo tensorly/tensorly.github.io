@@ -150,7 +150,7 @@
 <h1>tensorly.contrib.sparse.decomposition.parafac</h1>
 <dl class="py function">
 <dt id="tensorly.contrib.sparse.decomposition.parafac">
-<code class="descname">parafac</code><span class="sig-paren">(</span><em><span class="o">*</span><span class="n">args</span></em>, <em><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span></dt>
+<code class="descname">parafac</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">rank</span></em>, <em><span class="n">n_iter_max</span><span class="o">=</span><span class="default_value">100</span></em>, <em><span class="n">init</span><span class="o">=</span><span class="default_value">'svd'</span></em>, <em><span class="n">svd</span><span class="o">=</span><span class="default_value">'numpy_svd'</span></em>, <em><span class="n">normalize_factors</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">orthogonalise</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">tol</span><span class="o">=</span><span class="default_value">1e-08</span></em>, <em><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em><span class="n">return_errors</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">non_negative</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">sparsity</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">l2_reg</span><span class="o">=</span><span class="default_value">0</span></em>, <em><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">cvg_criterion</span><span class="o">=</span><span class="default_value">'abs_rec_error'</span></em>, <em><span class="n">fixed_modes</span><span class="o">=</span><span class="default_value">[]</span></em>, <em><span class="n">linesearch</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
 Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r8eaaee98a9c3-1" id="id1">[1]</a> such that,</p>
 <blockquote>
@@ -187,14 +187,14 @@ True). Allows for missing values <a class="reference internal" href="#r8eaaee98a
 </dd>
 <dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None. 
 If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
-If ‘abs_rec_error’, ALS terminates when <a href="#id5"><span class="problematic" id="id6">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
+If ‘abs_rec_error’, ALS terminates when <a href="#id6"><span class="problematic" id="id7">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
 </dd>
-<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.
-fixed_modes : list, default is []</p>
-<blockquote>
-<div><p>A list of modes for which the initial value is not modified.
+<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
+</dd>
+<dt><strong>fixed_modes</strong><span class="classifier">list, default is []</span></dt><dd><p>A list of modes for which the initial value is not modified.
 The last mode cannot be fixed due to error computation.</p>
-</div></blockquote>
+</dd>
+<dt><strong>linesearch</strong><span class="classifier">bool, default is False</span></dt><dd><p>Whether to perform line search as proposed by Bro [3].</p>
 </dd>
 </dl>
 </td>
@@ -236,6 +236,13 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.” 
 Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r8eaaee98a9c3-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and 
+Applications”, PhD., University of Amsterdam, 1998</td></tr>
 </tbody>
 </table>
 </dd></dl>
