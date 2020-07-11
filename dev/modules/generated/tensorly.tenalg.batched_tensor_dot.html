@@ -139,12 +139,12 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.mode_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.mode_dot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.multi_mode_dot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.soft_thresholding.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.inner.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.inner</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.contract.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.contract</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.tensor_dot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.batched_tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.batched_tensor_dot</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.batched_tensor_dot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
 </ul>
 </li>
@@ -175,36 +175,32 @@
 
                     
 
-  <div class="section" id="tensorly-tenalg-proximal-svd-thresholding">
-<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</h1>
+  <div class="section" id="tensorly-tenalg-batched-tensor-dot">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.batched_tensor_dot</h1>
 <dl class="py function">
-<dt id="tensorly.tenalg.proximal.svd_thresholding">
-<code class="descname">svd_thresholding</code><span class="sig-paren">(</span><em><span class="n">matrix</span></em>, <em><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/proximal.html#svd_thresholding"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Singular value thresholding operator</p>
+<dt id="tensorly.tenalg.batched_tensor_dot">
+<code class="descname">batched_tensor_dot</code><span class="sig-paren">(</span><em><span class="n">tensor1</span></em>, <em><span class="n">tensor2</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/tensor_product.html#batched_tensor_dot"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns a generalized outer product of the two tensors</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>matrix</strong><span class="classifier">ndarray</span></dt><dd></dd>
-<dt><strong>threshold</strong><span class="classifier">float</span></dt><dd></dd>
+<dt><strong>tensor1</strong><span class="classifier">tensor</span></dt><dd><p>of shape (n_samples, J1, …, JN)</p>
+</dd>
+<dt><strong>tensor2</strong><span class="classifier">tensor</span></dt><dd><p>of shape (n_samples, K1, …, KM)</p>
+</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>ndarray</dt><dd><p>matrix on which the operator has been applied</p>
+<dt>outer product of tensor1 and tensor2</dt><dd><p>of shape (n_samples, J1, …, JN, K1, …, KM)</p>
 </dd>
 </dl>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html#tensorly.tenalg.proximal.procrustes" title="tensorly.tenalg.proximal.procrustes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">procrustes</span></code></a></dt><dd>procrustes operator</dd>
-</dl>
-</div>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -215,7 +211,7 @@
                     <nav class="pagination">
     
     
-    <a class="button is-medium pagination-previous" href="tensorly.tenalg.proximal.soft_thresholding.html" title="tensorly.tenalg.proximal.soft_thresholding" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tenalg.tensor_dot.html" title="tensorly.tenalg.tensor_dot" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -223,7 +219,7 @@
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tenalg.proximal.procrustes.html" title="tensorly.tenalg.proximal.procrustes" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.tenalg.higher_order_moment.html" title="tensorly.tenalg.higher_order_moment" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
