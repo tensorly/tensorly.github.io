@@ -12,11 +12,6 @@ Example of how to use the PARAFAC2 algorithm.
 
 .. code-block:: python
 
-    Demonstration of PARAFAC2
-    =========================
-
-    Example of how to use the PARAFAC2 algorithm.
-    """
 
     import numpy as np
     import numpy.linalg as la
@@ -28,14 +23,6 @@ Example of how to use the PARAFAC2 algorithm.
 
 
 
-
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "/home/travis/build/tensorly/tensorly/examples/decomposition/plot_parafac2.py", line 1
-        Demonstration of PARAFAC2
-                      ^
-    SyntaxError: invalid syntax
 
 
 
@@ -91,6 +78,11 @@ where :math:`\sigma_i` is a cyclic permutation of :math:`J` elements.
 
 
 
+
+
+
+
+
 Fit a PARAFAC2 tensor
 ---------------------
 To avoid local minima, we initialise and fit 10 models and choose the one
@@ -117,6 +109,56 @@ with the lowest error
         print('-------------------------------')
     print(f'Best model error: {best_err}')
 
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out::
+
+    Training model 0...
+    Number of iterations: 493
+    Final error: 0.09204726702643586
+    -------------------------------
+    Training model 1...
+    Number of iterations: 472
+    Final error: 0.09204749191278554
+    -------------------------------
+    Training model 2...
+    Number of iterations: 441
+    Final error: 0.09269757620490139
+    -------------------------------
+    Training model 3...
+    Number of iterations: 260
+    Final error: 0.09204731311895425
+    -------------------------------
+    Training model 4...
+    Number of iterations: 280
+    Final error: 0.09204731892873129
+    -------------------------------
+    Training model 5...
+    Number of iterations: 500
+    Final error: 0.09291065541285953
+    -------------------------------
+    Training model 6...
+    Number of iterations: 231
+    Final error: 0.09204732068253178
+    -------------------------------
+    Training model 7...
+    Number of iterations: 274
+    Final error: 0.09204738680909351
+    -------------------------------
+    Training model 8...
+    Number of iterations: 304
+    Final error: 0.09204748646407407
+    -------------------------------
+    Training model 9...
+    Number of iterations: 500
+    Final error: 0.09205635789758461
+    -------------------------------
+    Best model error: 0.09204726702643586
 
 
 A decomposition is a wrapper object for three variables: the *weights*, 
@@ -162,6 +204,11 @@ list of frontal slices.
     est_weights, (est_A, est_B, est_C) = tl.parafac2_tensor.apply_parafac2_projections(decomposition)
 
 
+
+
+
+
+
 Compute performance metrics
 ---------------------------
 
@@ -198,6 +245,17 @@ Compute performance metrics
 
     congruence_coefficient = np.mean(corr[permutation])
     print(f'Average tucker congruence coefficient: {congruence_coefficient}')
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out::
+
+    91% of the data is explained by the model, which is expected with noise rate: 0.1
+    Average tucker congruence coefficient: 0.9942949900541281
 
 
 Visualize the components
@@ -251,6 +309,14 @@ Visualize the components
     fig.legend(handles, labels, loc='upper center', ncol=2)
 
 
+
+
+.. image:: /auto_examples/decomposition/images/sphx_glr_plot_parafac2_001.png
+    :align: center
+
+
+
+
 Inspect the convergence rate
 ----------------------------
 It can be interesting to look at the loss plot to make sure that we have
@@ -278,6 +344,14 @@ to check for convergence.
 
 
 
+
+
+.. image:: /auto_examples/decomposition/images/sphx_glr_plot_parafac2_002.png
+    :align: center
+
+
+
+
 References
 ----------
 
@@ -290,7 +364,7 @@ A direct fitting algorithm for the PARAFAC2 model.*
 <https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B>`_
 
 
-**Total running time of the script:** ( 0 minutes  0.000 seconds)
+**Total running time of the script:** ( 0 minutes  31.961 seconds)
 
 
 

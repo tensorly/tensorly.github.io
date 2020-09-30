@@ -159,50 +159,44 @@
   <div class="section" id="using-line-search-with-parafac">
 <span id="sphx-glr-auto-examples-decomposition-parafac-line-search-py"></span><h1>Using line search with PARAFAC</h1>
 <p>Example on how to use <a class="reference internal" href="../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code></a> with line search to accelerate convergence.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>Using line search with PARAFAC
-==========================================
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_kruskal</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-Example on how to use :func:`tensorly.decomposition.parafac` with line search to accelerate convergence.
-&quot;&quot;&quot;
+<span class="n">tol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+<span class="n">err_ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+<span class="n">tt_ls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random_kruskal</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-from time import time
-import numpy as np
-import tensorly as tl
-from tensorly.random import random_kruskal
-from tensorly.decomposition import parafac
-import matplotlib.pyplot as plt
+<span class="c1"># Get a high-accuracy decomposition for comparison</span>
+<span class="n">fac</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1.0e-15</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">err_min</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">fac</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
 
-tol = np.logspace(-1, -9)
-err = np.empty_like(tol)
-err_ls = np.empty_like(tol)
-tt = np.empty_like(tol)
-tt_ls = np.empty_like(tol)
-tensor = random_kruskal((10, 10, 10), 3, random_state=1234, full=True)
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">toll</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tol</span><span class="p">):</span>
+    <span class="c1"># Run PARAFAC decomposition without line search and time</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">)</span>
+    <span class="n">tt</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="c1"># Run PARAFAC decomposition with line search and time</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">fac_ls</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">tt_ls</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 
-# Get a high-accuracy decomposition for comparison
-fac = parafac(tensor, rank=3, n_iter_max=2000000, tol=1.0e-15, linesearch=True)
-err_min = tl.norm(tl.kruskal_to_tensor(fac) - tensor)
+    <span class="c1"># Calculate the error of both decompositions</span>
+    <span class="n">err</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">fac</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
+    <span class="n">err_ls</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">fac_ls</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
 
-for ii, toll in enumerate(tol):
-    # Run PARAFAC decomposition without line search and time
-    start = time()
-    fac = parafac(tensor, rank=3, n_iter_max=2000000, tol=toll)
-    tt[ii] = time() - start
-    # Run PARAFAC decomposition with line search and time
-    start = time()
-    fac_ls = parafac(tensor, rank=3, n_iter_max=2000000, tol=toll, linesearch=True)
-    tt_ls[ii] = time() - start
-
-    # Calculate the error of both decompositions
-    err[ii] = tl.norm(tl.kruskal_to_tensor(fac) - tensor)
-    err_ls[ii] = tl.norm(tl.kruskal_to_tensor(fac_ls) - tensor)
-
-plt.loglog(tt, err - err_min, &#39;.&#39;, label=&quot;No line search&quot;)
-plt.loglog(tt_ls, err_ls - err_min, &#39;.r&#39;, label=&quot;Line search&quot;)
-plt.ylabel(&quot;Time&quot;)
-plt.xlabel(&quot;Error&quot;)
-plt.legend()
-plt.show()
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">err</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;No line search&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt_ls</span><span class="p">,</span> <span class="n">err_ls</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Line search&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
