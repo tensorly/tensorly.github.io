@@ -152,6 +152,7 @@
 <span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">mode_dot</span>
 <span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span>
 <span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
+<span class="kn">import</span> <span class="nn">tensorly.tenalg</span> <span class="k">as</span> <span class="nn">tlg</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -161,7 +162,7 @@
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="partial_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker">[docs]</a><span class="k">def</span> <span class="nf">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span>
+<div class="viewcode-block" id="partial_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker">[docs]</a><span class="k">def</span> <span class="nf">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_core</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span>
                    <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</span>
 
@@ -176,9 +177,12 @@
 <span class="sd">            size of the core tensor, ``(len(ranks) == len(modes))``</span>
 <span class="sd">    rank : None or int</span>
 <span class="sd">            number of components</span>
+<span class="sd">    fixed_core : bool, default is False</span>
+<span class="sd">        if True, the core tensor is not updated</span>
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">                 maximum number of iteration</span>
-<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, or TuckerTensor optional</span>
+<span class="sd">        if a TuckerTensor is provided, this is used for initialization</span>
 <span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD,</span>
 <span class="sd">        acceptable values in tensorly.SVD_FUNS</span>
@@ -215,7 +219,9 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Given only one int for &#39;rank&#39; instead of a list of </span><span class="si">{}</span><span class="s2"> modes. Using this rank for all modes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">))</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span><span class="p">)</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="n">rank</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">]</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rank</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Masking occurs after initialization. Therefore, random initialization is recommended.&quot;</span>
@@ -237,10 +243,18 @@
 
         <span class="c1"># The initial core approximation is needed here for the masking step</span>
         <span class="n">core</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
         <span class="n">core</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">mode</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">index</span><span class="p">])),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">init_shape</span><span class="p">,</span> <span class="n">init_rank</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_tensor</span><span class="o">.</span><span class="n">_validate_tucker_tensor</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="n">init_rank</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got rank=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s1"> but an init Tucker tensor corresponding to rank </span><span class="si">{</span><span class="n">init_rank</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">!=</span> <span class="n">init_shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got a tensor of shape=</span><span class="si">{</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span><span class="si">}</span><span class="s1"> but an init Tucker tensor corresponding to shape=</span><span class="si">{</span><span class="n">init_shape</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span> <span class="o">=</span> <span class="n">init</span>
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -250,11 +264,15 @@
             <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">*</span><span class="n">mask</span> <span class="o">+</span> <span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">mask</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
-            <span class="n">core_approximation</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fixed_core</span><span class="p">:</span>
+                <span class="n">core_approximation</span> <span class="o">=</span> <span class="n">core</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">core_approximation</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">eigenvecs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">core_approximation</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
             <span class="n">factors</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvecs</span>
 
-        <span class="n">core</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed_core</span><span class="p">:</span>
+            <span class="n">core</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># The factors are orthonormal and therefore do not affect the reconstructed tensor&#39;s norm</span>
         <span class="n">rec_error</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
@@ -273,7 +291,7 @@
     <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span></div>
 
 
-<div class="viewcode-block" id="tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker">[docs]</a><span class="k">def</span> <span class="nf">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker">[docs]</a><span class="k">def</span> <span class="nf">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_core</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span>
            <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</span>
 
@@ -287,6 +305,8 @@
 <span class="sd">            size of the core tensor, ``(len(ranks) == tensor.ndim)``</span>
 <span class="sd">    rank : None or int</span>
 <span class="sd">            number of components</span>
+<span class="sd">    fixed_core : bool, default is False</span>
+<span class="sd">        if True, the core tensor is not updated</span>
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">                 maximum number of iteration</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
@@ -314,7 +334,7 @@
 <span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="n">ranks</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">partial_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="n">ranks</span><span class="p">,</span> <span class="n">fixed_core</span><span class="o">=</span><span class="n">fixed_core</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
                           <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
 
 
@@ -418,6 +438,85 @@
             <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">nn_core</span><span class="p">,</span> <span class="n">nn_factors</span></div>
+
+
+<span class="k">class</span> <span class="nc">Tucker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> 
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</span>
+
+<span class="sd">            Decomposes `tensor` into a Tucker decomposition:</span>
+<span class="sd">            ``tensor = [| core; factors[0], ...factors[-1] |]`` [1]_</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : ndarray</span>
+<span class="sd">        ranks : None or int list</span>
+<span class="sd">                size of the core tensor, ``(len(ranks) == tensor.ndim)``</span>
+<span class="sd">        rank : None or int</span>
+<span class="sd">                number of components</span>
+<span class="sd">        n_iter_max : int</span>
+<span class="sd">                    maximum number of iteration</span>
+<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">            function to use to compute the SVD,</span>
+<span class="sd">            acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            tolerance: the algorithm stops when the variation in</span>
+<span class="sd">            the reconstruction error is less than the tolerance</span>
+<span class="sd">        random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">        verbose : int, optional</span>
+<span class="sd">            level of verbosity</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        core : ndarray of size `ranks`</span>
+<span class="sd">                core tensor of the Tucker decomposition</span>
+<span class="sd">        factors : ndarray list</span>
+<span class="sd">                list of factors of the Tucker decomposition.</span>
+<span class="sd">                Its ``i``-th element is of shape ``(tensor.shape[i], ranks[i])``</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">        SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="n">tucker_tensor</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+                               <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+                               <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+                               <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+                               <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+                               <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                               <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
+                               <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tucker_tensor_</span> <span class="o">=</span> <span class="n">tucker_tensor</span>
+        <span class="k">return</span> <span class="n">tucker_tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tucker_tensor_</span>
+        <span class="k">return</span> <span class="n">tlg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tucker_tensor_</span>
+        <span class="k">return</span> <span class="n">tlg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s1"> Tucker decomposition.&#39;</span>
 </pre></div>
 
 

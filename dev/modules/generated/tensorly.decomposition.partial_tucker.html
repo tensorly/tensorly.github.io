@@ -179,7 +179,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.partial_tucker</h1>
 <dl class="py function">
 <dt id="tensorly.decomposition.partial_tucker">
-<code class="descname">partial_tucker</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">modes</span></em>, <em><span class="n">rank</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">n_iter_max</span><span class="o">=</span><span class="default_value">100</span></em>, <em><span class="n">init</span><span class="o">=</span><span class="default_value">'svd'</span></em>, <em><span class="n">tol</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em><span class="n">svd</span><span class="o">=</span><span class="default_value">'numpy_svd'</span></em>, <em><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">ranks</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#partial_tucker"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">partial_tucker</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">modes</span></em>, <em><span class="n">rank</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">fixed_core</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">n_iter_max</span><span class="o">=</span><span class="default_value">100</span></em>, <em><span class="n">init</span><span class="o">=</span><span class="default_value">'svd'</span></em>, <em><span class="n">tol</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em><span class="n">svd</span><span class="o">=</span><span class="default_value">'numpy_svd'</span></em>, <em><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">ranks</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#partial_tucker"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p>
 <blockquote>
 <div>Decomposes <cite>tensor</cite> into a Tucker decomposition exclusively along the provided modes.</div></blockquote>
@@ -195,9 +195,12 @@
 </dd>
 <dt><strong>rank</strong><span class="classifier">None or int</span></dt><dd><p>number of components</p>
 </dd>
+<dt><strong>fixed_core</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, the core tensor is not updated</p>
+</dd>
 <dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
 </dd>
-<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, or TuckerTensor optional</span></dt><dd><p>if a TuckerTensor is provided, this is used for initialization</p>
+</dd>
 <dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD,
 acceptable values in tensorly.SVD_FUNS</p>
 </dd>

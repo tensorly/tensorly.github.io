@@ -230,6 +230,50 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MPS factor &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">factors</span></div>
+
+
+<span class="k">class</span> <span class="nc">TensorTrain</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;MPS decomposition via recursive SVD</span>
+
+<span class="sd">            Decomposes `input_tensor` into a sequence of order-3 tensors (factors)</span>
+<span class="sd">            -- also known as Tensor-Train decomposition [1]_.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        input_tensor : tensorly.tensor</span>
+<span class="sd">        rank : {int, int list}</span>
+<span class="sd">                maximum allowable MPS rank of the factors</span>
+<span class="sd">                if int, then this is the same for all the factors</span>
+<span class="sd">                if int list, then rank[k] is the rank of the kth factor</span>
+<span class="sd">        verbose : boolean, optional</span>
+<span class="sd">                level of verbosity</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        factors : MPS factors</span>
+<span class="sd">                order-3 tensors of the MPS decomposition</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Ivan V. Oseledets. &quot;Tensor-train decomposition&quot;, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_train_</span> <span class="o">=</span> <span class="n">matrix_product_state</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_train_</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s1"> Tensor-Train decomposition.&#39;</span>
+
+
+    
 </pre></div>
 
 
