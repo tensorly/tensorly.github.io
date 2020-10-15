@@ -1,0 +1,416 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
+        <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../home.html">
+            TensorLy
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
+    </div>
+
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
+
+			<a class="navbar-item" href="../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../about.html">
+				About us
+			</a>
+			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+				Notebooks
+			</a>
+
+		</div>
+
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
+
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
+
+		</div>
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-quarter is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content main-content">
+
+                    
+
+  <h1>Source code for tensorly.backend</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">Backend</span>
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="n">_DEFAULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;numpy&#39;</span>
+<span class="n">_KNOWN_BACKENDS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;numpy&#39;</span><span class="p">:</span> <span class="s1">&#39;NumpyBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;mxnet&#39;</span><span class="p">:</span><span class="s1">&#39;MxnetBackend&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;pytorch&#39;</span><span class="p">:</span><span class="s1">&#39;PyTorchBackend&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span><span class="s1">&#39;TensorflowBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;cupy&#39;</span><span class="p">:</span><span class="s1">&#39;CupyBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;jax&#39;</span><span class="p">:</span> <span class="s1">&#39;JaxBackend&#39;</span><span class="p">}</span>
+
+<span class="n">_LOADED_BACKENDS</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">_LOCAL_STATE</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">initialize_backend</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Initialises the backend</span>
+
+<span class="sd">    1) retrieve the default backend name from the `TENSORLY_BACKEND` environment variable</span>
+<span class="sd">        if not found, use _DEFAULT_BACKEND</span>
+<span class="sd">    2) sets the backend to the retrieved backend name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">backend_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TENSORLY_BACKEND&#39;</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;TENSORLY_BACKEND should be one of </span><span class="si">{}</span><span class="s2">, got </span><span class="si">{}</span><span class="s2">. Defaulting to </span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)),</span>
+                        <span class="n">backend_name</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+        <span class="n">backend_name</span> <span class="o">=</span> <span class="n">_DEFAULT_BACKEND</span>
+    
+    <span class="n">set_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">register_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Registers a new backend by importing the corresponding module </span>
+<span class="sd">        and adding the correspond `Backend` class in Backend._LOADED_BACKEND</span>
+<span class="sd">        under the key `backend_name`</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend_name : str, name of the backend to load</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `backend_name` does not correspond to one listed</span>
+<span class="sd">            in `_KNOWN_BACKEND`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">in</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;tensorly.backend.</span><span class="si">{0}</span><span class="s1">_backend&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">backend_name</span><span class="p">))</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">])()</span>
+        <span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">backend</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Unknown backend name </span><span class="si">{0!r}</span><span class="s2">, known backends are [</span><span class="si">{1}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">backend_name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="set_backend"><a class="viewcode-back" href="../../modules/generated/tensorly.set_backend.html#tensorly.set_backend">[docs]</a><span class="k">def</span> <span class="nf">set_backend</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Changes the backend to the specified one</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend : tensorly.Backend or str</span>
+<span class="sd">        name of the backend to load or Backend Class</span>
+<span class="sd">    local_threadsafe : bool, optional, default is False</span>
+<span class="sd">        If False, set the backend as default for all threads        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">Backend</span><span class="p">):</span>
+        <span class="c1"># Backend is a string</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_LOADED_BACKENDS</span><span class="p">:</span>
+            <span class="n">register_backend</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
+
+    <span class="c1"># Set the backend</span>
+    <span class="n">_LOCAL_STATE</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">local_threadsafe</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">_DEFAULT_BACKEND</span>
+        <span class="n">_DEFAULT_BACKEND</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">backend_name</span></div>
+
+<div class="viewcode-block" id="get_backend"><a class="viewcode-back" href="../../modules/generated/tensorly.get_backend.html#tensorly.get_backend">[docs]</a><span class="k">def</span> <span class="nf">get_backend</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns the name of the current backend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_get_backend_method</span><span class="p">(</span><span class="s1">&#39;backend_name&#39;</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">_get_backend_method</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_LOCAL_STATE</span><span class="o">.</span><span class="n">backend</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">_DEFAULT_BACKEND</span><span class="p">],</span> <span class="n">key</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_backend_dir</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">_LOCAL_STATE</span><span class="o">.</span><span class="n">backend</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">backend_context</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Context manager to set the backend for TensorLy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend : {&#39;numpy&#39;, &#39;mxnet&#39;, &#39;pytorch&#39;, &#39;tensorflow&#39;, &#39;cupy&#39;}</span>
+<span class="sd">        The name of the backend to use. Default is &#39;numpy&#39;.</span>
+<span class="sd">    local_threadsafe : bool, optional</span>
+<span class="sd">        If True, the backend will not become the default backend for all threads.</span>
+<span class="sd">        Note that this only affects threads where the backend hasn&#39;t already</span>
+<span class="sd">        been explicitly set. If False (default) the backend is set for the</span>
+<span class="sd">        entire session.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Set the backend to numpy globally for this thread:</span>
+
+<span class="sd">    &gt;&gt;&gt; import tensorly as tl</span>
+<span class="sd">    &gt;&gt;&gt; tl.set_backend(&#39;numpy&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; with tl.backend_context(&#39;pytorch&#39;):</span>
+<span class="sd">    ...     pass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_old_backend</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span>
+    <span class="n">set_backend</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="n">local_threadsafe</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">set_backend</span><span class="p">(</span><span class="n">_old_backend</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">override_module_dispatch</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">getter_fun</span><span class="p">,</span> <span class="n">dir_fun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Override the module&#39;s dispatch mechanism</span>
+
+<span class="sd">        In Python &gt;= 3.7, we use module&#39;s __getattr__ and __dir__</span>
+<span class="sd">        On older versions, we override the sys.module[__name__].__class__</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span><span class="o">.</span><span class="fm">__getattr__</span> <span class="o">=</span> <span class="n">getter_fun</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span><span class="o">.</span><span class="fm">__dir__</span> <span class="o">=</span> <span class="n">dir_fun</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">types</span>
+
+        <span class="k">class</span> <span class="nc">BackendAttributeModuleType</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;A module type to dispatch backend generic attributes.&quot;&quot;&quot;</span>
+            <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">getter_fun</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">())</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">_LOCAL_STATE</span><span class="o">.</span><span class="n">backend</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)})</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+        <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">BackendAttributeModuleType</span>
+
+
+<span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dispatched function from a generic backend method.&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_get_backend_method</span><span class="p">(</span><span class="n">name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># We don&#39;t use `functools.wraps` here because some of the dispatched</span>
+    <span class="c1"># methods include the backend (`self`) as a parameter. Instead we manually</span>
+    <span class="c1"># copy over the needed information, and filter the signature for `self`.</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__qualname__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;__annotations__&#39;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">inner</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;self&#39;</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span><span class="p">]</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="n">inner</span><span class="o">.</span><span class="n">__signature__</span> <span class="o">=</span> <span class="n">sig</span>
+
+    <span class="k">return</span> <span class="n">inner</span>
+
+<span class="c1"># Generic methods, exposed as part of the public API</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+<span class="n">is_tensor</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">)</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+<span class="n">to_numpy</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">)</span>
+<span class="n">copy</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">copy</span><span class="p">)</span>
+<span class="n">concatenate</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">concatenate</span><span class="p">)</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+<span class="n">reshape</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">reshape</span><span class="p">)</span>
+<span class="n">transpose</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">transpose</span><span class="p">)</span>
+<span class="n">moveaxis</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">)</span>
+<span class="n">arange</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">arange</span><span class="p">)</span>
+<span class="n">ones</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">ones</span><span class="p">)</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">zeros</span><span class="p">)</span>
+<span class="n">zeros_like</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">)</span>
+<span class="n">eye</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">eye</span><span class="p">)</span>
+<span class="n">where</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">clip</span><span class="p">)</span>
+<span class="nb">max</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+<span class="nb">min</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+<span class="n">argmax</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">argmax</span><span class="p">)</span>
+<span class="n">argmin</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">argmin</span><span class="p">)</span>
+<span class="nb">all</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">all</span><span class="p">)</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+<span class="nb">sum</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+<span class="n">prod</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">prod</span><span class="p">)</span>
+<span class="n">sign</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">sign</span><span class="p">)</span>
+<span class="nb">abs</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">abs</span><span class="p">)</span>
+<span class="n">sqrt</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">sqrt</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">dot</span><span class="p">)</span>
+<span class="n">kron</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">kron</span><span class="p">)</span>
+<span class="n">solve</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">solve</span><span class="p">)</span>
+<span class="n">qr</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">qr</span><span class="p">)</span>
+<span class="n">kr</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">kr</span><span class="p">)</span>
+<span class="n">partial_svd</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">)</span>
+<span class="n">sort</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>
+<span class="c1"># index = dispatch(Backend.index)</span>
+<span class="n">index_update</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">index_update</span><span class="p">)</span>
+
+<span class="c1"># Initialise the backend to the default one</span>
+<span class="n">initialize_backend</span><span class="p">()</span>
+<span class="n">override_module_dispatch</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> 
+                         <span class="n">_get_backend_method</span><span class="p">,</span>
+                         <span class="n">_get_backend_dir</span><span class="p">)</span>
+</pre></div>
+
+
+
+                    <nav class="pagination">
+    
+    
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2020, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>

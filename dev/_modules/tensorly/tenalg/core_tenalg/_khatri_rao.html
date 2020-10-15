@@ -1,0 +1,287 @@
+
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
+        <meta name="description" content="TensorLy: Tensor learning in Python">
+
+        
+        <meta name="author" content="Jean Kossaifi">
+        <title>TensorLy: Tensor learning in Python</title>
+        
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../_static/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/base.min.css" />
+        <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+        
+        
+
+        
+        
+    </head>
+
+    <body>
+        
+        <nav class="navbar is-dark has-shadow top" id="top">
+    <div class="navbar-brand">
+        <a class="navbar-item navbar-title" href="../../../../home.html">
+            TensorLy
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="../../../../index.html">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
+
+        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+            <span class="icon"><i class="fa fa-github"></i></span>
+        </a>
+
+		<span class="navbar-burger" data-target="NavbarMenu" >
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+
+    </div>
+
+	<div id="NavbarMenu" class="navbar-menu">
+		<div class="navbar-start">
+
+			<a class="navbar-item" href="../../../../installation.html">
+				Install
+			</a>
+			<a class="navbar-item" href="../../../../user_guide/index.html">
+				User guide
+			</a>
+			<a class="navbar-item" href="../../../../modules/api.html">
+				API
+			</a>
+			<a class="navbar-item" href="../../../../auto_examples/index.html">
+				Examples
+			</a>
+			<a class="navbar-item" href="../../../../about.html">
+				About us
+			</a>
+			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+				Notebooks
+			</a>
+
+		</div>
+
+		<div class="navbar-end">
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../../../index.html">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span class="tooltiptext">Home page</span>
+			</a>
+
+			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
+				<span class="tooltiptext">Open project on Github</span>
+				<span class="icon"><i class="fa fa-github"></i></span>
+			</a>
+
+		</div>
+    </div>
+</nav>
+ 
+
+        
+        <div class="columns">
+            
+            <div class="column is-one-quarter is-hidden-mobile aside">
+                <div class="sidebar" id="sidebar">
+                    
+                    <div class="search">
+                        <div class="search-title">
+                            Search in TensorLy
+                        </div>
+
+                        <script>
+                          (function() {
+                            var cx = '002285679029256671182:5tfqz3cvmm8';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                          })();
+                        </script>
+                        <gcse:searchbox-only></gcse:searchbox-only>
+                        
+                    </div>
+
+                    <div class="toc">
+                    
+                    
+                    
+                    
+                        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules/api.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about.html">About us</a></li>
+</ul>
+
+                    
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-three-quarters main-column">
+                <div class="content main-content">
+
+                    
+
+  <h1>Source code for tensorly.tenalg.core_tenalg._khatri_rao</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Author: Jean Kossaifi</span>
+
+<span class="c1"># License: BSD 3 clause</span>
+
+
+
+<div class="viewcode-block" id="khatri_rao"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Khatri-Rao product of a list of matrices</span>
+
+<span class="sd">        This can be seen as a column-wise kronecker product.</span>
+<span class="sd">        (see [1]_ for more details).</span>
+
+<span class="sd">        If one matrix only is given, that matrix is directly returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrices : 2D-array list</span>
+<span class="sd">        list of matrices with the same number of columns, i.e.::</span>
+
+<span class="sd">            for i in len(matrices):</span>
+<span class="sd">                matrices[i].shape = (n_i, m)</span>
+<span class="sd">    </span>
+<span class="sd">    weights : 1D-array</span>
+<span class="sd">        array of weights for each rank, of length m, the number of column of the factors</span>
+<span class="sd">        (i.e. m == factor[i].shape[1] for any factor)</span>
+
+<span class="sd">    skip_matrix : None or int, optional, default is None</span>
+<span class="sd">        if not None, index of a matrix to skip</span>
+
+<span class="sd">    reverse : bool, optional</span>
+<span class="sd">        if True, the order of the matrices is reversed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    khatri_rao_product: matrix of shape ``(prod(n_i), m)``</span>
+<span class="sd">        where ``prod(n_i) = prod([m.shape[0] for m in matrices])``</span>
+<span class="sd">        i.e. the product of the number of rows of all the matrices in the product.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Mathematically:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">         \\text{If every matrix } U_k \\text{ is of size } (I_k \\times R),\\\\</span>
+<span class="sd">         \\text{Then } \\left(U_1 \\bigodot \\cdots \\bigodot U_n \\right) \\text{ is of size } (\\prod_{k=1}^n I_k \\times R)</span>
+
+<span class="sd">    A more intuitive but slower implementation is::</span>
+
+<span class="sd">        kr_product = np.zeros((n_rows, n_columns))</span>
+<span class="sd">        for i in range(n_columns):</span>
+<span class="sd">            cum_prod = matrices[0][:, i]  # Accumulates the khatri-rao product of the i-th columns</span>
+<span class="sd">            for matrix in matrices[1:]:</span>
+<span class="sd">                cum_prod = np.einsum(&#39;i,j-&gt;ij&#39;, cum_prod, matrix[:, i]).ravel()</span>
+<span class="sd">            # the i-th column corresponds to the kronecker product of all the i-th columns of all matrices:</span>
+<span class="sd">            kr_product[:, i] = cum_prod</span>
+
+<span class="sd">        return kr_product</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">       SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
+
+    <span class="c1"># Khatri-rao of only one matrix: just return that matrix</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">n_columns</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_columns</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">]</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Khatri-rao of a series of vectors instead of matrices. &#39;</span>
+                      <span class="s1">&#39;Condidering each has a matrix with 1 column.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Optional part, testing whether the matrices have the proper size</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the matrices must have exactly 2 dimensions!&#39;</span>
+                             <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has dimension </span><span class="si">{}</span><span class="s1"> != 2.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All matrices must have same number of columns!&#39;</span>
+                             <span class="s1">&#39;Matrix </span><span class="si">{}</span><span class="s1"> has </span><span class="si">{}</span><span class="s1"> columns != </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_columns</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
+        <span class="n">matrices</span> <span class="o">=</span> <span class="n">matrices</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Note: we do NOT use .reverse() which would reverse matrices even outside this function</span>
+    
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">kr</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span></div>
+</pre></div>
+
+
+
+                    <nav class="pagination">
+    
+    
+    
+</nav>
+
+                </div>
+
+                <footer class="footer">
+    <div class="container has-text-centered">
+
+        <p>
+                &copy; 2016 - 2020, Jean Kossaifi.
+        </p> 
+    </div>
+</footer>
+            </div>
+
+        </div>
+
+        
+        
+
+        <script src="../../../../_static/navigation.min.js"></script>
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-86209849-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+    </body>
+</html>
