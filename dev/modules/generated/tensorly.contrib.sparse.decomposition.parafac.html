@@ -189,7 +189,7 @@ True). Allows for missing values <a class="reference internal" href="#r8eaaee98a
 If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
 If ‘abs_rec_error’, ALS terminates when <a href="#id6"><span class="problematic" id="id7">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
 </dd>
-<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = kruskal_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
+<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
 </dd>
 <dt><strong>fixed_modes</strong><span class="classifier">list, default is []</span></dt><dd><p>A list of modes for which the initial value is not modified.
 The last mode cannot be fixed due to error computation.</p>
@@ -203,7 +203,7 @@ remove the effect of these missing values on the initialization.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>KruskalTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul>
+<dt><strong>CPTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul>
 <li><dl class="first docutils">
 <dt>weights<span class="classifier">1D array of shape (rank, )</span></dt><dd><p>all ones if normalize_factors is False (default), 
 weights of the (normalized) factors otherwise</p>

@@ -192,8 +192,8 @@ Such representation can be obtained by applying Canonical Polyadic Decomposition
 </pre></div>
 </div>
 <p>We will now apply a rank-2 CANDECOMP-PARAFAC (<a class="reference internal" href="../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code></a>) decomposition on <cite>tensor</cite>
-to decompose this into a kruskal tensor.</p>
-<p>A Parafac decompositions expresses the tensor as a kruskal tensor that can be represented as a list of factors (matrices).
+to decompose this into a cp tensor.</p>
+<p>A Parafac decompositions expresses the tensor as a cp tensor that can be represented as a list of factors (matrices).
 The <code class="xref py py-func docutils literal notranslate"><span class="pre">parafac</span></code> function therefore returns a list of factors.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -203,8 +203,8 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 <span class="go">[(12, 2), (12, 2)]</span>
 </pre></div>
 </div>
-<p>From this <strong>kruskal tensor</strong> (presented as a list of matrices) you can reconstruct a full tensor:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">kruskal_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+<p>From this <strong>cp tensor</strong> (presented as a list of matrices) you can reconstruct a full tensor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
 <span class="go">[[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.]</span>
 <span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
 <span class="go"> [ 0.  0.  0.  0.  1.  1.  1.  1.  0.  0.  0.  0.]</span>
@@ -265,7 +265,7 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 <p>The tensor-train decomposition, also known as matrix product state in physics community, is a way of decompositing high order tensors into third order ones. For a order d tensor A[i1,…,id], it splits each dimension into a order 3 sub-tensor, which we called factors or cores. One of the dimension of the sub-tensor is the real physical dimension, while the other two are edges connecting the cores before and after it.</p>
 <div class="math">
 <p><img src="../_images/math/fcdb4cdf192ddb1386b413b62c576921590180b0.png" alt="A[i_1, \ldots, i_d] \approx \sum_{\alpha_1}\cdots\sum_{\alpha_{d-1}}G_1(i_1, \alpha_1)G_2(\alpha_1, i_2, \alpha_2)G_3(\alpha_2, i_3, \alpha_3)\cdots G_d(\alpha_{d-1},i_d)"/></p>
-</div><p>The advantage of the MPS/tensor-train decomposition is that both of its number of entries (storage) and computational time is linear in the number of dimensions, making high dimensional problem more easily addressable.</p>
+</div><p>The advantage of the TT/tensor-train decomposition is that both of its number of entries (storage) and computational time is linear in the number of dimensions, making high dimensional problem more easily addressable.</p>
 <div class="section" id="implementations">
 <h3><span class="section-number">4.3.1. </span>Implementations</h3>
 <p>Two versions tensor train decompositions are available in TensorLy: and SVD-based decomposition method (<code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.mps_decomposition</span></code> and a cross approximation-based method <code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.contrib.mps_decomposition_cross</span></code>).</p>
@@ -279,8 +279,8 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </pre></div>
 </div>
 <p>As before, we can reconstruct a full tensor from our Tensor-train  decomposition:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">mps_to_tensor</span>
-  <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mps_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">),</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
 <span class="p">[</span> <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span><span class="p">]</span>
 <span class="p">[</span> <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span><span class="p">]</span>
 <span class="p">[</span> <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">1.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span><span class="p">]</span>
@@ -294,7 +294,7 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 <span class="p">[</span> <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span>  <span class="mf">0.</span><span class="p">]]</span>
 </pre></div>
 </div>
-<p>Note that for the matrix case, MPS/tensor-train decomposition is equivalent to a the singular value decomposition. This matrix is rank 2, so it can be fully recovered with a rank-2 decomposition.</p>
+<p>Note that for the matrix case, TT/tensor-train decomposition is equivalent to a the singular value decomposition. This matrix is rank 2, so it can be fully recovered with a rank-2 decomposition.</p>
 </div>
 </div>
 <div class="section" id="references">

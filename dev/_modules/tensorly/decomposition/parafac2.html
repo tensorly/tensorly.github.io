@@ -148,11 +148,12 @@
 
   <h1>Source code for tensorly.decomposition.parafac2</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_parafac2</span>
 <span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parafac</span>
 <span class="kn">from</span> <span class="nn">..parafac2_tensor</span> <span class="kn">import</span> <span class="n">parafac2_to_slice</span><span class="p">,</span> <span class="n">Parafac2Tensor</span><span class="p">,</span> <span class="n">_validate_parafac2_tensor</span>
-<span class="kn">from</span> <span class="nn">..kruskal_tensor</span> <span class="kn">import</span> <span class="n">KruskalTensor</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
 
 <span class="c1"># Authors: Marie Roald</span>
@@ -166,7 +167,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    tensor_slices : Iterable of ndarray</span>
 <span class="sd">    rank : int</span>
-<span class="sd">    init : {&#39;random&#39;, &#39;svd&#39;, KruskalTensor, Parafac2Tensor}, optional</span>
+<span class="sd">    init : {&#39;random&#39;, &#39;svd&#39;, CPTensor, Parafac2Tensor}, optional</span>
 <span class="sd">    random_state : `np.random.RandomState`</span>
 
 <span class="sd">    Returns</span>
@@ -197,9 +198,9 @@
         <span class="n">projections</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">svd_fun</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span><span class="p">))</span>
 
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Parafac2Tensor</span><span class="p">,</span> <span class="n">KruskalTensor</span><span class="p">)):</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Parafac2Tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">)):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">decomposition</span> <span class="o">=</span> <span class="n">Parafac2Tensor</span><span class="o">.</span><span class="n">from_kruskaltensor</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">parafac2_tensor_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">decomposition</span> <span class="o">=</span> <span class="n">Parafac2Tensor</span><span class="o">.</span><span class="n">from_CPTensor</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="n">parafac2_tensor_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s1">&#39;If initialization method is a mapping, then it must &#39;</span>
@@ -320,7 +321,7 @@
 <span class="sd">        Number of components.</span>
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">        Maximum number of iteration</span>
-<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, KruskalTensor, Parafac2Tensor}</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, CPTensor, Parafac2Tensor}</span>
 <span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
 <span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
@@ -427,6 +428,120 @@
         <span class="k">return</span> <span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">rec_errors</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">parafac2_tensor</span></div>
+
+
+<span class="k">class</span> <span class="nc">Parafac2</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;PARAFAC2 decomposition [1]_ of a third order tensor via alternating least squares (ALS)</span>
+
+<span class="sd">        Computes a rank-`rank` PARAFAC2 decomposition of the third-order tensor defined by </span>
+<span class="sd">        `tensor_slices`. The decomposition is on the form :math:`(A [B_i] C)` such that the</span>
+<span class="sd">        i-th frontal slice, :math:`X_i`, of :math:`X` is given by</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">        </span>
+<span class="sd">            X_i = B_i diag(a_i) C^T,</span>
+<span class="sd">        </span>
+<span class="sd">        where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
+<span class="sd">        the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">        is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
+<span class="sd">        is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">        To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            B_i = P_i B,</span>
+
+<span class="sd">        where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
+<span class="sd">        :math:`R \times R` matrix.</span>
+
+<span class="sd">        An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
+<span class="sd">        :math:`X_{ijk}` is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">        </span>
+<span class="sd">        with the same constraints hold for :math:`B_i` as above.</span>
+<span class="sd">        </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor_slices : ndarray or list of ndarrays</span>
+<span class="sd">            Either a third order tensor or a list of second order tensors that may have different number of rows.</span>
+<span class="sd">            Note that the second mode factor matrices are allowed to change over the first mode, not the</span>
+<span class="sd">            third mode as some other implementations use (see note below).</span>
+<span class="sd">        rank  : int</span>
+<span class="sd">            Number of components.</span>
+<span class="sd">        n_iter_max : int</span>
+<span class="sd">            Maximum number of iteration</span>
+<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;, CPTensor, Parafac2Tensor}</span>
+<span class="sd">            Type of factor matrix initialization. See `initialize_factors`.</span>
+<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">            function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        normalize_factors : bool (optional)</span>
+<span class="sd">            If True, aggregate the weights of each factor in a 1D-tensor</span>
+<span class="sd">            of shape (rank, ), which will contain the norms of the factors. Note that</span>
+<span class="sd">            there may be some inaccuracies in the component weights.</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            (Default: 1e-8) Relative reconstruction error tolerance. The</span>
+<span class="sd">            algorithm is considered to have found the global minimum when the</span>
+<span class="sd">            reconstruction error is less than `tol`.</span>
+<span class="sd">        random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">        verbose : int, optional</span>
+<span class="sd">            Level of verbosity</span>
+<span class="sd">        n_iter_parafac: int, optional</span>
+<span class="sd">            Number of PARAFAC iterations to perform for each PARAFAC2 iteration</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Parafac2Tensor : (weight, factors, projection_matrices)</span>
+<span class="sd">            * weights : 1D array of shape (rank, )</span>
+<span class="sd">                all ones if normalize_factors is False (default), </span>
+<span class="sd">                weights of the (normalized) factors otherwise</span>
+<span class="sd">            * factors : List of factors of the CP decomposition element `i` is of shape</span>
+<span class="sd">                (tensor.shape[i], rank)</span>
+<span class="sd">            * projection_matrices : List of projection matrices used to create evolving</span>
+<span class="sd">                factors.</span>
+<span class="sd">            </span>
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Kiers, H.A.L., ten Berge, J.M.F. and Bro, R. (1999), </span>
+<span class="sd">                PARAFAC2—Part I. A direct fitting algorithm for the PARAFAC2 model. </span>
+<span class="sd">                J. Chemometrics, 13: 275-294.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This formulation of the PARAFAC2 decomposition is slightly different from the one in [1]_.</span>
+<span class="sd">        The difference lies in that here, the second mode changes over the first mode, whereas in</span>
+<span class="sd">        [1]_, the second mode changes over the third mode. We made this change since that means</span>
+<span class="sd">        that the function accept both lists of matrices and a single nd-array as input without</span>
+<span class="sd">        any reordering of the modes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="o">=</span><span class="n">init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="o">=</span><span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="o">=</span><span class="n">normalize_factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="o">=</span><span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span> <span class="o">=</span> <span class="n">n_iter_parafac</span>
+
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+                                       <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+                                       <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+                                       <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+                                       <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
+                                       <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+                                       <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                                       <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+                                       <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                       <span class="n">n_iter_parafac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span>
 </pre></div>
 
 

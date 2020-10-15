@@ -148,23 +148,15 @@
 
   <h1>Source code for tensorly.random.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..kruskal_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">kruskal_to_tensor</span><span class="p">,</span> <span class="n">KruskalTensor</span><span class="p">,</span>
-                              <span class="n">kruskal_normalise</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span>
-<span class="kn">from</span> <span class="nn">..mps_tensor</span> <span class="kn">import</span> <span class="n">mps_to_tensor</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">cp_to_tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">,</span>
+                         <span class="n">cp_normalize</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">TuckerTensor</span>
+<span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span><span class="p">,</span> <span class="n">TTTensor</span>
 <span class="kn">from</span> <span class="nn">..parafac2_tensor</span> <span class="kn">import</span> <span class="n">parafac2_to_tensor</span><span class="p">,</span> <span class="n">Parafac2Tensor</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="k">def</span> <span class="nf">cp_tensor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;cp_tensor&#39; is depreciated, please use &#39;random_kruskal&#39; instead&quot;</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">random_kruskal</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">tucker_tensor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;tucker_tensor&#39; is depreciated, please use &#39;tucker_tensor&#39; instead&quot;</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">random_tucker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <div class="viewcode-block" id="check_random_state"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.check_random_state.html#tensorly.random.check_random_state">[docs]</a><span class="k">def</span> <span class="nf">check_random_state</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns a valid RandomState</span>
@@ -188,6 +180,14 @@
         <span class="k">return</span> <span class="n">seed</span>
 
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Seed should be None, int or np.random.RandomState&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">random_tensor</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a random tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rns</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">random_parafac2</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
@@ -215,7 +215,7 @@
         <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">context</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span>
     <span class="p">]</span>
-    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">random_kruskal</span><span class="p">(</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span>
         <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
         <span class="n">random_state</span><span class="o">=</span><span class="n">rns</span><span class="p">,</span>  <span class="o">**</span><span class="n">context</span>
     <span class="p">)</span>
@@ -228,7 +228,7 @@
         <span class="k">return</span> <span class="n">parafac2_tensor</span>
 
 
-<div class="viewcode-block" id="random_kruskal"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_kruskal.html#tensorly.random.random_kruskal">[docs]</a><span class="k">def</span> <span class="nf">random_kruskal</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+<div class="viewcode-block" id="random_cp"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_cp.html#tensorly.random.random_cp">[docs]</a><span class="k">def</span> <span class="nf">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
                    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates a random CP tensor</span>
 
@@ -249,7 +249,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    random_kruskal : ND-array or 2D-array list</span>
+<span class="sd">    random_cp : ND-array or 2D-array list</span>
 <span class="sd">        ND-array : full tensor if `full` is True</span>
 <span class="sd">        2D-array list : list of factors otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -264,11 +264,11 @@
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">kruskal_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cp_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">normalise_factors</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">kruskal_normalise</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cp_normalize</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">KruskalTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="random_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tucker.html#tensorly.random.random_tucker">[docs]</a><span class="k">def</span> <span class="nf">random_tucker</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates a random Tucker tensor</span>
@@ -318,17 +318,18 @@
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span></div>
+        <span class="k">return</span> <span class="n">TuckerTensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="random_mps"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_mps.html#tensorly.random.random_mps">[docs]</a><span class="k">def</span> <span class="nf">random_mps</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates a random MPS/ttrain tensor</span>
+
+<div class="viewcode-block" id="random_tt"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tt.html#tensorly.random.random_tt">[docs]</a><span class="k">def</span> <span class="nf">random_tt</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a random TT/ttrain tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    shape : tuple</span>
 <span class="sd">        shape of the tensor to generate</span>
 <span class="sd">    rank : int</span>
-<span class="sd">        rank of the MPS decomposition</span>
+<span class="sd">        rank of the TT decomposition</span>
 <span class="sd">        must verify rank[0] == rank[-1] ==1 (boundary conditions)</span>
 <span class="sd">        and len(rank) == len(shape)+1</span>
 <span class="sd">    full : bool, optional, default is False</span>
@@ -340,7 +341,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    MPS_tensor : ND-array or 3D-array list</span>
+<span class="sd">    TT_tensor : ND-array or 3D-array list</span>
 <span class="sd">        * ND-array : full tensor if `full` is True</span>
 <span class="sd">        * 3D-array list : list of factors otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -369,9 +370,13 @@
                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">mps_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">factors</span></div>
+        <span class="k">return</span> <span class="n">TTTensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
+
+
+<span class="n">random_kruskal</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_kruskal&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_cp</span><span class="p">)</span>
+<span class="n">random_mps</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_mps&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_tt</span><span class="p">)</span>
 </pre></div>
 
 
