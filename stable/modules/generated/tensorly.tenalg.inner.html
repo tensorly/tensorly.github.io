@@ -67,8 +67,8 @@
 			<a class="navbar-item" href="../../auto_examples/index.html">
 				Examples
 			</a>
-			<a class="navbar-item" href="../../authors.html">
-				People
+			<a class="navbar-item" href="../../about.html">
+				About us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -129,9 +129,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in the CP format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.khatri_rao.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.kronecker.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker</a></li>
@@ -142,6 +143,9 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.inner</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.contract.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.contract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.tensor_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.batched_tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.batched_tensor_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
@@ -155,7 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
                     
@@ -173,34 +177,38 @@
 
   <div class="section" id="tensorly-tenalg-inner">
 <h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.inner</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="tensorly.tenalg.inner">
-<code class="sig-name descname">inner</code><span class="sig-paren">(</span><em class="sig-param">tensor1</em>, <em class="sig-param">tensor2</em>, <em class="sig-param">n_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/generalised_inner_product.html#inner"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">inner</code><span class="sig-paren">(</span><em><span class="n">tensor1</span></em>, <em><span class="n">tensor2</span></em>, <em><span class="n">n_modes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/generalised_inner_product.html#inner"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Generalised inner products between tensors</p>
 <blockquote>
-<div><p>Takes the inner product between the last (respectively first)
-<cite>n_modes</cite> of <cite>tensor1</cite> (respectively <cite>tensor2</cite>)</p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor1, tensor2</strong> : tensor</p>
-<p><strong>n_modes</strong> : int, default is None</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>if None, the traditional inner product is returned (i.e. a float)</p></li>
-<li><dl class="simple">
-<dt>otherwise, the product between the <cite>n_modes</cite> last modes of <cite>tensor1</cite></dt><dd><p>and the <cite>n_modes</cite> first modes of <cite>tensor2</cite> is returned.
-The resulting tensor’s order is <cite>ndim(tensor1) - n_modes</cite>.</p>
-</dd>
+<div>Takes the inner product between the last (respectively first)
+<cite>n_modes</cite> of <cite>tensor1</cite> (respectively <cite>tensor2</cite>)</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor1, tensor2</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>n_modes</strong><span class="classifier">int, default is None</span></dt><dd><ul class="simple">
+<li>if None, the traditional inner product is returned (i.e. a float)</li>
+<li><dl class="first docutils">
+<dt>otherwise, the product between the <cite>n_modes</cite> last modes of <cite>tensor1</cite></dt><dd>and the <cite>n_modes</cite> first modes of <cite>tensor2</cite> is returned.
+The resulting tensor’s order is <cite>ndim(tensor1) - n_modes</cite>.</dd>
 </dl>
 </li>
 </ul>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>inner_product</strong> : float if n_modes is None, tensor otherwise</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>inner_product</strong><span class="classifier">float if n_modes is None, tensor otherwise</span></dt><dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -234,7 +242,7 @@ The resulting tensor’s order is <cite>ndim(tensor1) - n_modes</cite>.</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>

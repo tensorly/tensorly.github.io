@@ -67,8 +67,8 @@
 			<a class="navbar-item" href="../../auto_examples/index.html">
 				Examples
 			</a>
-			<a class="navbar-item" href="../../authors.html">
-				People
+			<a class="navbar-item" href="../../about.html">
+				About us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -129,9 +129,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in the CP format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.khatri_rao.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.kronecker.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker</a></li>
@@ -142,6 +143,9 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.inner.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.inner</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.contract.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.contract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.tensor_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.batched_tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.batched_tensor_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
@@ -155,7 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
                     
@@ -173,43 +177,44 @@
 
   <div class="section" id="tensorly-tenalg-proximal-soft-thresholding">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="tensorly.tenalg.proximal.soft_thresholding">
-<code class="sig-name descname">soft_thresholding</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/proximal.html#soft_thresholding"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">soft_thresholding</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/proximal.html#soft_thresholding"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Soft-thresholding operator</p>
 <blockquote>
-<div><p>sign(tensor) * max[abs(tensor) - threshold, 0]</p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> : ndarray</p>
-<p><strong>threshold</strong> : float or ndarray with shape tensor.shape</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>If float the threshold is applied to the whole tensor</p></li>
-<li><p>If ndarray, one threshold is applied per elements, 0 values are ignored</p></li>
+<div>sign(tensor) * max[abs(tensor) - threshold, 0]</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>threshold</strong><span class="classifier">float or ndarray with shape tensor.shape</span></dt><dd><ul class="simple">
+<li>If float the threshold is applied to the whole tensor</li>
+<li>If ndarray, one threshold is applied per elements, 0 values are ignored</li>
 </ul>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ndarray</p>
-<blockquote>
-<div><p>thresholded tensor on which the operator has been applied</p>
-</div></blockquote>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>ndarray</dt><dd><p>thresholded tensor on which the operator has been applied</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">inplace_soft_thresholding</span></code></dt><dd><p>Inplace version of the soft-thresholding operator</p>
-</dd>
-<dt><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding" title="tensorly.tenalg.proximal.svd_thresholding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">svd_thresholding</span></code></a></dt><dd><p>SVD-thresholding operator</p>
-</dd>
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">inplace_soft_thresholding</span></code></dt><dd>Inplace version of the soft-thresholding operator</dd>
+<dt><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding" title="tensorly.tenalg.proximal.svd_thresholding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">svd_thresholding</span></code></a></dt><dd>SVD-thresholding operator</dd>
 </dl>
 </div>
 <p class="rubric">Examples</p>
 <p>Basic shrinkage</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="k">as</span> <span class="nn">T</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="k">as</span> <span class="nn">T</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.tenalg.proximal</span> <span class="kn">import</span> <span class="n">soft_thresholding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
@@ -218,7 +223,7 @@
 </pre></div>
 </div>
 <p>Example with missing values</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mask</span><span class="o">*</span><span class="mf">1.1</span><span class="p">)</span>
 <span class="go">array([[ 1. , -2. ,  0.4],</span>
 <span class="go">       [-2.9,  3. ,  0. ]])</span>
@@ -257,7 +262,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>

@@ -67,8 +67,8 @@
 			<a class="navbar-item" href="../../auto_examples/index.html">
 				Examples
 			</a>
-			<a class="navbar-item" href="../../authors.html">
-				People
+			<a class="navbar-item" href="../../about.html">
+				About us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -129,9 +129,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in the CP format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
@@ -147,7 +148,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
                     
@@ -165,30 +166,34 @@
 
   <div class="section" id="tensorly-datasets-synthetic-gen-image">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets.synthetic</span></code>.gen_image</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="tensorly.datasets.synthetic.gen_image">
-<code class="sig-name descname">gen_image</code><span class="sig-paren">(</span><em class="sig-param">region='swiss'</em>, <em class="sig-param">image_height=20</em>, <em class="sig-param">image_width=20</em>, <em class="sig-param">n_channels=None</em>, <em class="sig-param">weight_value=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/datasets/synthetic.html#gen_image"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">gen_image</code><span class="sig-paren">(</span><em><span class="n">region</span><span class="o">=</span><span class="default_value">'swiss'</span></em>, <em><span class="n">image_height</span><span class="o">=</span><span class="default_value">20</span></em>, <em><span class="n">image_width</span><span class="o">=</span><span class="default_value">20</span></em>, <em><span class="n">n_channels</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">weight_value</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/datasets/synthetic.html#gen_image"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Generates an image for regression testing</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>region</strong> : {‘swiss’, ‘rectangle’}</p>
-<p><strong>image_height</strong> : int, optional</p>
-<p><strong>image_width</strong> : int, optional</p>
-<p><strong>weight_value</strong> : float, optional</p>
-<p><strong>n_channels</strong> : int or None, optional</p>
-<blockquote>
-<div><p>if not None, the resulting image will have a third dimension</p>
-</div></blockquote>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ndarray</p>
-<blockquote>
-<div><p>array of shape <code class="docutils literal notranslate"><span class="pre">(image_height,</span> <span class="pre">image_width)</span></code>
-or <code class="docutils literal notranslate"><span class="pre">(image_height,</span> <span class="pre">image_width,</span> <span class="pre">n_channels)</span></code>
-array for which all values are zero except the region specified</p>
-</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>region</strong><span class="classifier">{‘swiss’, ‘rectangle’}</span></dt><dd></dd>
+<dt><strong>image_height</strong><span class="classifier">int, optional</span></dt><dd></dd>
+<dt><strong>image_width</strong><span class="classifier">int, optional</span></dt><dd></dd>
+<dt><strong>weight_value</strong><span class="classifier">float, optional</span></dt><dd></dd>
+<dt><strong>n_channels</strong><span class="classifier">int or None, optional</span></dt><dd><p>if not None, the resulting image will have a third dimension</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>ndarray</dt><dd><p>array of shape <code class="docutils literal notranslate"><span class="pre">(image_height,</span> <span class="pre">image_width)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">(image_height,</span> <span class="pre">image_width,</span> <span class="pre">n_channels)</span></code>
+array for which all values are zero except the region specified</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -207,7 +212,7 @@ array for which all values are zero except the region specified</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.contrib.decomposition.matrix_product_state_cross.html" title="tensorly.contrib.decomposition.matrix_product_state_cross" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.contrib.decomposition.tensor_train_cross.html" title="tensorly.contrib.decomposition.tensor_train_cross" accesskey="n">
         <span>Next </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -222,7 +227,7 @@ array for which all values are zero except the region specified</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>

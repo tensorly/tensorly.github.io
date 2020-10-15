@@ -67,8 +67,8 @@
 			<a class="navbar-item" href="../../auto_examples/index.html">
 				Examples
 			</a>
-			<a class="navbar-item" href="../../authors.html">
-				People
+			<a class="navbar-item" href="../../about.html">
+				About us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -129,9 +129,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.kruskal_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.kruskal_tensor</span></code>: Tensors in the Kruskal format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in the CP format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.mps_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.mps_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.parafac.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac</a></li>
@@ -143,6 +144,9 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.non_negative_tucker.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.robust_pca.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.robust_pca</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.matrix_product_state.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.matrix_product_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.parafac2.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.symmetric_power_iteration.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.symmetric_power_iteration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tensorly.decomposition.symmetric_parafac_power_iteration.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.symmetric_parafac_power_iteration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
@@ -155,7 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../authors.html">People</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
                     
@@ -173,56 +177,56 @@
 
   <div class="section" id="tensorly-decomposition-non-negative-parafac">
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.non_negative_parafac</h1>
-<dl class="function">
+<dl class="py function">
 <dt id="tensorly.decomposition.non_negative_parafac">
-<code class="sig-name descname">non_negative_parafac</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">rank</em>, <em class="sig-param">n_iter_max=100</em>, <em class="sig-param">init='svd'</em>, <em class="sig-param">svd='numpy_svd'</em>, <em class="sig-param">tol=1e-06</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">verbose=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/candecomp_parafac.html#non_negative_parafac"><span class="viewcode-link">[source]</span></a></dt>
+<code class="descname">non_negative_parafac</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">rank</span></em>, <em><span class="n">n_iter_max</span><span class="o">=</span><span class="default_value">100</span></em>, <em><span class="n">init</span><span class="o">=</span><span class="default_value">'svd'</span></em>, <em><span class="n">svd</span><span class="o">=</span><span class="default_value">'numpy_svd'</span></em>, <em><span class="n">tol</span><span class="o">=</span><span class="default_value">1e-06</span></em>, <em><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em><span class="n">normalize_factors</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">return_errors</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">mask</span><span class="o">=</span><span class="default_value">None</span></em>, <em><span class="n">orthogonalise</span><span class="o">=</span><span class="default_value">False</span></em>, <em><span class="n">cvg_criterion</span><span class="o">=</span><span class="default_value">'abs_rec_error'</span></em>, <em><span class="n">fixed_modes</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp.html#non_negative_parafac"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Non-negative CP decomposition</p>
-<p>Uses multiplicative updates, see <a class="reference internal" href="#r26" id="id1"><span>[R26]</span></a></p>
+<p>Uses multiplicative updates, see <a class="reference internal" href="#r8ecd7ac81d93-2" id="id1">[2]</a></p>
 <p>This is the same as parafac(non_negative=True).</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tensor</strong> : ndarray</p>
-<p><strong>rank</strong> : int</p>
-<blockquote>
-<div><p>number of components</p>
-</div></blockquote>
-<p><strong>n_iter_max</strong> : int</p>
-<blockquote>
-<div><p>maximum number of iteration</p>
-</div></blockquote>
-<p><strong>init</strong> : {‘svd’, ‘random’}, optional</p>
-<p><strong>svd</strong> : str, default is ‘numpy_svd’</p>
-<blockquote>
-<div><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
-</div></blockquote>
-<p><strong>tol</strong> : float, optional</p>
-<blockquote>
-<div><p>tolerance: the algorithm stops when the variation in
-the reconstruction error is less than the tolerance</p>
-</div></blockquote>
-<p><strong>random_state</strong> : {None, int, np.random.RandomState}</p>
-<p><strong>verbose</strong> : int, optional</p>
-<blockquote>
-<div><p>level of verbosity</p>
-</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>number of components</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>factors</strong> : ndarray list</p>
-<blockquote>
-<div><p>list of positive factors of the CP decomposition
-element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
-</div></blockquote>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
+</dd>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>tolerance: the algorithm stops when the variation in
+the reconstruction error is less than the tolerance</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>level of verbosity</p>
+</dd>
+<dt><strong>fixed_modes</strong><span class="classifier">list, default is []</span></dt><dd><p>A list of modes for which the initial value is not modified.
+The last mode cannot be fixed due to error computation.</p>
 </dd>
 </dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>factors</strong><span class="classifier">ndarray list</span></dt><dd><p>list of positive factors of the CP decomposition
+element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r26"><span class="brackets">R26</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>Amnon Shashua and Tamir Hazan,
+<table class="docutils citation" frame="void" id="r8ecd7ac81d93-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td>Amnon Shashua and Tamir Hazan,
 “Non-negative tensor factorization with applications to statistics and computer vision”,
 In Proceedings of the International Conference on Machine Learning (ICML),
-pp 792-799, ICML, 2005</p>
-</dd>
-</dl>
+pp 792-799, ICML, 2005</td></tr>
+</tbody>
+</table>
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -256,7 +260,7 @@ pp 792-799, ICML, 2005</p>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2019, Jean Kossaifi.
+                &copy; 2016 - 2020, Jean Kossaifi.
         </p> 
     </div>
 </footer>
