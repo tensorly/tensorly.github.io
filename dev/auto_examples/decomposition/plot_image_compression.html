@@ -32,7 +32,7 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../home.html">
+        <a class="navbar-item navbar-title" href="../../index.html">
             TensorLy
         </a>
 
@@ -49,7 +49,6 @@
 			<span></span>
 			<span></span>
 		</span>
-
     </div>
 
 	<div id="NavbarMenu" class="navbar-menu">
@@ -59,7 +58,7 @@
 				Install
 			</a>
 			<a class="navbar-item" href="../../user_guide/index.html">
-				User guide
+				User Guide
 			</a>
 			<a class="navbar-item" href="../../modules/api.html">
 				API
@@ -68,7 +67,7 @@
 				Examples
 			</a>
 			<a class="navbar-item" href="../../about.html">
-				About us
+				About Us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -94,36 +93,37 @@
 
         
         <div class="columns">
-            
+
+                
             <div class="column is-one-quarter is-hidden-mobile aside">
-                <div class="sidebar" id="sidebar">
-                    
-                    <div class="search">
-                        <div class="search-title">
-                            Search in TensorLy
-                        </div>
+    <div class="sidebar" id="sidebar">
+        
+        <div class="search">
+            <div class="search-title">
+                Search in TensorLy
+            </div>
 
-                        <script>
-                          (function() {
-                            var cx = '002285679029256671182:5tfqz3cvmm8';
-                            var gcse = document.createElement('script');
-                            gcse.type = 'text/javascript';
-                            gcse.async = true;
-                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                            var s = document.getElementsByTagName('script')[0];
-                            s.parentNode.insertBefore(gcse, s);
-                          })();
-                        </script>
-                        <gcse:searchbox-only></gcse:searchbox-only>
-                        
-                    </div>
+            <script>
+              (function() {
+                var cx = '002285679029256671182:5tfqz3cvmm8';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+              })();
+            </script>
+            <gcse:searchbox-only></gcse:searchbox-only>
+            
+        </div>
 
-                    <div class="toc">
-                    
-                    
-                    
-                    
-                        <ul class="current">
+        <div class="toc">
+        
+        
+        
+        
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
@@ -143,15 +143,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
-                    
-                    
-                    </div>
-                    
-                </div>
-            </div>
+        
+        
+        </div>
+        
+    </div>
+</div>
+
+                
+                <div class="column is-three-quarters main-column">
+            
+
 
             
-            <div class="column is-three-quarters main-column">
                 <div class="content main-content">
 
                     
@@ -198,7 +202,7 @@
 <span class="n">cp_reconstruction</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
 <span class="c1"># Tucker decomposition</span>
-<span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ranks</span><span class="o">=</span><span class="n">tucker_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">tucker_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
 <span class="n">tucker_reconstruction</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span><span class="p">))</span>
 
 <span class="c1"># Plotting the original and reconstruction from the decompositions</span>
@@ -222,7 +226,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.667 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.007 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-image-compression-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/8f729f463f008579b6ad75ad9ebd2491/plot_image_compression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_image_compression.py</span></code></a></div>
