@@ -162,17 +162,19 @@
 
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-parafac-line-search-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-cp-line-search-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="using-line-search-with-parafac">
-<span id="sphx-glr-auto-examples-decomposition-parafac-line-search-py"></span><h1>Using line search with PARAFAC</h1>
+<span id="sphx-glr-auto-examples-decomposition-plot-cp-line-search-py"></span><h1>Using line search with PARAFAC</h1>
 <p>Example on how to use <a class="reference internal" href="../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code></a> with line search to accelerate convergence.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<img alt="plot cp line search" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cp_line_search_001.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_cp</span>
-<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">CP</span><span class="p">,</span> <span class="n">parafac</span>
 
 <span class="n">tol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">)</span>
 <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
@@ -188,31 +190,39 @@
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">toll</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tol</span><span class="p">):</span>
     <span class="c1"># Run PARAFAC decomposition without line search and time</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="n">fac</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">)</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">CP</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">tt</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-    <span class="c1"># Run PARAFAC decomposition with line search and time</span>
+    <span class="n">err</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">fac</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
+
+<span class="c1"># Run PARAFAC decomposition with line search and time</span>
+<span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">toll</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tol</span><span class="p">):</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="n">fac_ls</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">CP</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">toll</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">fac_ls</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">tt_ls</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 
     <span class="c1"># Calculate the error of both decompositions</span>
-    <span class="n">err</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">fac</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
     <span class="n">err_ls</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">fac_ls</span><span class="p">)</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">err</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;No line search&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt_ls</span><span class="p">,</span> <span class="n">err_ls</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Line search&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">err</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;No line search&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tt_ls</span><span class="p">,</span> <span class="n">err_ls</span> <span class="o">-</span> <span class="n">err_min</span><span class="p">,</span> <span class="s1">&#39;.r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Line search&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-parafac-line-search-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.181 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-cp-line-search-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<a class="reference download internal" download="" href="../../_downloads/e616ac8950b1089353737bb641397d4c/parafac_line_search.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">parafac_line_search.py</span></code></a></div>
+<a class="reference download internal" download="" href="../../_downloads/2af0682e07ba2fb9ad2fd36324f584e8/plot_cp_line_search.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_cp_line_search.py</span></code></a></div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<a class="reference download internal" download="" href="../../_downloads/cb64fc91dbcad9e7acccd75909fc6017/parafac_line_search.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">parafac_line_search.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../../_downloads/6f392aba7031ac3e4c8365850f77f099/plot_cp_line_search.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_cp_line_search.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

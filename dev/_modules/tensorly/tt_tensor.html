@@ -159,6 +159,7 @@
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
 
 <span class="k">def</span> <span class="nf">_validate_tt_tensor</span><span class="p">(</span><span class="n">tt_tensor</span><span class="p">):</span>
     <span class="n">factors</span> <span class="o">=</span> <span class="n">tt_tensor</span>
@@ -291,7 +292,8 @@
         <span class="n">factor_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">factor_params</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">constant_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the rank of a TT Decomposition</span>
 
 <span class="sd">    Parameters</span>
@@ -303,6 +305,12 @@
 <span class="sd">        if &#39;same&#39;: rank is computed to keep the number of parameters (at most) the same</span>
 <span class="sd">        if float, computes a rank so as to keep rank percent of the original number of parameters</span>
 <span class="sd">        if int or tuple, just returns rank</span>
+<span class="sd">    constant_rank : bool, default is False</span>
+<span class="sd">        * if True, the *same* rank will be chosen for each modes</span>
+<span class="sd">        * if False (default), the rank of each mode will be proportional to the corresponding tensor_shape</span>
+
+<span class="sd">        *used only if rank == &#39;same&#39; or 0 &lt; rank &lt;= 1*</span>
+
 <span class="sd">    rounding = {&#39;round&#39;, &#39;floor&#39;, &#39;ceil&#39;}</span>
 
 <span class="sd">    Returns</span>
@@ -322,7 +330,8 @@
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="s1">&#39;same&#39;</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">constant_rank</span><span class="p">:</span>
+        <span class="c1"># Choose the *same* rank for each mode</span>
         <span class="n">n_param_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span>
         <span class="n">order</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
 
@@ -338,6 +347,22 @@
         <span class="c1"># We get the non-negative solution</span>
         <span class="n">solution</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">((</span><span class="o">-</span> <span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)))</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Choose a rank proportional to the size of each mode</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">((</span><span class="o">-</span> <span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
+
+        <span class="c1"># We get the non-negative solution</span>
+        <span class="n">fraction_param</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">fraction_param</span><span class="p">)</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">(</span><span class="n">s</span><span class="o">*</span><span class="n">fraction_param</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tensor_shape</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">rank</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Check user input for errors</span>

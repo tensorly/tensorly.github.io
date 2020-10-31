@@ -232,6 +232,15 @@
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors, projections) : rank-</span><span class="si">{}</span><span class="s1"> Parafac2Tensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">message</span>
 
+    <span class="k">def</span> <span class="nf">to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">parafac2_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">parafac2_to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates a parafac2_tensor in the form (weights, factors)</span>

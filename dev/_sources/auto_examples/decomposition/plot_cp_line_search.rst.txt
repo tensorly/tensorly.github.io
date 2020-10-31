@@ -3,10 +3,10 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_decomposition_parafac_line_search.py>`     to download the full example code
+        Click :ref:`here <sphx_glr_download_auto_examples_decomposition_plot_cp_line_search.py>`     to download the full example code
     .. rst-class:: sphx-glr-example-title
 
-    .. _sphx_glr_auto_examples_decomposition_parafac_line_search.py:
+    .. _sphx_glr_auto_examples_decomposition_plot_cp_line_search.py:
 
 
 Using line search with PARAFAC
@@ -15,15 +15,25 @@ Using line search with PARAFAC
 Example on how to use :func:`tensorly.decomposition.parafac` with line search to accelerate convergence.
 
 
+
+.. image:: /auto_examples/decomposition/images/sphx_glr_plot_cp_line_search_001.png
+    :alt: plot cp line search
+    :class: sphx-glr-single-img
+
+
+
+
+
+
 .. code-block:: default
 
+    import matplotlib.pyplot as plt
 
     from time import time
     import numpy as np
     import tensorly as tl
     from tensorly.random import random_cp
-    from tensorly.decomposition import parafac
-    import matplotlib.pyplot as plt
+    from tensorly.decomposition import CP, parafac
 
     tol = np.logspace(-1, -9)
     err = np.empty_like(tol)
@@ -39,30 +49,38 @@ Example on how to use :func:`tensorly.decomposition.parafac` with line search to
     for ii, toll in enumerate(tol):
     	# Run PARAFAC decomposition without line search and time
         start = time()
-        fac = parafac(tensor, rank=3, n_iter_max=2000000, tol=toll)
+        cp = CP(rank=3, n_iter_max=2000000, tol=toll, linesearch=False)
+        fac = cp.fit_transform(tensor)
         tt[ii] = time() - start
-        # Run PARAFAC decomposition with line search and time
+        err[ii] = tl.norm(tl.cp_to_tensor(fac) - tensor)
+
+    # Run PARAFAC decomposition with line search and time
+    for ii, toll in enumerate(tol):
         start = time()
-        fac_ls = parafac(tensor, rank=3, n_iter_max=2000000, tol=toll, linesearch=True)
+        cp = CP(rank=3, n_iter_max=2000000, tol=toll, linesearch=True)
+        fac_ls = cp.fit_transform(tensor)
         tt_ls[ii] = time() - start
 
         # Calculate the error of both decompositions
-        err[ii] = tl.norm(tl.cp_to_tensor(fac) - tensor)
         err_ls[ii] = tl.norm(tl.cp_to_tensor(fac_ls) - tensor)
 
-    plt.loglog(tt, err - err_min, '.', label="No line search")
-    plt.loglog(tt_ls, err_ls - err_min, '.r', label="Line search")
-    plt.ylabel("Time")
-    plt.xlabel("Error")
-    plt.legend()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.loglog(tt, err - err_min, '.', label="No line search")
+    ax.loglog(tt_ls, err_ls - err_min, '.r', label="Line search")
+    ax.legend()
+    ax.set_ylabel("Time")
+    ax.set_xlabel("Error")
+
     plt.show()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
+   **Total running time of the script:** ( 0 minutes  9.181 seconds)
 
 
-.. _sphx_glr_download_auto_examples_decomposition_parafac_line_search.py:
+.. _sphx_glr_download_auto_examples_decomposition_plot_cp_line_search.py:
 
 
 .. only :: html
@@ -74,13 +92,13 @@ Example on how to use :func:`tensorly.decomposition.parafac` with line search to
 
   .. container:: sphx-glr-download sphx-glr-download-python
 
-     :download:`Download Python source code: parafac_line_search.py <parafac_line_search.py>`
+     :download:`Download Python source code: plot_cp_line_search.py <plot_cp_line_search.py>`
 
 
 
   .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-     :download:`Download Jupyter notebook: parafac_line_search.ipynb <parafac_line_search.ipynb>`
+     :download:`Download Jupyter notebook: plot_cp_line_search.ipynb <plot_cp_line_search.ipynb>`
 
 
 .. only:: html
