@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
         <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../index.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../index.html">
+            <img src="../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
@@ -167,7 +176,7 @@
     <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">n_factors</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Tensor-Train (MPS) tensor should be composed of at least two factors and a core.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Tensor-Train (MPS) tensor should be composed of at least two factors.&#39;</span>
                          <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factor was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_factors</span><span class="p">))</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="p">[]</span>
@@ -209,18 +218,18 @@
 <div class="viewcode-block" id="tt_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tt_tensor.tt_to_tensor.html#tensorly.tt_tensor.tt_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the full tensor whose TT decomposition is given by &#39;factors&#39;</span>
 
-<span class="sd">        Re-assembles &#39;factors&#39;, which represent a tensor in TT/TT format</span>
+<span class="sd">        Re-assembles &#39;factors&#39;, which represent a tensor in TT/Matrix-Product-State format</span>
 <span class="sd">        into the corresponding full tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factors: list of 3D-arrays</span>
-<span class="sd">              TT factors (known as core in TT terminology)</span>
+<span class="sd">    factors : list of 3D-arrays</span>
+<span class="sd">              TT factors (TT-cores)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    output_tensor: ndarray</span>
-<span class="sd">                   tensor whose TT/TT decomposition was given by &#39;factors&#39;</span>
+<span class="sd">    output_tensor : ndarray</span>
+<span class="sd">                   tensor whose TT/MPS decomposition was given by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">full_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
     <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">full_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
@@ -269,7 +278,6 @@
 <span class="sd">    1-D array</span>
 <span class="sd">    vectorized format of tensor defined by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span></div>
 
 <span class="k">def</span> <span class="nf">_tt_n_param</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
@@ -338,7 +346,7 @@
 
         <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">rank</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_param_tensor</span> <span class="o">/</span> <span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor_shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
 
         <span class="c1"># R_k I_k R_{k+1} = R^2 I_k</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -364,7 +372,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">avg_dim</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">avg_dim</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor_shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">avg_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span>

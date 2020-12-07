@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
         <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../index.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../index.html">
+            <img src="../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
@@ -137,6 +146,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tensorly.tt_tensor.tt_to_vec.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>.tt_to_vec</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
@@ -177,20 +187,20 @@
 <code class="descname">tt_to_tensor</code><span class="sig-paren">(</span><em><span class="n">factors</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tt_tensor.html#tt_to_tensor"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Returns the full tensor whose TT decomposition is given by ‘factors’</p>
 <blockquote>
-<div>Re-assembles ‘factors’, which represent a tensor in TT/TT format
+<div>Re-assembles ‘factors’, which represent a tensor in TT/Matrix-Product-State format
 into the corresponding full tensor</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>factors: list of 3D-arrays</strong></dt><dd><p>TT factors (known as core in TT terminology)</p>
+<dt><strong>factors</strong><span class="classifier">list of 3D-arrays</span></dt><dd><p>TT factors (TT-cores)</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>output_tensor: ndarray</dt><dd><p>tensor whose TT/TT decomposition was given by ‘factors’</p>
+<dt><strong>output_tensor</strong><span class="classifier">ndarray</span></dt><dd><p>tensor whose TT/MPS decomposition was given by ‘factors’</p>
 </dd>
 </dl>
 </td>

@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
         <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../index.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../index.html">
+            <img src="../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
@@ -404,12 +413,12 @@
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="s1">&#39;same&#39;</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">rank</span>
 
 
-<span class="k">def</span> <span class="nf">cp_normalize</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="cp_normalize"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_normalize.html#tensorly.cp_tensor.cp_normalize">[docs]</a><span class="k">def</span> <span class="nf">cp_normalize</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns cp_tensor with factors normalised to unit length</span>
 
 <span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
@@ -449,7 +458,7 @@
         <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="n">scales</span>
         <span class="n">normalized_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">scales_non_zero</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
 
-    <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">normalized_factors</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">normalized_factors</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="cp_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_to_tensor.html#tensorly.cp_tensor.cp_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -698,7 +707,7 @@
         <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
 
 
-<span class="k">def</span> <span class="nf">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="cp_norm"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_norm.html#tensorly.cp_tensor.cp_norm">[docs]</a><span class="k">def</span> <span class="nf">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the l2 norm of a CP tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -728,7 +737,7 @@
 
     <span class="c1"># We sum even if weigths is not None</span>
     <span class="c1"># as e.g. MXNet would return a 1D tensor, not a 0D tensor</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span></div>
 
 
 <span class="c1"># Deprecated classes and functions</span>
