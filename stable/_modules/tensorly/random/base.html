@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../../_static/base.min.css" />
         <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../../home.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../../index.html">
+            <img src="../../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../../index.html">
@@ -49,7 +58,6 @@
 			<span></span>
 			<span></span>
 		</span>
-
     </div>
 
 	<div id="NavbarMenu" class="navbar-menu">
@@ -59,7 +67,7 @@
 				Install
 			</a>
 			<a class="navbar-item" href="../../../user_guide/index.html">
-				User guide
+				User Guide
 			</a>
 			<a class="navbar-item" href="../../../modules/api.html">
 				API
@@ -68,7 +76,7 @@
 				Examples
 			</a>
 			<a class="navbar-item" href="../../../about.html">
-				About us
+				About Us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -94,36 +102,37 @@
 
         
         <div class="columns">
-            
+
+                
             <div class="column is-one-quarter is-hidden-mobile aside">
-                <div class="sidebar" id="sidebar">
-                    
-                    <div class="search">
-                        <div class="search-title">
-                            Search in TensorLy
-                        </div>
+    <div class="sidebar" id="sidebar">
+        
+        <div class="search">
+            <div class="search-title">
+                Search in TensorLy
+            </div>
 
-                        <script>
-                          (function() {
-                            var cx = '002285679029256671182:5tfqz3cvmm8';
-                            var gcse = document.createElement('script');
-                            gcse.type = 'text/javascript';
-                            gcse.async = true;
-                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                            var s = document.getElementsByTagName('script')[0];
-                            s.parentNode.insertBefore(gcse, s);
-                          })();
-                        </script>
-                        <gcse:searchbox-only></gcse:searchbox-only>
-                        
-                    </div>
+            <script>
+              (function() {
+                var cx = '002285679029256671182:5tfqz3cvmm8';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+              })();
+            </script>
+            <gcse:searchbox-only></gcse:searchbox-only>
+            
+        </div>
 
-                    <div class="toc">
-                    
-                    
-                    
-                    
-                        <ul>
+        <div class="toc">
+        
+        
+        
+        
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
@@ -133,15 +142,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
 </ul>
 
-                    
-                    
-                    </div>
-                    
-                </div>
-            </div>
+        
+        
+        </div>
+        
+    </div>
+</div>
+
+                
+                <div class="column is-three-quarters main-column">
+            
+
 
             
-            <div class="column is-three-quarters main-column">
                 <div class="content main-content">
 
                     
@@ -149,9 +162,10 @@
   <h1>Source code for tensorly.random.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">cp_to_tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">,</span>
-                         <span class="n">cp_normalize</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">TuckerTensor</span>
-<span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span><span class="p">,</span> <span class="n">TTTensor</span>
+                         <span class="n">cp_normalize</span><span class="p">,</span> <span class="n">validate_cp_rank</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">TuckerTensor</span><span class="p">,</span> <span class="n">validate_tucker_rank</span>
+<span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span><span class="p">,</span> <span class="n">TTTensor</span><span class="p">,</span> <span class="n">validate_tt_rank</span>
+<span class="kn">from</span> <span class="nn">..tt_matrix</span> <span class="kn">import</span> <span class="n">tt_matrix_to_tensor</span><span class="p">,</span> <span class="n">TTMatrix</span><span class="p">,</span> <span class="n">validate_tt_matrix_rank</span>
 <span class="kn">from</span> <span class="nn">..parafac2_tensor</span> <span class="kn">import</span> <span class="n">parafac2_to_tensor</span><span class="p">,</span> <span class="n">Parafac2Tensor</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
@@ -189,7 +203,7 @@
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">random_parafac2</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="random_parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_parafac2.html#tensorly.random.random_parafac2">[docs]</a><span class="k">def</span> <span class="nf">random_parafac2</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate a random PARAFAC2 tensor</span>
 
@@ -225,7 +239,7 @@
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">parafac2_tensor</span>
+        <span class="k">return</span> <span class="n">parafac2_tensor</span></div>
 
 
 <div class="viewcode-block" id="random_cp"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_cp.html#tensorly.random.random_cp">[docs]</a><span class="k">def</span> <span class="nf">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
@@ -253,6 +267,7 @@
 <span class="sd">        ND-array : full tensor if `full` is True</span>
 <span class="sd">        2D-array list : list of factors otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_cp_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="ow">and</span> <span class="n">orthogonal</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Can only construct orthogonal tensors when rank &lt;= min(shape) but got &#39;</span>
                       <span class="s1">&#39;a tensor with min(shape)=</span><span class="si">{}</span><span class="s1"> &lt; rank=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span><span class="p">))</span>
@@ -296,8 +311,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rns</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="n">rank</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tucker_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">orthogonal</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)):</span>
@@ -322,7 +336,7 @@
 
 
 <div class="viewcode-block" id="random_tt"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tt.html#tensorly.random.random_tt">[docs]</a><span class="k">def</span> <span class="nf">random_tt</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates a random TT/ttrain tensor</span>
+    <span class="sd">&quot;&quot;&quot;Generates a random TT/MPS tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -347,12 +361,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> 
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">n_dim</span><span class="o">+</span><span class="mi">1</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided incorrect number of ranks. Should verify len(rank) == tl.ndim(tensor)+1, but len(rank) = </span><span class="si">{}</span><span class="s1"> while tl.ndim(tensor) + 1  = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="nb">len</span><span class="p">(</span><span class="n">rank</span><span class="p">),</span> <span class="n">n_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tt_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
 
     <span class="c1"># Make sure it&#39;s not a tuple but a list</span>
     <span class="n">rank</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
@@ -375,6 +384,47 @@
         <span class="k">return</span> <span class="n">TTTensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="random_tt_matrix"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tt_matrix.html#tensorly.random.random_tt_matrix">[docs]</a><span class="k">def</span> <span class="nf">random_tt_matrix</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a random tensor in TT-Matrix format</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shape : tuple</span>
+<span class="sd">        shape of the tensor to generate</span>
+<span class="sd">    rank : int</span>
+<span class="sd">        rank of the TT decomposition</span>
+<span class="sd">        must verify rank[0] == rank[-1] ==1 (boundary conditions)</span>
+<span class="sd">        and len(rank) == len(shape)+1</span>
+<span class="sd">    full : bool, optional, default is False</span>
+<span class="sd">        if True, a full tensor is returned</span>
+<span class="sd">        otherwise, the decomposed tensor is returned</span>
+<span class="sd">    random_state : `np.random.RandomState`</span>
+<span class="sd">    context : dict</span>
+<span class="sd">        context in which to create the tensor</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TT_tensor : ND-array or 3D-array list</span>
+<span class="sd">        * ND-array : full tensor if `full` is True</span>
+<span class="sd">        * 3D-array list : list of factors otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">left_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[:</span><span class="n">n_dim</span><span class="p">]</span>
+    <span class="n">right_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="n">n_dim</span><span class="p">:]</span>
+
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tt_matrix_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
+
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dim</span><span class="p">):</span>
+         <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random_tensor</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">left_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">right_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+                                             <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TTMatrix</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
+
+
 <span class="n">random_kruskal</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_kruskal&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_cp</span><span class="p">)</span>
 <span class="n">random_mps</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_mps&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_tt</span><span class="p">)</span>
 </pre></div>
@@ -393,7 +443,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, Jean Kossaifi.
+                &copy; 2016 - 2020, TensorLy Developers.
         </p> 
     </div>
 </footer>

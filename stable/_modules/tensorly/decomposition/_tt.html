@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../../_static/base.min.css" />
         <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../../home.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../../index.html">
+            <img src="../../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../../index.html">
@@ -49,7 +58,6 @@
 			<span></span>
 			<span></span>
 		</span>
-
     </div>
 
 	<div id="NavbarMenu" class="navbar-menu">
@@ -59,7 +67,7 @@
 				Install
 			</a>
 			<a class="navbar-item" href="../../../user_guide/index.html">
-				User guide
+				User Guide
 			</a>
 			<a class="navbar-item" href="../../../modules/api.html">
 				API
@@ -68,7 +76,7 @@
 				Examples
 			</a>
 			<a class="navbar-item" href="../../../about.html">
-				About us
+				About Us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -94,36 +102,37 @@
 
         
         <div class="columns">
-            
+
+                
             <div class="column is-one-quarter is-hidden-mobile aside">
-                <div class="sidebar" id="sidebar">
-                    
-                    <div class="search">
-                        <div class="search-title">
-                            Search in TensorLy
-                        </div>
+    <div class="sidebar" id="sidebar">
+        
+        <div class="search">
+            <div class="search-title">
+                Search in TensorLy
+            </div>
 
-                        <script>
-                          (function() {
-                            var cx = '002285679029256671182:5tfqz3cvmm8';
-                            var gcse = document.createElement('script');
-                            gcse.type = 'text/javascript';
-                            gcse.async = true;
-                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                            var s = document.getElementsByTagName('script')[0];
-                            s.parentNode.insertBefore(gcse, s);
-                          })();
-                        </script>
-                        <gcse:searchbox-only></gcse:searchbox-only>
-                        
-                    </div>
+            <script>
+              (function() {
+                var cx = '002285679029256671182:5tfqz3cvmm8';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+              })();
+            </script>
+            <gcse:searchbox-only></gcse:searchbox-only>
+            
+        </div>
 
-                    <div class="toc">
-                    
-                    
-                    
-                    
-                        <ul>
+        <div class="toc">
+        
+        
+        
+        
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
@@ -133,15 +142,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
 </ul>
 
-                    
-                    
-                    </div>
-                    
-                </div>
-            </div>
+        
+        
+        </div>
+        
+    </div>
+</div>
+
+                
+                <div class="column is-three-quarters main-column">
+            
+
 
             
-            <div class="column is-three-quarters main-column">
                 <div class="content main-content">
 
                     
@@ -149,9 +162,11 @@
   <h1>Source code for tensorly.decomposition._tt</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
-<span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">_validate_tt_rank</span>
+<span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">validate_tt_rank</span><span class="p">,</span> <span class="n">TTTensor</span>
+<span class="kn">from</span> <span class="nn">..tt_matrix</span> <span class="kn">import</span> <span class="n">validate_tt_matrix_rank</span><span class="p">,</span> <span class="n">TTMatrix</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 
-<div class="viewcode-block" id="matrix_product_state"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.matrix_product_state.html#tensorly.decomposition.matrix_product_state">[docs]</a><span class="k">def</span> <span class="nf">matrix_product_state</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="tensor_train"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train">[docs]</a><span class="k">def</span> <span class="nf">tensor_train</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TT decomposition via recursive SVD</span>
 
 <span class="sd">        Decomposes `input_tensor` into a sequence of order-3 tensors (factors)</span>
@@ -176,7 +191,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    .. [1] Ivan V. Oseledets. &quot;Tensor-train decomposition&quot;, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_tt_rank</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tt_rank</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
     <span class="n">tensor_size</span> <span class="o">=</span> <span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_size</span><span class="p">)</span>
 
@@ -212,41 +227,81 @@
     <span class="k">if</span><span class="p">(</span><span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TT factor &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
 
+    <span class="k">return</span> <span class="n">TTTensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="tensor_train_matrix"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tensor_train_matrix.html#tensorly.decomposition.tensor_train_matrix">[docs]</a><span class="k">def</span> <span class="nf">tensor_train_matrix</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decompose a tensor into a matrix in tt-format</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tensorized matrix </span>
+<span class="sd">        if your input matrix is of size (4, 9) and your tensorized_shape (2, 2, 3, 3)</span>
+<span class="sd">        then tensor should be tl.reshape(matrix, (2, 2, 3, 3))</span>
+<span class="sd">    rank : &#39;same&#39;, float or int tuple</span>
+<span class="sd">        - if &#39;same&#39; creates a decomposition with the same number of parameters as `tensor`</span>
+<span class="sd">        - if float, creates a decomposition with `rank` x the number of parameters of `tensor`</span>
+<span class="sd">        - otherwise, the actual rank to be used, e.g. (1, rank_2, ..., 1) of size tensor.ndim//2. Note that boundary conditions dictate that the first rank = last rank = 1.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tt_matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="n">n_input</span> <span class="o">=</span> <span class="n">order</span> <span class="o">//</span> <span class="mi">2</span> <span class="c1"># (n_output = n_input)</span>
+    
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_input</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;The tensor should have as many dimensions for inputs and outputs, i.e. order should be even &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;but got a tensor of order tl.ndim(tensor)=</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s1"> which is odd.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        
+    <span class="n">in_shape</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[:</span><span class="n">n_input</span><span class="p">]</span>
+    <span class="n">out_shape</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">n_input</span><span class="p">:]</span>
+
+    <span class="n">new_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">idx</span> <span class="k">for</span> <span class="n">tuple_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n_input</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tuple_</span><span class="p">])</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">in_shape</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">)])</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">new_idx</span><span class="p">),</span> <span class="n">new_shape</span><span class="p">)</span>
+    
+    <span class="n">factors</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    
     <span class="k">return</span> <span class="n">factors</span></div>
 
 
-<span class="k">class</span> <span class="nc">TensorTrain</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="TensorTrain"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.TensorTrain.html#tensorly.decomposition.TensorTrain">[docs]</a><span class="k">class</span> <span class="nc">TensorTrain</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TT decomposition via recursive SVD</span>
+
+<span class="sd">        Decomposes `input_tensor` into a sequence of order-3 tensors (factors)</span>
+<span class="sd">        -- also known as Tensor-Train decomposition [1]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_tensor : tensorly.tensor</span>
+<span class="sd">    rank : {int, int list}</span>
+<span class="sd">            maximum allowable TT rank of the factors</span>
+<span class="sd">            if int, then this is the same for all the factors</span>
+<span class="sd">            if int list, then rank[k] is the rank of the kth factor</span>
+<span class="sd">    verbose : boolean, optional</span>
+<span class="sd">            level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    factors : TT factors</span>
+<span class="sd">            order-3 tensors of the TT decomposition</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Ivan V. Oseledets. &quot;Tensor-train decomposition&quot;, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;TT decomposition via recursive SVD</span>
-
-<span class="sd">            Decomposes `input_tensor` into a sequence of order-3 tensors (factors)</span>
-<span class="sd">            -- also known as Tensor-Train decomposition [1]_.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        input_tensor : tensorly.tensor</span>
-<span class="sd">        rank : {int, int list}</span>
-<span class="sd">                maximum allowable TT rank of the factors</span>
-<span class="sd">                if int, then this is the same for all the factors</span>
-<span class="sd">                if int list, then rank[k] is the rank of the kth factor</span>
-<span class="sd">        verbose : boolean, optional</span>
-<span class="sd">                level of verbosity</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        factors : TT factors</span>
-<span class="sd">                order-3 tensors of the TT decomposition</span>
-
-<span class="sd">        References</span>
-<span class="sd">        ----------</span>
-<span class="sd">        .. [1] Ivan V. Oseledets. &quot;Tensor-train decomposition&quot;, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">matrix_product_state</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
+
+<span class="n">matrix_product_state</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="s1">&#39;matrix_product_state&#39;</span><span class="p">,</span> <span class="n">tensor_train</span><span class="p">)</span>
 </pre></div>
 
 
@@ -263,7 +318,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, Jean Kossaifi.
+                &copy; 2016 - 2020, TensorLy Developers.
         </p> 
     </div>
 </footer>

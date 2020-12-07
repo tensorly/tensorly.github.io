@@ -9,18 +9,27 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="TensorLy: Tensor learning in Python">
+        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
 
         
         <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy: Tensor learning in Python</title>
+        <title>TensorLy</title>
         
 
+        <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../_static/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link rel="icon" type="image/png" href="../../_static/favicon/favicon.ico"> -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
         <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
+    
         
         
 
@@ -32,8 +41,8 @@
         
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
-        <a class="navbar-item navbar-title" href="../../home.html">
-            TensorLy
+        <a class="navbar-item navbar-logo" href="../../index.html">
+            <img src="../../_static/tensorly-logo.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
@@ -49,7 +58,6 @@
 			<span></span>
 			<span></span>
 		</span>
-
     </div>
 
 	<div id="NavbarMenu" class="navbar-menu">
@@ -59,7 +67,7 @@
 				Install
 			</a>
 			<a class="navbar-item" href="../../user_guide/index.html">
-				User guide
+				User Guide
 			</a>
 			<a class="navbar-item" href="../../modules/api.html">
 				API
@@ -68,7 +76,7 @@
 				Examples
 			</a>
 			<a class="navbar-item" href="../../about.html">
-				About us
+				About Us
 			</a>
 			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
 				Notebooks
@@ -94,36 +102,37 @@
 
         
         <div class="columns">
-            
+
+                
             <div class="column is-one-quarter is-hidden-mobile aside">
-                <div class="sidebar" id="sidebar">
-                    
-                    <div class="search">
-                        <div class="search-title">
-                            Search in TensorLy
-                        </div>
+    <div class="sidebar" id="sidebar">
+        
+        <div class="search">
+            <div class="search-title">
+                Search in TensorLy
+            </div>
 
-                        <script>
-                          (function() {
-                            var cx = '002285679029256671182:5tfqz3cvmm8';
-                            var gcse = document.createElement('script');
-                            gcse.type = 'text/javascript';
-                            gcse.async = true;
-                            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                            var s = document.getElementsByTagName('script')[0];
-                            s.parentNode.insertBefore(gcse, s);
-                          })();
-                        </script>
-                        <gcse:searchbox-only></gcse:searchbox-only>
-                        
-                    </div>
+            <script>
+              (function() {
+                var cx = '002285679029256671182:5tfqz3cvmm8';
+                var gcse = document.createElement('script');
+                gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+              })();
+            </script>
+            <gcse:searchbox-only></gcse:searchbox-only>
+            
+        </div>
 
-                    <div class="toc">
-                    
-                    
-                    
-                    
-                        <ul>
+        <div class="toc">
+        
+        
+        
+        
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
@@ -133,15 +142,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
 
-                    
-                    
-                    </div>
-                    
-                </div>
-            </div>
+        
+        
+        </div>
+        
+    </div>
+</div>
+
+                
+                <div class="column is-three-quarters main-column">
+            
+
 
             
-            <div class="column is-three-quarters main-column">
                 <div class="content main-content">
 
                     
@@ -155,13 +168,15 @@
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">brentq</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="k">def</span> <span class="nf">_validate_tt_tensor</span><span class="p">(</span><span class="n">tt_tensor</span><span class="p">):</span>
     <span class="n">factors</span> <span class="o">=</span> <span class="n">tt_tensor</span>
     <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">n_factors</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Tensor-Train (MPS) tensor should be composed of at least two factors and a core.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Tensor-Train (MPS) tensor should be composed of at least two factors.&#39;</span>
                          <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factor was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_factors</span><span class="p">))</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="p">[]</span>
@@ -203,18 +218,18 @@
 <div class="viewcode-block" id="tt_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.tt_tensor.tt_to_tensor.html#tensorly.tt_tensor.tt_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the full tensor whose TT decomposition is given by &#39;factors&#39;</span>
 
-<span class="sd">        Re-assembles &#39;factors&#39;, which represent a tensor in TT/TT format</span>
+<span class="sd">        Re-assembles &#39;factors&#39;, which represent a tensor in TT/Matrix-Product-State format</span>
 <span class="sd">        into the corresponding full tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    factors: list of 3D-arrays</span>
-<span class="sd">              TT factors (known as core in TT terminology)</span>
+<span class="sd">    factors : list of 3D-arrays</span>
+<span class="sd">              TT factors (TT-cores)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    output_tensor: ndarray</span>
-<span class="sd">                   tensor whose TT/TT decomposition was given by &#39;factors&#39;</span>
+<span class="sd">    output_tensor : ndarray</span>
+<span class="sd">                   tensor whose TT/MPS decomposition was given by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">full_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
     <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">full_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
@@ -263,7 +278,6 @@
 <span class="sd">    1-D array</span>
 <span class="sd">    vectorized format of tensor defined by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span></div>
 
 <span class="k">def</span> <span class="nf">_tt_n_param</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
@@ -287,7 +301,8 @@
         <span class="n">factor_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="o">*</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">factor_params</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">_validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">constant_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the rank of a TT Decomposition</span>
 
 <span class="sd">    Parameters</span>
@@ -299,6 +314,12 @@
 <span class="sd">        if &#39;same&#39;: rank is computed to keep the number of parameters (at most) the same</span>
 <span class="sd">        if float, computes a rank so as to keep rank percent of the original number of parameters</span>
 <span class="sd">        if int or tuple, just returns rank</span>
+<span class="sd">    constant_rank : bool, default is False</span>
+<span class="sd">        * if True, the *same* rank will be chosen for each modes</span>
+<span class="sd">        * if False (default), the rank of each mode will be proportional to the corresponding tensor_shape</span>
+
+<span class="sd">        *used only if rank == &#39;same&#39; or 0 &lt; rank &lt;= 1*</span>
+
 <span class="sd">    rounding = {&#39;round&#39;, &#39;floor&#39;, &#39;ceil&#39;}</span>
 
 <span class="sd">    Returns</span>
@@ -318,25 +339,52 @@
     <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="s1">&#39;same&#39;</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">constant_rank</span><span class="p">:</span>
+        <span class="c1"># Choose the *same* rank for each mode</span>
         <span class="n">n_param_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span>
         <span class="n">order</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_param_tensor</span> <span class="o">/</span> <span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor_shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># R_k I_k R_{k+1} = R^2 I_k</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
         <span class="c1"># Border rank of 1, R_0 = R_N = 1</span>
         <span class="c1"># First and last factor of size I_0 R and I_N R</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="c1"># R_k I_k R_{k+1} = R^2 I_k</span>
         <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
         <span class="c1"># We want the number of params of decomp (=sum of params of factors)</span>
         <span class="c1"># To be equal to c = \prod_k I_k</span>
         <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">n_param_tensor</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+
         <span class="c1"># We get the non-negative solution</span>
         <span class="n">solution</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">((</span><span class="o">-</span> <span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)))</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
 
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="c1"># Choose a rank proportional to the size of each mode</span>
+        <span class="c1"># The method is similar to the above one for constant_rank == True</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
+        <span class="n">avg_dim</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">avg_dim</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">avg_dim</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">tensor_shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Determining the tt-rank for the trivial case of a matrix (order 2 tensor) of shape </span><span class="si">{</span><span class="n">tensor_shape</span><span class="si">}</span><span class="s1">, not a higher-order tensor.&#39;</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">avg_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">tensor_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">avg_dim</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="c1"># We get the non-negative solution</span>
+        <span class="n">fraction_param</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">b</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="n">fraction_param</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">avg_dim</span><span class="p">])</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">rank</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Check user input for errors</span>
+        <span class="c1"># Check user input for potential errors</span>
         <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -415,7 +463,7 @@
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, Jean Kossaifi.
+                &copy; 2016 - 2020, TensorLy Developers.
         </p> 
     </div>
 </footer>
