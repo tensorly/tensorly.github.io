@@ -284,31 +284,31 @@
 
 
 <div class="viewcode-block" id="CPPower"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CPPower.html#tensorly.decomposition.CPPower">[docs]</a><span class="k">class</span> <span class="nc">CPPower</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CP Decomposition via Robust Tensor Power Iteration</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tl.tensor</span>
+<span class="sd">        input tensor to decompose</span>
+<span class="sd">    rank : int</span>
+<span class="sd">        rank of the decomposition (number of rank-1 components)</span>
+<span class="sd">    n_repeat : int, default is 10</span>
+<span class="sd">        number of initializations to be tried</span>
+<span class="sd">    n_iteration : int, default is 10</span>
+<span class="sd">        number of power iterations</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (weights, factors)</span>
+
+<span class="sd">    weights : 1-D tl.tensor of length `rank`</span>
+<span class="sd">        contains the eigenvalue of each eigenvector</span>
+<span class="sd">    factors : list of 2-D tl.tensor of shape (size, rank)</span>
+<span class="sd">        Each column of each factor corresponds to one eigenvector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_repeat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_iteration</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;CP Decomposition via Robust Tensor Power Iteration</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        tensor : tl.tensor</span>
-<span class="sd">            input tensor to decompose</span>
-<span class="sd">        rank : int</span>
-<span class="sd">            rank of the decomposition (number of rank-1 components)</span>
-<span class="sd">        n_repeat : int, default is 10</span>
-<span class="sd">            number of initializations to be tried</span>
-<span class="sd">        n_iteration : int, default is 10</span>
-<span class="sd">            number of power iterations</span>
-<span class="sd">        verbose : bool</span>
-<span class="sd">            level of verbosity</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        (weights, factors)</span>
-
-<span class="sd">        weights : 1-D tl.tensor of length `rank`</span>
-<span class="sd">            contains the eigenvalue of each eigenvector</span>
-<span class="sd">        factors : list of 2-D tl.tensor of shape (size, rank)</span>
-<span class="sd">            Each column of each factor corresponds to one eigenvector</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_repeat</span> <span class="o">=</span> <span class="n">n_repeat</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iteration</span> <span class="o">=</span> <span class="n">n_iteration</span>

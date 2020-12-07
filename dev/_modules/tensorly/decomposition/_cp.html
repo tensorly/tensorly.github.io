@@ -888,6 +888,78 @@
 
 
 <div class="viewcode-block" id="CP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP">[docs]</a><span class="k">class</span> <span class="nc">CP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Candecomp-Parafac decomposition via Alternating-Least Square</span>
+
+<span class="sd">        Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
+
+<span class="sd">            ``tensor = [|weights; factors[0], ..., factors[-1] |]``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : ndarray</span>
+<span class="sd">        rank  : int</span>
+<span class="sd">            Number of components.</span>
+<span class="sd">        n_iter_max : int</span>
+<span class="sd">            Maximum number of iteration</span>
+<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">            Type of factor matrix initialization. See `initialize_factors`.</span>
+<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">            function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
+<span class="sd">            of shape (rank, ), which will contain the norms of the factors</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            (Default: 1e-6) Relative reconstruction error tolerance. The</span>
+<span class="sd">            algorithm is considered to have found the global minimum when the</span>
+<span class="sd">            reconstruction error is less than `tol`.</span>
+<span class="sd">        random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">        verbose : int, optional</span>
+<span class="sd">            Level of verbosity</span>
+<span class="sd">        return_errors : bool, optional</span>
+<span class="sd">            Activate return of iteration errors</span>
+<span class="sd">        mask : ndarray</span>
+<span class="sd">            array of booleans with the same shape as ``tensor`` should be 0 where</span>
+<span class="sd">            the values are missing and 1 everywhere else. Note:  if tensor is</span>
+<span class="sd">            sparse, then mask should also be sparse with a fill value of 1 (or</span>
+<span class="sd">            True). Allows for missing values [2]_</span>
+<span class="sd">        cvg_criterion : {&#39;abs_rec_error&#39;, &#39;rec_error&#39;}, optional</span>
+<span class="sd">            Stopping criterion for ALS, works if `tol` is not None. </span>
+<span class="sd">            If &#39;rec_error&#39;,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.</span>
+<span class="sd">            If &#39;abs_rec_error&#39;, ALS terminates when |previous rec_error - current rec_error| &lt; tol.</span>
+<span class="sd">        sparsity : float or int</span>
+<span class="sd">            If `sparsity` is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). `sparsity` denotes desired fraction or number of non-zero elements in the sparse_component of the `tensor`.</span>
+<span class="sd">        fixed_modes : list, default is []</span>
+<span class="sd">            A list of modes for which the initial value is not modified.</span>
+<span class="sd">            The last mode cannot be fixed due to error computation.</span>
+<span class="sd">        svd_mask_repeats: int</span>
+<span class="sd">            If using a tensor with masked values, this initializes using SVD multiple times to</span>
+<span class="sd">            remove the effect of these missing values on the initialization.</span>
+<span class="sd">        linesearch : bool, default is False</span>
+<span class="sd">            Whether to perform line search as proposed by Bro [3].</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CPTensor : (weight, factors)</span>
+<span class="sd">            * weights : 1D array of shape (rank, )</span>
+<span class="sd">                all ones if normalize_factors is False (default), </span>
+<span class="sd">                weights of the (normalized) factors otherwise</span>
+<span class="sd">            * factors : List of factors of the CP decomposition element `i` is of shape</span>
+<span class="sd">                (tensor.shape[i], rank)</span>
+<span class="sd">            * sparse_component : nD array of shape tensor.shape. Returns only if `sparsity` is not None.</span>
+
+<span class="sd">        errors : list</span>
+<span class="sd">            A list of reconstruction errors at each iteration of the algorithms.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">        SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+
+<span class="sd">        .. [2] Tomasi, Giorgio, and Rasmus Bro. &quot;PARAFAC and missing values.&quot; </span>
+<span class="sd">                Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</span>
+
+<span class="sd">        .. [3] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and </span>
+<span class="sd">                Applications&quot;, PhD., University of Amsterdam, 1998</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> 
                  <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                  <span class="n">l2_reg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -900,78 +972,6 @@
                  <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                  <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Candecomp-Parafac decomposition via Alternating-Least Square</span>
-
-<span class="sd">            Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
-
-<span class="sd">                ``tensor = [|weights; factors[0], ..., factors[-1] |]``.</span>
-
-<span class="sd">            Parameters</span>
-<span class="sd">            ----------</span>
-<span class="sd">            tensor : ndarray</span>
-<span class="sd">            rank  : int</span>
-<span class="sd">                Number of components.</span>
-<span class="sd">            n_iter_max : int</span>
-<span class="sd">                Maximum number of iteration</span>
-<span class="sd">            init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">                Type of factor matrix initialization. See `initialize_factors`.</span>
-<span class="sd">            svd : str, default is &#39;numpy_svd&#39;</span>
-<span class="sd">                function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
-<span class="sd">            normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
-<span class="sd">                of shape (rank, ), which will contain the norms of the factors</span>
-<span class="sd">            tol : float, optional</span>
-<span class="sd">                (Default: 1e-6) Relative reconstruction error tolerance. The</span>
-<span class="sd">                algorithm is considered to have found the global minimum when the</span>
-<span class="sd">                reconstruction error is less than `tol`.</span>
-<span class="sd">            random_state : {None, int, np.random.RandomState}</span>
-<span class="sd">            verbose : int, optional</span>
-<span class="sd">                Level of verbosity</span>
-<span class="sd">            return_errors : bool, optional</span>
-<span class="sd">                Activate return of iteration errors</span>
-<span class="sd">            mask : ndarray</span>
-<span class="sd">                array of booleans with the same shape as ``tensor`` should be 0 where</span>
-<span class="sd">                the values are missing and 1 everywhere else. Note:  if tensor is</span>
-<span class="sd">                sparse, then mask should also be sparse with a fill value of 1 (or</span>
-<span class="sd">                True). Allows for missing values [2]_</span>
-<span class="sd">            cvg_criterion : {&#39;abs_rec_error&#39;, &#39;rec_error&#39;}, optional</span>
-<span class="sd">                Stopping criterion for ALS, works if `tol` is not None. </span>
-<span class="sd">                If &#39;rec_error&#39;,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.</span>
-<span class="sd">                If &#39;abs_rec_error&#39;, ALS terminates when |previous rec_error - current rec_error| &lt; tol.</span>
-<span class="sd">            sparsity : float or int</span>
-<span class="sd">                If `sparsity` is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). `sparsity` denotes desired fraction or number of non-zero elements in the sparse_component of the `tensor`.</span>
-<span class="sd">            fixed_modes : list, default is []</span>
-<span class="sd">                A list of modes for which the initial value is not modified.</span>
-<span class="sd">                The last mode cannot be fixed due to error computation.</span>
-<span class="sd">            svd_mask_repeats: int</span>
-<span class="sd">                If using a tensor with masked values, this initializes using SVD multiple times to</span>
-<span class="sd">                remove the effect of these missing values on the initialization.</span>
-<span class="sd">            linesearch : bool, default is False</span>
-<span class="sd">                Whether to perform line search as proposed by Bro [3].</span>
-
-<span class="sd">            Returns</span>
-<span class="sd">            -------</span>
-<span class="sd">            CPTensor : (weight, factors)</span>
-<span class="sd">                * weights : 1D array of shape (rank, )</span>
-<span class="sd">                    all ones if normalize_factors is False (default), </span>
-<span class="sd">                    weights of the (normalized) factors otherwise</span>
-<span class="sd">                * factors : List of factors of the CP decomposition element `i` is of shape</span>
-<span class="sd">                    (tensor.shape[i], rank)</span>
-<span class="sd">                * sparse_component : nD array of shape tensor.shape. Returns only if `sparsity` is not None.</span>
-
-<span class="sd">            errors : list</span>
-<span class="sd">                A list of reconstruction errors at each iteration of the algorithms.</span>
-
-<span class="sd">            References</span>
-<span class="sd">            ----------</span>
-<span class="sd">            .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
-<span class="sd">            SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
-
-<span class="sd">            .. [2] Tomasi, Giorgio, and Rasmus Bro. &quot;PARAFAC and missing values.&quot; </span>
-<span class="sd">                    Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</span>
-
-<span class="sd">            .. [3] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and </span>
-<span class="sd">                    Applications&quot;, PhD., University of Amsterdam, 1998</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
@@ -1024,6 +1024,78 @@
 
 
 <span class="k">class</span> <span class="nc">CPNN</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</span>
+
+<span class="sd">        Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
+
+<span class="sd">            ``tensor = [|weights; factors[0], ..., factors[-1] |]``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : ndarray</span>
+<span class="sd">        rank  : int</span>
+<span class="sd">            Number of components.</span>
+<span class="sd">        n_iter_max : int</span>
+<span class="sd">            Maximum number of iteration</span>
+<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">            Type of factor matrix initialization. See `initialize_factors`.</span>
+<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">            function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
+<span class="sd">            of shape (rank, ), which will contain the norms of the factors</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            (Default: 1e-6) Relative reconstruction error tolerance. The</span>
+<span class="sd">            algorithm is considered to have found the global minimum when the</span>
+<span class="sd">            reconstruction error is less than `tol`.</span>
+<span class="sd">        random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">        verbose : int, optional</span>
+<span class="sd">            Level of verbosity</span>
+<span class="sd">        return_errors : bool, optional</span>
+<span class="sd">            Activate return of iteration errors</span>
+<span class="sd">        mask : ndarray</span>
+<span class="sd">            array of booleans with the same shape as ``tensor`` should be 0 where</span>
+<span class="sd">            the values are missing and 1 everywhere else. Note:  if tensor is</span>
+<span class="sd">            sparse, then mask should also be sparse with a fill value of 1 (or</span>
+<span class="sd">            True). Allows for missing values [2]_</span>
+<span class="sd">        cvg_criterion : {&#39;abs_rec_error&#39;, &#39;rec_error&#39;}, optional</span>
+<span class="sd">            Stopping criterion for ALS, works if `tol` is not None. </span>
+<span class="sd">            If &#39;rec_error&#39;,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.</span>
+<span class="sd">            If &#39;abs_rec_error&#39;, ALS terminates when |previous rec_error - current rec_error| &lt; tol.</span>
+<span class="sd">        sparsity : float or int</span>
+<span class="sd">            If `sparsity` is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). `sparsity` denotes desired fraction or number of non-zero elements in the sparse_component of the `tensor`.</span>
+<span class="sd">        fixed_modes : list, default is []</span>
+<span class="sd">            A list of modes for which the initial value is not modified.</span>
+<span class="sd">            The last mode cannot be fixed due to error computation.</span>
+<span class="sd">        svd_mask_repeats: int</span>
+<span class="sd">            If using a tensor with masked values, this initializes using SVD multiple times to</span>
+<span class="sd">            remove the effect of these missing values on the initialization.</span>
+<span class="sd">        linesearch : bool, default is False</span>
+<span class="sd">            Whether to perform line search as proposed by Bro [3].</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CPTensor : (weight, factors)</span>
+<span class="sd">            * weights : 1D array of shape (rank, )</span>
+<span class="sd">                all ones if normalize_factors is False (default), </span>
+<span class="sd">                weights of the (normalized) factors otherwise</span>
+<span class="sd">            * factors : List of factors of the CP decomposition element `i` is of shape</span>
+<span class="sd">                (tensor.shape[i], rank)</span>
+<span class="sd">            * sparse_component : nD array of shape tensor.shape. Returns only if `sparsity` is not None.</span>
+
+<span class="sd">        errors : list</span>
+<span class="sd">            A list of reconstruction errors at each iteration of the algorithms.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">        SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+
+<span class="sd">        .. [2] Tomasi, Giorgio, and Rasmus Bro. &quot;PARAFAC and missing values.&quot; </span>
+<span class="sd">                Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</span>
+
+<span class="sd">        .. [3] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and </span>
+<span class="sd">                Applications&quot;, PhD., University of Amsterdam, 1998</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> 
                  <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                  <span class="n">l2_reg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -1036,78 +1108,6 @@
                  <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                  <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</span>
-
-<span class="sd">            Computes a rank-`rank` decomposition of `tensor` [1]_ such that,</span>
-
-<span class="sd">                ``tensor = [|weights; factors[0], ..., factors[-1] |]``.</span>
-
-<span class="sd">            Parameters</span>
-<span class="sd">            ----------</span>
-<span class="sd">            tensor : ndarray</span>
-<span class="sd">            rank  : int</span>
-<span class="sd">                Number of components.</span>
-<span class="sd">            n_iter_max : int</span>
-<span class="sd">                Maximum number of iteration</span>
-<span class="sd">            init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">                Type of factor matrix initialization. See `initialize_factors`.</span>
-<span class="sd">            svd : str, default is &#39;numpy_svd&#39;</span>
-<span class="sd">                function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
-<span class="sd">            normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
-<span class="sd">                of shape (rank, ), which will contain the norms of the factors</span>
-<span class="sd">            tol : float, optional</span>
-<span class="sd">                (Default: 1e-6) Relative reconstruction error tolerance. The</span>
-<span class="sd">                algorithm is considered to have found the global minimum when the</span>
-<span class="sd">                reconstruction error is less than `tol`.</span>
-<span class="sd">            random_state : {None, int, np.random.RandomState}</span>
-<span class="sd">            verbose : int, optional</span>
-<span class="sd">                Level of verbosity</span>
-<span class="sd">            return_errors : bool, optional</span>
-<span class="sd">                Activate return of iteration errors</span>
-<span class="sd">            mask : ndarray</span>
-<span class="sd">                array of booleans with the same shape as ``tensor`` should be 0 where</span>
-<span class="sd">                the values are missing and 1 everywhere else. Note:  if tensor is</span>
-<span class="sd">                sparse, then mask should also be sparse with a fill value of 1 (or</span>
-<span class="sd">                True). Allows for missing values [2]_</span>
-<span class="sd">            cvg_criterion : {&#39;abs_rec_error&#39;, &#39;rec_error&#39;}, optional</span>
-<span class="sd">                Stopping criterion for ALS, works if `tol` is not None. </span>
-<span class="sd">                If &#39;rec_error&#39;,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.</span>
-<span class="sd">                If &#39;abs_rec_error&#39;, ALS terminates when |previous rec_error - current rec_error| &lt; tol.</span>
-<span class="sd">            sparsity : float or int</span>
-<span class="sd">                If `sparsity` is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). `sparsity` denotes desired fraction or number of non-zero elements in the sparse_component of the `tensor`.</span>
-<span class="sd">            fixed_modes : list, default is []</span>
-<span class="sd">                A list of modes for which the initial value is not modified.</span>
-<span class="sd">                The last mode cannot be fixed due to error computation.</span>
-<span class="sd">            svd_mask_repeats: int</span>
-<span class="sd">                If using a tensor with masked values, this initializes using SVD multiple times to</span>
-<span class="sd">                remove the effect of these missing values on the initialization.</span>
-<span class="sd">            linesearch : bool, default is False</span>
-<span class="sd">                Whether to perform line search as proposed by Bro [3].</span>
-
-<span class="sd">            Returns</span>
-<span class="sd">            -------</span>
-<span class="sd">            CPTensor : (weight, factors)</span>
-<span class="sd">                * weights : 1D array of shape (rank, )</span>
-<span class="sd">                    all ones if normalize_factors is False (default), </span>
-<span class="sd">                    weights of the (normalized) factors otherwise</span>
-<span class="sd">                * factors : List of factors of the CP decomposition element `i` is of shape</span>
-<span class="sd">                    (tensor.shape[i], rank)</span>
-<span class="sd">                * sparse_component : nD array of shape tensor.shape. Returns only if `sparsity` is not None.</span>
-
-<span class="sd">            errors : list</span>
-<span class="sd">                A list of reconstruction errors at each iteration of the algorithms.</span>
-
-<span class="sd">            References</span>
-<span class="sd">            ----------</span>
-<span class="sd">            .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
-<span class="sd">            SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
-
-<span class="sd">            .. [2] Tomasi, Giorgio, and Rasmus Bro. &quot;PARAFAC and missing values.&quot; </span>
-<span class="sd">                    Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</span>
-
-<span class="sd">            .. [3] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and </span>
-<span class="sd">                    Applications&quot;, PhD., University of Amsterdam, 1998</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
@@ -1158,44 +1158,43 @@
 
 
 <div class="viewcode-block" id="RandomizedCP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.RandomizedCP.html#tensorly.decomposition.RandomizedCP">[docs]</a><span class="k">class</span> <span class="nc">RandomizedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
-    
+    <span class="sd">&quot;&quot;&quot;Randomised CP decomposition via sampled ALS</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    rank   : int</span>
+<span class="sd">            number of components</span>
+<span class="sd">    n_samples : int</span>
+<span class="sd">                number of samples per ALS step</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">                maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        tolerance: the algorithm stops when the variation in</span>
+<span class="sd">        the reconstruction error is less than the tolerance</span>
+<span class="sd">    max_stagnation: int, optional, default is 0</span>
+<span class="sd">                    if not zero, the maximum allowed number</span>
+<span class="sd">                    of iterations with no decrease in fit</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}, default is None</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">            list of positive factors of the CP decomposition</span>
+<span class="sd">            element `i` is of shape ``(tensor.shape[i], rank)``</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [3] Casey Battaglino, Grey Ballard and Tamara G. Kolda,</span>
+<span class="sd">    &quot;A Practical Randomized CP Tensor Decomposition&quot;,</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                        <span class="n">tol</span><span class="o">=</span><span class="mf">10e-9</span><span class="p">,</span> <span class="n">max_stagnation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Randomised CP decomposition via sampled ALS</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        tensor : ndarray</span>
-<span class="sd">        rank   : int</span>
-<span class="sd">                number of components</span>
-<span class="sd">        n_samples : int</span>
-<span class="sd">                    number of samples per ALS step</span>
-<span class="sd">        n_iter_max : int</span>
-<span class="sd">                    maximum number of iteration</span>
-<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
-<span class="sd">            function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
-<span class="sd">        tol : float, optional</span>
-<span class="sd">            tolerance: the algorithm stops when the variation in</span>
-<span class="sd">            the reconstruction error is less than the tolerance</span>
-<span class="sd">        max_stagnation: int, optional, default is 0</span>
-<span class="sd">                        if not zero, the maximum allowed number</span>
-<span class="sd">                        of iterations with no decrease in fit</span>
-<span class="sd">        random_state : {None, int, np.random.RandomState}, default is None</span>
-<span class="sd">        verbose : int, optional</span>
-<span class="sd">            level of verbosity</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        factors : ndarray list</span>
-<span class="sd">                list of positive factors of the CP decomposition</span>
-<span class="sd">                element `i` is of shape ``(tensor.shape[i], rank)``</span>
-
-<span class="sd">        References</span>
-<span class="sd">        ----------</span>
-<span class="sd">        .. [3] Casey Battaglino, Grey Ballard and Tamara G. Kolda,</span>
-<span class="sd">        &quot;A Practical Randomized CP Tensor Decomposition&quot;,</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="o">=</span><span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span>

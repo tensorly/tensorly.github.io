@@ -452,10 +452,7 @@
 
 
 <div class="viewcode-block" id="Tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.Tucker.html#tensorly.decomposition.Tucker">[docs]</a><span class="k">class</span> <span class="nc">Tucker</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">fixed_factors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Tucker decomposition via Higher Order Orthogonal Iteration (HOI).</span>
+    <span class="sd">&quot;&quot;&quot;Tucker decomposition via Higher Order Orthogonal Iteration (HOI).</span>
 
 <span class="sd">            Decomposes `tensor` into a Tucker decomposition:</span>
 <span class="sd">            ``tensor = [| core; factors[0], ...factors[-1] |]`` [1]_</span>
@@ -499,6 +496,9 @@
 <span class="sd">        .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
 <span class="sd">        SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">fixed_factors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
@@ -533,50 +533,50 @@
 
 
 <span class="k">class</span> <span class="nc">TuckerNN</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Non-Negative Tucker decomposition via iterative multiplicative update.</span>
+
+<span class="sd">        Decomposes `tensor` into a Tucker decomposition:</span>
+<span class="sd">        ``tensor = [| core; factors[0], ...factors[-1] |]`` [1]_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    rank : None, int or int list</span>
+<span class="sd">        size of the core tensor, ``(len(ranks) == tensor.ndim)``</span>
+<span class="sd">        if int, the same rank is used for all modes</span>
+<span class="sd">    non_negative : bool, default is False</span>
+<span class="sd">        if True, uses a non-negative Tucker via iterative multiplicative updates</span>
+<span class="sd">        otherwise, uses a Higher-Order Orthogonal Iteration.</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">                maximum number of iteration</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">        ignore if non_negative is True</span>
+<span class="sd">        function to use to compute the SVD,</span>
+<span class="sd">        acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        tolerance: the algorithm stops when the variation in</span>
+<span class="sd">        the reconstruction error is less than the tolerance</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    core : ndarray of size `ranks`</span>
+<span class="sd">            core tensor of the Tucker decomposition</span>
+<span class="sd">    factors : ndarray list</span>
+<span class="sd">            list of factors of the Tucker decomposition.</span>
+<span class="sd">            Its ``i``-th element is of shape ``(tensor.shape[i], ranks[i])``</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">    SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> 
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Non-Negative Tucker decomposition via iterative multiplicative update.</span>
-
-<span class="sd">            Decomposes `tensor` into a Tucker decomposition:</span>
-<span class="sd">            ``tensor = [| core; factors[0], ...factors[-1] |]`` [1]_</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        tensor : ndarray</span>
-<span class="sd">        rank : None, int or int list</span>
-<span class="sd">            size of the core tensor, ``(len(ranks) == tensor.ndim)``</span>
-<span class="sd">            if int, the same rank is used for all modes</span>
-<span class="sd">        non_negative : bool, default is False</span>
-<span class="sd">            if True, uses a non-negative Tucker via iterative multiplicative updates</span>
-<span class="sd">            otherwise, uses a Higher-Order Orthogonal Iteration.</span>
-<span class="sd">        n_iter_max : int</span>
-<span class="sd">                    maximum number of iteration</span>
-<span class="sd">        init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">        svd : str, default is &#39;numpy_svd&#39;</span>
-<span class="sd">            ignore if non_negative is True</span>
-<span class="sd">            function to use to compute the SVD,</span>
-<span class="sd">            acceptable values in tensorly.SVD_FUNS</span>
-<span class="sd">        tol : float, optional</span>
-<span class="sd">            tolerance: the algorithm stops when the variation in</span>
-<span class="sd">            the reconstruction error is less than the tolerance</span>
-<span class="sd">        random_state : {None, int, np.random.RandomState}</span>
-<span class="sd">        verbose : int, optional</span>
-<span class="sd">            level of verbosity</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        core : ndarray of size `ranks`</span>
-<span class="sd">                core tensor of the Tucker decomposition</span>
-<span class="sd">        factors : ndarray list</span>
-<span class="sd">                list of factors of the Tucker decomposition.</span>
-<span class="sd">                Its ``i``-th element is of shape ``(tensor.shape[i], ranks[i])``</span>
-
-<span class="sd">        References</span>
-<span class="sd">        ----------</span>
-<span class="sd">        .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
-<span class="sd">        SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>

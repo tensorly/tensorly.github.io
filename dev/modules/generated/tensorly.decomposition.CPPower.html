@@ -184,7 +184,37 @@
 <dl class="py class">
 <dt id="tensorly.decomposition.CPPower">
 <em class="property">class </em><code class="descname">CPPower</code><span class="sig-paren">(</span><em><span class="n">rank</span></em>, <em><span class="n">n_repeat</span><span class="o">=</span><span class="default_value">10</span></em>, <em><span class="n">n_iteration</span><span class="o">=</span><span class="default_value">10</span></em>, <em><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp_power.html#CPPower"><span class="viewcode-link">[source]</span></a></dt>
-<dd><dl class="py method">
+<dd><p>CP Decomposition via Robust Tensor Power Iteration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>tensor</strong><span class="classifier">tl.tensor</span></dt><dd><p>input tensor to decompose</p>
+</dd>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>rank of the decomposition (number of rank-1 components)</p>
+</dd>
+<dt><strong>n_repeat</strong><span class="classifier">int, default is 10</span></dt><dd><p>number of initializations to be tried</p>
+</dd>
+<dt><strong>n_iteration</strong><span class="classifier">int, default is 10</span></dt><dd><p>number of power iterations</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>level of verbosity</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>(weights, factors)</dt><dd></dd>
+<dt><strong>weights</strong><span class="classifier">1-D tl.tensor of length <cite>rank</cite></span></dt><dd><p>contains the eigenvalue of each eigenvector</p>
+</dd>
+<dt><strong>factors</strong><span class="classifier">list of 2-D tl.tensor of shape (size, rank)</span></dt><dd><p>Each column of each factor corresponds to one eigenvector</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
 <dt id="tensorly.decomposition.CPPower.fit_transform">
 <code class="descname">fit_transform</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp_power.html#CPPower.fit_transform"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Decompose an input tensor</p>
