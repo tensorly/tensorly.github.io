@@ -42,7 +42,7 @@
         <nav class="navbar is-dark has-shadow top" id="top">
     <div class="navbar-brand">
         <a class="navbar-item navbar-logo" href="../index.html">
-            <img src="../_static/tensorly-logo.png" class="navbar-logo" height=30>
+            <img src="../_static/logo_tensorly.png" class="navbar-logo" height=30>
         </a>
 
         <a class="navbar-item is-tab is-hidden-desktop" href="../index.html">
@@ -143,13 +143,9 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">6. Sparse Backend</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#why-a-separate-sparse-backend">6.1. Why a separate sparse backend?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#algorithms">6.2. Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#missing-values">6.3. Missing Values</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">7. Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#missing-values">7.1. Missing Values</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#example">8. Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
@@ -204,10 +200,8 @@ as the sparse representation.</p>
 <li><code class="docutils literal notranslate"><span class="pre">partial_tucker</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></li>
 </ul>
-</div>
-</div>
 <div class="section" id="usage">
-<h1><span class="section-number">7. </span>Usage</h1>
+<h3><span class="section-number">6.2.1. </span>Usage</h3>
 <p>The sparse sub-package in <code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse</span></code> contains a mirror of the
 interfaces in the usual, dense <code class="docutils literal notranslate"><span class="pre">tensorly</span></code> package. For example, unfolding a
 sparse tensor would use:</p>
@@ -243,8 +237,10 @@ if the input tensor is sparse. Thus, using the sparse <code class="docutils lite
 (<code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse.decomposition.parafac</span></code>) may be slower and use more
 memory than the dense version (<code class="docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code>) for a
 sparse input tensor.</p>
+</div>
+</div>
 <div class="section" id="missing-values">
-<h2><span class="section-number">7.1. </span>Missing Values</h2>
+<h2><span class="section-number">6.3. </span>Missing Values</h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function supports masks for missing values. A mask should be a
 boolean array of the same shape as the original tensor that is <code class="docutils literal notranslate"><span class="pre">False</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code>
 where the value is missing and <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> where it is not. It is passed to
@@ -259,10 +255,8 @@ mask.</li>
 <code class="docutils literal notranslate"><span class="pre">parafac</span></code> (<code class="docutils literal notranslate"><span class="pre">tensor.contrib.sparse.decomposition.parafac</span></code>). The dense
 backend <code class="docutils literal notranslate"><span class="pre">parafac</span></code> will densify the array.</li>
 </ul>
-</div>
-</div>
 <div class="section" id="example">
-<h1><span class="section-number">8. </span>Example</h1>
+<h3><span class="section-number">6.3.1. </span>Example</h3>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.contrib.sparse</span> <span class="k">as</span> <span class="nn">stl</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">sparse</span>
@@ -315,6 +309,8 @@ also makes it use <code class="docutils literal notranslate"><span class="pre">s
 <code class="docutils literal notranslate"><span class="pre">numpy.linalg.solve</span></code>, which can have advantages, for instance, when using
 the scikit-umfpack backend, it is more robust against nearly singular
 intermediate matrices.</p>
+</div>
+</div>
 </div>
 
 
