@@ -178,9 +178,9 @@
 <div class="section" id="creating-a-tensor">
 <h2><span class="section-number">3.1. </span>Creating a tensor</h2>
 <p>A tensor is nothing more than a multi-dimensional array.</p>
-<p>Let’s take for this example the tensor <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> defined by its frontal slices:</p>
+<p>Let’s take for this example the tensor <span class="math">\tilde X</span> defined by its frontal slices:</p>
 <div class="math">
-<p><img src="../_images/math/c587deb32528316a187ccca68b85d61201194538.png" alt="X_1 =
+<p><span class="math">X_1 =
 \left[
 \begin{matrix}
 0  &amp; 2  &amp; 4  &amp; 6\\
@@ -198,7 +198,7 @@ X_2 =
 9  &amp; 11 &amp; 13 &amp; 15\\
 17 &amp; 19 &amp; 21 &amp; 23\\
 \end{matrix}
-\right]"/></p>
+\right]</span></p>
 </div><p>In Python, this array can be expressed as a numpy array:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -221,16 +221,16 @@ X_2 =
 <div class="section" id="unfolding">
 <h2><span class="section-number">3.2. </span>Unfolding</h2>
 <p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
-<p>For a tensor of size <img class="math" src="../_images/math/267d50f457b0de0e577cc9fcb19eab6528b8c899.png" alt="(I_0, I_1, \cdots, I_N)"/>, the n-mode unfolding of this tensor will be of size <img class="math" src="../_images/math/56be6f5cfc02befc55ca906d00ce27571fc05e2d.png" alt="(I_n, I_0, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)"/>.</p>
+<p>For a tensor of size <span class="math">(I_0, I_1, \cdots, I_N)</span>, the n-mode unfolding of this tensor will be of size <span class="math">(I_n, I_0, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)</span>.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference" href="#id2" id="id1">[1]</a> for better performance.</p>
-<p>Given a tensor <img class="math" src="../_images/math/d58f41145b94a6e17dc8672ac824b056a06cf5ee.png" alt="\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}"/>, the
-mode-n unfolding of <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> is a matrix <img class="math" src="../_images/math/38c1e934184582677d3addf0297a1f91c8094fe9.png" alt="\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}"/>,
-with <img class="math" src="../_images/math/0c9a0b6cbe6dd3838dfec03819156d38a2a79869.png" alt="M = \prod_{\substack{k=0,\\k \neq n}}^N I_k"/> and is defined by
-the mapping from element <img class="math" src="../_images/math/ddc5a930d6d9dda09f065bea14fa9e4b457f6d90.png" alt="(i_0, i_1, \cdots, i_N)"/> to <img class="math" src="../_images/math/1b782627d1b0843af085aa264886d73f35e56715.png" alt="(i_n, j)"/>, with</p>
+<p>Given a tensor <span class="math">\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}</span>, the
+mode-n unfolding of <span class="math">\tilde X</span> is a matrix <span class="math">\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}</span>,
+with <span class="math">M = \prod_{\substack{k=0,\\k \neq n}}^N I_k</span> and is defined by
+the mapping from element <span class="math">(i_0, i_1, \cdots, i_N)</span> to <span class="math">(i_n, j)</span>, with</p>
 <div class="last math">
-<p><img src="../_images/math/ba6269823af0bd7948da27251523a178013303d4.png" alt="j = \sum_{\substack{k=0,\\k \neq n}}^N i_k \times \prod_{\substack{m=k+1,\\ k \neq n}}^N I_m."/></p>
+<p><span class="math">j = \sum_{\substack{k=0,\\k \neq n}}^N i_k \times \prod_{\substack{m=k+1,\\ k \neq n}}^N I_m.</span></p>
 </div></div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -239,30 +239,30 @@ However, to be consistent with the Python indexing that always starts at zero,
 in tensorly, unfolding also starts at zero!</p>
 <p class="last">Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
 </div>
-<p>For instance, using the <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> previously defined, the 0-mode unfolding of <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/>:</p>
+<p>For instance, using the <span class="math">\tilde X</span> previously defined, the 0-mode unfolding of <span class="math">\tilde X</span>:</p>
 <div class="math">
-<p><img src="../_images/math/c74d0d9c47ab6402433fc35cf8b844603b0b30c7.png" alt="\tilde X_{[0]} =
+<p><span class="math">\tilde X_{[0]} =
 \left[ \begin{matrix}
    0  &amp; 1  &amp; 2  &amp; 3  &amp;  4 &amp; 5  &amp; 6  &amp; 7\\
    8  &amp; 9  &amp; 10 &amp; 11 &amp; 12 &amp; 13 &amp; 14 &amp; 15\\
    16 &amp; 17 &amp; 18 &amp; 19 &amp; 20 &amp; 21 &amp; 22 &amp; 23\\
-\end{matrix} \right]"/></p>
+\end{matrix} \right]</span></p>
 </div><p>The 1-mode unfolding is given by:</p>
 <div class="math">
-<p><img src="../_images/math/381707c122ba91ae60ca1d8e0ae0d14ff52c218a.png" alt="\tilde X_{[1]} =
+<p><span class="math">\tilde X_{[1]} =
 \left[ \begin{matrix}
    0 &amp; 1 &amp; 8  &amp; 9  &amp; 16 &amp; 17\\
    2 &amp; 3 &amp; 10 &amp; 11 &amp; 18 &amp; 19\\
    4 &amp; 5 &amp; 12 &amp; 13 &amp; 20 &amp; 21\\
    6 &amp; 7 &amp; 14 &amp; 15 &amp; 22 &amp; 23\\
-\end{matrix} \right]"/></p>
+\end{matrix} \right]</span></p>
 </div><p>Finally, the 2-mode unfolding is the unfolding along the last axis:</p>
 <div class="math">
-<p><img src="../_images/math/db8764a521e3ebc1c0e0543de415b7c513d40aca.png" alt="\tilde X_{[2]} =
+<p><span class="math">\tilde X_{[2]} =
 \left[ \begin{matrix}
    0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 &amp; 14 &amp; 16 &amp; 18 &amp; 20 &amp; 22\\
    1 &amp; 3 &amp; 5 &amp; 7 &amp; 9 &amp; 11 &amp; 13 &amp; 15 &amp; 17 &amp; 19 &amp; 21 &amp; 23\\
-\end{matrix} \right]"/></p>
+\end{matrix} \right]</span></p>
 </div><p>In tensorly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># mode-1 unfolding</span>
@@ -347,7 +347,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, TensorLy Developers.
+                &copy; 2016 - 2021, TensorLy Developers.
         </p> 
     </div>
 </footer>

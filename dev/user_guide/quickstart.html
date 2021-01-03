@@ -136,12 +136,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">1. Quick-Start</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#tensor-operations">1.1. Tensor operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tensor-algebra">1.2. Tensor algebra</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tensor-decomposition">1.3. Tensor decomposition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tensor-regressions">1.4. Tensor regressions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#metrics">1.5. Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sampling-random-tensors">1.6. Sampling random tensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#organization-of-tensorly">1.1. Organization of TensorLy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensorly-backend">1.2. TensorLy Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-manipulation">1.3. Tensor manipulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-algebra">1.4. Tensor algebra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-decomposition">1.5. Tensor decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensor-regressions">1.6. Tensor regressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metrics">1.7. Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-random-tensors">1.8. Sampling random tensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#experimental-features">1.9. Experimental features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#datasets">1.10. Datasets</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="backend.html">2. TensorLy’s backend system</a></li>
@@ -177,41 +181,144 @@
 
   <div class="section" id="quick-start">
 <h1><span class="section-number">1. </span>Quick-Start</h1>
-<p>A short overview of TensorLy to get started quickly.</p>
-<div class="section" id="tensor-operations">
-<h2><span class="section-number">1.1. </span>Tensor operations</h2>
-<p>First import TensorLy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
-</pre></div>
+<p>A short overview of TensorLy to get started quickly and get familiar with the organization of TensorLY.</p>
+<div class="section" id="organization-of-tensorly">
+<h2><span class="section-number">1.1. </span>Organization of TensorLy</h2>
+<p>TensorLy is organized in several submodule:</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a></td>
+<td>Core operations,  includes regular array manipulation and tensor specific ones.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a></td>
+<td>Manipulate tensors in decomposed Tucker form</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a></td>
+<td>Manipulate tensors decomposed in CP (or Parafac) form</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.tt_tensor" title="tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code></a></td>
+<td>Manipulate tensors in decomposed Tensor-Train format</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly.tt_matrix" title="tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code></a></td>
+<td>Manipulate tensors decomposed in the TT-Matrix format</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.parafac2_tensor" title="tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code></a></td>
+<td>Manipulate tensors in decomposed PARAFAC-2 form</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a></td>
+<td>Perform tensor decomposition</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a></td>
+<td>Perform (low-rank) tensor regression</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a></td>
+<td>Sample random tensors</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a></td>
+<td>Error measures</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../modules/api.html#module-tensorly.contrib" title="tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code></a></td>
+<td>Experimental features, including sparse tensor decomposition and cross decomposition</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../modules/api.html#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a></td>
+<td>Loading data</td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>In the code written in TensorLy, you may notice we use function from tensorly rather than, say, NumPy. This is because we support several backends and we want the correct function to be called depending on the backend.
-For instance <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch version depending on the backend. There are other subtlties that are handled by the backend to allow a common API regardless of the backend use.</p>
+<div class="section" id="tensorly-backend">
+<h2><span class="section-number">1.2. </span>TensorLy Backend</h2>
+<p>Earlier, we mentioned that all function for manipulating arrays can be accessed through <a class="reference internal" href="../modules/api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a> or <cite>tensorly.backend</cite>.</p>
+<p>For instance, if you have a tensor <code class="docutils literal notranslate"><span class="pre">t</span></code>, to take its mean, you should use <code class="docutils literal notranslate"><span class="pre">tensorly.mean(t)</span></code>, <strong>not</strong>, for instance, <code class="docutils literal notranslate"><span class="pre">numpy.mean(t)</span></code> (or torch, mxnet, etc).
+Why is that?</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This is because we support several backends: the code you write in TensorLy can be <em>transparently</em> executed with several frameworks, without having to change anything in your code!
+For instance, you can execute your code normally using NumPy, but you can also have it run on GPU or multiple machines, using PyTorch, TensorFlow, CuPy, MXNet or JAX. Without having to adapt your code!</p>
+</div>
+<p>This is why you should always manipulate tensors using tensorly backend functions only.
+For instance, <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch version depending on the backend you selected. There are other subtlties that are handled by the backend to allow a common API regardless of the backend use.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default, the backend is set to NumPy. You can change the backend using <cite>tensorly.set_backend</cite>.
+<p class="last">By default, the backend is set to NumPy. You can change the backend using <a href="#id1"><span class="problematic" id="id2">``</span></a>tensorly.set_backend`.
+For instance, to switch to pytorch, simply type <a href="#id3"><span class="problematic" id="id4">``</span></a>tensorly.set_backend(‘pytorch’).
 For more information on the backend, refer to <a class="reference internal" href="backend.html"><span class="doc">TensorLy’s backend system</span></a>.</p>
 </div>
 <p>Tensors can be created, e.g. from numpy arrays:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># create a random 10x10x10 tensor</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">random</span>
 </pre></div>
 </div>
-<p>You can then easily perform basic tensor operations:</p>
+<p>Now, let’s create a random tensor of size 10x10x10:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># This will be a NumPy array by default</span>
+</pre></div>
+</div>
+<p>Now, if you want to use PyTorch instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tl</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">)</span>
+<span class="c1"># TensorLy now uses TensorLy for all operations</span>
+
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># This will be a NumPy array by default</span>
+</pre></div>
+</div>
+<p>Note that you can also access the backend functions explicitely through <cite>tensorly.backend</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly.backend</span> <span class="k">as</span> <span class="nn">T</span>
+
+<span class="n">T</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tensor-manipulation">
+<h2><span class="section-number">1.3. </span>Tensor manipulation</h2>
+<p>You can then easily perform basic <a class="reference internal" href="../modules/api.html#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">operations</span></code></a>, such as folding, unfolding, etc:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mode-1 unfolding (i.e. zeroth mode)</span>
 <span class="n">unfolded</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="c1"># refold the unfolded tensor</span>
 <span class="n">tl</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>You can as easily manipulate tensors in <strong>decomposed</strong> form:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tucker</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># We created a tensor of size 3x4x5 in decomposed (Tucker) form with rank (2, 3, 4)</span>
+
+<span class="n">tl</span><span class="o">.</span><span class="n">tucker_tensor</span><span class="o">.</span><span class="n">tucker_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="c1"># Vectorize the tucker tensor</span>
+</pre></div>
+</div>
+<p>Generally you can manipulate decomposed tensors using the corresponding submodule:
+<a class="reference internal" href="../modules/api.html#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>,
+<a class="reference internal" href="../modules/api.html#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>,
+<a class="reference internal" href="../modules/api.html#module-tensorly.tt_tensor" title="tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code></a>,
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix_tensor</span></code>,
+<a class="reference internal" href="../modules/api.html#module-tensorly.parafac2_tensor" title="tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code></a>.</p>
 </div>
 <div class="section" id="tensor-algebra">
-<h2><span class="section-number">1.2. </span>Tensor algebra</h2>
-<p>More ‘<em>advanced</em>’ tensor algebra functions are located in the aptly named <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a> module.</p>
+<h2><span class="section-number">1.4. </span>Tensor algebra</h2>
+<p>More ‘<em>advanced</em>’ tensor algebra functions are located in the aptly named <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a> module.
+This includes for instance, n-mode product, kronecker product, etc.</p>
+<p>We now provide a backend system for tensor algebra, which allows to either use our “hand-crafter” implementations
+or to dispatch all the operations to einsum. By default, we use the hand-crafted implementations. To switch to einsum, or change the tenalg backend:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly.tenalg</span> <span class="k">as</span> <span class="nn">tg</span>
+
+<span class="n">tg</span><span class="o">.</span><span class="n">set_tenalg_backend</span><span class="p">(</span><span class="s1">&#39;core&#39;</span><span class="p">)</span> <span class="c1"># This is the default</span>
+<span class="n">tg</span><span class="o">.</span><span class="n">kronecker</span><span class="p">([</span><span class="n">matrix1</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">])</span> <span class="c1"># Hand crafted implementation</span>
+
+<span class="n">tg</span><span class="o">.</span><span class="n">set_tenalg_backend</span><span class="p">(</span><span class="s1">&#39;einsum&#39;</span><span class="p">)</span>
+<span class="n">tg</span><span class="o">.</span><span class="n">kronecker</span><span class="p">([</span><span class="n">matrix1</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">])</span> <span class="c1"># Dispatched to einsum</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="tensor-decomposition">
-<h2><span class="section-number">1.3. </span>Tensor decomposition</h2>
+<h2><span class="section-number">1.5. </span>Tensor decomposition</h2>
 <p>Decompositions are in the <a class="reference internal" href="../modules/api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a> module.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">tucker</span><span class="p">,</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_tucker</span>
 
@@ -223,16 +330,44 @@ For more information on the backend, refer to <a class="reference internal" href
 </div>
 </div>
 <div class="section" id="tensor-regressions">
-<h2><span class="section-number">1.4. </span>Tensor regressions</h2>
+<h2><span class="section-number">1.6. </span>Tensor regressions</h2>
 <p>Located in the <a class="reference internal" href="../modules/api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a> module, tensor regression are objects that have a scikit-learn-like API, with a fit method for optimising the parameters and a predict one for applyting the method to new unseen data.</p>
 </div>
 <div class="section" id="metrics">
-<h2><span class="section-number">1.5. </span>Metrics</h2>
-<p>Whether you are training a tensor regression method or combining deep learning and tensor methods, you will need metrics to train and assess your method. These are implemented in the <a class="reference internal" href="../modules/api.html#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a> module</p>
+<h2><span class="section-number">1.7. </span>Metrics</h2>
+<p>Whether you are training a tensor regression method or combining deep learning and tensor methods,
+you will need metrics to train and assess your method.
+These are implemented in the <a class="reference internal" href="../modules/api.html#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a> module.</p>
 </div>
 <div class="section" id="sampling-random-tensors">
-<h2><span class="section-number">1.6. </span>Sampling random tensors</h2>
-<p>To create random tensors, you can use the <a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a> module.</p>
+<h2><span class="section-number">1.8. </span>Sampling random tensors</h2>
+<p>To create random tensors, you can use the <a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a> module.
+For instance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">random</span>
+
+<span class="c1"># full tensor</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># CP tensor</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># A full tensor with a low-rank CP structure</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="experimental-features">
+<h2><span class="section-number">1.9. </span>Experimental features</h2>
+<p>The module <a class="reference internal" href="../modules/api.html#module-tensorly.contrib" title="tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code></a> contains experimental features.
+These are fully tested features, completely integrated in TensorLy but
+for which the API or implementation might still be changing.</p>
+<p>Currently, this includes tensor-train cross approximation, as well as various
+sparse tensor decompositions (using PyData sparse structures).</p>
+</div>
+<div class="section" id="datasets">
+<h2><span class="section-number">1.10. </span>Datasets</h2>
+<p>The <a class="reference internal" href="../modules/api.html#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a> module contains utility functions for loading and creating data
+for testing tensor methods.</p>
 </div>
 </div>
 
@@ -265,7 +400,7 @@ For more information on the backend, refer to <a class="reference internal" href
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, TensorLy Developers.
+                &copy; 2016 - 2021, TensorLy Developers.
         </p> 
     </div>
 </footer>

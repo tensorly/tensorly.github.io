@@ -190,11 +190,11 @@ to download the full example code</p>
 <p>Here, we create a random tensor that follows the PARAFAC2 constraints found
 inx <a class="reference internal" href="#kiers-et-al-1999">(Kiers et al 1999)</a>.</p>
 <p>This particular tensor,
-<img class="math" src="../../_images/math/5adc61b02c3e06e38e47acd6acff95b5b12b6a72.png" alt="\mathcal{X}&nbsp;\in \mathbb{R}^{I\times J \times K}"/>, is a shifted
+<span class="math">\mathcal{X}&nbsp;\in \mathbb{R}^{I\times J \times K}</span>, is a shifted
 CP tensor, that is, a tensor on the form:</p>
 <div class="math">
-<p><img src="../../_images/math/501fd4b16bcaea9f025a5e5887f1d6c39080257c.png" alt="\mathcal{X}_{ijk} = \sum_{r=1}^R A_{ir} B_{\sigma_i(j) r} C_{kr},"/></p>
-</div><p>where <img class="math" src="../../_images/math/6e19fcf4b3c3a74b3d641013ac70243e77f4e9e1.png" alt="\sigma_i"/>&nbsp;is a cyclic permutation of <img class="math" src="../../_images/math/590154385bf6f79c6dc5030e37cd29a605f802f6.png" alt="J"/> elements.</p>
+<p><span class="math">\mathcal{X}_{ijk} = \sum_{r=1}^R A_{ir} B_{\sigma_i(j) r} C_{kr},</span></p>
+</div><p>where <span class="math">\sigma_i</span>&nbsp;is a cyclic permutation of <span class="math">J</span> elements.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
 <span class="n">true_rank</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span>
@@ -277,15 +277,15 @@ Final error: 0.09204732068253178
 -------------------------------
 Training model 7...
 Number of iterations: 274
-Final error: 0.09204738680909351
+Final error: 0.09204738680909354
 -------------------------------
 Training model 8...
 Number of iterations: 304
-Final error: 0.09204748646407407
+Final error: 0.09204748646407405
 -------------------------------
 Training model 9...
 Number of iterations: 500
-Final error: 0.09205635789758461
+Final error: 0.09205635789758465
 -------------------------------
 Best model error: 0.09204726702643586
 </pre></div>
@@ -297,15 +297,15 @@ matrices are somewhat different. For a CP decomposition, we only have the
 weights and the factor matrices. However, since the PARAFAC2 factor matrices
 for the second mode is given by</p>
 <div class="math">
-<p><img src="../../_images/math/6cfaabfb8703e60da701d0ba006ced08646859c3.png" alt="B_i = P_i B,"/></p>
-</div><p>where <img class="math" src="../../_images/math/489503f65655ae1ba33e89121fa4ba2a0d3549a3.png" alt="B"/> is an <img class="math" src="../../_images/math/1060b27e042e5e7224ea357bd9cad0b44248b14f.png" alt="R \times R"/> matrix and <img class="math" src="../../_images/math/868ceb20ee3d239510dee53d5eebef54de90a282.png" alt="P_i"/> is an
-<img class="math" src="../../_images/math/49123964effe20fb6ef3ee1778a5e52b9dbb6d73.png" alt="I \times R"/> projection matrix, we cannot store the factor matrices
+<p><span class="math">B_i = P_i B,</span></p>
+</div><p>where <span class="math">B</span> is an <span class="math">R \times R</span> matrix and <span class="math">P_i</span> is an
+<span class="math">I \times R</span> projection matrix, we cannot store the factor matrices
 the same as for a CP decomposition.</p>
-<p>Instead, we store the factor matrix along the first mode (<img class="math" src="../../_images/math/7974c030c23054b4b0eb90654de4c5cb26511cbc.png" alt="A"/>), the
-“blueprint” matrix for the second mode (<img class="math" src="../../_images/math/489503f65655ae1ba33e89121fa4ba2a0d3549a3.png" alt="B"/>) and the factor matrix
-along the third mode (<img class="math" src="../../_images/math/4199d51961528aac1c0778fb2c9a31eaa353ce8b.png" alt="C"/>) in one tuple and the projection matrices,
-<img class="math" src="../../_images/math/868ceb20ee3d239510dee53d5eebef54de90a282.png" alt="P_i"/>, in a separate tuple.</p>
-<p>If we wish to extract the informative <img class="math" src="../../_images/math/025b4d87ac771d5d2fe0ab163b36ab8b7b483d82.png" alt="B_i"/> factor matrices, then we
+<p>Instead, we store the factor matrix along the first mode (<span class="math">A</span>), the
+“blueprint” matrix for the second mode (<span class="math">B</span>) and the factor matrix
+along the third mode (<span class="math">C</span>) in one tuple and the projection matrices,
+<span class="math">P_i</span>, in a separate tuple.</p>
+<p>If we wish to extract the informative <span class="math">B_i</span> factor matrices, then we
 use the <code class="docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor.apply_projection_matrices</span></code> function on
 the PARAFAC2 tensor instance to get another wrapper object for two
 variables: <em>weights</em> and <em>factor matrices</em>. However, now, the second element
@@ -354,7 +354,7 @@ list of frontal slices.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>91% of the data is explained by the model, which is expected with noise rate: 0.1
-Average tucker congruence coefficient: 0.9942949900541281
+Average tucker congruence coefficient: 0.9942949900541285
 </pre></div>
 </div>
 </div>
@@ -404,7 +404,7 @@ Average tucker congruence coefficient: 0.9942949900541281
 </div>
 <img alt="A mode, B mode (slice 0), C mode" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_parafac2_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fbbf08f6a00&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f26399e18b0&gt;
 </pre></div>
 </div>
 </div>
@@ -435,7 +435,7 @@ to check for convergence.</p>
 A direct fitting algorithm for the PARAFAC2 model.</em>
 <strong>Journal of Chemometrics: A Journal of the Chemometrics Society.</strong>
 1999 May;13(3‐4):275-94. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  31.640 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  31.155 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></div>
@@ -475,7 +475,7 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, TensorLy Developers.
+                &copy; 2016 - 2021, TensorLy Developers.
         </p> 
     </div>
 </footer>

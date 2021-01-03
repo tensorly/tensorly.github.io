@@ -142,6 +142,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#how-do-i-change-the-backend">2.3. How do I change the backend?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#context-of-a-tensor">2.4. Context of a tensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basic-functions">2.5. Basic functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#case-study-tensorly-and-pytorch">2.6. Case study: TensorLy and PyTorch</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_basics.html">3. Tensor basics</a></li>
@@ -251,6 +252,59 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
 </div>
 <p>This will allow your code to work transparently with any of the backend.</p>
 </div>
+<div class="section" id="case-study-tensorly-and-pytorch">
+<h2><span class="section-number">2.6. </span>Case study: TensorLy and PyTorch</h2>
+<p>Let’s go through the creation and decomposition of a tensor, using PyTorch.</p>
+<div class="section" id="on-cpu">
+<h3><span class="section-number">2.6.1. </span>On CPU</h3>
+<p>First, we import tensorly and set the backend:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="n">tl</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, let’s create a random tensor using the <a class="reference internal" href="../modules/api.html#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">random</span>
+
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="c1"># tensor is a PyTorch Tensor!</span>
+</pre></div>
+</div>
+<p>We can decompose it easily, here using a Tucker decomposition:
+First, we reate a decomposition instance, which keeps the number of parameters the same
+and with a random initialization. We then fit it to our tensor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">Tucker</span>
+
+<span class="n">decomp</span> <span class="o">=</span> <span class="n">Tucker</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">decomp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can reconstruct the full tensor and measure the reconstruction error:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rec</span> <span class="o">=</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">rec</span><span class="p">)</span><span class="o">/</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="on-gpu">
+<h3><span class="section-number">2.6.2. </span>On GPU</h3>
+<p>Now, imaging you want everything to run on GPU: this is very easy using TensorLy and the PyTorch backend:
+you simply send the tensor to the GPU!</p>
+<p>There are to main ways to do this: either you specify the context during the creation of the tensor
+or you use pytorch tensors’ properties to send them to the desired device post-creation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify context during creation</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Posthoc</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random_tensor</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The rest is exactly the same, nothing more to do!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">decomp</span> <span class="o">=</span> <span class="n">Tucker</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">decomp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="c1"># Runs on GPU!</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -282,7 +336,7 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
     <div class="container has-text-centered">
 
         <p>
-                &copy; 2016 - 2020, TensorLy Developers.
+                &copy; 2016 - 2021, TensorLy Developers.
         </p> 
     </div>
 </footer>
