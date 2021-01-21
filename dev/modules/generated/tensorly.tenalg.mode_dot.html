@@ -1,168 +1,174 @@
 
+<!DOCTYPE html>
 
-
-<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tensorly.tenalg.mode_dot &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
 
-        
-        <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy</title>
-        
-
-        <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../../_static/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
-        <meta name="theme-color" content="#ffffff">
-
-        <!-- <link rel="icon" type="image/png" href="../../_static/favicon/favicon.ico"> -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="../../_static/bulma.min.css" />
-        <link rel="stylesheet" type="text/css" href="../../_static/base.min.css" />
-        <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-        
-        
-
-        
-        
-    </head>
-
-    <body>
-        
-        <nav class="navbar is-dark has-shadow top" id="top">
-    <div class="navbar-brand">
-        <a class="navbar-item navbar-logo" href="../../index.html">
-            <img src="../../_static/logo_tensorly.png" class="navbar-logo" height=30>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="../../index.html">
-            <i class="fa fa-home" aria-hidden="true"></i>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="icon"><i class="fa fa-github"></i></span>
-        </a>
-
-		<span class="navbar-burger" data-target="NavbarMenu" >
-			<span></span>
-			<span></span>
-			<span></span>
-		</span>
-    </div>
-
-	<div id="NavbarMenu" class="navbar-menu">
-		<div class="navbar-start">
-
-			<a class="navbar-item" href="../../installation.html">
-				Install
-			</a>
-			<a class="navbar-item" href="../../user_guide/index.html">
-				User Guide
-			</a>
-			<a class="navbar-item" href="../api.html">
-				API
-			</a>
-			<a class="navbar-item" href="../../auto_examples/index.html">
-				Examples
-			</a>
-			<a class="navbar-item" href="../../about.html">
-				About Us
-			</a>
-			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-				Notebooks
-			</a>
-
-		</div>
-
-		<div class="navbar-end">
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../index.html">
-				<i class="fa fa-home" aria-hidden="true"></i>
-				<span class="tooltiptext">Home page</span>
-			</a>
-
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
-				<span class="tooltiptext">Open project on Github</span>
-				<span class="icon"><i class="fa fa-github"></i></span>
-			</a>
-
-		</div>
-    </div>
-</nav>
+  
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        
-        <div class="columns">
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tensorly.tenalg.multi_mode_dot" href="tensorly.tenalg.multi_mode_dot.html" />
+    <link rel="prev" title="tensorly.tenalg.kronecker" href="tensorly.tenalg.kronecker.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-                
-            <div class="column is-one-quarter is-hidden-mobile aside">
-    <div class="sidebar" id="sidebar">
-        
-        <div class="search">
-            <div class="search-title">
-                Search in TensorLy
-            </div>
+  </head>
+<body  class="has-navbar-fixed-top">
 
-            <script>
-              (function() {
-                var cx = '002285679029256671182:5tfqz3cvmm8';
-                var gcse = document.createElement('script');
-                gcse.type = 'text/javascript';
-                gcse.async = true;
-                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(gcse, s);
-              })();
-            </script>
-            <gcse:searchbox-only></gcse:searchbox-only>
-            
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
         </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
 
-        <div class="toc">
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+            <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+            <a class="navbar-item" href="../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+              Notebooks
+            </a>
+
+          </div>
         
-        
-        
-        
-            <ul class="current">
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+      
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-manipulating-the-backend-with-a-unified-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: Manipulating the backend with a unified interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-a-unified-backend-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: A unified backend interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in the CP format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Matrix-Product-State format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 format</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor algebra</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.khatri_rao.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.kronecker.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.mode_dot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.multi_mode_dot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.soft_thresholding.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.soft_thresholding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.svd_thresholding.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.svd_thresholding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.proximal.procrustes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal</span></code>.procrustes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.inner.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.inner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.contract.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.contract</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.tensor_dot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.batched_tensor_dot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.batched_tensor_dot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tensorly.tenalg.higher_order_moment.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.higher_order_moment</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in CP form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Tensor-Train (MPS) form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 form</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#tensorly-tenalg-tensor-algebra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor Algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling random tensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Creating and loading data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
 </ul>
 </li>
@@ -171,36 +177,39 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
 </ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
 
-        
-        
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-content">
+
+        <!-- Toggle menu button -->
+            
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
         </div>
         
-    </div>
-</div>
 
-                
-                <div class="column is-three-quarters main-column">
-            
-
-
-            
-                <div class="content main-content">
-
-                    
-
+        <div class="content">
+          
   <div class="section" id="tensorly-tenalg-mode-dot">
 <h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.mode_dot</h1>
 <dl class="py function">
 <dt id="tensorly.tenalg.mode_dot">
-<code class="descname">mode_dot</code><span class="sig-paren">(</span><em><span class="n">tensor</span></em>, <em><span class="n">matrix_or_vector</span></em>, <em><span class="n">mode</span></em>, <em><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/n_mode_product.html#mode_dot"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">mode_dot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em>, <em class="sig-param"><span class="n">matrix_or_vector</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/n_mode_product.html#mode_dot"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>n-mode product of a tensor and a matrix or vector at the specified mode</p>
 <p>Mathematically: <span class="math">\text{tensor} \times_{\text{mode}} \text{matrix or vector}</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd><p>tensor of shape <code class="docutils literal notranslate"><span class="pre">(i_1,</span> <span class="pre">...,</span> <span class="pre">i_k,</span> <span class="pre">...,</span> <span class="pre">i_N)</span></code></p>
 </dd>
 <dt><strong>matrix_or_vector</strong><span class="classifier">ndarray</span></dt><dd><p>1D or 2D array of shape <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">i_k)</span></code> or <code class="docutils literal notranslate"><span class="pre">(i_k,</span> <span class="pre">)</span></code>
@@ -210,22 +219,21 @@ matrix or vectors to which to n-mode multiply the tensor</p>
 <dt><strong>transpose</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, the matrix is transposed</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
 <dt>ndarray</dt><dd><p><cite>mode</cite>-mode product of <cite>tensor</cite> by <cite>matrix_or_vector</cite>
 * of shape <span class="math">(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)</span> if matrix_or_vector is a matrix
 * of shape <span class="math">(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)</span> if matrix_or_vector is a vector</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot" title="tensorly.tenalg.multi_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_mode_dot</span></code></a></dt><dd>chaining several mode_dot in one call</dd>
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot" title="tensorly.tenalg.multi_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_mode_dot</span></code></a></dt><dd><p>chaining several mode_dot in one call</p>
+</dd>
 </dl>
 </div>
 </dd></dl>
@@ -233,21 +241,21 @@ matrix or vectors to which to n-mode multiply the tensor</p>
 <div class="clearer"></div></div>
 
 
+        </div>
 
-
-                    <nav class="pagination">
+            
+        <nav class="pagination" role="navigation" aria-label="pagination">
     
-    
-    <a class="button is-medium pagination-previous" href="tensorly.tenalg.kronecker.html" title="tensorly.tenalg.kronecker" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tenalg.kronecker.html" title="previous chapter" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Previous</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tenalg.multi_mode_dot.html" title="tensorly.tenalg.multi_mode_dot" accesskey="n">
-        <span>Next </span>
+    <a class="button is-medium pagination-next" href="tensorly.tenalg.multi_mode_dot.html" title="next chapter" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.multi_mode_dot </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -255,33 +263,44 @@ matrix or vectors to which to n-mode multiply the tensor</p>
     
 </nav>
 
-                </div>
+        
 
-                <footer class="footer">
-    <div class="container has-text-centered">
+      </section>
 
-        <p>
-                &copy; 2016 - 2021, TensorLy Developers.
-        </p> 
-    </div>
-</footer>
-            </div>
-
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
         </div>
+    </div>
+  </footer>
+
+    </div>
 
         
-        
+    
 
-        <script src="../../_static/navigation.min.js"></script>
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
 
-    ga('create', 'UA-86209849-1', 'auto');
-    ga('send', 'pageview');
-</script>
+  </div>
+  </div>
 
-    </body>
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
 </html>
