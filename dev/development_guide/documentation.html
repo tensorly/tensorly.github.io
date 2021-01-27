@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentation &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>Writing documentation &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
@@ -160,7 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Development guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Writing documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="backend_system.html">Backend System</a></li>
 </ul>
 </li>
@@ -190,14 +190,18 @@
 
         <div class="content">
           
-  <div class="section" id="documentation">
-<span id="id1"></span><h1>Documentation</h1>
-<p>Documentation is a crutial part of this library.</p>
+  <div class="section" id="writing-documentation">
+<span id="documentation"></span><h1>Writing documentation</h1>
+<p>Documentation is a crutial part of this library. Here, we cover some elements of syntax
+with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the format we use.</p>
+<div class="section" id="docstrings">
+<h2>Docstrings</h2>
 <p>All functions and classes should come with useful docstrings. For these, we use the numpy style docstrings. For instance, for a function, we expect the following docstring:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;One line description</span>
 
-<span class="sd">      Longer description</span>
+<span class="sd">   Longer description,</span>
+<span class="sd">   possibly in several lines</span>
 
 <span class="sd">   Parameters</span>
 <span class="sd">   ----------</span>
@@ -232,6 +236,22 @@
 <span class="s">   several</span>
 <span class="s">   lines...</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="refer-to-functions-or-modules">
+<h2>Refer to functions or modules</h2>
+<p>In the documentation, you can refer to modules as <code class="docutils literal notranslate"><span class="pre">:mod:`tensorly.module`</span></code>, for instance
+the tensor algebra module: <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.
+Similarly, use <code class="docutils literal notranslate"><span class="pre">:func:`tensorly.function`</span></code> to refer a function:
+<a class="reference internal" href="../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold" title="tensorly.base.unfold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.base.unfold</span></code></a>.</p>
+</div>
+<div class="section" id="titles">
+<h2>Titles</h2>
+<p>Titles are created by underlying them, and the hierarchy is automatically determined by Sphinx.
+If you do not want your title to appear in the table of contents, use a <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric">rubric</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">rubric</span><span class="p">::</span> <span class="n">Title</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -274,6 +294,23 @@
 
         
     
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc">  
+        <div class="menu menu-list">
+        <p class="menu-label">On this page</p>
+        <ul>
+<li><a class="reference internal" href="#">Writing documentation</a><ul>
+<li><a class="reference internal" href="#docstrings">Docstrings</a></li>
+<li><a class="reference internal" href="#refer-to-functions-or-modules">Refer to functions or modules</a></li>
+<li><a class="reference internal" href="#titles">Titles</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
 
     
 

@@ -231,9 +231,13 @@ you should only use functions through the backend (<a class="reference internal"
 </tbody>
 </table>
 </div>
-<div class="section" id="available-backend-functions">
-<h3>Available backend functions</h3>
-<p>For each backend, tensorly provides the following uniform functions:</p>
+<div class="section" id="context-of-a-tensor">
+<h3>Context of a tensor</h3>
+<p>In TensorLy, we provide some convenient functions to manipulate backend specific
+information on the tensors (the <em>context</em> of that tensor),
+including dtype (e.g. <cite>float32</cite>, <cite>float64</cite>, etc),
+its <em>device</em> (e.g. CPU and GPU) where applicable, etc.
+We also provide functions to check if a tensor is on the current backend, convert to NumPy, etc.</p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -243,20 +247,87 @@ you should only use functions through the backend (<a class="reference internal"
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.context.html#tensorly.context" title="tensorly.context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">context</span></code></a>(tensor)</p></td>
 <td><p>Returns the context of a tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tensor.html#tensorly.tensor" title="tensorly.tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor</span></code></a>(data, **context)</p></td>
-<td><p>Tensor class</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.is_tensor.html#tensorly.is_tensor" title="tensorly.is_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tensor</span></code></a>(obj)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.is_tensor.html#tensorly.is_tensor" title="tensorly.is_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tensor</span></code></a>(obj)</p></td>
 <td><p>Returns if <cite>obj</cite> is a tensor for the current backend</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.shape.html#tensorly.shape" title="tensorly.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a>(tensor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.to_numpy.html#tensorly.to_numpy" title="tensorly.to_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_numpy</span></code></a>(tensor)</p></td>
+<td><p>Returns a copy of the tensor as a NumPy array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.eps.html#tensorly.eps" title="tensorly.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a>(dtype)</p></td>
+<td><p>Returns the machine epsilon for a given floating point dtype</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.finfo.html#tensorly.finfo" title="tensorly.finfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finfo</span></code></a>(dtype)</p></td>
+<td><p>Machine limits for floating point types.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="index-assignement-numpy-style">
+<h3>Index assignement (“NumPy style”)</h3>
+<p>While in some backends (e.g. NumPy), you can directly combine indexing and assignement,
+not all backends support this. Instead of
+<code class="docutils literal notranslate"><span class="pre">tensor[indices]</span> <span class="pre">=</span> <span class="pre">values</span></code>, you should use
+<code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">tensorly.index_update(tensor,</span> <span class="pre">tensorly.index,</span> <span class="pre">values)</span></code>.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.index_update.html#tensorly.index_update" title="tensorly.index_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_update</span></code></a>(tensor, indices, values)</p></td>
+<td><p>Updates the value of tensors in the specified indices</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.index.html#tensorly.index" title="tensorly.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a></p></td>
+<td><p>Convenience class used as a an array, to be used with index_update</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="available-backend-functions">
+<h3>Available backend functions</h3>
+<p>For each backend, tensorly provides the following uniform functions:</p>
+<div class="section" id="array-creation">
+<h4>Array creation</h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tensor.html#tensorly.tensor" title="tensorly.tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor</span></code></a>(data, **context)</p></td>
+<td><p>Tensor class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.ones.html#tensorly.ones" title="tensorly.ones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ones</span></code></a>(shape[, dtype])</p></td>
+<td><p>Return a new tensor of given shape and type, filled with ones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.zeros.html#tensorly.zeros" title="tensorly.zeros"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros</span></code></a>(shape[, dtype])</p></td>
+<td><p>Return a new tensor of given shape and type, filled with zeros.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.zeros_like.html#tensorly.zeros_like" title="tensorly.zeros_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros_like</span></code></a>(tensor)</p></td>
+<td><p>Return at tensor of zeros with the same shape and type as a given tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.eye.html#tensorly.eye" title="tensorly.eye"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eye</span></code></a>(N)</p></td>
+<td><p>Return a 2-D tensor with ones on the diagonal and zeros elsewhere.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.diag.html#tensorly.diag" title="tensorly.diag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diag</span></code></a>(v[, k])</p></td>
+<td><p>Extract a diagonal or construct a diagonal array.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="array-manipulation">
+<h4>Array manipulation</h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.shape.html#tensorly.shape" title="tensorly.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a>(tensor)</p></td>
 <td><p>Return the shape of a tensor</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.ndim.html#tensorly.ndim" title="tensorly.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a>(tensor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.ndim.html#tensorly.ndim" title="tensorly.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a>(tensor)</p></td>
 <td><p>Return the number of dimensions of a tensor</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.to_numpy.html#tensorly.to_numpy" title="tensorly.to_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_numpy</span></code></a>(tensor)</p></td>
-<td><p>Returns a copy of the tensor as a NumPy array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.copy.html#tensorly.copy" title="tensorly.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(tensor)</p></td>
 <td><p>Return a copy of the given tensor</p></td>
@@ -264,66 +335,80 @@ you should only use functions through the backend (<a class="reference internal"
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.concatenate.html#tensorly.concatenate" title="tensorly.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(tensors[, axis])</p></td>
 <td><p>Concatenate tensors along an axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.reshape.html#tensorly.reshape" title="tensorly.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(tensor, newshape)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.conj.html#tensorly.conj" title="tensorly.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a>(x, /[, out, where, casting, order, …])</p></td>
+<td><p>Return the complex conjugate, element-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.reshape.html#tensorly.reshape" title="tensorly.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(tensor, newshape)</p></td>
 <td><p>Gives a new shape to a tensor without changing its data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.transpose.html#tensorly.transpose" title="tensorly.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(tensor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.transpose.html#tensorly.transpose" title="tensorly.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(tensor)</p></td>
 <td><p>Permute the dimensions of a tensor.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.moveaxis.html#tensorly.moveaxis" title="tensorly.moveaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveaxis</span></code></a>(tensor, source, destination)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.moveaxis.html#tensorly.moveaxis" title="tensorly.moveaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveaxis</span></code></a>(tensor, source, destination)</p></td>
 <td><p>Move axes of a tensor to new positions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.arange.html#tensorly.arange" title="tensorly.arange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arange</span></code></a>([start, stop, step])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.arange.html#tensorly.arange" title="tensorly.arange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arange</span></code></a>([start, stop, step])</p></td>
 <td><p>Return evenly spaced values within a given interval.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.ones.html#tensorly.ones" title="tensorly.ones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ones</span></code></a>(shape[, dtype])</p></td>
-<td><p>Return a new tensor of given shape and type, filled with ones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.zeros.html#tensorly.zeros" title="tensorly.zeros"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros</span></code></a>(shape[, dtype])</p></td>
-<td><p>Return a new tensor of given shape and type, filled with zeros.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.zeros_like.html#tensorly.zeros_like" title="tensorly.zeros_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros_like</span></code></a>(tensor)</p></td>
-<td><p>Return at tensor of zeros with the same shape and type as a given tensor.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.eye.html#tensorly.eye" title="tensorly.eye"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eye</span></code></a>(N)</p></td>
-<td><p>Return a 2-D tensor with ones on the diagonal and zeros elsewhere.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.where.html#tensorly.where" title="tensorly.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(condition, x, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.where.html#tensorly.where" title="tensorly.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(condition, x, y)</p></td>
 <td><p>Return elements, either from <cite>x</cite> or <cite>y</cite>, depending on <cite>condition</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.clip.html#tensorly.clip" title="tensorly.clip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip</span></code></a>(tensor[, a_min, a_max])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.clip.html#tensorly.clip" title="tensorly.clip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip</span></code></a>(tensor[, a_min, a_max])</p></td>
 <td><p>Clip the values of a tensor to within an interval.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.max.html#tensorly.max" title="tensorly.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>(tensor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.max.html#tensorly.max" title="tensorly.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>(tensor)</p></td>
 <td><p>The max value in a tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.min.html#tensorly.min" title="tensorly.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>(tensor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.min.html#tensorly.min" title="tensorly.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>(tensor)</p></td>
 <td><p>The min value in a tensor.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.all.html#tensorly.all" title="tensorly.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>(tensor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.argmax.html#tensorly.argmax" title="tensorly.argmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code></a>(tensor)</p></td>
+<td><p>The argument of the max value in a tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.argmin.html#tensorly.argmin" title="tensorly.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a>(tensor)</p></td>
+<td><p>The argument of the min value in a tensor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.all.html#tensorly.all" title="tensorly.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>(tensor)</p></td>
 <td><p>Returns if all array elements in a tensor are True.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.mean.html#tensorly.mean" title="tensorly.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>(tensor[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.mean.html#tensorly.mean" title="tensorly.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>(tensor[, axis])</p></td>
 <td><p>Compute the mean of a tensor, optionally along an axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sum.html#tensorly.sum" title="tensorly.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(tensor[, axis])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sum.html#tensorly.sum" title="tensorly.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(tensor[, axis])</p></td>
 <td><p>Compute the sum of a tensor, optionally along an axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.prod.html#tensorly.prod" title="tensorly.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>(tensor[, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.prod.html#tensorly.prod" title="tensorly.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>(tensor[, axis])</p></td>
 <td><p>Compute the product of a tensor, optionally along an axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sign.html#tensorly.sign" title="tensorly.sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sign</span></code></a>(tensor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sign.html#tensorly.sign" title="tensorly.sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sign</span></code></a>(tensor)</p></td>
 <td><p>Computes the element-wise sign of the given input tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.abs.html#tensorly.abs" title="tensorly.abs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs</span></code></a>(tensor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.abs.html#tensorly.abs" title="tensorly.abs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs</span></code></a>(tensor)</p></td>
 <td><p>Computes the element-wise absolute value of the given input tensor.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sqrt.html#tensorly.sqrt" title="tensorly.sqrt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqrt</span></code></a>(tensor)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sqrt.html#tensorly.sqrt" title="tensorly.sqrt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqrt</span></code></a>(tensor)</p></td>
 <td><p>Computes the element-wise sqrt of the given input tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.norm.html#tensorly.norm" title="tensorly.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>(tensor[, order, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.norm.html#tensorly.norm" title="tensorly.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>(tensor[, order, axis])</p></td>
 <td><p>Computes the l-<cite>order</cite> norm of a tensor.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.stack.html#tensorly.stack" title="tensorly.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(arrays[, axis])</p></td>
+<td><p>Join a sequence of arrays along a new axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sort.html#tensorly.sort" title="tensorly.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(tensor, axis[, descending])</p></td>
+<td><p>Return a sorted copy of an array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="algebraic-operations">
+<h4>Algebraic operations</h4>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.dot.html#tensorly.dot" title="tensorly.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a>(a, b)</p></td>
 <td><p>Dot product of two tensors.</p></td>
 </tr>
@@ -344,6 +429,7 @@ you should only use functions through the backend (<a class="reference internal"
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div class="section" id="module-tensorly.base">
@@ -855,7 +941,14 @@ Currently, the following decomposition methods are supported (for the NumPy back
 <li><a class="reference internal" href="#">API reference</a><ul>
 <li><a class="reference internal" href="#tensorly-a-unified-backend-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: A unified backend interface</a><ul>
 <li><a class="reference internal" href="#setting-the-backend">Setting the backend</a></li>
-<li><a class="reference internal" href="#available-backend-functions">Available backend functions</a></li>
+<li><a class="reference internal" href="#context-of-a-tensor">Context of a tensor</a></li>
+<li><a class="reference internal" href="#index-assignement-numpy-style">Index assignement (“NumPy style”)</a></li>
+<li><a class="reference internal" href="#available-backend-functions">Available backend functions</a><ul>
+<li><a class="reference internal" href="#array-creation">Array creation</a></li>
+<li><a class="reference internal" href="#array-manipulation">Array manipulation</a></li>
+<li><a class="reference internal" href="#algebraic-operations">Algebraic operations</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
