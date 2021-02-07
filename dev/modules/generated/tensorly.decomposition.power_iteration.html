@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tensorly.decomposition.symmetric_power_iteration &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.decomposition.power_iteration &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -41,8 +41,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.decomposition.symmetric_parafac_power_iteration" href="tensorly.decomposition.symmetric_parafac_power_iteration.html" />
-    <link rel="prev" title="tensorly.decomposition.parafac_power_iteration" href="tensorly.decomposition.parafac_power_iteration.html" />
+    <link rel="next" title="tensorly.decomposition.parafac_power_iteration" href="tensorly.decomposition.parafac_power_iteration.html" />
+    <link rel="prev" title="tensorly.decomposition.parafac" href="tensorly.decomposition.parafac.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -201,20 +201,20 @@
 
         <div class="content">
           
-  <div class="section" id="tensorly-decomposition-symmetric-power-iteration">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.symmetric_power_iteration</h1>
+  <div class="section" id="tensorly-decomposition-power-iteration">
+<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.power_iteration</h1>
 <dl class="py function">
-<dt id="tensorly.decomposition.symmetric_power_iteration">
-<code class="sig-name descname">symmetric_power_iteration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em>, <em class="sig-param"><span class="n">n_repeat</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">n_iteration</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_symmetric_cp.html#symmetric_power_iteration"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>A single Robust Symmetric Tensor Power Iteration</p>
+<dt id="tensorly.decomposition.power_iteration">
+<code class="sig-name descname">power_iteration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tensor</span></em>, <em class="sig-param"><span class="n">n_repeat</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">n_iteration</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp_power.html#power_iteration"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>A single Robust Tensor Power Iteration</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">tl.tensor</span></dt><dd><p>input tensor to decompose, must be symmetric of shape (size, )*order</p>
+<dt><strong>tensor</strong><span class="classifier">tl.tensor</span></dt><dd><p>input tensor to decompose</p>
 </dd>
 <dt><strong>n_repeat</strong><span class="classifier">int, default is 10</span></dt><dd><p>number of initializations to be tried</p>
 </dd>
-<dt><strong>n_iterations</strong><span class="classifier">int, default is 10</span></dt><dd><p>number of power iterations</p>
+<dt><strong>n_iteration</strong><span class="classifier">int, default is 10</span></dt><dd><p>number of power iterations</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>level of verbosity</p>
 </dd>
@@ -225,7 +225,7 @@
 <dt>(eigenval, best_factor, deflated)</dt><dd></dd>
 <dt><strong>eigenval</strong><span class="classifier">float</span></dt><dd><p>the obtained eigenvalue</p>
 </dd>
-<dt><strong>best_factor</strong><span class="classifier">tl.tensor</span></dt><dd><p>the best estimated eigenvector</p>
+<dt><strong>best_factors</strong><span class="classifier">tl.tensor list</span></dt><dd><p>the best estimated eigenvector, for each mode of the input tensor</p>
 </dd>
 <dt><strong>deflated</strong><span class="classifier">tl.tensor of same shape as <cite>tensor</cite></span></dt><dd><p>the deflated tensor (i.e. without the estimated component)</p>
 </dd>
@@ -242,16 +242,16 @@
             
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.parafac_power_iteration.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.parafac.html" title="previous chapter" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac_power_iteration</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.decomposition.symmetric_parafac_power_iteration.html" title="next chapter" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.symmetric_parafac_power_iteration </span>
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.parafac_power_iteration.html" title="next chapter" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac_power_iteration </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
