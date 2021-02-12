@@ -195,7 +195,7 @@
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="robust_pca"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca">[docs]</a><span class="k">def</span> <span class="nf">robust_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_E</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">reg_J</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<div class="viewcode-block" id="robust_pca"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca">[docs]</a><span class="k">def</span> <span class="nf">robust_pca</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_E</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">reg_J</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                <span class="n">mu_init</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">mu_max</span><span class="o">=</span><span class="mf">10e9</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
                <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Robust Tensor PCA via ALM with support for missing values</span>
@@ -257,6 +257,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fix to address surprising MXNet.numpy behavior (Issue #19891)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="c1"># Initialise the decompositions</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>  <span class="c1"># low rank part</span>
