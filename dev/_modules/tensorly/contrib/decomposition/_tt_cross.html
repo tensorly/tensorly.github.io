@@ -27,7 +27,6 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
  <script src="../../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -186,7 +185,6 @@
   <h1>Source code for tensorly.contrib.decomposition._tt_cross</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">...tt_tensor</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span>
-<span class="kn">from</span> <span class="nn">...random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
@@ -303,7 +301,7 @@
 
     <span class="c1"># Initialize indice: random selection of column indices</span>
     <span class="n">random_seed</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>
 
     <span class="n">col_idx</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">tensor_order</span>
     <span class="k">for</span> <span class="n">k_col_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor_order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>

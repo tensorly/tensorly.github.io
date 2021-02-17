@@ -27,7 +27,6 @@
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -186,9 +185,8 @@
   <h1>Source code for tensorly.regression.cp_regression</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
-<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span>  <span class="n">khatri_rao</span>
+<span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">cp_to_tensor</span><span class="p">,</span> <span class="n">cp_to_vec</span>
-<span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 
@@ -251,7 +249,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        self</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">rng</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
 
         <span class="c1"># Initialise randomly the weights</span>
         <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>

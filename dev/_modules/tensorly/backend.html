@@ -27,7 +27,6 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -195,10 +194,10 @@
 
 <span class="n">_DEFAULT_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;numpy&#39;</span>
 <span class="n">_KNOWN_BACKENDS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;numpy&#39;</span><span class="p">:</span> <span class="s1">&#39;NumpyBackend&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;mxnet&#39;</span><span class="p">:</span><span class="s1">&#39;MxnetBackend&#39;</span><span class="p">,</span> 
-                   <span class="s1">&#39;pytorch&#39;</span><span class="p">:</span><span class="s1">&#39;PyTorchBackend&#39;</span><span class="p">,</span> 
-                   <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span><span class="s1">&#39;TensorflowBackend&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;cupy&#39;</span><span class="p">:</span><span class="s1">&#39;CupyBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;mxnet&#39;</span><span class="p">:</span> <span class="s1">&#39;MxnetBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;pytorch&#39;</span><span class="p">:</span> <span class="s1">&#39;PyTorchBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span> <span class="s1">&#39;TensorflowBackend&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;cupy&#39;</span><span class="p">:</span> <span class="s1">&#39;CupyBackend&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;jax&#39;</span><span class="p">:</span> <span class="s1">&#39;JaxBackend&#39;</span><span class="p">}</span>
 
 <span class="n">_LOADED_BACKENDS</span> <span class="o">=</span> <span class="p">{}</span>
@@ -214,11 +213,11 @@
     <span class="n">backend_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TENSORLY_BACKEND&#39;</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">backend_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;TENSORLY_BACKEND should be one of </span><span class="si">{}</span><span class="s2">, got </span><span class="si">{}</span><span class="s2">. Defaulting to </span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)),</span>
-                        <span class="n">backend_name</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
+            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)),</span>
+            <span class="n">backend_name</span><span class="p">,</span> <span class="n">_DEFAULT_BACKEND</span><span class="p">)</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
         <span class="n">backend_name</span> <span class="o">=</span> <span class="n">_DEFAULT_BACKEND</span>
-    
+
     <span class="n">set_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">register_backend</span><span class="p">(</span><span class="n">backend_name</span><span class="p">):</span>
@@ -242,7 +241,7 @@
         <span class="n">_LOADED_BACKENDS</span><span class="p">[</span><span class="n">backend_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">backend</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Unknown backend name </span><span class="si">{0!r}</span><span class="s2">, known backends are [</span><span class="si">{1}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">backend_name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)))</span>
+            <span class="n">backend_name</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">_KNOWN_BACKENDS</span><span class="p">)))</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="set_backend"><a class="viewcode-back" href="../../modules/generated/tensorly.set_backend.html#tensorly.set_backend">[docs]</a><span class="k">def</span> <span class="nf">set_backend</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">local_threadsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -264,7 +263,7 @@
 
     <span class="c1"># Set the backend</span>
     <span class="n">_LOCAL_STATE</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">local_threadsafe</span><span class="p">:</span>
         <span class="k">global</span> <span class="n">_DEFAULT_BACKEND</span>
         <span class="n">_DEFAULT_BACKEND</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">backend_name</span></div>
@@ -364,7 +363,9 @@
 
     <span class="k">return</span> <span class="n">inner</span>
 
+
 <span class="c1"># Generic methods, exposed as part of the public API</span>
+<span class="n">check_random_state</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">)</span>
 <span class="n">context</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
 <span class="n">tensor</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
 <span class="n">is_tensor</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">Backend</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">)</span>
