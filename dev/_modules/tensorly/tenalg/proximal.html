@@ -186,6 +186,9 @@
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
+<span class="c1">#         Jeremy Cohen &lt;jeremy.cohen@irisa.fr&gt;</span>
+<span class="c1">#         Axel Marmoret &lt;axel.marmoret@inria.fr&gt;</span>
+<span class="c1">#         Caglayan TUna &lt;caglayantun@gmail.com&gt;</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
@@ -276,6 +279,160 @@
     <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span></div>
 
+
+<span class="k">def</span> <span class="nf">hals_nnls</span><span class="p">(</span><span class="n">UtM</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
+              <span class="n">sparsity_coefficient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nonzero_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Non Negative Least Squares (NNLS)</span>
+
+<span class="sd">    Computes an approximate solution of a nonnegative least</span>
+<span class="sd">    squares problem (NNLS) with an exact block-coordinate descent scheme.</span>
+<span class="sd">    M is m by n, U is m by r, V is r by n.</span>
+<span class="sd">    All matrices are nonnegative componentwise.</span>
+
+<span class="sd">    This algorithm is defined in [1], as an accelerated version of the HALS algorithm.</span>
+
+<span class="sd">    It features two accelerations: an early stop stopping criterion, and a</span>
+<span class="sd">    complexity averaging between precomputations and loops, so as to use large</span>
+<span class="sd">    precomputations several times.</span>
+
+<span class="sd">    This function is made for being used repetively inside an</span>
+<span class="sd">    outer-loop alternating algorithm, for instance for computing nonnegative</span>
+<span class="sd">    matrix Factorization or tensor factorization.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM: r-by-n array</span>
+<span class="sd">        Pre-computed product of the transposed of U and M, used in the update rule</span>
+<span class="sd">    UtU: r-by-r array</span>
+<span class="sd">        Pre-computed product of the transposed of U and U, used in the update rule</span>
+<span class="sd">    V: r-by-n initialization matrix (mutable)</span>
+<span class="sd">        Initialized V array</span>
+<span class="sd">        By default, is initialized with one non-zero entry per column</span>
+<span class="sd">        corresponding to the closest column of U of the corresponding column of M.</span>
+<span class="sd">    n_iter_max: Postivie integer</span>
+<span class="sd">        Upper bound on the number of iterations</span>
+<span class="sd">        Default: 500</span>
+<span class="sd">    tol : float in [0,1]</span>
+<span class="sd">        early stop criterion, while err_k &gt; delta*err_0. Set small for</span>
+<span class="sd">        almost exact nnls solution, or larger (e.g. 1e-2) for inner loops</span>
+<span class="sd">        of a PARAFAC computation.</span>
+<span class="sd">        Default: 10e-8</span>
+<span class="sd">    sparsity_coefficient: float or None</span>
+<span class="sd">        The coefficient controling the sparisty level in the objective function.</span>
+<span class="sd">        If set to None, the problem is solved unconstrained.</span>
+<span class="sd">        Default: None</span>
+<span class="sd">    nonzero_rows: boolean</span>
+<span class="sd">        True if the lines of the V matrix can&#39;t be zero,</span>
+<span class="sd">        False if they can be zero</span>
+<span class="sd">        Default: False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    V: array</span>
+<span class="sd">        a r-by-n nonnegative matrix \approx argmin_{V &gt;= 0} ||M-UV||_F^2</span>
+<span class="sd">    rec_error: float</span>
+<span class="sd">        number of loops authorized by the error stop criterion</span>
+<span class="sd">    iteration: integer</span>
+<span class="sd">        final number of update iteration performed</span>
+<span class="sd">    complexity_ratio: float</span>
+<span class="sd">        number of loops authorized by the stop criterion</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We solve the following problem :math:`\\min_{V &gt;= 0} ||M-UV||_F^2`</span>
+
+<span class="sd">    The matrix V is updated linewise. The update rule for this resolution is::</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            V[k,:]_(j+1) = V[k,:]_(j) + (UtM[k,:] - UtU[k,:]\\times V_(j))/UtU[k,k]</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">    with j the update iteration.</span>
+
+<span class="sd">    This problem can also be defined by adding a sparsity coefficient,</span>
+<span class="sd">    enhancing sparsity in the solution [2]. In this sparse version, the update rule becomes::</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            V[k,:]_(j+1) = V[k,:]_(j) + (UtM[k,:] - UtU[k,:]\\times V_(j) - sparsity_coefficient)/UtU[k,k]</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: N. Gillis and F. Glineur, Accelerated Multiplicative Updates and</span>
+<span class="sd">       Hierarchical ALS Algorithms for Nonnegative Matrix Factorization,</span>
+<span class="sd">       Neural Computation 24 (4): 1085-1105, 2012.</span>
+
+<span class="sd">    .. [2] J. Eggert, and E. Korner. &quot;Sparse coding and NMF.&quot;</span>
+<span class="sd">       2004 IEEE International Joint Conference on Neural Networks</span>
+<span class="sd">       (IEEE Cat. No. 04CH37541). Vol. 4. IEEE, 2004.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rank</span><span class="p">,</span> <span class="n">n_col_M</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtM</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># checks if V is empty</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">UtM</span><span class="p">)</span>
+
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Scaling</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">UtM</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                       <span class="n">UtU</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">5000</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">10e-12</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="n">rec_error</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">rec_error0</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">sparsity_coefficient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Modifying the function for sparsification</span>
+
+                    <span class="n">deltaV</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">UtM</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">)</span> <span class="o">-</span> <span class="n">sparsity_coefficient</span><span class="p">)</span> <span class="o">/</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span>
+                                      <span class="p">(</span><span class="n">UtM</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">)</span> <span class="o">-</span> <span class="n">sparsity_coefficient</span><span class="p">)</span> <span class="o">/</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:])</span>
+                    <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">deltaV</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># without sparsity</span>
+
+                    <span class="n">deltaV</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">UtM</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">))</span> <span class="o">/</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span>
+                                      <span class="p">(</span><span class="n">UtM</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">))</span> <span class="o">/</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:])</span>
+                    <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">deltaV</span><span class="p">)</span>
+
+                <span class="n">rec_error</span> <span class="o">=</span> <span class="n">rec_error</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">deltaV</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">deltaV</span><span class="p">))</span>
+
+                <span class="c1"># Safety procedure, if columns aren&#39;t allow to be zero</span>
+                <span class="k">if</span> <span class="n">nonzero_rows</span> <span class="ow">and</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">nonzero_rows</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Column &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; of U is zero with nonzero condition&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+                <span class="n">norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:])</span>
+                <span class="k">if</span> <span class="n">norm</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/=</span> <span class="n">norm</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sqrt_n</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">n_col_M</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sqrt_n</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_col_M</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">rec_error0</span> <span class="o">=</span> <span class="n">rec_error</span>
+
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">rank</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">rank</span><span class="o">+</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">complexity_ratio</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">rec_error0</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">rec_error0</span> <span class="ow">or</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">complexity_ratio</span><span class="p">:</span>
+                <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">rec_error</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">complexity_ratio</span>
 </pre></div>
 
         </div>
