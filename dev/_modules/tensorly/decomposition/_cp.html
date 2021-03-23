@@ -205,15 +205,16 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize factors used in `parafac`.</span>
 
 <span class="sd">    The type of initialization is set using `init`. If `init == &#39;random&#39;` then</span>
-<span class="sd">    initialize factor matrices using `random_state`. If `init == &#39;svd&#39;` then</span>
+<span class="sd">    initialize factor matrices with uniform distribution using `random_state`. If `init == &#39;svd&#39;` then</span>
 <span class="sd">    initialize the `m`th factor matrix using the `rank` left singular vectors</span>
-<span class="sd">    of the `m`th unfolding of the input tensor.</span>
+<span class="sd">    of the `m`th unfolding of the input tensor. If init is a previously initialized `cp tensor`, all</span>
+<span class="sd">    the weights are pulled in the last factor and then the weights are set to &quot;1&quot; for the output tensor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">    rank : int</span>
-<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, cptensor}, optional</span>
 <span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    non_negative : bool, default is False</span>
@@ -258,8 +259,20 @@
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">)):</span>
         <span class="c1"># TODO: Test this</span>
-        <span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>         
+            <span class="k">if</span> <span class="n">normalize_factors</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;It is not recommended to initialize a tensor with normalizing. Consider normalizing the tensor before using this function&#39;</span><span class="p">)</span>
+            
             <span class="n">kt</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+            <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">kt</span>
+            
+            <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">weights</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">kt</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">weights_avg</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
+                    <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">weights_avg</span>
+                <span class="n">kt</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s1">&#39;If initialization method is a mapping, then it must &#39;</span>
@@ -496,11 +509,7 @@
                     <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">pseudo_inverse</span><span class="o">*</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span><span class="p">)</span>
             <span class="n">pseudo_inverse</span> <span class="o">+=</span> <span class="n">Id</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">iteration</span> <span class="ow">and</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># Take into account init weights</span>
-                <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
 
             <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">),</span>
                                     <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">)))</span>
