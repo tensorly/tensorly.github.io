@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Contributing &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -189,20 +190,20 @@
 
         <div class="content">
           
-  <div class="section" id="contributing">
+  <section id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
 <p>All contributions are welcome! So if you have a cool tensor method you want to add, if you spot a bug or even a typo or mistake in the documentation, please report it, and even better, open a Pull-Request!</p>
-<div class="section" id="how-to">
+<section id="how-to">
 <h2>How-to<a class="headerlink" href="#how-to" title="Permalink to this headline">¶</a></h2>
 <p>To make sure the contribution is relevant and is not already worked on, you can <a class="reference external" href="https://github.com/tensorly/tensorly/issues">open an issue</a> or talk to us on <a class="reference external" href="https://gitter.im/tensorly/tensorly">Gitter</a>!</p>
 <p>To add code of fix issues in TensorLy, you will want to open a <a class="reference external" href="https://github.com/tensorly/tensorly/pulls">Pull-Request</a> on the Github repository of the project.</p>
-</div>
-<div class="section" id="guidelines">
+</section>
+<section id="guidelines">
 <h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this headline">¶</a></h2>
 <p>For each function or class, we expect helpful docstrings in the NumPy format, as well as unit-tests to make sure it is working as expected (especially helpful for future refactoring to make sure no exising code is broken!)</p>
 <p>Check the existing code for examples, and don’t hesitate to contact the developers if you are unsure!</p>
-</div>
-<div class="section" id="backend-compatibility">
+</section>
+<section id="backend-compatibility">
 <h2>Backend compatibility<a class="headerlink" href="#backend-compatibility" title="Permalink to this headline">¶</a></h2>
 <p>To contribute code to the TensorLy code-base, you must ensure compatibility with all the backends.</p>
 <div class="admonition important">
@@ -220,7 +221,7 @@ or, if you cannot do otherwise, add the required function to all backends.</p>
 <p>In general, you should <strong>not</strong> use backend specific code, by testing for the backend.
 e.g. Do not include statements such as <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">tensorly.get_backend()</span> <span class="pre">==</span> <span class="pre">'pytorch'</span></code> in your code.</p>
 </div>
-<div class="section" id="in-practice">
+<section id="in-practice">
 <h3>In practice<a class="headerlink" href="#in-practice" title="Permalink to this headline">¶</a></h3>
 <p>Practically, <strong>use the wrapped functions</strong>. For instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -236,8 +237,8 @@ e.g. Do not include statements such as <code class="docutils literal notranslate
 </div>
 <p>The reason is that you do not want your code to be restricted to any of the backends.
 You might be using NumPy but another user might be using MXNet and calling a NumPy function on an MXNet NDArray will most likely fail.</p>
-</div>
-<div class="section" id="context-of-a-tensor">
+</section>
+<section id="context-of-a-tensor">
 <h3>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this headline">¶</a></h3>
 <p>An other aspect, when developing a new function or algorithm, is to make sure you perform the computation on the correct context specified by the user. To do so, always get the context from tensors you get as input, and use it for the tensors you create.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
@@ -246,8 +247,8 @@ You might be using NumPy but another user might be using MXNet and calling a Num
 </pre></div>
 </div>
 <p>Check-out the page on <a class="reference internal" href="../user_guide/backend.html"><span class="doc">TensorLy’s backend system</span></a> for more on this.</p>
-</div>
-<div class="section" id="index-assignment-numpy-style">
+</section>
+<section id="index-assignment-numpy-style">
 <h3>Index assignment (“NumPy style”)<a class="headerlink" href="#index-assignment-numpy-style" title="Permalink to this headline">¶</a></h3>
 <p>In NumPy, PyTorch and MXNet, you can combined indexing and assignment in a convenient way,
 e.g. if you have a tensor <cite>t</cite>, you can update its values for given indices using the expression
@@ -256,9 +257,9 @@ e.g. if you have a tensor <cite>t</cite>, you can update its values for given in
 you should use <a class="reference internal" href="../modules/generated/tensorly.index_update.html#tensorly.index_update" title="tensorly.index_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.index_update</span></code></a> and <a class="reference internal" href="../modules/generated/tensorly.index.html#tensorly.index" title="tensorly.index"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.index</span></code></a>.
 For instance, the previous statement becomes, in TensorLy:
 <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">tensorly.index_update(t,</span> <span class="pre">tensorly.index[indices],</span> <span class="pre">values)</span></code>.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>
