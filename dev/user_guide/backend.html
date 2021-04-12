@@ -4,8 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2. TensorLy’s backend system &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -193,26 +192,26 @@
 
         <div class="content">
           
-  <section id="tensorly-s-backend-system">
+  <div class="section" id="tensorly-s-backend-system">
 <span id="user-guide-backend"></span><h1><span class="section-number">2. </span>TensorLy’s backend system<a class="headerlink" href="#tensorly-s-backend-system" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In short, you can write your code using TensorLy and you can transparently combine it and execute with any of the backends.
 Currently we support NumPy PyTorch, MXNet, JAX, TensorFlow and CuPy as backends.</p>
 </div>
-<section id="backend">
+<div class="section" id="backend">
 <h2><span class="section-number">2.1. </span>Backend?<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h2>
 <p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), MXNet, and PyTorch.
 For the end user, the interface is exactly the same, but under the hood, a different library is used to represent multi-dimensional arrays and perform computations on these.</p>
 <p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or MXNet.</p>
-</section>
-<section id="why-backends">
+</div>
+<div class="section" id="why-backends">
 <h2><span class="section-number">2.2. </span>Why backends?<a class="headerlink" href="#why-backends" title="Permalink to this headline">¶</a></h2>
 <p>The goal of TensorLy is to make tensor methods accessible.
 While NumPy needs no introduction, other backends such as MXNet and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
 Last but not least, using MXNet or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
-</section>
-<section id="how-do-i-change-the-backend">
+</div>
+<div class="section" id="how-do-i-change-the-backend">
 <h2><span class="section-number">2.3. </span>How do I change the backend?<a class="headerlink" href="#how-do-i-change-the-backend" title="Permalink to this headline">¶</a></h2>
 <p>To change the backend, e.g. to NumPy, you can change the value of <code class="docutils literal notranslate"><span class="pre">default_backend</span></code> in tensorly/__init__.
 Alternatively during the execution, assuming you have imported TensorLy as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">tensorly</span> <span class="pre">as</span> <span class="pre">tl</span></code>, you can change the backend in your code by calling <code class="docutils literal notranslate"><span class="pre">tl.set_backend('numpy')</span></code>.</p>
@@ -230,8 +229,8 @@ It is easy however, simply refer to their respective installation instructions:<
 </ul>
 </div>
 <p>Once you change the backend, all the computation is done using that backend.</p>
-</section>
-<section id="context-of-a-tensor">
+</div>
+<div class="section" id="context-of-a-tensor">
 <h2><span class="section-number">2.4. </span>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this headline">¶</a></h2>
 <p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
@@ -249,8 +248,8 @@ It is easy however, simply refer to their respective installation instructions:<
    <span class="k">return</span> <span class="n">new_tensor</span>
 </pre></div>
 </div>
-</section>
-<section id="basic-functions">
+</div>
+<div class="section" id="basic-functions">
 <h2><span class="section-number">2.5. </span>Basic functions<a class="headerlink" href="#basic-functions" title="Permalink to this headline">¶</a></h2>
 <p>We have isolated the basic functions required for tensor methods in the backend, and provide a uniform API using wrappers when necessary.
 In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <cite>reshape</cite>, etc, are accessible from the backend:</p>
@@ -269,11 +268,11 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
 </pre></div>
 </div>
 <p>This will allow your code to work transparently with any of the backend.</p>
-</section>
-<section id="case-study-tensorly-and-pytorch">
+</div>
+<div class="section" id="case-study-tensorly-and-pytorch">
 <h2><span class="section-number">2.6. </span>Case study: TensorLy and PyTorch<a class="headerlink" href="#case-study-tensorly-and-pytorch" title="Permalink to this headline">¶</a></h2>
 <p>Let’s go through the creation and decomposition of a tensor, using PyTorch.</p>
-<section id="on-cpu">
+<div class="section" id="on-cpu">
 <h3><span class="section-number">2.6.1. </span>On CPU<a class="headerlink" href="#on-cpu" title="Permalink to this headline">¶</a></h3>
 <p>First, we import tensorly and set the backend:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -301,8 +300,8 @@ and with a random initialization. We then fit it to our tensor.</p>
 <span class="n">error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">rec</span><span class="p">)</span><span class="o">/</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="on-gpu">
+</div>
+<div class="section" id="on-gpu">
 <h3><span class="section-number">2.6.2. </span>On GPU<a class="headerlink" href="#on-gpu" title="Permalink to this headline">¶</a></h3>
 <p>Now, imaging you want everything to run on GPU: this is very easy using TensorLy and the PyTorch backend:
 you simply send the tensor to the GPU!</p>
@@ -321,9 +320,9 @@ or you use pytorch tensors’ properties to send them to the desired device post
 <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">decomp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="c1"># Runs on GPU!</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
         </div>
