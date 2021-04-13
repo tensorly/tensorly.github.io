@@ -311,6 +311,9 @@ not all backends support this. Instead of
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.diag.html#tensorly.diag" title="tensorly.diag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diag</span></code></a>(v[, k])</p></td>
 <td><p>Extract a diagonal or construct a diagonal array.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.check_random_state.html#tensorly.check_random_state" title="tensorly.check_random_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_random_state</span></code></a>(seed)</p></td>
+<td><p>Returns a valid RandomState</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -691,16 +694,19 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CPPower.html#tensorly.decomposition.CPPower" title="tensorly.decomposition.CPPower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CPPower</span></code></a>(rank[, n_repeat, n_iteration, verbose])</p></td>
 <td><p>CP Decomposition via Robust Tensor Power Iteration</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Tucker.html#tensorly.decomposition.Tucker" title="tensorly.decomposition.Tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tucker</span></code></a>([rank, n_iter_max, init, svd, tol, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS" title="tensorly.decomposition.CP_NN_HALS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CP_NN_HALS</span></code></a>(rank[, n_iter_max, tol, init, …])</p></td>
+<td><p>Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Tucker.html#tensorly.decomposition.Tucker" title="tensorly.decomposition.Tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tucker</span></code></a>([rank, n_iter_max, init, svd, tol, …])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.TensorTrain.html#tensorly.decomposition.TensorTrain" title="tensorly.decomposition.TensorTrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TensorTrain</span></code></a>(rank[, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.TensorTrain.html#tensorly.decomposition.TensorTrain" title="tensorly.decomposition.TensorTrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TensorTrain</span></code></a>(rank[, verbose])</p></td>
 <td><p>TT decomposition via recursive SVD</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2" title="tensorly.decomposition.Parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parafac2</span></code></a>(rank[, n_iter_max, init, svd, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2" title="tensorly.decomposition.Parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parafac2</span></code></a>(rank[, n_iter_max, init, svd, …])</p></td>
 <td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#r08ccc3506ae1-1" id="id1"><span>[R08ccc3506ae1-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.SymmetricCP.html#tensorly.decomposition.SymmetricCP" title="tensorly.decomposition.SymmetricCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SymmetricCP</span></code></a>(rank[, n_repeat, n_iteration, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.SymmetricCP.html#tensorly.decomposition.SymmetricCP" title="tensorly.decomposition.SymmetricCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SymmetricCP</span></code></a>(rank[, n_repeat, n_iteration, …])</p></td>
 <td><p>Symmetric CP Decomposition via Robust Symmetric Tensor Power Iteration</p></td>
 </tr>
 </tbody>
@@ -732,31 +738,34 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac" title="tensorly.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></a>(tensor, rank[, …])</p></td>
 <td><p>Non-negative CP decomposition</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao" title="tensorly.decomposition.sample_khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_khatri_rao</span></code></a>(matrices, n_samples[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac_hals.html#tensorly.decomposition.non_negative_parafac_hals" title="tensorly.decomposition.non_negative_parafac_hals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac_hals</span></code></a>(tensor, rank[, …])</p></td>
+<td><p>Non-negative CP decomposition via HALS</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao" title="tensorly.decomposition.sample_khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_khatri_rao</span></code></a>(matrices, n_samples[, …])</p></td>
 <td><p>Random subsample of the Khatri-Rao product of the given list of matrices</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac" title="tensorly.decomposition.randomised_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randomised_parafac</span></code></a>(tensor, rank, n_samples)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac" title="tensorly.decomposition.randomised_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randomised_parafac</span></code></a>(tensor, rank, n_samples)</p></td>
 <td><p>Randomised CP decomposition via sampled ALS</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker</span></code></a>(tensor, rank[, fixed_factors, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker</span></code></a>(tensor, rank[, fixed_factors, …])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker" title="tensorly.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tucker</span></code></a>(tensor, modes[, rank, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker" title="tensorly.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tucker</span></code></a>(tensor, modes[, rank, …])</p></td>
 <td><p>Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_tucker</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_tucker</span></code></a>(tensor, rank[, …])</p></td>
 <td><p>Non-negative Tucker decomposition</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">robust_pca</span></code></a>(X[, mask, tol, reg_E, reg_J, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">robust_pca</span></code></a>(X[, mask, tol, reg_E, reg_J, …])</p></td>
 <td><p>Robust Tensor PCA via ALM with support for missing values</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train" title="tensorly.decomposition.tensor_train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train</span></code></a>(input_tensor, rank[, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train" title="tensorly.decomposition.tensor_train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train</span></code></a>(input_tensor, rank[, verbose])</p></td>
 <td><p>TT decomposition via recursive SVD</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train_matrix.html#tensorly.decomposition.tensor_train_matrix" title="tensorly.decomposition.tensor_train_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train_matrix</span></code></a>(tensor, rank)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train_matrix.html#tensorly.decomposition.tensor_train_matrix" title="tensorly.decomposition.tensor_train_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train_matrix</span></code></a>(tensor, rank)</p></td>
 <td><p>Decompose a tensor into a matrix in tt-format</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, …])</p></td>
 <td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/tensorly.decomposition.parafac2.html#ra07d22ce3f71-1" id="id3"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
 </tr>
 </tbody>

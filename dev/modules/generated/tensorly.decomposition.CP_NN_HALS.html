@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tensorly.decomposition.sample_khatri_rao &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.decomposition.CP_NN_HALS &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -40,8 +40,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.decomposition.randomised_parafac" href="tensorly.decomposition.randomised_parafac.html" />
-    <link rel="prev" title="tensorly.decomposition.non_negative_parafac_hals" href="tensorly.decomposition.non_negative_parafac_hals.html" />
+    <link rel="next" title="tensorly.decomposition.Tucker" href="tensorly.decomposition.Tucker.html" />
+    <link rel="prev" title="tensorly.decomposition.CPPower" href="tensorly.decomposition.CPPower.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -200,47 +200,115 @@
 
         <div class="content">
           
-  <div class="section" id="tensorly-decomposition-sample-khatri-rao">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.sample_khatri_rao<a class="headerlink" href="#tensorly-decomposition-sample-khatri-rao" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt id="tensorly.decomposition.sample_khatri_rao">
-<code class="sig-name descname"><span class="pre">sample_khatri_rao</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_sampled_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp.html#sample_khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.decomposition.sample_khatri_rao" title="Permalink to this definition">¶</a></dt>
-<dd><p>Random subsample of the Khatri-Rao product of the given list of matrices</p>
-<blockquote>
-<div><p>If one matrix only is given, that matrix is directly returned.</p>
-</div></blockquote>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>matrices</strong><span class="classifier">ndarray list</span></dt><dd><p>list of matrices with the same number of columns, i.e.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">):</span>
-    <span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_i</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+  <div class="section" id="tensorly-decomposition-cp-nn-hals">
+<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.CP_NN_HALS<a class="headerlink" href="#tensorly-decomposition-cp-nn-hals" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="tensorly.decomposition.CP_NN_HALS">
+<em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">CP_NN_HALS</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_mask_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cvg_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abs_rec_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_nn_cp.html#CP_NN_HALS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.decomposition.CP_NN_HALS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</p>
+<p>Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r51e0ae74a10a-1" id="id1">[1]</a> such that:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>``tensor = [|weights; factors[0], ..., factors[-1] |]``.
 </pre></div>
 </div>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>Number of components.</p>
 </dd>
-<dt><strong>n_samples</strong><span class="classifier">int</span></dt><dd><p>number of samples to be taken from the Khatri-Rao product</p>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>Maximum number of iteration</p>
 </dd>
-<dt><strong>skip_matrix</strong><span class="classifier">None or int, optional, default is None</span></dt><dd><p>if not None, index of a matrix to skip</p>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd><p>Type of factor matrix initialization. See <cite>initialize_factors</cite>.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">None, int or numpy.random.RandomState</span></dt><dd><p>if int, used to set the seed of the random number generator
-if numpy.random.RandomState, used to generate random_samples</p>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
-<dt><strong>returned_sampled_rows</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, also returns a list of the rows sampled from the full
-khatri-rao product</p>
+<dt><strong>normalize_factors</strong><span class="classifier">if True, aggregate the weights of each factor in a 1D-tensor</span></dt><dd><p>of shape (rank, ), which will contain the norms of the factors</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>(Default: 1e-6) Relative reconstruction error tolerance. The
+algorithm is considered to have found the global minimum when the
+reconstruction error is less than <cite>tol</cite>.</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>Level of verbosity</p>
+</dd>
+<dt><strong>return_errors</strong><span class="classifier">bool, optional</span></dt><dd><p>Activate return of iteration errors</p>
+</dd>
+<dt><strong>mask</strong><span class="classifier">ndarray</span></dt><dd><p>array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">tensor</span></code> should be 0 where
+the values are missing and 1 everywhere else. Note:  if tensor is
+sparse, then mask should also be sparse with a fill value of 1 (or
+True). Allows for missing values <a class="reference internal" href="#r51e0ae74a10a-2" id="id2">[2]</a></p>
+</dd>
+<dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None.
+If ‘rec_error’,  ALS stops at current iteration if (previous rec_error - current rec_error) &lt; tol.
+If ‘abs_rec_error’, ALS terminates when <a href="#id6"><span class="problematic" id="id7">|previous rec_error - current rec_error|</span></a> &lt; tol.</p>
+</dd>
+<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
+</dd>
+<dt><strong>fixed_modes</strong><span class="classifier">list, default is None</span></dt><dd><p>A list of modes for which the initial value is not modified.
+The last mode cannot be fixed due to error computation.</p>
+</dd>
+<dt><strong>svd_mask_repeats: int</strong></dt><dd><p>If using a tensor with masked values, this initializes using SVD multiple times to
+remove the effect of these missing values on the initialization.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>CPTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul>
+<li><dl class="simple">
+<dt>weights<span class="classifier">1D array of shape (rank, )</span></dt><dd><p>all ones if normalize_factors is False (default),
+weights of the (normalized) factors otherwise</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>factors<span class="classifier">List of factors of the CP decomposition element <cite>i</cite> is of shape</span></dt><dd><p>(tensor.shape[i], rank)</p>
+</dd>
+</dl>
+</li>
+<li><p>sparse_component : nD array of shape tensor.shape. Returns only if <cite>sparsity</cite> is not None.</p></li>
+</ul>
+</dd>
+<dt><strong>errors</strong><span class="classifier">list</span></dt><dd><p>A list of reconstruction errors at each iteration of the algorithms.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="r51e0ae74a10a-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
+</dd>
+<dt class="label" id="r51e0ae74a10a-2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.”
+Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</p>
+</dd>
+<dt class="label" id="r51e0ae74a10a-3"><span class="brackets">3</span></dt>
+<dd><p>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and
+Applications”, PhD., University of Amsterdam, 1998</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tensorly.decomposition.CP_NN_HALS.fit_transform">
+<code class="sig-name descname"><span class="pre">fit_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_nn_cp.html#CP_NN_HALS.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.decomposition.CP_NN_HALS.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decompose an input tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tensor</strong><span class="classifier">tensorly tensor</span></dt><dd><p>input tensor to decompose</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>sampled_Khatri_Rao</strong><span class="classifier">ndarray</span></dt><dd><p>The sampled matricised tensor Khatri-Rao with <cite>n_samples</cite> rows</p>
-</dd>
-<dt><strong>indices</strong><span class="classifier">tuple list</span></dt><dd><p>a list of indices sampled for each mode</p>
-</dd>
-<dt><strong>indices_kr</strong><span class="classifier">int list</span></dt><dd><p>list of length <cite>n_samples</cite> containing the sampled row indices</p>
+<dt>CPTensor</dt><dd><p>decomposed tensor</p>
 </dd>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
 </dd></dl>
 
 <div class="clearer"></div></div>
@@ -251,16 +319,16 @@ khatri-rao product</p>
             
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.non_negative_parafac_hals.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.CPPower.html" title="previous chapter" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_parafac_hals</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.CPPower</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.decomposition.randomised_parafac.html" title="next chapter" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.randomised_parafac </span>
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.Tucker.html" title="next chapter" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.Tucker </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

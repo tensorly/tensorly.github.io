@@ -481,7 +481,7 @@
         <span class="k">return</span> <span class="n">cp_tensor</span></div>
 
 
-<span class="k">def</span> <span class="nf">non_negative_parafac_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
+<div class="viewcode-block" id="non_negative_parafac_hals"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_parafac_hals.html#tensorly.decomposition.non_negative_parafac_hals">[docs]</a><span class="k">def</span> <span class="nf">non_negative_parafac_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
                               <span class="n">sparsity_coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                               <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -502,7 +502,7 @@
 <span class="sd">    tol : float, optional</span>
 <span class="sd">          tolerance: the algorithm stops when the variation in</span>
 <span class="sd">          the reconstruction error is less than the tolerance</span>
-<span class="sd">        Default: 1e-8</span>
+<span class="sd">          Default: 1e-8</span>
 <span class="sd">    sparsity_coefficients: array of float (of length the number of modes)</span>
 <span class="sd">        The sparsity coefficients on each factor.</span>
 <span class="sd">        If set to None, the algorithm is computed without sparsity</span>
@@ -617,7 +617,7 @@
     <span class="k">if</span> <span class="n">return_errors</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">rec_errors</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">cp_tensor</span>
+        <span class="k">return</span> <span class="n">cp_tensor</span></div>
 
 
 <span class="k">class</span> <span class="nc">CP_NN</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
@@ -750,7 +750,7 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s1"> Non-Negative CP decomposition.&#39;</span>
 
 
-<span class="k">class</span> <span class="nc">CP_NN_HALS</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="CP_NN_HALS"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS">[docs]</a><span class="k">class</span> <span class="nc">CP_NN_HALS</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</span>
 
@@ -850,7 +850,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
-    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="CP_NN_HALS.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
 
 <span class="sd">        Parameters</span>
@@ -875,10 +875,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">cp_tensor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s1"> Non-Negative CP decomposition.&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s1"> Non-Negative CP decomposition.&#39;</span></div>
 </pre></div>
 
         </div>
