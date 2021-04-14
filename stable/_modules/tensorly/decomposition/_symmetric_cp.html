@@ -1,138 +1,156 @@
 
+<!DOCTYPE html>
 
-
-<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tensorly.decomposition._symmetric_cp &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-rendered-html.css" />
 
-        
-        <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy</title>
-        
-
-        <link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../../../_static/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
-        <meta name="theme-color" content="#ffffff">
-
-        <!-- <link rel="icon" type="image/png" href="../../../_static/favicon/favicon.ico"> -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="../../../_static/bulma.min.css" />
-        <link rel="stylesheet" type="text/css" href="../../../_static/base.min.css" />
-        <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-        
-        
-
-        
-        
-    </head>
-
-    <body>
-        
-        <nav class="navbar is-dark has-shadow top" id="top">
-    <div class="navbar-brand">
-        <a class="navbar-item navbar-logo" href="../../../index.html">
-            <img src="../../../_static/tensorly-logo.png" class="navbar-logo" height=30>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="../../../index.html">
-            <i class="fa fa-home" aria-hidden="true"></i>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="icon"><i class="fa fa-github"></i></span>
-        </a>
-
-		<span class="navbar-burger" data-target="NavbarMenu" >
-			<span></span>
-			<span></span>
-			<span></span>
-		</span>
-    </div>
-
-	<div id="NavbarMenu" class="navbar-menu">
-		<div class="navbar-start">
-
-			<a class="navbar-item" href="../../../installation.html">
-				Install
-			</a>
-			<a class="navbar-item" href="../../../user_guide/index.html">
-				User Guide
-			</a>
-			<a class="navbar-item" href="../../../modules/api.html">
-				API
-			</a>
-			<a class="navbar-item" href="../../../auto_examples/index.html">
-				Examples
-			</a>
-			<a class="navbar-item" href="../../../about.html">
-				About Us
-			</a>
-			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-				Notebooks
-			</a>
-
-		</div>
-
-		<div class="navbar-end">
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../../../index.html">
-				<i class="fa fa-home" aria-hidden="true"></i>
-				<span class="tooltiptext">Home page</span>
-			</a>
-
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
-				<span class="tooltiptext">Open project on Github</span>
-				<span class="icon"><i class="fa fa-github"></i></span>
-			</a>
-
-		</div>
-    </div>
-</nav>
+  
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+ <script src="../../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        
-        <div class="columns">
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-                
-            <div class="column is-one-quarter is-hidden-mobile aside">
-    <div class="sidebar" id="sidebar">
-        
-        <div class="search">
-            <div class="search-title">
-                Search in TensorLy
-            </div>
+  </head>
+<body  class="has-navbar-fixed-top">
 
-            <script>
-              (function() {
-                var cx = '002285679029256671182:5tfqz3cvmm8';
-                var gcse = document.createElement('script');
-                gcse.type = 'text/javascript';
-                gcse.async = true;
-                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(gcse, s);
-              })();
-            </script>
-            <gcse:searchbox-only></gcse:searchbox-only>
-            
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../../index.html">
+            <img src="../../../_static/logo_tensorly.png" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
         </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
 
-        <div class="toc">
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../../installation.html">
+              Install
+            </a>
+            <a class="navbar-item" href="../../../user_guide/index.html">
+              User Guide
+            </a>
+            <a class="navbar-item" href="../../../modules/api.html">
+              API
+            </a>
+            <a class="navbar-item" href="../../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../../about.html">
+              About Us
+            </a>
+            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+              Notebooks
+            </a>
+
+          </div>
         
-        
-        
-        
-            <ul>
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+      
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
@@ -141,29 +159,33 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
 </ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
 
-        
-        
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-content">
+
+        <!-- Toggle menu button -->
+            
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
         </div>
         
-    </div>
-</div>
 
-                
-                <div class="column is-three-quarters main-column">
-            
-
-
-            
-                <div class="content main-content">
-
-                    
-
+        <div class="content">
+          
   <h1>Source code for tensorly.decomposition._symmetric_cp</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">tensorly.tenalg</span> <span class="kn">import</span> <span class="n">outer</span>
-<span class="kn">from</span> <span class="nn">tensorly.metrics.regression</span> <span class="kn">import</span> <span class="n">standard_deviation</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">validate_cp_rank</span>
 
@@ -188,37 +210,36 @@
 
 <span class="sd">    eigenval : float</span>
 <span class="sd">        the obtained eigenvalue</span>
-<span class="sd">    best_factor: tl.tensor</span>
+<span class="sd">    best_factor : tl.tensor</span>
 <span class="sd">        the best estimated eigenvector</span>
 <span class="sd">    deflated : tl.tensor of same shape as `tensor`</span>
 <span class="sd">        the deflated tensor (i.e. without the estimated component)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">order</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">)</span><span class="o">*</span><span class="n">order</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The input tensor does not have the same size along each mode.&#39;</span><span class="p">)</span>
 
     <span class="c1"># A list of candidates for each mode</span>
-    <span class="n">best_score</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="p">))</span>
-    
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_repeat</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_repeat</span><span class="p">):</span>
         <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iteration</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
                 <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">factor</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">order</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">)</span>
                 <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-                
+
         <span class="n">score</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">factor</span><span class="p">]</span><span class="o">*</span><span class="n">order</span><span class="p">)</span>
         <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="c1">#round(score, 2))</span>
         
-        <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">best_score</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">score</span> <span class="o">&gt;</span> <span class="n">best_score</span><span class="p">):</span>
             <span class="n">best_score</span> <span class="o">=</span> <span class="n">score</span>
             <span class="n">best_factor</span> <span class="o">=</span> <span class="n">factor</span>
-            
+
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best score of </span><span class="si">{</span><span class="n">n_repeat</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">best_score</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     
@@ -229,11 +250,11 @@
             <span class="n">best_factor</span> <span class="o">=</span> <span class="n">best_factor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">best_factor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="n">eigenval</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">best_factor</span><span class="p">]</span><span class="o">*</span><span class="n">order</span><span class="p">)</span>
-    <span class="n">deflated</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">-</span> <span class="n">outer</span><span class="p">([</span><span class="n">best_factor</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">eigenval</span>
-    
+    <span class="n">deflated</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">-</span> <span class="n">outer</span><span class="p">([</span><span class="n">best_factor</span><span class="p">]</span><span class="o">*</span><span class="n">order</span><span class="p">)</span><span class="o">*</span><span class="n">eigenval</span>
+
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">explained</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">deflated</span><span class="p">)</span><span class="o">/</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Eingenvalue: </span><span class="si">{</span><span class="n">eigenval</span><span class="si">}</span><span class="s1">, explained: </span><span class="si">{</span><span class="n">explained</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Eigenvalue: </span><span class="si">{</span><span class="n">eigenval</span><span class="si">}</span><span class="s1">, explained: </span><span class="si">{</span><span class="n">explained</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">eigenval</span><span class="p">,</span> <span class="n">best_factor</span><span class="p">,</span> <span class="n">deflated</span></div>
 
@@ -267,23 +288,23 @@
 
     <span class="n">order</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">size</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">)</span><span class="o">*</span><span class="n">order</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The input tensor does not have the same size along each mode.&#39;</span><span class="p">)</span>
 
     <span class="n">factor</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">weigths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
         <span class="n">eigenval</span><span class="p">,</span> <span class="n">eigenvec</span><span class="p">,</span> <span class="n">deflated</span> <span class="o">=</span> <span class="n">symmetric_power_iteration</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">n_repeat</span><span class="o">=</span><span class="n">n_repeat</span><span class="p">,</span> <span class="n">n_iteration</span><span class="o">=</span><span class="n">n_iteration</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
         <span class="n">factor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenvec</span><span class="p">)</span>
-        <span class="n">weigths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenval</span><span class="p">)</span>
+        <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eigenval</span><span class="p">)</span>
         <span class="n">tensor</span> <span class="o">=</span> <span class="n">deflated</span>
 
     <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">weigths</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">weigths</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">weigths</span><span class="p">,</span> <span class="n">factor</span></div>
+    <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factor</span></div>
 
 <div class="viewcode-block" id="SymmetricCP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.SymmetricCP.html#tensorly.decomposition.SymmetricCP">[docs]</a><span class="k">class</span> <span class="nc">SymmetricCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Symmetric CP Decomposition via Robust Symmetric Tensor Power Iteration</span>
@@ -318,44 +339,54 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">symmetric_parafac_power_iteration</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">n_repeat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_repeat</span><span class="p">,</span>
                                                                 <span class="n">n_iteration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iteration</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
-
 </pre></div>
 
+        </div>
 
-
-                    <nav class="pagination">
-    
+            
+        <nav class="pagination" role="navigation" aria-label="pagination">
     
     
 </nav>
 
-                </div>
+        
 
-                <footer class="footer">
-    <div class="container has-text-centered">
+      </section>
 
-        <p>
-                &copy; 2016 - 2020, TensorLy Developers.
-        </p> 
-    </div>
-</footer>
-            </div>
-
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
         </div>
+    </div>
+  </footer>
+
+    </div>
 
         
-        
+    
 
-        <script src="../../../_static/navigation.min.js"></script>
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
 
-    ga('create', 'UA-86209849-1', 'auto');
-    ga('send', 'pageview');
-</script>
+  </div>
+  </div>
 
-    </body>
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
 </html>

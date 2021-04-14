@@ -1,154 +1,167 @@
 
+<!DOCTYPE html>
 
-
-<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3. Tensor basics &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <meta name="keywords" content="tensor learning, tensor decomposition, tensor operations">
-        <meta name="description" content="An open source machine learning library for tensor learning in Python that provides a high-level API to tensor algebra, decomposition and deep tensorized architecture.">
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
 
-        
-        <meta name="author" content="Jean Kossaifi">
-        <title>TensorLy</title>
-        
-
-        <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../_static/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../_static/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../_static/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
-        <meta name="theme-color" content="#ffffff">
-
-        <!-- <link rel="icon" type="image/png" href="../_static/favicon/favicon.ico"> -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="../_static/bulma.min.css" />
-        <link rel="stylesheet" type="text/css" href="../_static/base.min.css" />
-        <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-        
-        
-
-        
-        
-    </head>
-
-    <body>
-        
-        <nav class="navbar is-dark has-shadow top" id="top">
-    <div class="navbar-brand">
-        <a class="navbar-item navbar-logo" href="../index.html">
-            <img src="../_static/tensorly-logo.png" class="navbar-logo" height=30>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="../index.html">
-            <i class="fa fa-home" aria-hidden="true"></i>
-        </a>
-
-        <a class="navbar-item is-tab is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
-            <span class="icon"><i class="fa fa-github"></i></span>
-        </a>
-
-		<span class="navbar-burger" data-target="NavbarMenu" >
-			<span></span>
-			<span></span>
-			<span></span>
-		</span>
-    </div>
-
-	<div id="NavbarMenu" class="navbar-menu">
-		<div class="navbar-start">
-
-			<a class="navbar-item" href="../installation.html">
-				Install
-			</a>
-			<a class="navbar-item" href="index.html">
-				User Guide
-			</a>
-			<a class="navbar-item" href="../modules/api.html">
-				API
-			</a>
-			<a class="navbar-item" href="../auto_examples/index.html">
-				Examples
-			</a>
-			<a class="navbar-item" href="../about.html">
-				About Us
-			</a>
-			<a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-				Notebooks
-			</a>
-
-		</div>
-
-		<div class="navbar-end">
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="../index.html">
-				<i class="fa fa-home" aria-hidden="true"></i>
-				<span class="tooltiptext">Home page</span>
-			</a>
-
-			<a class="navbar-item is-tab tooltip is-hidden-touch" href="https://github.com/tensorly/tensorly" target="_blank">
-				<span class="tooltiptext">Open project on Github</span>
-				<span class="icon"><i class="fa fa-github"></i></span>
-			</a>
-
-		</div>
-    </div>
-</nav>
+  
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+ <script src="../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        
-        <div class="columns">
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Tensor decomposition" href="tensor_decomposition.html" />
+    <link rel="prev" title="2. TensorLy’s backend system" href="backend.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-                
-            <div class="column is-one-quarter is-hidden-mobile aside">
-    <div class="sidebar" id="sidebar">
-        
-        <div class="search">
-            <div class="search-title">
-                Search in TensorLy
-            </div>
+  </head>
+<body  class="has-navbar-fixed-top">
 
-            <script>
-              (function() {
-                var cx = '002285679029256671182:5tfqz3cvmm8';
-                var gcse = document.createElement('script');
-                gcse.type = 'text/javascript';
-                gcse.async = true;
-                gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(gcse, s);
-              })();
-            </script>
-            <gcse:searchbox-only></gcse:searchbox-only>
-            
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../index.html">
+            <img src="../_static/logo_tensorly.png" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
         </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
 
-        <div class="toc">
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../installation.html">
+              Install
+            </a>
+            <a class="navbar-item" href="index.html">
+              User Guide
+            </a>
+            <a class="navbar-item" href="../modules/api.html">
+              API
+            </a>
+            <a class="navbar-item" href="../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../about.html">
+              About Us
+            </a>
+            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+              Notebooks
+            </a>
+
+          </div>
         
-        
-        
-        
-            <ul class="current">
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+      
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html">1. Quick-Start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="backend.html">2. TensorLy’s backend system</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Tensor basics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#creating-a-tensor">3.1. Creating a tensor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#unfolding">3.2. Unfolding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#folding">3.3. Folding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#references">3.4. References</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Tensor basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_decomposition.html">4. Tensor decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor_regression.html">5. Tensor regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sparse_backend.html">6. Sparse Backend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#usage">7. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sparse_backend.html#example">8. Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API reference</a></li>
@@ -157,51 +170,52 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
 </ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
 
-        
-        
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-content">
+
+        <!-- Toggle menu button -->
+            
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
         </div>
         
-    </div>
-</div>
 
-                
-                <div class="column is-three-quarters main-column">
-            
-
-
-            
-                <div class="content main-content">
-
-                    
-
+        <div class="content">
+          
   <div class="section" id="tensor-basics">
-<h1><span class="section-number">3. </span>Tensor basics</h1>
+<h1><span class="section-number">3. </span>Tensor basics<a class="headerlink" href="#tensor-basics" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="creating-a-tensor">
-<h2><span class="section-number">3.1. </span>Creating a tensor</h2>
+<h2><span class="section-number">3.1. </span>Creating a tensor<a class="headerlink" href="#creating-a-tensor" title="Permalink to this headline">¶</a></h2>
 <p>A tensor is nothing more than a multi-dimensional array.</p>
-<p>Let’s take for this example the tensor <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> defined by its frontal slices:</p>
-<div class="math">
-<p><img src="../_images/math/c587deb32528316a187ccca68b85d61201194538.png" alt="X_1 =
+<p>Let’s take for this example the tensor <span class="math notranslate nohighlight">\(\tilde X\)</span> defined by its frontal slices:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}X_1 =
 \left[
 \begin{matrix}
 0  &amp; 2  &amp; 4  &amp; 6\\
 8  &amp; 10 &amp; 12 &amp; 14\\
 16 &amp; 18 &amp; 20 &amp; 22\\
 \end{matrix}
-\right]
-
-\text{and}
-
-X_2 =
+\right]\end{split}\\\text{and}\\\begin{split}X_2 =
 \left[
 \begin{matrix}
 1  &amp; 3  &amp; 5  &amp; 7\\
 9  &amp; 11 &amp; 13 &amp; 15\\
 17 &amp; 19 &amp; 21 &amp; 23\\
 \end{matrix}
-\right]"/></p>
-</div><p>In Python, this array can be expressed as a numpy array:</p>
+\right]\end{split}\end{aligned}\end{align} \]</div>
+<p>In Python, this array can be expressed as a numpy array:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
@@ -221,51 +235,51 @@ X_2 =
 </div>
 </div>
 <div class="section" id="unfolding">
-<h2><span class="section-number">3.2. </span>Unfolding</h2>
+<h2><span class="section-number">3.2. </span>Unfolding<a class="headerlink" href="#unfolding" title="Permalink to this headline">¶</a></h2>
 <p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
-<p>For a tensor of size <img class="math" src="../_images/math/267d50f457b0de0e577cc9fcb19eab6528b8c899.png" alt="(I_0, I_1, \cdots, I_N)"/>, the n-mode unfolding of this tensor will be of size <img class="math" src="../_images/math/56be6f5cfc02befc55ca906d00ce27571fc05e2d.png" alt="(I_n, I_0, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)"/>.</p>
+<p>For a tensor of size <span class="math notranslate nohighlight">\((I_0, I_1, \cdots, I_N)\)</span>, the n-mode unfolding of this tensor will be of size <span class="math notranslate nohighlight">\((I_n, I_0, I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)\)</span>.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference" href="#id2" id="id1">[1]</a> for better performance.</p>
-<p>Given a tensor <img class="math" src="../_images/math/d58f41145b94a6e17dc8672ac824b056a06cf5ee.png" alt="\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}"/>, the
-mode-n unfolding of <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> is a matrix <img class="math" src="../_images/math/38c1e934184582677d3addf0297a1f91c8094fe9.png" alt="\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}"/>,
-with <img class="math" src="../_images/math/0c9a0b6cbe6dd3838dfec03819156d38a2a79869.png" alt="M = \prod_{\substack{k=0,\\k \neq n}}^N I_k"/> and is defined by
-the mapping from element <img class="math" src="../_images/math/ddc5a930d6d9dda09f065bea14fa9e4b457f6d90.png" alt="(i_0, i_1, \cdots, i_N)"/> to <img class="math" src="../_images/math/1b782627d1b0843af085aa264886d73f35e56715.png" alt="(i_n, j)"/>, with</p>
-<div class="last math">
-<p><img src="../_images/math/ba6269823af0bd7948da27251523a178013303d4.png" alt="j = \sum_{\substack{k=0,\\k \neq n}}^N i_k \times \prod_{\substack{m=k+1,\\ k \neq n}}^N I_m."/></p>
-</div></div>
+<p class="admonition-title">Important</p>
+<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1">1</a> for better performance.</p>
+<p>Given a tensor <span class="math notranslate nohighlight">\(\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}\)</span>, the
+mode-n unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span> is a matrix <span class="math notranslate nohighlight">\(\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}\)</span>,
+with <span class="math notranslate nohighlight">\(M = \prod_{\substack{k=0,\\k \neq n}}^N I_k\)</span> and is defined by
+the mapping from element <span class="math notranslate nohighlight">\((i_0, i_1, \cdots, i_N)\)</span> to <span class="math notranslate nohighlight">\((i_n, j)\)</span>, with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}j = \sum_{\substack{k=0,\\k \neq n}}^N i_k \times \prod_{\substack{m=k+1,\\ k \neq n}}^N I_m.\end{split}\]</div>
+</div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="admonition-title">Warning</p>
 <p>Traditionally, mode-1 unfolding denotes the unfolding along the first dimension.
 However, to be consistent with the Python indexing that always starts at zero,
 in tensorly, unfolding also starts at zero!</p>
-<p class="last">Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
+<p>Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
 </div>
-<p>For instance, using the <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/> previously defined, the 0-mode unfolding of <img class="math" src="../_images/math/a1eabf830df63fb216b837b83531d7a03a97aeed.png" alt="\tilde X"/>:</p>
-<div class="math">
-<p><img src="../_images/math/c74d0d9c47ab6402433fc35cf8b844603b0b30c7.png" alt="\tilde X_{[0]} =
+<p>For instance, using the <span class="math notranslate nohighlight">\(\tilde X\)</span> previously defined, the 0-mode unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\tilde X_{[0]} =
 \left[ \begin{matrix}
    0  &amp; 1  &amp; 2  &amp; 3  &amp;  4 &amp; 5  &amp; 6  &amp; 7\\
    8  &amp; 9  &amp; 10 &amp; 11 &amp; 12 &amp; 13 &amp; 14 &amp; 15\\
    16 &amp; 17 &amp; 18 &amp; 19 &amp; 20 &amp; 21 &amp; 22 &amp; 23\\
-\end{matrix} \right]"/></p>
-</div><p>The 1-mode unfolding is given by:</p>
-<div class="math">
-<p><img src="../_images/math/381707c122ba91ae60ca1d8e0ae0d14ff52c218a.png" alt="\tilde X_{[1]} =
+\end{matrix} \right]\end{split}\]</div>
+<p>The 1-mode unfolding is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\tilde X_{[1]} =
 \left[ \begin{matrix}
    0 &amp; 1 &amp; 8  &amp; 9  &amp; 16 &amp; 17\\
    2 &amp; 3 &amp; 10 &amp; 11 &amp; 18 &amp; 19\\
    4 &amp; 5 &amp; 12 &amp; 13 &amp; 20 &amp; 21\\
    6 &amp; 7 &amp; 14 &amp; 15 &amp; 22 &amp; 23\\
-\end{matrix} \right]"/></p>
-</div><p>Finally, the 2-mode unfolding is the unfolding along the last axis:</p>
-<div class="math">
-<p><img src="../_images/math/db8764a521e3ebc1c0e0543de415b7c513d40aca.png" alt="\tilde X_{[2]} =
+\end{matrix} \right]\end{split}\]</div>
+<p>Finally, the 2-mode unfolding is the unfolding along the last axis:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\tilde X_{[2]} =
 \left[ \begin{matrix}
    0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 &amp; 14 &amp; 16 &amp; 18 &amp; 20 &amp; 22\\
    1 &amp; 3 &amp; 5 &amp; 7 &amp; 9 &amp; 11 &amp; 13 &amp; 15 &amp; 17 &amp; 19 &amp; 21 &amp; 23\\
-\end{matrix} \right]"/></p>
-</div><p>In tensorly:</p>
+\end{matrix} \right]\end{split}\]</div>
+<p>In tensorly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># mode-1 unfolding</span>
 <span class="go">array([[ 0,  1,  2,  3,  4,  5,  6,  7],</span>
@@ -285,7 +299,7 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </div>
 <div class="section" id="folding">
-<h2><span class="section-number">3.3. </span>Folding</h2>
+<h2><span class="section-number">3.3. </span>Folding<a class="headerlink" href="#folding" title="Permalink to this headline">¶</a></h2>
 <p>You can <strong>fold</strong> an unfolded tensor back from matrix to full tensor using the <a class="reference internal" href="../modules/generated/tensorly.base.fold.html#tensorly.base.fold" title="tensorly.base.fold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.base.fold</span></code></a> function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">fold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -309,33 +323,32 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </div>
 <div class="section" id="references">
-<h2><span class="section-number">3.4. </span>References</h2>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
-SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
-</tbody>
-</table>
+<h2><span class="section-number">3.4. </span>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
+</dd>
+</dl>
 </div>
 </div>
 
 
+        </div>
 
-
-                    <nav class="pagination">
+            
+        <nav class="pagination" role="navigation" aria-label="pagination">
     
-    
-    <a class="button is-medium pagination-previous" href="backend.html" title="2. TensorLy’s backend system" accesskey="p">
+    <a class="button is-medium pagination-previous" href="backend.html" title="previous chapter" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Previous</span>
+        <span><span class="section-number">2. </span>TensorLy’s backend system</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensor_decomposition.html" title="4. Tensor decomposition" accesskey="n">
-        <span>Next </span>
+    <a class="button is-medium pagination-next" href="tensor_decomposition.html" title="next chapter" accesskey="n">
+        <span><span class="section-number">4. </span>Tensor decomposition </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -343,33 +356,62 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</td></tr>
     
 </nav>
 
-                </div>
+        
 
-                <footer class="footer">
-    <div class="container has-text-centered">
+      </section>
 
-        <p>
-                &copy; 2016 - 2020, TensorLy Developers.
-        </p> 
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+        </div>
     </div>
-</footer>
-            </div>
+  </footer>
+
+    </div>
+
+        
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc">  
+        <div class="menu menu-list">
+        <p class="menu-label">On this page</p>
+        <ul>
+<li><a class="reference internal" href="#">3. Tensor basics</a><ul>
+<li><a class="reference internal" href="#creating-a-tensor">3.1. Creating a tensor</a></li>
+<li><a class="reference internal" href="#unfolding">3.2. Unfolding</a></li>
+<li><a class="reference internal" href="#folding">3.3. Folding</a></li>
+<li><a class="reference internal" href="#references">3.4. References</a></li>
+</ul>
+</li>
+</ul>
 
         </div>
+    </aside>
+    </div>
 
-        
-        
+    
 
-        <script src="../_static/navigation.min.js"></script>
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  </div>
+  </div>
 
-    ga('create', 'UA-86209849-1', 'auto');
-    ga('send', 'pageview');
-</script>
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
 
-    </body>
+
+
+  </body>
 </html>
