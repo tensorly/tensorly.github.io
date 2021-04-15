@@ -204,7 +204,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.partial_svd<a class="headerlink" href="#tensorly-partial-svd" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="tensorly.partial_svd">
-<code class="sig-name descname"><span class="pre">partial_svd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eigenvecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.partial_svd" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">partial_svd</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eigenvecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.partial_svd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes a fast partial SVD on <cite>matrix</cite></p>
 <p>If <cite>n_eigenvecs</cite> is specified, sparse eigendecomposition is used on
 either matrix.dot(matrix.T) or matrix.T.dot(matrix).</p>
@@ -214,6 +214,9 @@ either matrix.dot(matrix.T) or matrix.T.dot(matrix).</p>
 <dt><strong>matrix</strong><span class="classifier">tensor</span></dt><dd><p>A 2D tensor.</p>
 </dd>
 <dt><strong>n_eigenvecs</strong><span class="classifier">int, optional, default is None</span></dt><dd><p>If specified, number of eigen[vectors-values] to return.</p>
+</dd>
+<dt><strong>flip</strong><span class="classifier">bool, default is False</span></dt><dd><p>If True, the SVD sign ambiguity is resolved by making the largest component
+in the columns of U, positive.</p>
 </dd>
 <dt><strong>random_state: {None, int, np.random.RandomState}</strong></dt><dd><p>If specified, use it for sampling starting vector in a partial SVD(scipy.sparse.linalg.eigsh)</p>
 </dd>
