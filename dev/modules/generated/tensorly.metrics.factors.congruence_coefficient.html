@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tensorly.metrics.regression.RMSE &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.metrics.factors.congruence_coefficient &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -27,6 +27,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -40,8 +41,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.metrics.factors.congruence_coefficient" href="tensorly.metrics.factors.congruence_coefficient.html" />
-    <link rel="prev" title="tensorly.metrics.regression.MSE" href="tensorly.metrics.regression.MSE.html" />
+    <link rel="next" title="tensorly.random.random_cp" href="tensorly.random.random_cp.html" />
+    <link rel="prev" title="tensorly.metrics.regression.RMSE" href="tensorly.metrics.regression.RMSE.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -200,25 +201,31 @@
 
         <div class="content">
           
-  <div class="section" id="tensorly-metrics-regression-rmse">
-<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.RMSE<a class="headerlink" href="#tensorly-metrics-regression-rmse" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tensorly-metrics-factors-congruence-coefficient">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.factors</span></code>.congruence_coefficient<a class="headerlink" href="#tensorly-metrics-factors-congruence-coefficient" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="tensorly.metrics.regression.RMSE">
-<code class="sig-name descname"><span class="pre">RMSE</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/metrics/regression.html#RMSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.metrics.regression.RMSE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the regularised mean squared error between the two predictions
-(the square-root is applied to the mean_squared_error)</p>
+<dt id="tensorly.metrics.factors.congruence_coefficient">
+<code class="sig-name descname"><span class="pre">congruence_coefficient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/metrics/factors.html#congruence_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.metrics.factors.congruence_coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the optimal mean (Tucker) congruence coefficient between the columns of two matrices.</p>
+<p>Another name for the congruence coefficient is the cosine similarity.</p>
+<p>The congruence coefficient between two vectors, <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2\)</span>, is given by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mathbf{v}_1^T \mathbf{v}_1^T}{\|\mathbf{v}_1^T\| \|\mathbf{v}_1^T\|}\]</div>
+<p>When we compute the congruence between two matrices, we find the optimal permutation of
+the columns and return the mean congruence and the permutation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>y_true</strong><span class="classifier">array of shape (n_samples, )</span></dt><dd><p>Ground truth (correct) target values.</p>
-</dd>
-<dt><strong>y_pred</strong><span class="classifier">array of shape (n_samples, )</span></dt><dd><p>Estimated target values.</p>
+<dt><strong>matrix1</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>matrix2</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>absolute_value</strong><span class="classifier">bool</span></dt><dd><p>Whether to take the absolute value of all vector products before finding the optimal permutation.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>float</dt><dd></dd>
+<dt><strong>congruence</strong><span class="classifier">float</span></dt><dd></dd>
+<dt><strong>permutation</strong><span class="classifier">list</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -232,16 +239,16 @@
             
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.metrics.regression.MSE.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.metrics.regression.RMSE.html" title="previous chapter" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.MSE</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.RMSE</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.metrics.factors.congruence_coefficient.html" title="next chapter" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.factors</span></code>.congruence_coefficient </span>
+    <a class="button is-medium pagination-next" href="tensorly.random.random_cp.html" title="next chapter" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_cp </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

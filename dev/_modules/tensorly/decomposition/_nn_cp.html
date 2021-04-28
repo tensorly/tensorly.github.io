@@ -482,7 +482,7 @@
 
 
 <div class="viewcode-block" id="non_negative_parafac_hals"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.non_negative_parafac_hals.html#tensorly.decomposition.non_negative_parafac_hals">[docs]</a><span class="k">def</span> <span class="nf">non_negative_parafac_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
-                              <span class="n">sparsity_coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                              <span class="n">sparsity_coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                               <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Non-negative CP decomposition via HALS</span>
@@ -510,6 +510,10 @@
 <span class="sd">    fixed_modes: array of integers (between 0 and the number of modes)</span>
 <span class="sd">        Has to be set not to update a factor, 0 and 1 for U and V respectively</span>
 <span class="sd">        Default: None</span>
+<span class="sd">    nn_modes: None, &#39;all&#39; or array of integers (between 0 and the number of modes)</span>
+<span class="sd">        Used to specify which modes to impose non-negativity constraints on.</span>
+<span class="sd">        If &#39;all&#39;, then non-negativity is imposed on all modes.</span>
+<span class="sd">        Default: &#39;all&#39;</span>
 <span class="sd">    exact: If it is True, the algorithm gives a results with high precision but it needs high computational cost.</span>
 <span class="sd">        If it is False, the algorithm gives an approximate solution</span>
 <span class="sd">        Default: False</span>
@@ -555,10 +559,18 @@
     <span class="k">if</span> <span class="n">fixed_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fixed_modes</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">if</span> <span class="n">nn_modes</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="n">nn_modes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">nn_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nn_modes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
     <span class="c1"># Avoiding errors</span>
     <span class="k">for</span> <span class="n">fixed_value</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">:</span>
         <span class="n">sparsity_coefficients</span><span class="p">[</span><span class="n">fixed_value</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sparsity_coefficients</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Sparsity coefficient is ignored in unconstrained modes.&quot;</span><span class="p">)</span>
     <span class="c1"># Generating the mode update sequence</span>
     <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">)</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">]</span>
 
@@ -582,11 +594,15 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
 
-            <span class="c1"># Call the hals resolution with nnls, optimizing the current mode</span>
-            <span class="n">nn_factor</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hals_nnls</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">),</span> <span class="n">pseudo_inverse</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]),</span>
-                                           <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sparsity_coefficient</span><span class="o">=</span><span class="n">sparsity_coefficients</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
-                                           <span class="n">exact</span><span class="o">=</span><span class="n">exact</span><span class="p">)</span>
-            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">nn_factor</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">nn_modes</span><span class="p">:</span>
+                <span class="c1"># Call the hals resolution with nnls, optimizing the current mode</span>
+                <span class="n">nn_factor</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">hals_nnls</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">),</span> <span class="n">pseudo_inverse</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]),</span>
+                                            <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sparsity_coefficient</span><span class="o">=</span><span class="n">sparsity_coefficients</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
+                                            <span class="n">exact</span><span class="o">=</span><span class="n">exact</span><span class="p">)</span>
+                <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">nn_factor</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">))</span>
+                <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tol</span><span class="p">:</span>
             <span class="n">factors_norm</span> <span class="o">=</span> <span class="n">cp_norm</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
             <span class="n">iprod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mttkrp</span> <span class="o">*</span> <span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span>
@@ -827,10 +843,12 @@
                  <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
                  <span class="n">l2_reg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">nn_modes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
                  <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                  <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

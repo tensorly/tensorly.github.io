@@ -183,11 +183,13 @@
         <div class="content">
           
   <h1>Source code for tensorly.decomposition._parafac2</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span></span><span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">tensorly.random</span> <span class="kn">import</span> <span class="n">random_parafac2</span>
 <span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_parafac_hals</span>
 <span class="kn">from</span> <span class="nn">..parafac2_tensor</span> <span class="kn">import</span> <span class="n">parafac2_to_slice</span><span class="p">,</span> <span class="n">Parafac2Tensor</span><span class="p">,</span> <span class="n">_validate_parafac2_tensor</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
@@ -318,7 +320,7 @@
 
 
 <div class="viewcode-block" id="parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2">[docs]</a><span class="k">def</span> <span class="nf">parafac2</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;PARAFAC2 decomposition [1]_ of a third order tensor via alternating least squares (ALS)</span>
 
 <span class="sd">    Computes a rank-`rank` PARAFAC2 decomposition of the third-order tensor defined by </span>
@@ -341,6 +343,7 @@
 
 <span class="sd">    where :math:`P_i` is a :math:`J_i \times R` orthogonal matrix and :math:`B` is a</span>
 <span class="sd">    :math:`R \times R` matrix.</span>
+<span class="sd">    </span>
 
 <span class="sd">    An alternative formulation of the PARAFAC2 decomposition is that the tensor element</span>
 <span class="sd">    :math:`X_{ijk}` is given by</span>
@@ -358,7 +361,7 @@
 <span class="sd">        Either a third order tensor or a list of second order tensors that may have different number of rows.</span>
 <span class="sd">        Note that the second mode factor matrices are allowed to change over the first mode, not the</span>
 <span class="sd">        third mode as some other implementations use (see note below).</span>
-<span class="sd">    rank  : int</span>
+<span class="sd">    rank : int</span>
 <span class="sd">        Number of components.</span>
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">        Maximum number of iteration</span>
@@ -409,12 +412,33 @@
 <span class="sd">    [1]_, the second mode changes over the third mode. We made this change since that means</span>
 <span class="sd">    that the function accept both lists of matrices and a single nd-array as input without</span>
 <span class="sd">    any reordering of the modes.</span>
+
+<span class="sd">    Because of the reformulation above, :math:`B_i = P_i B`, the :math:`B_i` matrices</span>
+<span class="sd">    cannot be constrained to be non-negative with ALS. If this mode is constrained to be</span>
+<span class="sd">    non-negative, then :math:`B` will be non-negative, but not the orthogonal `P_i` matrices.</span>
+<span class="sd">    Consequently, the `B_i` matrices are unlikely to be non-negative.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">initialize_decomposition</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">))</span>
     <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">_get_svd</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+
+    <span class="c1"># If nn_modes is set, we use HALS, otherwise, we use the standard parafac implementation.</span>
+    <span class="k">if</span> <span class="n">nn_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">parafac_updates</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">parafac</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_parafac</span><span class="p">,</span>
+                               <span class="n">init</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+                               <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-100</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nn_modes</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span> <span class="ow">or</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">nn_modes</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Mode `1` of PARAFAC2 fitted with ALS cannot be constrained to be truly non-negative. See the documentation for more info.&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">parafac_updates</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span>
+                    <span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_parafac</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="n">nn_modes</span><span class="p">,</span>
+                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-100</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
 
     <span class="n">projected_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">factor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
@@ -426,9 +450,7 @@
 
         <span class="n">projections</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">svd_fun</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">projections</span><span class="p">)</span>
         <span class="n">projected_tensor</span> <span class="o">=</span> <span class="n">_project_tensor_slices</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">projections</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">projected_tensor</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">projected_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_parafac</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span>
-                             <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                             <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-100</span><span class="p">)</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac_updates</span><span class="p">(</span><span class="n">projected_tensor</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">normalize_factors</span><span class="p">:</span>
             <span class="n">new_factors</span> <span class="o">=</span> <span class="p">[]</span>
