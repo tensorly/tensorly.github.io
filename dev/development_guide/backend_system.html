@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Backend System &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -189,8 +190,8 @@
 
         <div class="content">
           
-  <div class="section" id="backend-system">
-<span id="id1"></span><h1>Backend System<a class="headerlink" href="#backend-system" title="Permalink to this headline">¶</a></h1>
+  <section id="backend-system">
+<span id="id1"></span><h1>Backend System</h1>
 <p>The TensorLy backend system allows for switching between multiple backends in
 a thread-local way.  You can obtain the back that is currently being used with the
 <code class="docutils literal notranslate"><span class="pre">get_backend()</span></code> function:</p>
@@ -221,10 +222,10 @@ safely use a backend only for limited context:</p>
 third-party libraries that wish to ensure a particular backend is used,
 no matter what the global backend is set to at the time the library code
 is executed.</p>
-<div class="section" id="how-the-backend-system-works">
-<h2>How the Backend System Works<a class="headerlink" href="#how-the-backend-system-works" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="the-backend-class">
-<h3>The Backend class<a class="headerlink" href="#the-backend-class" title="Permalink to this headline">¶</a></h3>
+<section id="how-the-backend-system-works">
+<h2>How the Backend System Works</h2>
+<section id="the-backend-class">
+<h3>The Backend class</h3>
 <p>A backend is represented as a class, which implements the various functions needed
 (e.g. <cite>transpose</cite>, <cite>clip</cite>, etc).</p>
 <p>A base class <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.Backend</span></code> is given in <cite>tensorly/backend/core.py</cite>,
@@ -232,9 +233,9 @@ which implement <code class="docutils literal notranslate"><span class="pre">sta
 (e.g. <code class="docutils literal notranslate"><span class="pre">tensor</span></code>, <code class="docutils literal notranslate"><span class="pre">fold</span></code>, <code class="docutils literal notranslate"><span class="pre">norm</span></code>, etc.).
 It will also provide some useful functions by default (e.g. <cite>kron</cite>, <cite>kr</cite>, <cite>partial_svd</cite>).</p>
 <p>This base class should be subclassed when defining a new backend.</p>
-</div>
-<div class="section" id="loading-a-backend">
-<h3>Loading a backend<a class="headerlink" href="#loading-a-backend" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="loading-a-backend">
+<h3>Loading a backend</h3>
 <p>The logic for loading is in <cite>tensorly/backend/__init__.py</cite>.
 A cache of already loaded backend is maintained
 as in a dictionary <code class="docutils literal notranslate"><span class="pre">_LOADED_BACKENDS</span></code>
@@ -251,9 +252,9 @@ is dynamically imported
 grabbed from the internal cache (<code class="docutils literal notranslate"><span class="pre">tensorly.backend.core._LOADED_BACKENDS</span></code>)
 and set as the current backend (<code class="docutils literal notranslate"><span class="pre">tensorly.backend.core._STATE.backend</span></code>).
 Note that <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core._STATE.backend</span></code> is a thread-local storage.</p>
-</div>
-<div class="section" id="backend-function-s-dispatching">
-<h3>Backend function’s dispatching<a class="headerlink" href="#backend-function-s-dispatching" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="backend-function-s-dispatching">
+<h3>Backend function’s dispatching</h3>
 <p>The TensorLy API functions are then dynamically farmed out to the backend
 staticmethods via the dispatching mechanism provided by
 <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.dispatch</span></code>. This ensure that the API function is
@@ -283,9 +284,9 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
 </dl>
 </li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>

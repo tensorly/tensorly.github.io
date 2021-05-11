@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Demonstration of PARAFAC2 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
@@ -15,19 +16,19 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -195,8 +196,8 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-parafac2-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="demonstration-of-parafac2">
-<span id="sphx-glr-auto-examples-decomposition-plot-parafac2-py"></span><h1>Demonstration of PARAFAC2<a class="headerlink" href="#demonstration-of-parafac2" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="demonstration-of-parafac2">
+<span id="sphx-glr-auto-examples-decomposition-plot-parafac2-py"></span><h1>Demonstration of PARAFAC2</h1>
 <p>Example of how to use the PARAFAC2 algorithm.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
@@ -206,8 +207,8 @@ to download the full example code</p>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linear_sum_assignment</span>
 </pre></div>
 </div>
-<div class="section" id="create-synthetic-tensor">
-<h2>Create synthetic tensor<a class="headerlink" href="#create-synthetic-tensor" title="Permalink to this headline">¶</a></h2>
+<section id="create-synthetic-tensor">
+<h2>Create synthetic tensor</h2>
 <p>Here, we create a random tensor that follows the PARAFAC2 constraints found
 inx <a class="reference internal" href="#kiers-et-al-1999">(Kiers et al 1999)</a>.</p>
 <p>This particular tensor,
@@ -246,9 +247,9 @@ CP tensor, that is, a tensor on the form:</p>
 <span class="n">tensor</span> <span class="o">+=</span> <span class="n">noise</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fit-a-parafac2-tensor">
-<h2>Fit a PARAFAC2 tensor<a class="headerlink" href="#fit-a-parafac2-tensor" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fit-a-parafac2-tensor">
+<h2>Fit a PARAFAC2 tensor</h2>
 <p>To avoid local minima, we initialise and fit 10 models and choose the one
 with the lowest error</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">best_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
@@ -269,46 +270,46 @@ with the lowest error</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training model 0...
-Number of iterations: 493
-Final error: 0.09204726702643583
+Number of iterations: 500
+Final error: 0.0920472057542447
 -------------------------------
 Training model 1...
-Number of iterations: 472
-Final error: 0.09204749191278555
+Number of iterations: 500
+Final error: 0.09204726856012718
 -------------------------------
 Training model 2...
-Number of iterations: 441
-Final error: 0.09269757620490139
+Number of iterations: 500
+Final error: 0.09269711804187236
 -------------------------------
 Training model 3...
-Number of iterations: 260
-Final error: 0.09204731311895424
+Number of iterations: 392
+Final error: 0.09204692795621944
 -------------------------------
 Training model 4...
-Number of iterations: 280
-Final error: 0.09204731892873129
+Number of iterations: 415
+Final error: 0.09204692959223097
 -------------------------------
 Training model 5...
 Number of iterations: 500
 Final error: 0.09291065541285955
 -------------------------------
 Training model 6...
-Number of iterations: 231
-Final error: 0.09204732068253178
+Number of iterations: 364
+Final error: 0.09204692769766268
 -------------------------------
 Training model 7...
-Number of iterations: 274
-Final error: 0.09204738680909351
+Number of iterations: 424
+Final error: 0.09204692883956123
 -------------------------------
 Training model 8...
-Number of iterations: 304
-Final error: 0.09204748646407407
+Number of iterations: 481
+Final error: 0.09204693125447479
 -------------------------------
 Training model 9...
 Number of iterations: 500
-Final error: 0.09205635789758464
+Final error: 0.09205635789758461
 -------------------------------
-Best model error: 0.09204726702643583
+Best model error: 0.09204692769766268
 </pre></div>
 </div>
 <p>A decomposition is a wrapper object for three variables: the <em>weights</em>,
@@ -341,9 +342,9 @@ list of frontal slices.</p>
 <span class="n">est_weights</span><span class="p">,</span> <span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">est_B</span><span class="p">,</span> <span class="n">est_C</span><span class="p">)</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="compute-performance-metrics">
-<h2>Compute performance metrics<a class="headerlink" href="#compute-performance-metrics" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="compute-performance-metrics">
+<h2>Compute performance metrics</h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_tensor</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
 <span class="n">recovery_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">reconstruction_error</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 
@@ -375,12 +376,12 @@ list of frontal slices.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>91% of the data is explained by the model, which is expected with noise rate: 0.1
-Average tucker congruence coefficient: 0.994294990054129
+Average tucker congruence coefficient: 0.9947046512423608
 </pre></div>
 </div>
-</div>
-<div class="section" id="visualize-the-components">
-<h2>Visualize the components<a class="headerlink" href="#visualize-the-components" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="visualize-the-components">
+<h2>Visualize the components</h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the best permutation so that we can plot the estimated components on top of the true components</span>
 <span class="n">permutation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A_corr</span><span class="o">*</span><span class="n">B_corr</span><span class="o">*</span><span class="n">C_corr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -425,12 +426,12 @@ Average tucker congruence coefficient: 0.994294990054129
 </div>
 <img alt="A mode, B mode (slice 0), C mode" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_parafac2_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f9629b78a90&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f55ec107a60&gt;
 </pre></div>
 </div>
-</div>
-<div class="section" id="inspect-the-convergence-rate">
-<h2>Inspect the convergence rate<a class="headerlink" href="#inspect-the-convergence-rate" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="inspect-the-convergence-rate">
+<h2>Inspect the convergence rate</h2>
 <p>It can be interesting to look at the loss plot to make sure that we have
 converged to a stationary point. We skip the first iteration since the
 initial loss often dominate the rest of the plot, making it difficult
@@ -449,14 +450,14 @@ to check for convergence.</p>
 </pre></div>
 </div>
 <img alt="Loss plot: $\frac{\left|\left|\hat{\mathcal{X}}\right|\right|_F}{\left|\left|\mathcal{X}\right|\right|_F}$   (starting after first iteration)" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_parafac2_002.png" />
-</div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="references">
+<h2>References</h2>
 <p id="kiers-et-al-1999">Kiers HA, Ten Berge JM, Bro R. <em>PARAFAC2—Part I.
 A direct fitting algorithm for the PARAFAC2 model.</em>
 <strong>Journal of Chemometrics: A Journal of the Chemometrics Society.</strong>
 1999 May;13(3‐4):275-94. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  42.845 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  33.299 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></p>
@@ -466,8 +467,8 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>

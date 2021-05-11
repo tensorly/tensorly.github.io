@@ -15,15 +15,15 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -319,8 +319,9 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">squared_error</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2">[docs]</a><span class="k">def</span> <span class="nf">parafac2</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,):</span>
+<div class="viewcode-block" id="parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2">[docs]</a><span class="k">def</span> <span class="nf">parafac2</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">absolute_tol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;PARAFAC2 decomposition [1]_ of a third order tensor via alternating least squares (ALS)</span>
 
 <span class="sd">    Computes a rank-`rank` PARAFAC2 decomposition of the third-order tensor defined by </span>
@@ -363,8 +364,12 @@
 <span class="sd">        third mode as some other implementations use (see note below).</span>
 <span class="sd">    rank : int</span>
 <span class="sd">        Number of components.</span>
-<span class="sd">    n_iter_max : int</span>
-<span class="sd">        Maximum number of iteration</span>
+<span class="sd">    n_iter_max : int, optional</span>
+<span class="sd">        (Default: 2000) Maximum number of iteration</span>
+
+<span class="sd">        .. versionchanged:: 0.6.1</span>
+
+<span class="sd">            Previously, the default maximum number of iterations was 100.</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, CPTensor, Parafac2Tensor}</span>
 <span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
 <span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
@@ -374,15 +379,36 @@
 <span class="sd">        of shape (rank, ), which will contain the norms of the factors. Note that</span>
 <span class="sd">        there may be some inaccuracies in the component weights.</span>
 <span class="sd">    tol : float, optional</span>
-<span class="sd">        (Default: 1e-8) Relative reconstruction error tolerance. The</span>
-<span class="sd">        algorithm is considered to have found the global minimum when the</span>
-<span class="sd">        reconstruction error is less than `tol`.</span>
+<span class="sd">        (Default: 1e-8) Relative reconstruction error decrease tolerance. The</span>
+<span class="sd">        algorithm is considered to have converged when</span>
+<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon \| X - \hat{X}_{n-1} \|^2`.</span>
+<span class="sd">        That is, when the relative change in sum of squared error is less</span>
+<span class="sd">        than the tolerance.</span>
+
+<span class="sd">        .. versionchanged:: 0.6.1</span>
+
+<span class="sd">            Previously, the stopping condition was</span>
+<span class="sd">            :math:`\left|\| X - \hat{X}_{n-1} \| - \| X - \hat{X}_{n} \|\right| &lt; \epsilon`.</span>
+<span class="sd">    absolute_tol : float, optional</span>
+<span class="sd">        (Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm</span>
+<span class="sd">        is considered to have converged when </span>
+<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}`.</span>
+<span class="sd">        That is, when the relative sum of squared error is less than the specified tolerance.</span>
+<span class="sd">        The absolute tolerance is necessary for stopping the algorithm when used on noise-free</span>
+<span class="sd">        data that follows the PARAFAC2 constraint.</span>
+
+<span class="sd">        If None, then the machine precision + 1000 will be used.</span>
+<span class="sd">    nn_modes: None, &#39;all&#39; or array of integers</span>
+<span class="sd">        (Default: None) Used to specify which modes to impose non-negativity constraints on.</span>
+<span class="sd">        We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS</span>
+<span class="sd">        algorithm, so if this mode is among the constrained modes, then a warning will be shown</span>
+<span class="sd">        (see notes for more info).</span>
 <span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 <span class="sd">    verbose : int, optional</span>
 <span class="sd">        Level of verbosity</span>
 <span class="sd">    return_errors : bool, optional</span>
 <span class="sd">        Activate return of iteration errors</span>
-<span class="sd">    n_iter_parafac: int, optional</span>
+<span class="sd">    n_iter_parafac : int, optional</span>
 <span class="sd">        Number of PARAFAC iterations to perform for each PARAFAC2 iteration</span>
 
 <span class="sd">    Returns</span>
@@ -423,6 +449,9 @@
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">))</span>
     <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">_get_svd</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">absolute_tol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">absolute_tol</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
 
     <span class="c1"># If nn_modes is set, we use HALS, otherwise, we use the standard parafac implementation.</span>
     <span class="k">if</span> <span class="n">nn_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -475,7 +504,7 @@
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;PARAFAC2 reconstruction error=</span><span class="si">{}</span><span class="s1">, variation=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
-                <span class="k">if</span> <span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">tol</span> <span class="o">*</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">absolute_tol</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;converged in </span><span class="si">{}</span><span class="s1"> iterations.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
                     <span class="k">break</span>       
@@ -523,18 +552,17 @@
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
 <span class="sd">    </span>
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
-<span class="sd">    </span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    tensor_slices : ndarray or list of ndarrays</span>
-<span class="sd">        Either a third order tensor or a list of second order tensors that may have different number of rows.</span>
-<span class="sd">        Note that the second mode factor matrices are allowed to change over the first mode, not the</span>
-<span class="sd">        third mode as some other implementations use (see note below).</span>
-<span class="sd">    rank  : int</span>
+<span class="sd">    rank : int</span>
 <span class="sd">        Number of components.</span>
-<span class="sd">    n_iter_max : int</span>
-<span class="sd">        Maximum number of iteration</span>
+<span class="sd">    n_iter_max : int, optional</span>
+<span class="sd">        (Default: 2000) Maximum number of iteration</span>
+
+<span class="sd">        .. versionchanged:: 0.6.1</span>
+
+<span class="sd">            Previously, the default maximum number of iterations was 100.</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, CPTensor, Parafac2Tensor}</span>
 <span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
 <span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
@@ -544,13 +572,36 @@
 <span class="sd">        of shape (rank, ), which will contain the norms of the factors. Note that</span>
 <span class="sd">        there may be some inaccuracies in the component weights.</span>
 <span class="sd">    tol : float, optional</span>
-<span class="sd">        (Default: 1e-8) Relative reconstruction error tolerance. The</span>
-<span class="sd">        algorithm is considered to have found the global minimum when the</span>
-<span class="sd">        reconstruction error is less than `tol`.</span>
+<span class="sd">        (Default: 1e-8) Relative reconstruction error decrease tolerance. The</span>
+<span class="sd">        algorithm is considered to have converged when</span>
+<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon \| X - \hat{X}_{n-1} \|^2`.</span>
+<span class="sd">        That is, when the relative change in sum of squared error is less</span>
+<span class="sd">        than the tolerance.</span>
+
+<span class="sd">        .. versionchanged:: 0.6.1</span>
+
+<span class="sd">            Previously, the stopping condition was</span>
+<span class="sd">            :math:`\left|\| X - \hat{X}_{n-1} \| - \| X - \hat{X}_{n} \|\right| &lt; \epsilon`.</span>
+<span class="sd">    absolute_tol : float, optional</span>
+<span class="sd">        (Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm</span>
+<span class="sd">        is considered to have converged when </span>
+<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}`.</span>
+<span class="sd">        That is, when the relative sum of squared error is less than the specified tolerance.</span>
+<span class="sd">        The absolute tolerance is necessary for stopping the algorithm when used on noise-free</span>
+<span class="sd">        data that follows the PARAFAC2 constraint.</span>
+
+<span class="sd">        If None, then the machine precision + 1000 will be used.</span>
+<span class="sd">    nn_modes: None, &#39;all&#39; or array of integers</span>
+<span class="sd">        (Default: None) Used to specify which modes to impose non-negativity constraints on.</span>
+<span class="sd">        We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS</span>
+<span class="sd">        algorithm, so if this mode is among the constrained modes, then a warning will be shown</span>
+<span class="sd">        (see notes for more info).</span>
 <span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 <span class="sd">    verbose : int, optional</span>
 <span class="sd">        Level of verbosity</span>
-<span class="sd">    n_iter_parafac: int, optional</span>
+<span class="sd">    return_errors : bool, optional</span>
+<span class="sd">        Activate return of iteration errors</span>
+<span class="sd">    n_iter_parafac : int, optional</span>
 <span class="sd">        Number of PARAFAC iterations to perform for each PARAFAC2 iteration</span>
 
 <span class="sd">    Returns</span>
@@ -578,29 +629,36 @@
 <span class="sd">    that the function accept both lists of matrices and a single nd-array as input without</span>
 <span class="sd">    any reordering of the modes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">absolute_tol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="o">=</span><span class="n">init</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="o">=</span><span class="n">svd</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="o">=</span><span class="n">normalize_factors</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="o">=</span><span class="n">tol</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span> <span class="o">=</span> <span class="n">normalize_factors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">absolute_tol</span> <span class="o">=</span> <span class="n">absolute_tol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span> <span class="o">=</span> <span class="n">nn_modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_errors</span> <span class="o">=</span> <span class="n">return_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span> <span class="o">=</span> <span class="n">n_iter_parafac</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
-                                       <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
-                                       <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
-                                       <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
-                                       <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
-                                       <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
-                                       <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
-                                       <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
-                                       <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                       <span class="n">n_iter_parafac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> 
+                                                     <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+                                                     <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+                                                     <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+                                                     <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+                                                     <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
+                                                     <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+                                                     <span class="n">absolute_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_tol</span><span class="p">,</span>
+                                                     <span class="n">nn_modes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span><span class="p">,</span>
+                                                     <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                                                     <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+                                                     <span class="n">return_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">return_errors</span><span class="p">,</span>
+                                                     <span class="n">n_iter_parafac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span><span class="p">,)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
 </pre></div>
 

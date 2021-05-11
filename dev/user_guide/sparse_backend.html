@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>6. Sparse Backend &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -192,8 +193,8 @@
 
         <div class="content">
           
-  <div class="section" id="sparse-backend">
-<span id="id1"></span><h1><span class="section-number">6. </span>Sparse Backend<a class="headerlink" href="#sparse-backend" title="Permalink to this headline">¶</a></h1>
+  <section id="sparse-backend">
+<span id="id1"></span><h1><span class="section-number">6. </span>Sparse Backend</h1>
 <p>TensorLy supports sparse tensors for some backends and algorithms.</p>
 <p>When selecting a backend to be used for tensorly, this backend will also
 be applied to the sparse implementations. This is because many backends
@@ -201,8 +202,8 @@ natively support both dense and sparse tensors as distinct objects. For example,
 TensorFlow and PyTorch both have (some) support for sparse tensors.
 Using TensorLy’s dense or sparse interfaces will give you
 appropriate objects for the selected backend.</p>
-<div class="section" id="why-a-separate-sparse-backend">
-<h2><span class="section-number">6.1. </span>Why a separate sparse backend?<a class="headerlink" href="#why-a-separate-sparse-backend" title="Permalink to this headline">¶</a></h2>
+<section id="why-a-separate-sparse-backend">
+<h2><span class="section-number">6.1. </span>Why a separate sparse backend?</h2>
 <p>Some algorithms need to be adapted to be <em>sparse-safe</em>.</p>
 <p>In addition, not all backends have a native sparse representation. For instance,
 NumPy lacks a sparse array structure.
@@ -211,17 +212,17 @@ about how to handle sparse support, if at all. It is usually necessary for
 non-native sparse support to require additional dependencies. For the NumPy
 backend, the <a class="reference external" href="https://sparse.pydata.org">PyData/Sparse</a> project is used
 as the sparse representation.</p>
-</div>
-<div class="section" id="algorithms">
-<h2><span class="section-number">6.2. </span>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="algorithms">
+<h2><span class="section-number">6.2. </span>Algorithms</h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">parafac</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">partial_tucker</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></p></li>
 </ul>
-<div class="section" id="usage">
-<h3><span class="section-number">6.2.1. </span>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<section id="usage">
+<h3><span class="section-number">6.2.1. </span>Usage</h3>
 <p>The sparse sub-package in <code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse</span></code> contains a mirror of the
 interfaces in the usual, dense <code class="docutils literal notranslate"><span class="pre">tensorly</span></code> package. For example, unfolding a
 sparse tensor would use:</p>
@@ -257,10 +258,10 @@ if the input tensor is sparse. Thus, using the sparse <code class="docutils lite
 (<code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse.decomposition.parafac</span></code>) may be slower and use more
 memory than the dense version (<code class="docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code>) for a
 sparse input tensor.</p>
-</div>
-</div>
-<div class="section" id="missing-values">
-<h2><span class="section-number">6.3. </span>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="missing-values">
+<h2><span class="section-number">6.3. </span>Missing Values</h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function supports masks for missing values. A mask should be a
 boolean array of the same shape as the original tensor that is <code class="docutils literal notranslate"><span class="pre">False</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code>
 where the value is missing and <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> where it is not. It is passed to
@@ -275,8 +276,8 @@ mask.</p></li>
 <code class="docutils literal notranslate"><span class="pre">parafac</span></code> (<code class="docutils literal notranslate"><span class="pre">tensor.contrib.sparse.decomposition.parafac</span></code>). The dense
 backend <code class="docutils literal notranslate"><span class="pre">parafac</span></code> will densify the array.</p></li>
 </ul>
-<div class="section" id="example">
-<h3><span class="section-number">6.3.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<section id="example">
+<h3><span class="section-number">6.3.1. </span>Example</h3>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.contrib.sparse</span> <span class="k">as</span> <span class="nn">stl</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">sparse</span>
@@ -329,9 +330,9 @@ also makes it use <code class="docutils literal notranslate"><span class="pre">s
 <code class="docutils literal notranslate"><span class="pre">numpy.linalg.solve</span></code>, which can have advantages, for instance, when using
 the scikit-umfpack backend, it is more robust against nearly singular
 intermediate matrices.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>
