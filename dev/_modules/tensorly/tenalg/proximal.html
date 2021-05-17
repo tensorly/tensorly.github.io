@@ -327,6 +327,9 @@
 <span class="sd">        True if the lines of the V matrix can&#39;t be zero,</span>
 <span class="sd">        False if they can be zero</span>
 <span class="sd">        Default: False</span>
+<span class="sd">    exact: If it is True, the algorithm gives a results with high precision but it needs high computational cost.</span>
+<span class="sd">        If it is False, the algorithm gives an approximate solution</span>
+<span class="sd">        Default: False</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -380,10 +383,11 @@
         <span class="c1"># Scaling</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">UtM</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
                        <span class="n">UtU</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
-        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">scale</span>
+
     <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
-        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">5000</span>
-        <span class="n">tol</span> <span class="o">=</span> <span class="mf">10e-12</span>
+        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">50000</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">10e-16</span>
 
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="n">rec_error</span> <span class="o">=</span> <span class="mi">0</span>
@@ -433,6 +437,205 @@
                 <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">rec_error</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">complexity_ratio</span>
+    
+
+<span class="k">def</span> <span class="nf">fista</span><span class="p">(</span><span class="n">UtM</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sparsity_coef</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+          <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fast Iterative Shrinkage Thresholding Algorithm (FISTA)</span>
+
+<span class="sd">    Computes an approximate (nonnegative) solution for Ux=M linear system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and M</span>
+<span class="sd">    UtU : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and U</span>
+<span class="sd">    x : init</span>
+<span class="sd">       Default: None</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">        Default: 100</span>
+<span class="sd">    non_negative : bool, default is False</span>
+<span class="sd">                   if True, result will be non-negative</span>
+<span class="sd">    lr : float</span>
+<span class="sd">        learning rate</span>
+<span class="sd">        Default : None</span>
+<span class="sd">    sparsity_coef : float or None</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        stopping criterion</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : approximate solution such that Ux = M</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We solve the following problem :math: `1/2 ||m - Ux ||_2^2 + \\lambda |x|_1`</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [1] : Beck, A., &amp; Teboulle, M. (2009). A fast iterative</span>
+<span class="sd">          shrinkage-thresholding algorithm for linear inverse problems.</span>
+<span class="sd">          SIAM journal on imaging sciences, 2(1), 183-202.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sparsity_coef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sparsity_coef</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtM</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtM</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Parameters</span>
+    <span class="n">momentum_old</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">norm_0</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">x_update</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="o">-</span> <span class="n">UtM</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">x_update</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="n">sparsity_coef</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="o">-</span> <span class="n">UtM</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_update</span><span class="p">)</span> <span class="o">+</span> <span class="n">sparsity_coef</span>
+
+        <span class="k">if</span> <span class="n">non_negative</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span> <span class="o">&lt;</span> <span class="n">x_update</span><span class="p">,</span> <span class="n">x_gradient</span><span class="p">,</span> <span class="n">x_update</span><span class="o">/</span><span class="n">lr</span><span class="p">)</span>
+
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_update</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span>
+        <span class="n">momentum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">momentum_old</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">x_update</span> <span class="o">=</span> <span class="n">x_new</span> <span class="o">+</span> <span class="p">((</span><span class="n">momentum_old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">momentum</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">momentum_old</span> <span class="o">=</span> <span class="n">momentum</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">norm_0</span> <span class="o">=</span> <span class="n">norm</span>
+        <span class="k">if</span> <span class="n">norm</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">norm_0</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">active_set_nnls</span><span class="p">(</span><span class="n">Utm</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Active set algorithm for non-negative least square solution.</span>
+
+<span class="sd">     Computes an approximate non-negative solution for Ux=m linear system.</span>
+
+<span class="sd">     Parameters</span>
+<span class="sd">     ----------</span>
+<span class="sd">     Utm : vectorized ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and m</span>
+<span class="sd">     UtU : ndarray</span>
+<span class="sd">        Pre-computed Kronecker product of the transposed of U and U</span>
+<span class="sd">     x : init</span>
+<span class="sd">        Default: None</span>
+<span class="sd">     n_iter_max : int</span>
+<span class="sd">         Maximum number of iteration</span>
+<span class="sd">         Default: 100</span>
+<span class="sd">     tol : float</span>
+<span class="sd">         Early stopping criterion</span>
+
+<span class="sd">     Returns</span>
+<span class="sd">     -------</span>
+<span class="sd">     x : ndarray</span>
+
+<span class="sd">     Notes</span>
+<span class="sd">     -----</span>
+<span class="sd">     This function solves following problem:</span>
+<span class="sd">     .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">             \\min_{x} ||Ux - m||^2</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">     According to [1], non-negativity-constrained least square estimation problem becomes:</span>
+<span class="sd">     .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">             x&#39; = (Utm) - (UTU)\\times x</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">     Reference</span>
+<span class="sd">     ----------</span>
+<span class="sd">     [1] : Bro, R., &amp; De Jong, S. (1997). A fast non‐negativity‐constrained</span>
+<span class="sd">           least squares algorithm. Journal of Chemometrics: A Journal of</span>
+<span class="sd">           the Chemometrics Society, 11(5), 393-401.</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Active set is not supported with the tensorflow backend. Consider using fista method with tensorflow.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtU</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+    <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x_vec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># To avoid singularity error when initial x exists</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Start from zeros if solve is not achieved  </span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">)</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+                <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># update support vector if it is necessary</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)):</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]))</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">support_vec</span> <span class="o">-</span> <span class="n">x_vec</span><span class="p">)</span>
+                <span class="n">x_vec</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">+</span> <span class="n">update</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+                <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+                <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)</span><span class="o">!=</span><span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="c1"># set x to s</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">support_vec</span><span class="p">))</span>
+
+        <span class="c1"># gradient update</span>
+        <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">)</span><span class="o">!=</span><span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">[</span><span class="n">active_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">x_vec</span>
 </pre></div>
 
         </div>
