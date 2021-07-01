@@ -810,32 +810,25 @@
 <span class="sd">    .. [3] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and </span>
 <span class="sd">           Applications&quot;, PhD., University of Amsterdam, 1998</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-08</span><span class="p">,</span> 
-                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
-                 <span class="n">l2_reg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                 <span class="n">linesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                 <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                 <span class="n">sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                 <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
-                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                 <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg</span> <span class="o">=</span> <span class="n">l2_reg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span> <span class="o">=</span> <span class="n">linesearch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span> <span class="o">=</span> <span class="n">normalize_factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orthogonalise</span> <span class="o">=</span> <span class="n">orthogonalise</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">svd_mask_repeats</span> <span class="o">=</span> <span class="n">svd_mask_repeats</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span> <span class="o">=</span> <span class="n">cvg_criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sparsity</span> <span class="o">=</span> <span class="n">sparsity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg</span> <span class="o">=</span> <span class="n">l2_reg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span> <span class="o">=</span> <span class="n">cvg_criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_modes</span> <span class="o">=</span> <span class="n">fixed_modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd_mask_repeats</span> <span class="o">=</span> <span class="n">svd_mask_repeats</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span> <span class="o">=</span> <span class="n">linesearch</span>
 
     
 <div class="viewcode-block" id="CP.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
@@ -851,19 +844,26 @@
 <span class="sd">        CPTensor</span>
 <span class="sd">            decomposed tensor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
-                                    <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
-                                    <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
-                                    <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
-                                    <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
-                                    <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
-                                    <span class="n">orthogonalise</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orthogonalise</span><span class="p">,</span>
-                                    <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
-                                    <span class="n">linesearch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span><span class="p">,</span>
-                                    <span class="n">cvg_criterion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span><span class="p">,</span>
-                                    <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
-                                    <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
-                                    <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span>
+            <span class="n">tensor</span><span class="p">,</span>
+            <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+            <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+            <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+            <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
+            <span class="n">orthogonalise</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orthogonalise</span><span class="p">,</span>
+            <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sparsity</span><span class="p">,</span>
+            <span class="n">l2_reg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l2_reg</span><span class="p">,</span>
+            <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
+            <span class="n">cvg_criterion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span><span class="p">,</span>
+            <span class="n">fixed_modes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_modes</span><span class="p">,</span>
+            <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd_mask_repeats</span><span class="p">,</span>
+            <span class="n">linesearch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span><span class="p">,</span>
+            <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">cp_tensor</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>

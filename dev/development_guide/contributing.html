@@ -283,6 +283,39 @@ For instance, the previous statement becomes, in TensorLy:
 <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">tensorly.index_update(t,</span> <span class="pre">tensorly.index[indices],</span> <span class="pre">values)</span></code>.</p>
 </section>
 </section>
+<section id="testing-the-class-interface">
+<h2>Testing the class interface</h2>
+<p>Because TensorLy supports both a functional and an object-oriented interface, we should ensure that any
+change to one interface is also applied to the other interface. To automatically test for this, we have
+a test utility <code class="docutils literal notranslate"><span class="pre">tensorly.testing.assert_class_wrapper_correctly_passes_arguments</span></code>, which checks that all
+keyword arguments of the functional interface are available from the object-oriented interface.
+Here is an example that shows how you can use this utility:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">CP</span>
+
+<span class="k">def</span> <span class="nf">test_cp</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+   <span class="n">assert_class_wrapper_correctly_passes_arguments</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">,</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">CP</span><span class="p">,</span> <span class="n">ignore_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;return_errors&#39;</span><span class="p">},</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code will check that all arguments of the <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function (except <code class="docutils literal notranslate"><span class="pre">return_errors</span></code>) can also be
+passed to the CP class, and that the input arguments to the CP class are forwarded to the <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function.
+Notice that the <code class="docutils literal notranslate"><span class="pre">test_cp</span></code> function takes an argument: <code class="docutils literal notranslate"><span class="pre">monkeypatch</span></code>. This lets PyTest know that we
+are planning to perform monkeypatching (more about that later), and that it should give us a utility object
+for this purpose. It is therefore essential that one of the arguments of the test function is <code class="docutils literal notranslate"><span class="pre">monkeypatch</span></code>
+and that this variable is passed as the first argument to <code class="docutils literal notranslate"><span class="pre">assert_class_wrapper_correctly_passes_arguments</span></code>.</p>
+<section id="how-the-class-wrapper-test-works">
+<h3>How the class wrapper test works</h3>
+<p>This test utility works because it uses the fact that the object-oriented interface calls the functional
+interface behind the scenes. To automatically test the interfaces, the
+<cite>tensorly.testing.assert_class_wrapper_correctly_passes_arguments</cite> function inspects the functional interface
+and notes down all possible arguments. Then, it <em>monkeypatches</em> the functional interface with a mock function.
+In other words, the functional interface is temporarily replaced with a mock function that, instead of fitting
+a tensor decomposition, asserts that every possible argument is given a particular placeholder value.</p>
+<p>Since the object-oriented interface uses the functional one behind the scenes, we can then use the object-oriented
+interface to fit a model and send in placeholder values for each possible argument of the functional interface.
+Then, the monkeypatched code will check that the placeholder value is passed to the functional interface for each argument.
+Finally, the functional interface is reset to normal behaviour (fitting a tensor decomposition).</p>
+</section>
+</section>
 </section>
 
 
@@ -337,6 +370,10 @@ For instance, the previous statement becomes, in TensorLy:
 <li><a class="reference internal" href="#in-practice">In practice</a></li>
 <li><a class="reference internal" href="#context-of-a-tensor">Context of a tensor</a></li>
 <li><a class="reference internal" href="#index-assignment-numpy-style">Index assignment (“NumPy style”)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-the-class-interface">Testing the class interface</a><ul>
+<li><a class="reference internal" href="#how-the-class-wrapper-test-works">How the class wrapper test works</a></li>
 </ul>
 </li>
 </ul>

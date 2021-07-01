@@ -732,13 +732,14 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    .. [1] tl.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;,</span>
 <span class="sd">    SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">fixed_factors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_factors</span> <span class="o">=</span> <span class="n">fixed_factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
@@ -748,14 +749,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
-        <span class="n">tucker_tensor</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
-                            <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
-                            <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
-                            <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
-                            <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
-                            <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
-                            <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
-                            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>        
+        <span class="n">tucker_tensor</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span>
+            <span class="n">tensor</span><span class="p">,</span>
+            <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+            <span class="n">fixed_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_factors</span><span class="p">,</span>
+            <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+            <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+            <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tucker_tensor</span>
         <span class="k">return</span> <span class="n">tucker_tensor</span>
 
@@ -825,13 +830,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
-        <span class="n">tucker_tensor</span> <span class="o">=</span> <span class="n">non_negative_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+        <span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">non_negative_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
                             <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
                             <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
                             <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
                             <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
-                            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+                            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+                            <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tucker_tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
         <span class="k">return</span> <span class="n">tucker_tensor</span>
 
     <span class="c1"># def transform(self, tensor):</span>
