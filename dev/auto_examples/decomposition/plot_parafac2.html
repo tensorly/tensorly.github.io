@@ -134,7 +134,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -151,6 +151,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -177,10 +201,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -189,7 +213,7 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
@@ -426,7 +450,7 @@ Average tucker congruence coefficient: 0.9947046512423608
 </div>
 <img alt="A mode, B mode (slice 0), C mode" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_parafac2_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f83783edb80&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f6cd0978f70&gt;
 </pre></div>
 </div>
 </section>
@@ -457,7 +481,7 @@ to check for convergence.</p>
 A direct fitting algorithm for the PARAFAC2 model.</em>
 <strong>Journal of Chemometrics: A Journal of the Chemometrics Society.</strong>
 1999 May;13(3‐4):275-94. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  36.202 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  36.681 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></p>
@@ -473,10 +497,10 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_image_compression.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_image_compression.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -484,7 +508,7 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="../regression/plot_cp_regression.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="../regression/plot_cp_regression.html" title="next page" accesskey="n">
         <span>CP tensor regression </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -507,7 +531,7 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
 
     </div>
 
-        
+	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 

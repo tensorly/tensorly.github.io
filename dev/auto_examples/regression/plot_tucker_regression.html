@@ -133,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -150,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -176,10 +200,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -188,7 +212,7 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
@@ -285,7 +309,7 @@ fitting for rank = 5
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.539 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.528 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-regression-plot-tucker-regression-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/83776b8a7dbe4858882c8c190f93bdb0/plot_tucker_regression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_tucker_regression.py</span></code></a></p>
@@ -300,10 +324,10 @@ fitting for rank = 5
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_cp_regression.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_cp_regression.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -311,7 +335,7 @@ fitting for rank = 5
     </a>
     
     
-    <a class="button is-medium pagination-next" href="../../development_guide/index.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="../../development_guide/index.html" title="next page" accesskey="n">
         <span>Development guide </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -334,7 +358,7 @@ fitting for rank = 5
 
     </div>
 
-        
+	
     
 
     

@@ -133,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -150,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -187,10 +211,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -199,7 +223,7 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
   <section id="tensorly-decomposition-randomised-parafac">
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.randomised_parafac</h1>
@@ -255,10 +279,10 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.sample_khatri_rao.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.sample_khatri_rao.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -266,7 +290,7 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.decomposition.tucker.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.tucker.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.tucker </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -289,7 +313,7 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
 
     </div>
 
-        
+	
     
 
     
