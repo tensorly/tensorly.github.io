@@ -150,10 +150,9 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">inner</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
@@ -498,6 +497,60 @@
     <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">cp_lstsq_grad</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">return_loss</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function computes (for a third-order tensor)</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \nabla 0.5 ||\\mathcal{X} - [\\mathbf{w}; \\mathbf{A}, \\mathbf{B}, \\mathbf{C}]||^2</span>
+
+<span class="sd">    where :math:`[\\mathbf{w}; \\mathbf{A}, \\mathbf{B}, \\mathbf{C}]` is the CP decomposition with weights</span>
+<span class="sd">    :math:`\\mathbf{w}` and factor matrices :math:`\\mathbf{A}`, :math:`\\mathbf{B}` and :math:`\\mathbf{C}`.</span>
+
+<span class="sd">    Note that this does not return the gradient with respect to the weights even if CP is normalized.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cp_tensor : CPTensor = (weight, factors)</span>
+<span class="sd">        factors is a list of factor matrices, all with the same number of columns</span>
+<span class="sd">        i.e. for all matrix U in factor_matrices:</span>
+<span class="sd">        U has shape ``(s_i, R)``, where R is fixed and s_i varies with i</span>
+
+<span class="sd">    mask : ndarray</span>
+<span class="sd">        A mask to be applied to the final tensor. It should be</span>
+<span class="sd">        broadcastable to the shape of the final tensor, that is</span>
+<span class="sd">        ``(U[1].shape[0], ... U[-1].shape[0])``.</span>
+
+<span class="sd">    return_loss : bool</span>
+<span class="sd">        Optionally return the scalar loss function along with the gradient.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cp_gradient : CPTensor = (None, factors)</span>
+<span class="sd">        factors is a list of factor matrix gradients, all with the same number of columns</span>
+<span class="sd">        i.e. for all matrix U in factor_matrices:</span>
+<span class="sd">        U has shape ``(s_i, R)``, where R is fixed and s_i varies with i</span>
+
+<span class="sd">    loss : float</span>
+<span class="sd">        Scalar quantity of the loss function corresponding to cp_gradient. Only returned</span>
+<span class="sd">        if return_loss = True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">-</span> <span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">mask</span>
+
+    <span class="n">grad_fac</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))]</span>
+
+    <span class="k">if</span> <span class="n">return_loss</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad_fac</span><span class="p">)),</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad_fac</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="cp_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_to_tensor.html#tensorly.cp_tensor.cp_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
