@@ -148,7 +148,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="tensor_train_cross"><a class="viewcode-back" href="../../../../modules/generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross">[docs]</a><span class="k">def</span> <span class="nf">tensor_train_cross</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="tensor_train_cross"><a class="viewcode-back" href="../../../../modules/generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross">[docs]</a><span class="k">def</span> <span class="nf">tensor_train_cross</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TT (tensor-train) decomposition via cross-approximation (TTcross) [1]</span>
 
 <span class="sd">    Decomposes `input_tensor` into a sequence of order-3 tensors of given rank. (factors/cores)</span>
@@ -175,6 +175,7 @@
 <span class="sd">            accuracy threshold for outer while-loop</span>
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">            maximum iterations of outer while-loop (the &#39;crosses&#39; or &#39;sweeps&#39; sampled)</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -260,8 +261,7 @@
     <span class="c1"># list row_idx: row indices    (left indices)  for skeleton-decomposition: indicate which rows used in each core.</span>
 
     <span class="c1"># Initialize indice: random selection of column indices</span>
-    <span class="n">random_seed</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_seed</span><span class="p">)</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
     <span class="n">col_idx</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">tensor_order</span>
     <span class="k">for</span> <span class="n">k_col_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tensor_order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
