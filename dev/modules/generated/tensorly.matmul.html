@@ -229,142 +229,55 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.matmul</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.matmul">
-<span class="sig-name descname"><span class="pre">matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x1</span></em>, <em class="sig-param"><span class="pre">x2</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">out=None</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">casting='same_kind'</span></em>, <em class="sig-param"><span class="pre">order='K'</span></em>, <em class="sig-param"><span class="pre">dtype=None</span></em>, <em class="sig-param"><span class="pre">subok=True</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">signature</span></em>, <em class="sig-param"><span class="pre">extobj</span></em>, <em class="sig-param"><span class="pre">axes</span></em>, <em class="sig-param"><span class="pre">axis</span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
-<dd><p>Matrix product of two arrays.</p>
-<dl class="field-list">
+<span class="sig-name descname"><span class="pre">matmul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Matrix multiplication of tensors representing (batches of) matrices</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>x1, x2</strong><span class="classifier">array_like</span></dt><dd><p>Input arrays, scalars not allowed.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">tl.tensor</span></dt><dd><p>[description]</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">ndarray, optional</span></dt><dd><p>A location into which the result is stored. If provided, it must have
-a shape that matches the signature <cite>(n,k),(k,m)-&gt;(n,m)</cite>. If not
-provided or None, a freshly-allocated array is returned.</p>
-</dd>
-<dt><strong>**kwargs</strong></dt><dd><p>For other keyword-only arguments, see the
-<span class="xref std std-ref">ufunc docs</span>.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">New in version 1.16: </span>Now handles ufunc kwargs</p>
-</div>
+<dt><strong>b</strong><span class="classifier">tl.tensor</span></dt><dd><p>tensors representing the matrices to contract</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">ndarray</span></dt><dd><p>The matrix product of the inputs.
-This is a scalar only when both x1, x2 are 1-d vectors.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><dl>
-<dt>ValueError</dt><dd><p>If the last dimension of <cite>x1</cite> is not the same size as
-the second-to-last dimension of <cite>x2</cite>.</p>
-<p>If a scalar value is passed in.</p>
+<dt>a &#64; b</dt><dd><p>matrix product of a and b</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vdot</span></code></dt><dd><p>Complex-conjugating dot product.</p>
-</dd>
-<dt><a class="reference internal" href="tensorly.tensordot.html#tensorly.tensordot" title="tensorly.tensordot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensordot</span></code></a></dt><dd><p>Sum products over arbitrary axes.</p>
-</dd>
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">einsum</span></code></dt><dd><p>Einstein summation convention.</p>
-</dd>
-<dt><a class="reference internal" href="tensorly.dot.html#tensorly.dot" title="tensorly.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a></dt><dd><p>alternative matrix product with different broadcasting rules.</p>
-</dd>
-</dl>
-</div>
 <p class="rubric">Notes</p>
 <p>The behavior depends on the arguments in the following way.</p>
-<ul class="simple">
-<li><p>If both arguments are 2-D they are multiplied like conventional
-matrices.</p></li>
-<li><p>If either argument is N-D, N &gt; 2, it is treated as a stack of
-matrices residing in the last two indexes and broadcast accordingly.</p></li>
-<li><p>If the first argument is 1-D, it is promoted to a matrix by
-prepending a 1 to its dimensions. After matrix multiplication
-the prepended 1 is removed.</p></li>
-<li><p>If the second argument is 1-D, it is promoted to a matrix by
-appending a 1 to its dimensions. After matrix multiplication
-the appended 1 is removed.</p></li>
+<blockquote>
+<div><ul class="simple">
+<li><p>If both arguments are 2-D they are multiplied like conventional matrices.</p></li>
+<li><p>If either argument is N-D, N &gt; 2, it is treated as a stack of matrices residing in the last two indexes and broadcast accordingly.</p></li>
+<li><p>If the first argument is 1-D, it is promoted to a matrix by prepending a 1 to its dimensions. After matrix multiplication the prepended 1 is removed.</p></li>
+<li><p>If the second argument is 1-D, it is promoted to a matrix by appending a 1 to its dimensions. After matrix multiplication the appended 1 is removed.</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">matmul</span></code> differs from <code class="docutils literal notranslate"><span class="pre">dot</span></code> in two important ways:</p>
-<ul>
-<li><p>Multiplication by scalars is not allowed, use <code class="docutils literal notranslate"><span class="pre">*</span></code> instead.</p></li>
-<li><p>Stacks of matrices are broadcast together as if the matrices
-were elements, respecting the signature <code class="docutils literal notranslate"><span class="pre">(n,k),(k,m)-&gt;(n,m)</span></code>:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</div></blockquote>
+<p><cite>matmul</cite> differs from dot in two important ways:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Multiplication by scalars is not allowed, use * instead.</p></li>
+<li><p>Stacks of matrices are broadcast together as if the matrices were elements, respecting the signature <code class="docutils literal notranslate"><span class="pre">(n,k),(k,m)-&gt;(n,m)</span></code>:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(9, 5, 7, 9, 5, 3)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(9, 5, 7, 3)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># n is 7, k is 4, m is 3</span>
 </pre></div>
 </div>
-</li>
-</ul>
-<p>The matmul function implements the semantics of the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator introduced
-in Python 3.5 following <span class="target" id="index-0"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0465"><strong>PEP 465</strong></a>.</p>
-<p class="rubric">Examples</p>
-<p>For 2-D arrays it is the matrix product:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-<span class="gp">... </span>              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="go">array([[4, 1],</span>
-<span class="go">       [2, 2]])</span>
-</pre></div>
-</div>
-<p>For 2-D mixed with 1-D, the result is the usual.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="go">array([1, 2])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-<span class="go">array([1, 2])</span>
-</pre></div>
-</div>
-<p>Broadcasting is conventional for stacks of arrays</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(2, 2, 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="go">98</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span> <span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="go">98</span>
-</pre></div>
-</div>
-<p>Vector, vector returns the scalar inner product, but neither argument
-is complex-conjugated:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">([</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">])</span>
-<span class="go">(-13+0j)</span>
-</pre></div>
-</div>
-<p>Scalar multiplication raises an error.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">matmul: Input operand 1 does not have enough dimensions ...</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator can be used as a shorthand for <code class="docutils literal notranslate"><span class="pre">np.matmul</span></code> on
-ndarrays.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">@</span> <span class="n">x2</span>
-<span class="go">(-13+0j)</span>
-</pre></div>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified added">New in version 1.10.0.</span></p>
-</div>
+</div></blockquote>
+<p>The matmul function implements the semantics of the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator introduced in Python 3.5 following <a class="reference external" href="https://www.python.org/dev/peps/pep-0465/">PEP 465</a>.</p>
 </dd></dl>
 
 <div class="clearer"></div></section>
