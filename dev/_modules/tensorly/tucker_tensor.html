@@ -208,6 +208,29 @@
     <span class="k">return</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skip_factor</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="n">transpose_factors</span><span class="p">)</span></div>
 
 
+<span class="k">def</span> <span class="nf">tucker_normalize</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns tucker_tensor with factors normalised to unit length with the normalizing constants absorbed into</span>
+<span class="sd">    `core`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tucker_tensor : tl.TuckerTensor or (core, factors)</span>
+<span class="sd">        core tensor and list of factor matrices</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TuckerTensor((core, factors))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">tucker_tensor</span>
+    <span class="n">normalized_factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+        <span class="n">scales</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factor</span><span class="p">)),</span> <span class="n">scales</span><span class="p">)</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">core</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">scales</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span><span class="o">*</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span><span class="o">*</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">core</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">normalized_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">scales_non_zero</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">TuckerTensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">normalized_factors</span><span class="p">))</span>
+
+
 <div class="viewcode-block" id="tucker_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tucker_tensor.tucker_to_unfolded.html#tensorly.tucker_tensor.tucker_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tucker_to_unfolded</span><span class="p">(</span><span class="n">tucker_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts the Tucker decomposition into an unfolded tensor (i.e. a matrix)</span>
 
