@@ -28,6 +28,7 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -229,20 +230,56 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.sign</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Computes the element-wise sign of the given input tensor.</p>
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">out=None</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">where=True</span></em>, <em class="sig-param"><span class="pre">casting='same_kind'</span></em>, <em class="sig-param"><span class="pre">order='K'</span></em>, <em class="sig-param"><span class="pre">dtype=None</span></em>, <em class="sig-param"><span class="pre">subok=True</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">signature</span></em>, <em class="sig-param"><span class="pre">extobj</span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns an element-wise indication of the sign of a number.</p>
+<p>The <cite>sign</cite> function returns <code class="docutils literal notranslate"><span class="pre">-1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0,</span> <span class="pre">0</span> <span class="pre">if</span> <span class="pre">x==0,</span> <span class="pre">1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>.  nan
+is returned for nan inputs.</p>
+<p>For complex inputs, the <cite>sign</cite> function returns
+<code class="docutils literal notranslate"><span class="pre">sign(x.real)</span> <span class="pre">+</span> <span class="pre">0j</span> <span class="pre">if</span> <span class="pre">x.real</span> <span class="pre">!=</span> <span class="pre">0</span> <span class="pre">else</span> <span class="pre">sign(x.imag)</span> <span class="pre">+</span> <span class="pre">0j</span></code>.</p>
+<p>complex(nan, 0) is returned for complex nan inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>x</strong><span class="classifier">array_like</span></dt><dd><p>Input values.</p>
+</dd>
+<dt><strong>out</strong><span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>A location into which the result is stored. If provided, it must have
+a shape that the inputs broadcast to. If not provided or None,
+a freshly-allocated array is returned. A tuple (possible only as a
+keyword argument) must have length equal to the number of outputs.</p>
+</dd>
+<dt><strong>where</strong><span class="classifier">array_like, optional</span></dt><dd><p>This condition is broadcast over the input. At locations where the
+condition is True, the <cite>out</cite> array will be set to the ufunc result.
+Elsewhere, the <cite>out</cite> array will retain its original value.
+Note that if an uninitialized <cite>out</cite> array is created via the default
+<code class="docutils literal notranslate"><span class="pre">out=None</span></code>, locations within it where the condition is False will
+remain uninitialized.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>For other keyword-only arguments, see the
+<span class="xref std std-ref">ufunc docs</span>.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>y</strong><span class="classifier">ndarray</span></dt><dd><p>The sign of <cite>x</cite>.
+This is a scalar if <cite>x</cite> is a scalar.</p>
+</dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>There is more than one definition of sign in common use for complex
+numbers.  The definition used here is equivalent to <span class="math notranslate nohighlight">\(x/\sqrt{x*x}\)</span>
+which is different from a common alternative, <span class="math notranslate nohighlight">\(x/|x|\)</span>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">([</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+<span class="go">array([-1.,  1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">)</span>
+<span class="go">(1+0j)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div class="clearer"></div></section>

@@ -146,6 +146,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Manipulation of matrices in the TT format&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">._batched_tensordot</span> <span class="kn">import</span> <span class="n">tensordot</span>
 
 <div class="viewcode-block" id="tt_matrix_to_tensor"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tt_matrix.tt_matrix_to_tensor.html#tensorly.tt_matrix.tt_matrix_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the full tensor whose TT-Matrix decomposition is given by &#39;factors&#39;</span>
@@ -164,8 +165,7 @@
 <span class="sd">                   tensor whose TT-Matrix decomposition was given by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Each core is of shape (rank_left, size_in, size_out, rank_right)</span>
-    <span class="n">rank</span><span class="p">,</span> <span class="n">in_shape</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">,</span> <span class="n">rank_right</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tt_matrix</span><span class="p">))</span>
-    <span class="n">rank</span> <span class="o">+=</span> <span class="p">(</span><span class="n">rank_right</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">)</span>                           
+    <span class="n">_</span><span class="p">,</span> <span class="n">in_shape</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tt_matrix</span><span class="p">))</span>
     <span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_shape</span><span class="p">)</span>
     
     <span class="c1"># Intertwine the dims </span>
@@ -175,13 +175,11 @@
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="p">:</span>
-            <span class="c1"># factor = factor.squeeze(0)</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">factor</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">full_shape</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span></div>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">tensordot</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">full_shape</span><span class="p">),</span> <span class="n">order</span><span class="p">)</span></div>
 </pre></div>
 
         </div>

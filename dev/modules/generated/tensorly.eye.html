@@ -211,16 +211,65 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.eye</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.eye">
-<span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Return a 2-D tensor with ones on the diagonal and zeros elsewhere.</p>
-<dl class="field-list simple">
+<span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">M=None</span></em>, <em class="sig-param"><span class="pre">k=0</span></em>, <em class="sig-param"><span class="pre">dtype=&lt;class</span> <span class="pre">'float'&gt;</span></em>, <em class="sig-param"><span class="pre">order='C'</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">like=None</span></em><span class="sig-paren">)</span></dt>
+<dd><p>Return a 2-D array with ones on the diagonal and zeros elsewhere.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>N</strong><span class="classifier">int</span></dt><dd><p>Number of rows in the output.</p>
 </dd>
+<dt><strong>M</strong><span class="classifier">int, optional</span></dt><dd><p>Number of columns in the output. If None, defaults to <cite>N</cite>.</p>
+</dd>
+<dt><strong>k</strong><span class="classifier">int, optional</span></dt><dd><p>Index of the diagonal: 0 (the default) refers to the main diagonal,
+a positive value refers to an upper diagonal, and a negative value
+to a lower diagonal.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">data-type, optional</span></dt><dd><p>Data-type of the returned array.</p>
+</dd>
+<dt><strong>order</strong><span class="classifier">{‘C’, ‘F’}, optional</span></dt><dd><p>Whether the output should be stored in row-major (C-style) or
+column-major (Fortran-style) order in memory.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.14.0.</span></p>
+</div>
+</dd>
+<dt><strong>like</strong><span class="classifier">array_like</span></dt><dd><p>Reference object to allow the creation of arrays which are not
+NumPy arrays. If an array-like passed in as <code class="docutils literal notranslate"><span class="pre">like</span></code> supports
+the <code class="docutils literal notranslate"><span class="pre">__array_function__</span></code> protocol, the result will be defined
+by it. In this case, it ensures the creation of an array object
+compatible with that passed in via this argument.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.20.0.</span></p>
+</div>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>I</strong><span class="classifier">ndarray of shape (N,M)</span></dt><dd><p>An array where all elements are equal to zero, except for the <cite>k</cite>-th
+diagonal, whose values are equal to one.</p>
+</dd>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">identity</span></code></dt><dd><p>(almost) equivalent function</p>
+</dd>
+<dt><a class="reference internal" href="tensorly.diag.html#tensorly.diag" title="tensorly.diag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diag</span></code></a></dt><dd><p>diagonal 2-D array from a 1-D array specified by the user.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="go">array([[1, 0],</span>
+<span class="go">       [0, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([[0.,  1.,  0.],</span>
+<span class="go">       [0.,  0.,  1.],</span>
+<span class="go">       [0.,  0.,  0.]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div class="clearer"></div></section>

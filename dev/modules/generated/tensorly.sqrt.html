@@ -229,20 +229,68 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.sqrt</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.sqrt">
-<span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Computes the element-wise sqrt of the given input tensor.</p>
+<span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">/</span></em>, <em class="sig-param"><span class="pre">out=None</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">where=True</span></em>, <em class="sig-param"><span class="pre">casting='same_kind'</span></em>, <em class="sig-param"><span class="pre">order='K'</span></em>, <em class="sig-param"><span class="pre">dtype=None</span></em>, <em class="sig-param"><span class="pre">subok=True</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">signature</span></em>, <em class="sig-param"><span class="pre">extobj</span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
+<dd><p>Return the non-negative square-root of an array, element-wise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>x</strong><span class="classifier">array_like</span></dt><dd><p>The values whose square-roots are required.</p>
+</dd>
+<dt><strong>out</strong><span class="classifier">ndarray, None, or tuple of ndarray and None, optional</span></dt><dd><p>A location into which the result is stored. If provided, it must have
+a shape that the inputs broadcast to. If not provided or None,
+a freshly-allocated array is returned. A tuple (possible only as a
+keyword argument) must have length equal to the number of outputs.</p>
+</dd>
+<dt><strong>where</strong><span class="classifier">array_like, optional</span></dt><dd><p>This condition is broadcast over the input. At locations where the
+condition is True, the <cite>out</cite> array will be set to the ufunc result.
+Elsewhere, the <cite>out</cite> array will retain its original value.
+Note that if an uninitialized <cite>out</cite> array is created via the default
+<code class="docutils literal notranslate"><span class="pre">out=None</span></code>, locations within it where the condition is False will
+remain uninitialized.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>For other keyword-only arguments, see the
+<span class="xref std std-ref">ufunc docs</span>.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>y</strong><span class="classifier">ndarray</span></dt><dd><p>An array of the same shape as <cite>x</cite>, containing the positive
+square-root of each element in <cite>x</cite>.  If any element in <cite>x</cite> is
+complex, a complex array is returned (and the square-roots of
+negative reals are calculated).  If all of the elements in <cite>x</cite>
+are real, so is <cite>y</cite>, with negative elements returning <code class="docutils literal notranslate"><span class="pre">nan</span></code>.
+If <cite>out</cite> was provided, <cite>y</cite> is a reference to it.
+This is a scalar if <cite>x</cite> is a scalar.</p>
+</dd>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">lib.scimath.sqrt</span></code></dt><dd><p>A version which returns complex numbers when given negative reals.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p><em>sqrt</em> has–consistent with common convention–as its branch cut the
+real “interval” [<cite>-inf</cite>, 0), and is continuous from above on it.
+A branch cut is a curve in the complex plane across which a given
+complex function fails to be continuous.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
+<span class="go">array([ 1.,  2.,  3.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="n">J</span><span class="p">])</span>
+<span class="go">array([ 2.+0.j,  0.+1.j,  1.+2.j])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">])</span>
+<span class="go">array([ 2., nan, inf])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div class="clearer"></div></section>
