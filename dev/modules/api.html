@@ -250,7 +250,7 @@ you should only use functions through the backend (<a class="reference internal"
 <td><p>Returns the <em>name</em> (str) of the currently used backend</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.backend_context.html#tensorly.backend_context" title="tensorly.backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_context</span></code></a>(backend[, local_threadsafe])</p></td>
-<td><p>Context manager to set the backend for TensorLy. Parameters ---------- backend : {'numpy', 'mxnet', 'pytorch', 'tensorflow', 'cupy'}     The name of the backend to use. Default is 'numpy'. local_threadsafe : bool, optional     If True, the backend will not become the default backend for all threads. Note that this only affects threads where the backend hasn't already     been explicitly set. If False (default) the backend is set for the     entire session. Examples -------- Set the backend to numpy globally for this thread: &gt;&gt;&gt; import tensorly as tl &gt;&gt;&gt; tl.set_backend('numpy') &gt;&gt;&gt; with tl.backend_context('pytorch'): ... pass.</p></td>
+<td><p>Context manager to set the backend for TensorLy.</p></td>
 </tr>
 </tbody>
 </table>
@@ -690,6 +690,15 @@ If you have your own library implementing tensor algebraic functions, you could 
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.set_backend.html#tensorly.tenalg.set_backend" title="tensorly.tenalg.set_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_backend</span></code></a>(backend[, local_threadsafe])</p></td>
+<td><p>Changes the backend to the specified one</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.get_backend.html#tensorly.tenalg.get_backend" title="tensorly.tenalg.get_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_backend</span></code></a>()</p></td>
+<td><p>Returns the <em>name</em> (str) of the currently used backend</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.backend_context.html#tensorly.tenalg.backend_context" title="tensorly.tenalg.backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_context</span></code></a>(backend[, local_threadsafe])</p></td>
+<td><p>Context manager to set the backend for TensorLy.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -789,6 +798,9 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/parafac2-function.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, ...])</p></td>
 <td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/parafac2-function.html#ra07d22ce3f71-1" id="id3"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac" title="tensorly.decomposition.constrained_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrained_parafac</span></code></a>(tensor, rank[, ...])</p></td>
+<td><p>CANDECOMP/PARAFAC decomposition via alternating optimization of alternating direction method of multipliers (AO-ADMM):</p></td>
 </tr>
 </tbody>
 </table>

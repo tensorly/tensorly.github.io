@@ -230,20 +230,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.backend_context">
 <span class="sig-name descname"><span class="pre">backend_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_threadsafe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Context manager to set the backend for TensorLy.
-Parameters
-———-
-backend : {‘numpy’, ‘mxnet’, ‘pytorch’, ‘tensorflow’, ‘cupy’}</p>
-<blockquote>
-<div><p>The name of the backend to use. Default is ‘numpy’.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>local_threadsafe<span class="classifier">bool, optional</span></dt><dd><p>If True, the backend will not become the default backend for all threads.
+<dd><p>Context manager to set the backend for TensorLy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>backend</strong><span class="classifier">{‘numpy’, ‘mxnet’, ‘pytorch’, ‘tensorflow’, ‘cupy’}</span></dt><dd><p>The name of the backend to use. Default is ‘numpy’.</p>
+</dd>
+<dt><strong>local_threadsafe</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the backend will not become the default backend for all threads.
 Note that this only affects threads where the backend hasn’t already
 been explicitly set. If False (default) the backend is set for the
 entire session.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
 <p>Set the backend to numpy globally for this thread:
 &gt;&gt;&gt; import tensorly as tl
 &gt;&gt;&gt; tl.set_backend(‘numpy’)

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>tensorly.tenalg.higher_order_moment &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.tenalg.backend_context &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -41,8 +41,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.tenalg.set_backend" href="tensorly.tenalg.set_backend.html" />
-    <link rel="prev" title="tensorly.tenalg.tensordot" href="tensorly.tenalg.tensordot.html" />
+    <link rel="next" title="tensorly.decomposition.CP" href="tensorly.decomposition.CP.html" />
+    <link rel="prev" title="tensorly.tenalg.get_backend" href="tensorly.tenalg.get_backend.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -225,30 +225,31 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-tenalg-higher-order-moment">
-<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.higher_order_moment</h1>
+  <section id="tensorly-tenalg-backend-context">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.backend_context</h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.tenalg.higher_order_moment">
-<span class="sig-name descname"><span class="pre">higher_order_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/moments.html#higher_order_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Computes the Higher-Order Momemt</p>
+<dt class="sig sig-object py" id="tensorly.tenalg.backend_context">
+<span class="sig-name descname"><span class="pre">backend_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_threadsafe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Context manager to set the backend for TensorLy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">2D-tensor – or ND-tensor</span></dt><dd><p>matrix of size (n_samples, n_features)
-or tensor of size(n_samples, D1, …, DN)</p>
+<dt><strong>backend</strong><span class="classifier">{‘numpy’, ‘mxnet’, ‘pytorch’, ‘tensorflow’, ‘cupy’}</span></dt><dd><p>The name of the backend to use. Default is ‘numpy’.</p>
 </dd>
-<dt><strong>order</strong><span class="classifier">int</span></dt><dd><p>order of the higher-order moment to compute</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">moment</span></dt><dd><p>if tensor is a matrix of size (n_samples, n_features), 
-tensor of size (n_features, )*order</p>
+<dt><strong>local_threadsafe</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the backend will not become the default backend for all threads.
+Note that this only affects threads where the backend hasn’t already
+been explicitly set. If False (default) the backend is set for the
+entire session.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Set the backend to numpy globally for this thread:
+&gt;&gt;&gt; import tensorly as tl
+&gt;&gt;&gt; tl.set_backend(‘numpy’)
+&gt;&gt;&gt; with tl.backend_context(‘pytorch’):
+…     pass</p>
 </dd></dl>
 
 <div class="clearer"></div></section>
@@ -259,16 +260,16 @@ tensor of size (n_features, )*order</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.tenalg.tensordot.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tenalg.get_backend.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.tensordot</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.get_backend</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tenalg.set_backend.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.set_backend </span>
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.CP.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.CP </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
