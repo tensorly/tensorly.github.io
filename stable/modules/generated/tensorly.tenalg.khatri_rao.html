@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>tensorly.tenalg.khatri_rao &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
@@ -15,19 +16,19 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -133,7 +134,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -150,6 +151,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -187,10 +212,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -199,13 +224,13 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="tensorly-tenalg-khatri-rao">
-<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.khatri_rao<a class="headerlink" href="#tensorly-tenalg-khatri-rao" title="Permalink to this headline">¶</a></h1>
+  <section id="tensorly-tenalg-khatri-rao">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.khatri_rao</h1>
 <dl class="py function">
-<dt id="tensorly.tenalg.khatri_rao">
-<code class="sig-name descname"><span class="pre">khatri_rao</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.tenalg.khatri_rao" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tensorly.tenalg.khatri_rao">
+<span class="sig-name descname"><span class="pre">khatri_rao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/_khatri_rao.html#khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Khatri-Rao product of a list of matrices</p>
 <blockquote>
 <div><p>This can be seen as a column-wise kronecker product.
@@ -264,15 +289,15 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
 </dl>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<div class="clearer"></div></section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.parafac2_tensor.parafac2_to_vec.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.parafac2_tensor.parafac2_to_vec.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -280,7 +305,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tenalg.kronecker.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.tenalg.kronecker.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -303,7 +328,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
 
     </div>
 
-        
+	
     
 
     

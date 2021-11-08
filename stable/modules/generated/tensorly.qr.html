@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>tensorly.qr &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -186,10 +211,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -198,40 +223,137 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="tensorly-qr">
-<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.qr<a class="headerlink" href="#tensorly-qr" title="Permalink to this headline">¶</a></h1>
+  <section id="tensorly-qr">
+<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.qr</h1>
 <dl class="py function">
-<dt id="tensorly.qr">
-<code class="sig-name descname"><span class="pre">qr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.qr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tensorly.qr">
+<span class="sig-name descname"><span class="pre">qr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'reduced'</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Compute the qr factorization of a matrix.</p>
 <p>Factor the matrix <cite>a</cite> as <em>qr</em>, where <cite>q</cite> is orthonormal and <cite>r</cite> is
 upper-triangular.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>a</strong><span class="classifier">tensor, shape (M, N)</span></dt><dd><p>Matrix to be factored.</p>
+<dd class="field-odd"><dl>
+<dt><strong>a</strong><span class="classifier">array_like, shape (M, N)</span></dt><dd><p>Matrix to be factored.</p>
+</dd>
+<dt><strong>mode</strong><span class="classifier">{‘reduced’, ‘complete’, ‘r’, ‘raw’}, optional</span></dt><dd><p>If K = min(M, N), then</p>
+<ul class="simple">
+<li><p>‘reduced’  : returns q, r with dimensions (M, K), (K, N) (default)</p></li>
+<li><p>‘complete’ : returns q, r with dimensions (M, M), (M, N)</p></li>
+<li><p>‘r’        : returns r only with dimensions (K, N)</p></li>
+<li><p>‘raw’      : returns h, tau with dimensions (N, M), (K,)</p></li>
+</ul>
+<p>The options ‘reduced’, ‘complete, and ‘raw’ are new in numpy 1.8,
+see the notes for more information. The default is ‘reduced’, and to
+maintain backward compatibility with earlier versions of numpy both
+it and the old default ‘full’ can be omitted. Note that array h
+returned in ‘raw’ mode is transposed for calling Fortran. The
+‘economic’ mode is deprecated.  The modes ‘full’ and ‘economic’ may
+be passed using only the first letter for backwards compatibility,
+but all others must be spelled out. See the Notes for more
+explanation.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>Q, R</strong><span class="classifier">tensor</span></dt><dd></dd>
+<dt><strong>q</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>A matrix with orthonormal columns. When mode = ‘complete’ the
+result is an orthogonal/unitary matrix depending on whether or not
+a is real/complex. The determinant may be either +/- 1 in that
+case.</p>
+</dd>
+<dt><strong>r</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>The upper-triangular matrix.</p>
+</dd>
+<dt><strong>(h, tau)</strong><span class="classifier">ndarrays of np.double or np.cdouble, optional</span></dt><dd><p>The array h contains the Householder reflectors that generate q
+along with r. The tau array contains scaling factors for the
+reflectors. In the deprecated  ‘economic’ mode only h is returned.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>LinAlgError</dt><dd><p>If factoring fails.</p>
+</dd>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.linalg.qr</span></code></dt><dd><p>Similar function in SciPy.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.linalg.rq</span></code></dt><dd><p>Compute RQ decomposition of a matrix.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>This is an interface to the LAPACK routines <code class="docutils literal notranslate"><span class="pre">dgeqrf</span></code>, <code class="docutils literal notranslate"><span class="pre">zgeqrf</span></code>,
+<code class="docutils literal notranslate"><span class="pre">dorgqr</span></code>, and <code class="docutils literal notranslate"><span class="pre">zungqr</span></code>.</p>
+<p>For more information on the qr factorization, see for example:
+<a class="reference external" href="https://en.wikipedia.org/wiki/QR_factorization">https://en.wikipedia.org/wiki/QR_factorization</a></p>
+<p>Subclasses of <cite>ndarray</cite> are preserved except for the ‘raw’ mode. So if
+<cite>a</cite> is of type <cite>matrix</cite>, all the return values will be matrices too.</p>
+<p>New ‘reduced’, ‘complete’, and ‘raw’ options for mode were added in
+NumPy 1.8.0 and the old option ‘full’ was made an alias of ‘reduced’.  In
+addition the options ‘full’ and ‘economic’ were deprecated.  Because
+‘full’ was the previous default and ‘reduced’ is the new default,
+backward compatibility can be maintained by letting <cite>mode</cite> default.
+The ‘raw’ option was added so that LAPACK routines that can multiply
+arrays by q using the Householder reflectors can be used. Note that in
+this case the returned arrays are of type np.double or np.cdouble and
+the h array is transposed to be FORTRAN compatible.  No routines using
+the ‘raw’ return are currently exposed by numpy, but some are available
+in lapack_lite and just await the necessary work.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>  <span class="c1"># a does equal qr</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>  <span class="c1"># mode=&#39;r&#39; returns the same r as mode=&#39;full&#39;</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Example illustrating a common use of <cite>qr</cite>: solving of least squares
+problems</p>
+<p>What are the least-squares-best <cite>m</cite> and <cite>y0</cite> in <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">y0</span> <span class="pre">+</span> <span class="pre">mx</span></code> for
+the following data: {(0,1), (1,0), (1,2), (2,1)}. (Graph the points
+and you’ll see that it should be y0 = 0, m = 1.)  The answer is provided
+by solving the over-determined matrix equation <code class="docutils literal notranslate"><span class="pre">Ax</span> <span class="pre">=</span> <span class="pre">b</span></code>, where:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="n">y0</span><span class="p">],</span> <span class="p">[</span><span class="n">m</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>If A = qr such that q is orthonormal (which is always possible via
+Gram-Schmidt), then <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">inv(r)</span> <span class="pre">*</span> <span class="pre">(q.T)</span> <span class="pre">*</span> <span class="pre">b</span></code>.  (In numpy practice,
+however, we simply use <cite>lstsq</cite>.)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
+<span class="go">array([[0, 1],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [1, 1],</span>
+<span class="go">       [2, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+<span class="go">array([  1.1e-16,   1.0e+00])</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<div class="clearer"></div></section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.solve.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.solve.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -239,7 +361,7 @@ upper-triangular.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.kr.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.kr.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.kr </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -262,7 +384,7 @@ upper-triangular.</p>
 
     </div>
 
-        
+	
     
 
     

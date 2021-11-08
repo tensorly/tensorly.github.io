@@ -15,15 +15,15 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -130,57 +130,17 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
-      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
-    <aside class="sticky-nav sidebar-menu">
-<div class="sidebar-search">
-  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
-    <!-- <label class="label" id="searchlabel">Quick search</label> -->
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
-      </div>
-      <div class="control">
-        <input class="button is-info" type="submit" value="Go" />
-      </div>
-    </div>
-  </form>
-  <script>$('#searchbox').show(0);</script>
-</div>
-      
-      <div class="sidebar-menu-toc">
-      <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
-</ul>
- 
-      </div>
-    </aside>
-  </div>
-  
+	
 
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
-        
+		
 
-        <div class="content">
+        <div class="content main-content">
           
   <h1>Source code for tensorly.tt_tensor</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -330,7 +290,8 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">factor_params</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">constant_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">validate_tt_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">constant_rank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">,</span>
+                     <span class="n">allow_overparametrization</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the rank of a TT Decomposition</span>
 
 <span class="sd">    Parameters</span>
@@ -349,6 +310,10 @@
 <span class="sd">        *used only if rank == &#39;same&#39; or 0 &lt; rank &lt;= 1*</span>
 
 <span class="sd">    rounding = {&#39;round&#39;, &#39;floor&#39;, &#39;ceil&#39;}</span>
+
+<span class="sd">    allow_overparametrization : bool, default is True</span>
+<span class="sd">        if False, the rank must be realizable through iterative application of SVD </span>
+<span class="sd">        (used in tensorly.decomposition.tensor_train)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -428,8 +393,18 @@
         <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided rank[-1] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">allow_overparametrization</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">validated_rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">n_row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">n_column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):])</span> <span class="c1"># n_column of unfolding</span>
+            <span class="n">validated_rank</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_column</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">validated_rank</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">validated_rank</span>
 
 
 <span class="k">class</span> <span class="nc">TTTensor</span><span class="p">(</span><span class="n">FactorizedTensor</span><span class="p">):</span>
@@ -478,13 +453,7 @@
 
         </div>
 
-            
-        <nav class="pagination" role="navigation" aria-label="pagination">
-    
-    
-</nav>
-
-        
+		
 
       </section>
 
@@ -498,10 +467,7 @@
 
     </div>
 
-        
-    
-
-    
+	
 
   </div>
   </div>

@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>tensorly.metrics.factors.congruence_coefficient &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tensorly.random.random_cp" href="tensorly.random.random_cp.html" />
+    <link rel="prev" title="tensorly.metrics.regression.RMSE" href="tensorly.metrics.regression.RMSE.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+            <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+            <a class="navbar-item" href="../api.html">
+              API
+            </a>
+            <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+              Notebooks
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-a-unified-backend-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: A unified backend interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in CP form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Tensor-Train (MPS) form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-tenalg-tensor-algebra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor Algebra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
+        </div>
+        
+
+        <div class="content main-content">
+          
+  <section id="tensorly-metrics-factors-congruence-coefficient">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.factors</span></code>.congruence_coefficient</h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tensorly.metrics.factors.congruence_coefficient">
+<span class="sig-name descname"><span class="pre">congruence_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/metrics/factors.html#congruence_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute the optimal mean (Tucker) congruence coefficient between the columns of two matrices.</p>
+<p>Another name for the congruence coefficient is the cosine similarity.</p>
+<p>The congruence coefficient between two vectors, <span class="math notranslate nohighlight">\(\mathbf{v}_1, \mathbf{v}_2\)</span>, is given by</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mathbf{v}_1^T \mathbf{v}_1^T}{\|\mathbf{v}_1^T\| \|\mathbf{v}_1^T\|}\]</div>
+<p>When we compute the congruence between two matrices, we find the optimal permutation of
+the columns and return the mean congruence and the permutation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>matrix1</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>matrix2</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>absolute_value</strong><span class="classifier">bool</span></dt><dd><p>Whether to take the absolute value of all vector products before finding the optimal permutation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>congruence</strong><span class="classifier">float</span></dt><dd></dd>
+<dt><strong>permutation</strong><span class="classifier">list</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="clearer"></div></section>
+
+
+        </div>
+
+		
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button is-medium pagination-previous" href="tensorly.metrics.regression.RMSE.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.RMSE</span>
+    </a>
+    
+    
+    <a class="button is-medium pagination-next" href="tensorly.random.random_cp.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>.random_cp </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+        
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+    
+
+    
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

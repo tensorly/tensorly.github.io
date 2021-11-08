@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>API reference &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -186,10 +211,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -198,20 +223,20 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="api-reference">
-<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="tensorly-a-unified-backend-interface">
-<h2><a class="reference internal" href="#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>: A unified backend interface<a class="headerlink" href="#tensorly-a-unified-backend-interface" title="Permalink to this headline">¶</a></h2>
+  <section id="api-reference">
+<h1>API reference</h1>
+<section id="tensorly-a-unified-backend-interface">
+<h2><a class="reference internal" href="#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>: A unified backend interface</h2>
 <p>There are several libraries for multi-dimensional array computation, including NumPy, PyTorch, MXNet, TensorFlow, JAX and CuPy.
 They all have strenghs and weaknesses, e.g. some are better on CPU, some better on GPU etc.
 Therefore, in TensorLy we enable you to use our algorithm (and any code you write using the library), with any of these libraries.</p>
 <p>However, while they all loosely follow the API introduced and popularized by NumPy, there are differences. To make switching from one backend to another completely transparent, in TensorLy, we provide a thin wrapper to these libraries.
 So instead of using PyTorch or NumPy functions (<code class="docutils literal notranslate"><span class="pre">pytorch.tensor</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.array</span></code> for instance),
 you should only use functions through the backend (<a class="reference internal" href="generated/tensorly.tensor.html#tensorly.tensor" title="tensorly.tensor"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.tensor</span></code></a> in this case).</p>
-<span class="target" id="module-tensorly"></span><div class="section" id="setting-the-backend">
-<h3>Setting the backend<a class="headerlink" href="#setting-the-backend" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-tensorly"></span><section id="setting-the-backend">
+<h3>Setting the backend</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -222,16 +247,16 @@ you should only use functions through the backend (<a class="reference internal"
 <td><p>Changes the backend to the specified one</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.get_backend.html#tensorly.get_backend" title="tensorly.get_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_backend</span></code></a>()</p></td>
-<td><p>Returns the name of the current backend</p></td>
+<td><p>Returns the <em>name</em> (str) of the currently used backend</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.backend_context.html#tensorly.backend_context" title="tensorly.backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_context</span></code></a>(backend[, local_threadsafe])</p></td>
 <td><p>Context manager to set the backend for TensorLy.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="context-of-a-tensor">
-<h3>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="context-of-a-tensor">
+<h3>Context of a tensor</h3>
 <p>In TensorLy, we provide some convenient functions to manipulate backend specific
 information on the tensors (the <em>context</em> of that tensor),
 including dtype (e.g. <cite>float32</cite>, <cite>float64</cite>, etc),
@@ -244,13 +269,13 @@ We also provide functions to check if a tensor is on the current backend, conver
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.context.html#tensorly.context" title="tensorly.context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">context</span></code></a>(tensor)</p></td>
-<td><p>Returns the context of a tensor</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.is_tensor.html#tensorly.is_tensor" title="tensorly.is_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tensor</span></code></a>(obj)</p></td>
-<td><p>Returns if <cite>obj</cite> is a tensor for the current backend</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.is_tensor.html#tensorly.is_tensor" title="tensorly.is_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tensor</span></code></a>(tensor)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.to_numpy.html#tensorly.to_numpy" title="tensorly.to_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_numpy</span></code></a>(tensor)</p></td>
-<td><p>Returns a copy of the tensor as a NumPy array.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.eps.html#tensorly.eps" title="tensorly.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a>(dtype)</p></td>
 <td><p>Returns the machine epsilon for a given floating point dtype</p></td>
@@ -260,9 +285,9 @@ We also provide functions to check if a tensor is on the current backend, conver
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="index-assignement-numpy-style">
-<h3>Index assignement (“NumPy style”)<a class="headerlink" href="#index-assignement-numpy-style" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="index-assignement-numpy-style">
+<h3>Index assignement (“NumPy style”)</h3>
 <p>While in some backends (e.g. NumPy), you can directly combine indexing and assignement,
 not all backends support this. Instead of
 <code class="docutils literal notranslate"><span class="pre">tensor[indices]</span> <span class="pre">=</span> <span class="pre">values</span></code>, you should use
@@ -281,32 +306,32 @@ not all backends support this. Instead of
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="available-backend-functions">
-<h3>Available backend functions<a class="headerlink" href="#available-backend-functions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="available-backend-functions">
+<h3>Available backend functions</h3>
 <p>For each backend, tensorly provides the following uniform functions:</p>
-<div class="section" id="array-creation">
-<h4>Array creation<a class="headerlink" href="#array-creation" title="Permalink to this headline">¶</a></h4>
+<section id="array-creation">
+<h4>Array creation</h4>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tensor.html#tensorly.tensor" title="tensorly.tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor</span></code></a>(data, **context)</p></td>
-<td><p>Tensor class</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tensor.html#tensorly.tensor" title="tensorly.tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor</span></code></a>(data[, dtype])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.ones.html#tensorly.ones" title="tensorly.ones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ones</span></code></a>(shape[, dtype])</p></td>
-<td><p>Return a new tensor of given shape and type, filled with ones.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.ones.html#tensorly.ones" title="tensorly.ones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ones</span></code></a>(shape[, dtype, order, like])</p></td>
+<td><p>Return a new array of given shape and type, filled with ones.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.zeros.html#tensorly.zeros" title="tensorly.zeros"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros</span></code></a>(shape[, dtype])</p></td>
-<td><p>Return a new tensor of given shape and type, filled with zeros.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.zeros.html#tensorly.zeros" title="tensorly.zeros"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros</span></code></a>(shape[, dtype, order, like])</p></td>
+<td><p>Return a new array of given shape and type, filled with zeros.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.zeros_like.html#tensorly.zeros_like" title="tensorly.zeros_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros_like</span></code></a>(tensor)</p></td>
-<td><p>Return at tensor of zeros with the same shape and type as a given tensor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.zeros_like.html#tensorly.zeros_like" title="tensorly.zeros_like"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zeros_like</span></code></a>(a[, dtype, order, subok, shape])</p></td>
+<td><p>Return an array of zeros with the same shape and type as a given array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.eye.html#tensorly.eye" title="tensorly.eye"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eye</span></code></a>(N)</p></td>
-<td><p>Return a 2-D tensor with ones on the diagonal and zeros elsewhere.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.eye.html#tensorly.eye" title="tensorly.eye"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eye</span></code></a>(N[, M, k, dtype, order, like])</p></td>
+<td><p>Return a 2-D array with ones on the diagonal and zeros elsewhere.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.diag.html#tensorly.diag" title="tensorly.diag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diag</span></code></a>(v[, k])</p></td>
 <td><p>Extract a diagonal or construct a diagonal array.</p></td>
@@ -316,9 +341,9 @@ not all backends support this. Instead of
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="array-manipulation">
-<h4>Array manipulation<a class="headerlink" href="#array-manipulation" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="array-manipulation">
+<h4>Array manipulation</h4>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -326,85 +351,85 @@ not all backends support this. Instead of
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.shape.html#tensorly.shape" title="tensorly.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a>(tensor)</p></td>
-<td><p>Return the shape of a tensor</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.ndim.html#tensorly.ndim" title="tensorly.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a>(tensor)</p></td>
-<td><p>Return the number of dimensions of a tensor</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.copy.html#tensorly.copy" title="tensorly.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(tensor)</p></td>
-<td><p>Return a copy of the given tensor</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.copy.html#tensorly.copy" title="tensorly.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(a[, order, subok])</p></td>
+<td><p>Return an array copy of the given object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.concatenate.html#tensorly.concatenate" title="tensorly.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>(tensors[, axis])</p></td>
-<td><p>Concatenate tensors along an axis.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.concatenate.html#tensorly.concatenate" title="tensorly.concatenate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate</span></code></a>([axis, out, dtype, casting])</p></td>
+<td><p>Join a sequence of arrays along an existing axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.conj.html#tensorly.conj" title="tensorly.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a>(x, /[, out, where, casting, order, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.conj.html#tensorly.conj" title="tensorly.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a>(x, /[, out, where, casting, order, ...])</p></td>
 <td><p>Return the complex conjugate, element-wise.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.reshape.html#tensorly.reshape" title="tensorly.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(tensor, newshape)</p></td>
-<td><p>Gives a new shape to a tensor without changing its data.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.reshape.html#tensorly.reshape" title="tensorly.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(a, newshape[, order])</p></td>
+<td><p>Gives a new shape to an array without changing its data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.transpose.html#tensorly.transpose" title="tensorly.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(tensor)</p></td>
-<td><p>Permute the dimensions of a tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.transpose.html#tensorly.transpose" title="tensorly.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(a[, axes])</p></td>
+<td><p>Reverse or permute the axes of an array; returns the modified array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.moveaxis.html#tensorly.moveaxis" title="tensorly.moveaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveaxis</span></code></a>(tensor, source, destination)</p></td>
-<td><p>Move axes of a tensor to new positions.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.moveaxis.html#tensorly.moveaxis" title="tensorly.moveaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveaxis</span></code></a>(a, source, destination)</p></td>
+<td><p>Move axes of an array to new positions.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.arange.html#tensorly.arange" title="tensorly.arange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arange</span></code></a>([start, stop, step])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.arange.html#tensorly.arange" title="tensorly.arange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arange</span></code></a>([start,] stop[, step,][, dtype, like])</p></td>
 <td><p>Return evenly spaced values within a given interval.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.where.html#tensorly.where" title="tensorly.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(condition, x, y)</p></td>
-<td><p>Return elements, either from <cite>x</cite> or <cite>y</cite>, depending on <cite>condition</cite>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.where.html#tensorly.where" title="tensorly.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(condition, [x, y])</p></td>
+<td><p>Return elements chosen from <cite>x</cite> or <cite>y</cite> depending on <cite>condition</cite>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.clip.html#tensorly.clip" title="tensorly.clip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip</span></code></a>(tensor[, a_min, a_max])</p></td>
-<td><p>Clip the values of a tensor to within an interval.</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.max.html#tensorly.max" title="tensorly.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>(tensor)</p></td>
-<td><p>The max value in a tensor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.max.html#tensorly.max" title="tensorly.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>(a[, axis, out, keepdims, initial, where])</p></td>
+<td><p>Return the maximum of an array or maximum along an axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.min.html#tensorly.min" title="tensorly.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>(tensor)</p></td>
-<td><p>The min value in a tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.min.html#tensorly.min" title="tensorly.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>(a[, axis, out, keepdims, initial, where])</p></td>
+<td><p>Return the minimum of an array or minimum along an axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.argmax.html#tensorly.argmax" title="tensorly.argmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code></a>(tensor)</p></td>
-<td><p>The argument of the max value in a tensor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.argmax.html#tensorly.argmax" title="tensorly.argmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmax</span></code></a>(a[, axis, out])</p></td>
+<td><p>Returns the indices of the maximum values along an axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.argmin.html#tensorly.argmin" title="tensorly.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a>(tensor)</p></td>
-<td><p>The argument of the min value in a tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.argmin.html#tensorly.argmin" title="tensorly.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a>(a[, axis, out])</p></td>
+<td><p>Returns the indices of the minimum values along an axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.all.html#tensorly.all" title="tensorly.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>(tensor)</p></td>
-<td><p>Returns if all array elements in a tensor are True.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.all.html#tensorly.all" title="tensorly.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>(a[, axis, out, keepdims, where])</p></td>
+<td><p>Test whether all array elements along a given axis evaluate to True.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.mean.html#tensorly.mean" title="tensorly.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>(tensor[, axis])</p></td>
-<td><p>Compute the mean of a tensor, optionally along an axis.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.mean.html#tensorly.mean" title="tensorly.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>(a[, axis, dtype, out, keepdims, where])</p></td>
+<td><p>Compute the arithmetic mean along the specified axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sum.html#tensorly.sum" title="tensorly.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(tensor[, axis])</p></td>
-<td><p>Compute the sum of a tensor, optionally along an axis.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sum.html#tensorly.sum" title="tensorly.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(a[, axis, dtype, out, keepdims, ...])</p></td>
+<td><p>Sum of array elements over a given axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.prod.html#tensorly.prod" title="tensorly.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>(tensor[, axis])</p></td>
-<td><p>Compute the product of a tensor, optionally along an axis.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.prod.html#tensorly.prod" title="tensorly.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>(a[, axis, dtype, out, keepdims, ...])</p></td>
+<td><p>Return the product of array elements over a given axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sign.html#tensorly.sign" title="tensorly.sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sign</span></code></a>(tensor)</p></td>
-<td><p>Computes the element-wise sign of the given input tensor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sign.html#tensorly.sign" title="tensorly.sign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sign</span></code></a>(x, /[, out, where, casting, order, ...])</p></td>
+<td><p>Returns an element-wise indication of the sign of a number.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.abs.html#tensorly.abs" title="tensorly.abs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs</span></code></a>(tensor)</p></td>
-<td><p>Computes the element-wise absolute value of the given input tensor.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.abs.html#tensorly.abs" title="tensorly.abs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs</span></code></a>(x, /[, out, where, casting, order, ...])</p></td>
+<td><p>Calculate the absolute value element-wise.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sqrt.html#tensorly.sqrt" title="tensorly.sqrt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqrt</span></code></a>(tensor)</p></td>
-<td><p>Computes the element-wise sqrt of the given input tensor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.sqrt.html#tensorly.sqrt" title="tensorly.sqrt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqrt</span></code></a>(x, /[, out, where, casting, order, ...])</p></td>
+<td><p>Return the non-negative square-root of an array, element-wise.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.norm.html#tensorly.norm" title="tensorly.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>(tensor[, order, axis])</p></td>
 <td><p>Computes the l-<cite>order</cite> norm of a tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.stack.html#tensorly.stack" title="tensorly.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(arrays[, axis])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.stack.html#tensorly.stack" title="tensorly.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(arrays[, axis, out])</p></td>
 <td><p>Join a sequence of arrays along a new axis.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sort.html#tensorly.sort" title="tensorly.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(tensor, axis[, descending])</p></td>
-<td><p>Return a sorted copy of an array</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="algebraic-operations">
-<h4>Algebraic operations<a class="headerlink" href="#algebraic-operations" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="algebraic-operations">
+<h4>Algebraic operations</h4>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -412,30 +437,36 @@ not all backends support this. Instead of
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.dot.html#tensorly.dot" title="tensorly.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a>(a, b)</p></td>
-<td><p>Dot product of two tensors.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.matmul.html#tensorly.matmul" title="tensorly.matmul"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matmul</span></code></a>(x1, x2, /[, out, casting, order, ...])</p></td>
+<td><p>Matrix product of two arrays.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tensordot.html#tensorly.tensordot" title="tensorly.tensordot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensordot</span></code></a>(a, b[, axes])</p></td>
+<td><p>Compute tensor dot product along specified axes.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.kron.html#tensorly.kron" title="tensorly.kron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kron</span></code></a>(a, b)</p></td>
-<td><p>Kronecker product of two tensors.</p></td>
+<td><p>Kronecker product of two arrays.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.solve.html#tensorly.solve" title="tensorly.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(a, b)</p></td>
 <td><p>Solve a linear matrix equation, or system of linear scalar equations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.qr.html#tensorly.qr" title="tensorly.qr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qr</span></code></a>(a)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.qr.html#tensorly.qr" title="tensorly.qr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qr</span></code></a>(a[, mode])</p></td>
 <td><p>Compute the qr factorization of a matrix.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.kr.html#tensorly.kr" title="tensorly.kr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kr</span></code></a>(matrices[, weights, mask])</p></td>
-<td><p>Khatri-Rao product of a list of matrices</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.partial_svd.html#tensorly.partial_svd" title="tensorly.partial_svd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_svd</span></code></a>(matrix[, n_eigenvecs, random_state])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.partial_svd.html#tensorly.partial_svd" title="tensorly.partial_svd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_svd</span></code></a>(matrix[, n_eigenvecs, flip, ...])</p></td>
 <td><p>Computes a fast partial SVD on <cite>matrix</cite></p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
-<div class="section" id="module-tensorly.base">
-<span id="tensorly-base-core-tensor-functions"></span><h2><a class="reference internal" href="#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code></a>: Core tensor functions<a class="headerlink" href="#module-tensorly.base" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="module-tensorly.base">
+<span id="tensorly-base-core-tensor-functions"></span><h2><a class="reference internal" href="#module-tensorly.base" title="tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code></a>: Core tensor functions</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -454,23 +485,23 @@ not all backends support this. Instead of
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.base.vec_to_tensor.html#tensorly.base.vec_to_tensor" title="tensorly.base.vec_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vec_to_tensor</span></code></a>(vec, shape)</p></td>
 <td><p>Folds a vectorised tensor back into a tensor of shape <cite>shape</cite></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold" title="tensorly.base.partial_unfold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_unfold</span></code></a>(tensor[, mode, skip_begin, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold" title="tensorly.base.partial_unfold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_unfold</span></code></a>(tensor[, mode, skip_begin, ...])</p></td>
 <td><p>Partially unfolds a tensor while ignoring the specified number of dimensions at the beginning and the end.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.base.partial_fold.html#tensorly.base.partial_fold" title="tensorly.base.partial_fold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_fold</span></code></a>(unfolded, mode, shape[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.base.partial_fold.html#tensorly.base.partial_fold" title="tensorly.base.partial_fold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_fold</span></code></a>(unfolded, mode, shape[, ...])</p></td>
 <td><p>Re-folds a partially unfolded tensor</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec" title="tensorly.base.partial_tensor_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tensor_to_vec</span></code></a>(tensor[, skip_begin, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec" title="tensorly.base.partial_tensor_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tensor_to_vec</span></code></a>(tensor[, skip_begin, ...])</p></td>
 <td><p>Partially vectorises a tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.base.partial_vec_to_tensor.html#tensorly.base.partial_vec_to_tensor" title="tensorly.base.partial_vec_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_vec_to_tensor</span></code></a>(matrix, shape[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.base.partial_vec_to_tensor.html#tensorly.base.partial_vec_to_tensor" title="tensorly.base.partial_vec_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_vec_to_tensor</span></code></a>(matrix, shape[, ...])</p></td>
 <td><p>Refolds a partially vectorised tensor into a full one</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.cp_tensor">
-<span id="tensorly-cp-tensor-tensors-in-cp-form"></span><h2><a class="reference internal" href="#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>: Tensors in CP form<a class="headerlink" href="#module-tensorly.cp_tensor" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.cp_tensor">
+<span id="tensorly-cp-tensor-tensors-in-cp-form"></span><h2><a class="reference internal" href="#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>: Tensors in CP form</h2>
 <p>Core operations on CP tensors.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -501,9 +532,9 @@ not all backends support this. Instead of
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.tucker_tensor">
-<span id="tensorly-tucker-tensor-tensors-in-tucker-form"></span><h2><a class="reference internal" href="#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>: Tensors in Tucker form<a class="headerlink" href="#module-tensorly.tucker_tensor" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.tucker_tensor">
+<span id="tensorly-tucker-tensor-tensors-in-tucker-form"></span><h2><a class="reference internal" href="#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>: Tensors in Tucker form</h2>
 <p>Core operations on Tucker tensors.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -511,23 +542,23 @@ not all backends support this. Instead of
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_tensor.html#tensorly.tucker_tensor.tucker_to_tensor" title="tensorly.tucker_tensor.tucker_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_tensor</span></code></a>(tucker_tensor[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_tensor.html#tensorly.tucker_tensor.tucker_to_tensor" title="tensorly.tucker_tensor.tucker_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_tensor</span></code></a>(tucker_tensor[, ...])</p></td>
 <td><p>Converts the Tucker tensor into a full tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_unfolded.html#tensorly.tucker_tensor.tucker_to_unfolded" title="tensorly.tucker_tensor.tucker_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_unfolded</span></code></a>(tucker_tensor[, mode, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_unfolded.html#tensorly.tucker_tensor.tucker_to_unfolded" title="tensorly.tucker_tensor.tucker_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_unfolded</span></code></a>(tucker_tensor[, mode, ...])</p></td>
 <td><p>Converts the Tucker decomposition into an unfolded tensor (i.e.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_vec.html#tensorly.tucker_tensor.tucker_to_vec" title="tensorly.tucker_tensor.tucker_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_vec</span></code></a>(tucker_tensor[, skip_factor, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_vec.html#tensorly.tucker_tensor.tucker_to_vec" title="tensorly.tucker_tensor.tucker_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_vec</span></code></a>(tucker_tensor[, skip_factor, ...])</p></td>
 <td><p>Converts a Tucker decomposition into a vectorised tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_mode_dot.html#tensorly.tucker_tensor.tucker_mode_dot" title="tensorly.tucker_tensor.tucker_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_mode_dot</span></code></a>(tucker_tensor, …[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_mode_dot.html#tensorly.tucker_tensor.tucker_mode_dot" title="tensorly.tucker_tensor.tucker_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_mode_dot</span></code></a>(tucker_tensor, ...[, ...])</p></td>
 <td><p>n-mode product of a Tucker tensor and a matrix or vector at the specified mode</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.tt_tensor">
-<span id="tensorly-tt-tensor-tensors-in-tensor-train-mps-form"></span><h2><a class="reference internal" href="#module-tensorly.tt_tensor" title="tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code></a>: Tensors in Tensor-Train (MPS) form<a class="headerlink" href="#module-tensorly.tt_tensor" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.tt_tensor">
+<span id="tensorly-tt-tensor-tensors-in-tensor-train-mps-form"></span><h2><a class="reference internal" href="#module-tensorly.tt_tensor" title="tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code></a>: Tensors in Tensor-Train (MPS) form</h2>
 <p>Core operations on tensors in Tensor-Train (TT) format, also known as Matrix-Product-State (MPS)</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -536,19 +567,19 @@ not all backends support this. Instead of
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tt_tensor.tt_to_tensor.html#tensorly.tt_tensor.tt_to_tensor" title="tensorly.tt_tensor.tt_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_to_tensor</span></code></a>(factors)</p></td>
-<td><p>Returns the full tensor whose TT decomposition is given by ‘factors’</p></td>
+<td><p>Returns the full tensor whose TT decomposition is given by 'factors'</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tt_tensor.tt_to_unfolded.html#tensorly.tt_tensor.tt_to_unfolded" title="tensorly.tt_tensor.tt_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_to_unfolded</span></code></a>(factors, mode)</p></td>
 <td><p>Returns the unfolding matrix of a tensor given in TT (or Tensor-Train) format</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tt_tensor.tt_to_vec.html#tensorly.tt_tensor.tt_to_vec" title="tensorly.tt_tensor.tt_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_to_vec</span></code></a>(factors)</p></td>
-<td><p>Returns the tensor defined by its TT format (‘factors’) into</p></td>
+<td><p>Returns the tensor defined by its TT format ('factors') into</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.tt_matrix">
-<span id="tensorly-tt-matrix-matrices-in-tt-form"></span><h2><a class="reference internal" href="#module-tensorly.tt_matrix" title="tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code></a>: Matrices in TT form<a class="headerlink" href="#module-tensorly.tt_matrix" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.tt_matrix">
+<span id="tensorly-tt-matrix-matrices-in-tt-form"></span><h2><a class="reference internal" href="#module-tensorly.tt_matrix" title="tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code></a>: Matrices in TT form</h2>
 <p>Module for matrices in the TT format</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -557,19 +588,19 @@ not all backends support this. Instead of
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tt_matrix.tt_matrix_to_tensor.html#tensorly.tt_matrix.tt_matrix_to_tensor" title="tensorly.tt_matrix.tt_matrix_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_matrix_to_tensor</span></code></a>(tt_matrix)</p></td>
-<td><p>Returns the full tensor whose TT-Matrix decomposition is given by ‘factors’</p></td>
+<td><p>Returns the full tensor whose TT-Matrix decomposition is given by 'factors'</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tt_matrix.tt_matrix_to_unfolded.html#tensorly.tt_matrix.tt_matrix_to_unfolded" title="tensorly.tt_matrix.tt_matrix_to_unfolded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_matrix_to_unfolded</span></code></a>(tt_matrix, mode)</p></td>
 <td><p>Returns the unfolding matrix of a tensor given in TT-Matrix format</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tt_matrix.tt_matrix_to_vec.html#tensorly.tt_matrix.tt_matrix_to_vec" title="tensorly.tt_matrix.tt_matrix_to_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tt_matrix_to_vec</span></code></a>(tt_matrix)</p></td>
-<td><p>Returns the tensor defined by its TT-Matrix format (‘factors’) into</p></td>
+<td><p>Returns the tensor defined by its TT-Matrix format ('factors') into</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.parafac2_tensor">
-<span id="tensorly-parafac2-tensor-tensors-in-parafac2-form"></span><h2><a class="reference internal" href="#module-tensorly.parafac2_tensor" title="tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code></a>: Tensors in PARAFAC2 form<a class="headerlink" href="#module-tensorly.parafac2_tensor" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.parafac2_tensor">
+<span id="tensorly-parafac2-tensor-tensors-in-parafac2-form"></span><h2><a class="reference internal" href="#module-tensorly.parafac2_tensor" title="tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code></a>: Tensors in PARAFAC2 form</h2>
 <p>Core operations on PARAFAC2 tensors whose second mode evolve over their first.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -594,11 +625,11 @@ not all backends support this. Instead of
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="tensorly-tenalg-tensor-algebra">
-<h2><a class="reference internal" href="#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>: Tensor Algebra<a class="headerlink" href="#tensorly-tenalg-tensor-algebra" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="available-functions">
-<h3>Available functions<a class="headerlink" href="#available-functions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="tensorly-tenalg-tensor-algebra">
+<h2><a class="reference internal" href="#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>: Tensor Algebra</h2>
+<section id="available-functions">
+<h3>Available functions</h3>
 <p>TensorLy provides you with all the tensor algebra functions you need:</p>
 <span class="target" id="module-tensorly.tenalg"></span><p>The <a class="reference internal" href="#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a> module contains utilities for Tensor Algebra 
 operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
@@ -608,16 +639,16 @@ operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao" title="tensorly.tenalg.khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">khatri_rao</span></code></a>(matrices[, weights, skip_matrix, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.khatri_rao.html#tensorly.tenalg.khatri_rao" title="tensorly.tenalg.khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">khatri_rao</span></code></a>(matrices[, weights, skip_matrix, ...])</p></td>
 <td><p>Khatri-Rao product of a list of matrices</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.kronecker.html#tensorly.tenalg.kronecker" title="tensorly.tenalg.kronecker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kronecker</span></code></a>(matrices[, skip_matrix, reverse])</p></td>
 <td><p>Kronecker product of a list of matrices</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot" title="tensorly.tenalg.mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode_dot</span></code></a>(tensor, matrix_or_vector, mode[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot" title="tensorly.tenalg.mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode_dot</span></code></a>(tensor, matrix_or_vector, mode[, ...])</p></td>
 <td><p>n-mode product of a tensor and a matrix or vector at the specified mode</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot" title="tensorly.tenalg.multi_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_mode_dot</span></code></a>(tensor, matrix_or_vec_list[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot" title="tensorly.tenalg.multi_mode_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_mode_dot</span></code></a>(tensor, matrix_or_vec_list[, ...])</p></td>
 <td><p>n-mode product of a tensor and several matrices or vectors over several modes</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding" title="tensorly.tenalg.proximal.soft_thresholding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proximal.soft_thresholding</span></code></a>(tensor, threshold)</p></td>
@@ -632,23 +663,23 @@ operations such as khatri-rao or kronecker product, n-mode product, etc.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.inner.html#tensorly.tenalg.inner" title="tensorly.tenalg.inner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner</span></code></a>(tensor1, tensor2[, n_modes])</p></td>
 <td><p>Generalised inner products between tensors</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.contract.html#tensorly.tenalg.contract" title="tensorly.tenalg.contract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contract</span></code></a>(tensor1, modes1, tensor2, modes2)</p></td>
-<td><p>Tensor contraction between two tensors on specified modes</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.tensor_dot.html#tensorly.tenalg.tensor_dot" title="tensorly.tenalg.tensor_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_dot</span></code></a>(tensor1, tensor2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.outer.html#tensorly.tenalg.outer" title="tensorly.tenalg.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>(tensors)</p></td>
 <td><p>Returns a generalized outer product of the two tensors</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.batched_tensor_dot.html#tensorly.tenalg.batched_tensor_dot" title="tensorly.tenalg.batched_tensor_dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batched_tensor_dot</span></code></a>(tensor1, tensor2)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.batched_outer.html#tensorly.tenalg.batched_outer" title="tensorly.tenalg.batched_outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batched_outer</span></code></a>(tensors)</p></td>
 <td><p>Returns a generalized outer product of the two tensors</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.tensordot.html#tensorly.tenalg.tensordot" title="tensorly.tenalg.tensordot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensordot</span></code></a>(tensor1, tensor2, modes[, ...])</p></td>
+<td><p>Batched tensor contraction between two tensors on specified modes</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.higher_order_moment.html#tensorly.tenalg.higher_order_moment" title="tensorly.tenalg.higher_order_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">higher_order_moment</span></code></a>(tensor, order)</p></td>
 <td><p>Computes the Higher-Order Momemt</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="tensor-algebra-backend">
-<h3>Tensor Algebra Backend<a class="headerlink" href="#tensor-algebra-backend" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="tensor-algebra-backend">
+<h3>Tensor Algebra Backend</h3>
 <p>For advanced users, you may want to dispatch all the computation to <cite>einsum</cite> (if available)
 instead of using our manually optimized functions.
 In TensorLy, we enable this very easily through our tensor algebra backend.
@@ -659,25 +690,25 @@ If you have your own library implementing tensor algebraic functions, you could 
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.set_tenalg_backend.html#tensorly.tenalg.set_tenalg_backend" title="tensorly.tenalg.set_tenalg_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_tenalg_backend</span></code></a>([backend, local_threadsafe])</p></td>
-<td><p>Set the current tenalg backend</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.set_backend.html#tensorly.tenalg.set_backend" title="tensorly.tenalg.set_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_backend</span></code></a>(backend[, local_threadsafe])</p></td>
+<td><p>Changes the backend to the specified one</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.get_tenalg_backend.html#tensorly.tenalg.get_tenalg_backend" title="tensorly.tenalg.get_tenalg_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tenalg_backend</span></code></a>()</p></td>
-<td><p>Returns the current backend</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.tenalg.get_backend.html#tensorly.tenalg.get_backend" title="tensorly.tenalg.get_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_backend</span></code></a>()</p></td>
+<td><p>Returns the <em>name</em> (str) of the currently used backend</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.tenalg_backend_context.html#tensorly.tenalg.tenalg_backend_context" title="tensorly.tenalg.tenalg_backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tenalg_backend_context</span></code></a>(backend[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tenalg.backend_context.html#tensorly.tenalg.backend_context" title="tensorly.tenalg.backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_context</span></code></a>(backend[, local_threadsafe])</p></td>
 <td><p>Context manager to set the backend for TensorLy.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="module-tensorly.decomposition">
-<span id="tensorly-decomposition-tensor-decomposition"></span><h2><a class="reference internal" href="#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>: Tensor Decomposition<a class="headerlink" href="#module-tensorly.decomposition" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="module-tensorly.decomposition">
+<span id="tensorly-decomposition-tensor-decomposition"></span><h2><a class="reference internal" href="#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>: Tensor Decomposition</h2>
 <p>The <a class="reference internal" href="#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a> module includes utilities for performing
 tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
-<div class="section" id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<section id="classes">
+<h3>Classes</h3>
 <p>Note that these are currently experimental and may change in the future.</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -685,78 +716,78 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP" title="tensorly.decomposition.CP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CP</span></code></a>(rank[, n_iter_max, tol, init, svd, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP" title="tensorly.decomposition.CP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CP</span></code></a>(rank[, n_iter_max, init, svd, ...])</p></td>
 <td><p>Candecomp-Parafac decomposition via Alternating-Least Square</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.RandomizedCP.html#tensorly.decomposition.RandomizedCP" title="tensorly.decomposition.RandomizedCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomizedCP</span></code></a>(rank, n_samples[, n_iter_max, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.RandomizedCP.html#tensorly.decomposition.RandomizedCP" title="tensorly.decomposition.RandomizedCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomizedCP</span></code></a>(rank, n_samples[, n_iter_max, ...])</p></td>
 <td><p>Randomised CP decomposition via sampled ALS</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CPPower.html#tensorly.decomposition.CPPower" title="tensorly.decomposition.CPPower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CPPower</span></code></a>(rank[, n_repeat, n_iteration, verbose])</p></td>
 <td><p>CP Decomposition via Robust Tensor Power Iteration</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS" title="tensorly.decomposition.CP_NN_HALS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CP_NN_HALS</span></code></a>(rank[, n_iter_max, tol, init, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS" title="tensorly.decomposition.CP_NN_HALS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CP_NN_HALS</span></code></a>(rank[, n_iter_max, init, svd, ...])</p></td>
 <td><p>Non-Negative Candecomp-Parafac decomposition via Alternating-Least Square</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Tucker.html#tensorly.decomposition.Tucker" title="tensorly.decomposition.Tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tucker</span></code></a>([rank, n_iter_max, init, svd, tol, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Tucker.html#tensorly.decomposition.Tucker" title="tensorly.decomposition.Tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tucker</span></code></a>([rank, n_iter_max, init, svd, tol, ...])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.TensorTrain.html#tensorly.decomposition.TensorTrain" title="tensorly.decomposition.TensorTrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TensorTrain</span></code></a>(rank[, verbose])</p></td>
 <td><p>TT decomposition via recursive SVD</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2" title="tensorly.decomposition.Parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parafac2</span></code></a>(rank[, n_iter_max, init, svd, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2" title="tensorly.decomposition.Parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parafac2</span></code></a>(rank[, n_iter_max, init, svd, ...])</p></td>
 <td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/tensorly.decomposition.Parafac2.html#r08ccc3506ae1-1" id="id1"><span>[R08ccc3506ae1-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.SymmetricCP.html#tensorly.decomposition.SymmetricCP" title="tensorly.decomposition.SymmetricCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SymmetricCP</span></code></a>(rank[, n_repeat, n_iteration, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.SymmetricCP.html#tensorly.decomposition.SymmetricCP" title="tensorly.decomposition.SymmetricCP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SymmetricCP</span></code></a>(rank[, n_repeat, n_iteration, ...])</p></td>
 <td><p>Symmetric CP Decomposition via Robust Symmetric Tensor Power Iteration</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="functions">
+<h3>Functions</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac</span></code></a>(tensor, rank[, n_iter_max, init, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac</span></code></a>(tensor, rank[, n_iter_max, init, ...])</p></td>
 <td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.decomposition.parafac.html#r2df4af999528-1" id="id2"><span>[R2df4af999528-1]</span></a> such that.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.power_iteration.html#tensorly.decomposition.power_iteration" title="tensorly.decomposition.power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">power_iteration</span></code></a>(tensor[, n_repeat, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.power_iteration.html#tensorly.decomposition.power_iteration" title="tensorly.decomposition.power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">power_iteration</span></code></a>(tensor[, n_repeat, ...])</p></td>
 <td><p>A single Robust Tensor Power Iteration</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac_power_iteration.html#tensorly.decomposition.parafac_power_iteration" title="tensorly.decomposition.parafac_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac_power_iteration</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac_power_iteration.html#tensorly.decomposition.parafac_power_iteration" title="tensorly.decomposition.parafac_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac_power_iteration</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>CP Decomposition via Robust Tensor Power Iteration</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.symmetric_power_iteration.html#tensorly.decomposition.symmetric_power_iteration" title="tensorly.decomposition.symmetric_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetric_power_iteration</span></code></a>(tensor[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.symmetric_power_iteration.html#tensorly.decomposition.symmetric_power_iteration" title="tensorly.decomposition.symmetric_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetric_power_iteration</span></code></a>(tensor[, ...])</p></td>
 <td><p>A single Robust Symmetric Tensor Power Iteration</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.symmetric_parafac_power_iteration.html#tensorly.decomposition.symmetric_parafac_power_iteration" title="tensorly.decomposition.symmetric_parafac_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetric_parafac_power_iteration</span></code></a>(tensor, rank)</p></td>
 <td><p>Symmetric CP Decomposition via Robust Symmetric Tensor Power Iteration</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac" title="tensorly.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac.html#tensorly.decomposition.non_negative_parafac" title="tensorly.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>Non-negative CP decomposition</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac_hals.html#tensorly.decomposition.non_negative_parafac_hals" title="tensorly.decomposition.non_negative_parafac_hals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac_hals</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_parafac_hals.html#tensorly.decomposition.non_negative_parafac_hals" title="tensorly.decomposition.non_negative_parafac_hals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_parafac_hals</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>Non-negative CP decomposition via HALS</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao" title="tensorly.decomposition.sample_khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_khatri_rao</span></code></a>(matrices, n_samples[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao" title="tensorly.decomposition.sample_khatri_rao"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_khatri_rao</span></code></a>(matrices, n_samples[, ...])</p></td>
 <td><p>Random subsample of the Khatri-Rao product of the given list of matrices</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac" title="tensorly.decomposition.randomised_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randomised_parafac</span></code></a>(tensor, rank, n_samples)</p></td>
 <td><p>Randomised CP decomposition via sampled ALS</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tucker.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker</span></code></a>(tensor, rank[, fixed_factors, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tucker-function.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker</span></code></a>(tensor, rank[, fixed_factors, ...])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker" title="tensorly.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tucker</span></code></a>(tensor, modes[, rank, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.partial_tucker.html#tensorly.decomposition.partial_tucker" title="tensorly.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_tucker</span></code></a>(tensor, modes[, rank, ...])</p></td>
 <td><p>Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_tucker</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.non_negative_tucker.html#tensorly.decomposition.non_negative_tucker" title="tensorly.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_negative_tucker</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>Non-negative Tucker decomposition</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">robust_pca</span></code></a>(X[, mask, tol, reg_E, reg_J, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.robust_pca.html#tensorly.decomposition.robust_pca" title="tensorly.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">robust_pca</span></code></a>(X[, mask, tol, reg_E, reg_J, ...])</p></td>
 <td><p>Robust Tensor PCA via ALM with support for missing values</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train" title="tensorly.decomposition.tensor_train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train</span></code></a>(input_tensor, rank[, verbose])</p></td>
@@ -765,15 +796,18 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.tensor_train_matrix.html#tensorly.decomposition.tensor_train_matrix" title="tensorly.decomposition.tensor_train_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensor_train_matrix</span></code></a>(tensor, rank)</p></td>
 <td><p>Decompose a tensor into a matrix in tt-format</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac2.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, …])</p></td>
-<td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/tensorly.decomposition.parafac2.html#ra07d22ce3f71-1" id="id3"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/parafac2-function.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, ...])</p></td>
+<td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/parafac2-function.html#ra07d22ce3f71-1" id="id3"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac" title="tensorly.decomposition.constrained_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrained_parafac</span></code></a>(tensor, rank[, ...])</p></td>
+<td><p>CANDECOMP/PARAFAC decomposition via alternating optimization of alternating direction method of multipliers (AO-ADMM):</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="section" id="module-tensorly.regression">
-<span id="tensorly-regression-tensor-regression"></span><h2><a class="reference internal" href="#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a>: Tensor Regression<a class="headerlink" href="#module-tensorly.regression" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="module-tensorly.regression">
+<span id="tensorly-regression-tensor-regression"></span><h2><a class="reference internal" href="#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a>: Tensor Regression</h2>
 <p>The <a class="reference internal" href="#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a> module includes classes for performing Tensor
 Regression.</p>
 <table class="longtable docutils align-default">
@@ -785,14 +819,14 @@ Regression.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.regression.tucker_regression.TuckerRegressor.html#tensorly.regression.tucker_regression.TuckerRegressor" title="tensorly.regression.tucker_regression.TuckerRegressor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_regression.TuckerRegressor</span></code></a>(weight_ranks)</p></td>
 <td><p>Tucker tensor regression</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor" title="tensorly.regression.cp_regression.CPRegressor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cp_regression.CPRegressor</span></code></a>(weight_rank[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor" title="tensorly.regression.cp_regression.CPRegressor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cp_regression.CPRegressor</span></code></a>(weight_rank[, ...])</p></td>
 <td><p>CP tensor regression</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.metrics">
-<span id="tensorly-metrics-performance-measures"></span><h2><a class="reference internal" href="#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a>: Performance measures<a class="headerlink" href="#module-tensorly.metrics" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.metrics">
+<span id="tensorly-metrics-performance-measures"></span><h2><a class="reference internal" href="#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a>: Performance measures</h2>
 <p>The <a class="reference internal" href="#module-tensorly.metrics" title="tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code></a> module includes utilities to measure performance
 (e.g. regression error).</p>
 <table class="longtable docutils align-default">
@@ -807,37 +841,40 @@ Regression.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE" title="tensorly.metrics.regression.RMSE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regression.RMSE</span></code></a>(y_true, y_pred[, axis])</p></td>
 <td><p>Returns the regularised mean squared error between the two predictions (the square-root is applied to the mean_squared_error)</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.metrics.factors.congruence_coefficient.html#tensorly.metrics.factors.congruence_coefficient" title="tensorly.metrics.factors.congruence_coefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">factors.congruence_coefficient</span></code></a>(matrix1, matrix2)</p></td>
+<td><p>Compute the optimal mean (Tucker) congruence coefficient between the columns of two matrices.</p></td>
+</tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.random">
-<span id="tensorly-random-sampling-tensors"></span><h2><a class="reference internal" href="#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a>: Sampling tensors<a class="headerlink" href="#module-tensorly.random" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.random">
+<span id="tensorly-random-sampling-tensors"></span><h2><a class="reference internal" href="#module-tensorly.random" title="tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code></a>: Sampling tensors</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.random.random_cp.html#tensorly.random.random_cp" title="tensorly.random.random_cp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_cp</span></code></a>(shape, rank[, full, orthogonal, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.random.random_cp.html#tensorly.random.random_cp" title="tensorly.random.random_cp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_cp</span></code></a>(shape, rank[, full, orthogonal, ...])</p></td>
 <td><p>Generates a random CP tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.random.random_tucker.html#tensorly.random.random_tucker" title="tensorly.random.random_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_tucker</span></code></a>(shape, rank[, full, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.random.random_tucker.html#tensorly.random.random_tucker" title="tensorly.random.random_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_tucker</span></code></a>(shape, rank[, full, ...])</p></td>
 <td><p>Generates a random Tucker tensor</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.random.random_tt.html#tensorly.random.random_tt" title="tensorly.random.random_tt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_tt</span></code></a>(shape, rank[, full, random_state])</p></td>
 <td><p>Generates a random TT/MPS tensor</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.random.random_tt_matrix.html#tensorly.random.random_tt_matrix" title="tensorly.random.random_tt_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_tt_matrix</span></code></a>(shape, rank[, full, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.random.random_tt_matrix.html#tensorly.random.random_tt_matrix" title="tensorly.random.random_tt_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_tt_matrix</span></code></a>(shape, rank[, full, ...])</p></td>
 <td><p>Generates a random tensor in TT-Matrix format</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.random.random_parafac2.html#tensorly.random.random_parafac2" title="tensorly.random.random_parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_parafac2</span></code></a>(shapes, rank[, full, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.random.random_parafac2.html#tensorly.random.random_parafac2" title="tensorly.random.random_parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_parafac2</span></code></a>(shapes, rank[, full, ...])</p></td>
 <td><p>Generate a random PARAFAC2 tensor</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.datasets">
-<span id="tensorly-datasets-datasets"></span><h2><a class="reference internal" href="#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a>: Datasets<a class="headerlink" href="#module-tensorly.datasets" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.datasets">
+<span id="tensorly-datasets-datasets"></span><h2><a class="reference internal" href="#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a>: Datasets</h2>
 <p>The <a class="reference internal" href="#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a> module includes utilities to load datasets and
 create synthetic data, e.g. for testing purposes.</p>
 <table class="longtable docutils align-default">
@@ -846,14 +883,14 @@ create synthetic data, e.g. for testing purposes.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.datasets.synthetic.gen_image.html#tensorly.datasets.synthetic.gen_image" title="tensorly.datasets.synthetic.gen_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.gen_image</span></code></a>([region, image_height, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.datasets.synthetic.gen_image.html#tensorly.datasets.synthetic.gen_image" title="tensorly.datasets.synthetic.gen_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic.gen_image</span></code></a>([region, image_height, ...])</p></td>
 <td><p>Generates an image for regression testing</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="module-tensorly.contrib">
-<span id="tensorly-contrib-experimental-features"></span><h2><a class="reference internal" href="#module-tensorly.contrib" title="tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code></a>: Experimental features<a class="headerlink" href="#module-tensorly.contrib" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-tensorly.contrib">
+<span id="tensorly-contrib-experimental-features"></span><h2><a class="reference internal" href="#module-tensorly.contrib" title="tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code></a>: Experimental features</h2>
 <p>A module for experimental functions</p>
 <p>Allows to add quickly and test new functions for which the API is not necessarily fixed</p>
 <table class="longtable docutils align-default">
@@ -862,13 +899,13 @@ create synthetic data, e.g. for testing purposes.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross" title="tensorly.contrib.decomposition.tensor_train_cross"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposition.tensor_train_cross</span></code></a>(…[, tol, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross" title="tensorly.contrib.decomposition.tensor_train_cross"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposition.tensor_train_cross</span></code></a>(...[, tol, ...])</p></td>
 <td><p>TT (tensor-train) decomposition via cross-approximation (TTcross) [1]</p></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="sparse-tensors">
-<h3>Sparse tensors<a class="headerlink" href="#sparse-tensors" title="Permalink to this headline">¶</a></h3>
+<section id="sparse-tensors">
+<h3>Sparse tensors</h3>
 <p>The <a class="reference internal" href="#module-tensorly.contrib.sparse" title="tensorly.contrib.sparse"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib.sparse</span></code></a> module enables tensor operations on sparse tensors.
 Currently, the following decomposition methods are supported (for the NumPy backend, using Sparse):</p>
 <span class="target" id="module-tensorly.contrib.sparse"></span><table class="longtable docutils align-default">
@@ -877,40 +914,40 @@ Currently, the following decomposition methods are supported (for the NumPy back
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.tucker.html#tensorly.contrib.sparse.decomposition.tucker" title="tensorly.contrib.sparse.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.tucker</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.tucker.html#tensorly.contrib.sparse.decomposition.tucker" title="tensorly.contrib.sparse.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.tucker</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.partial_tucker.html#tensorly.contrib.sparse.decomposition.partial_tucker" title="tensorly.contrib.sparse.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.partial_tucker</span></code></a>(tensor, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.partial_tucker.html#tensorly.contrib.sparse.decomposition.partial_tucker" title="tensorly.contrib.sparse.decomposition.partial_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.partial_tucker</span></code></a>(tensor, ...)</p></td>
 <td><p>Partial tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.non_negative_tucker.html#tensorly.contrib.sparse.decomposition.non_negative_tucker" title="tensorly.contrib.sparse.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.non_negative_tucker</span></code></a>(…)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.non_negative_tucker.html#tensorly.contrib.sparse.decomposition.non_negative_tucker" title="tensorly.contrib.sparse.decomposition.non_negative_tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.non_negative_tucker</span></code></a>(...)</p></td>
 <td><p>Non-negative Tucker decomposition</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.robust_pca.html#tensorly.contrib.sparse.decomposition.robust_pca" title="tensorly.contrib.sparse.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.robust_pca</span></code></a>(X[, mask, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.robust_pca.html#tensorly.contrib.sparse.decomposition.robust_pca" title="tensorly.contrib.sparse.decomposition.robust_pca"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.robust_pca</span></code></a>(X[, mask, ...])</p></td>
 <td><p>Robust Tensor PCA via ALM with support for missing values</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#tensorly.contrib.sparse.decomposition.parafac" title="tensorly.contrib.sparse.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.parafac</span></code></a>(tensor, rank[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#tensorly.contrib.sparse.decomposition.parafac" title="tensorly.contrib.sparse.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.parafac</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#r8eaaee98a9c3-1" id="id4"><span>[R8eaaee98a9c3-1]</span></a> such that.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.non_negative_parafac.html#tensorly.contrib.sparse.decomposition.non_negative_parafac" title="tensorly.contrib.sparse.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.non_negative_parafac</span></code></a>(…)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.non_negative_parafac.html#tensorly.contrib.sparse.decomposition.non_negative_parafac" title="tensorly.contrib.sparse.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.non_negative_parafac</span></code></a>(...)</p></td>
 <td><p>Non-negative CP decomposition</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration.html#tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration" title="tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.symmetric_parafac_power_iteration</span></code></a>(…)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration.html#tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration" title="tensorly.contrib.sparse.decomposition.symmetric_parafac_power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.symmetric_parafac_power_iteration</span></code></a>(...)</p></td>
 <td><p>Symmetric CP Decomposition via Robust Symmetric Tensor Power Iteration</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="../user_guide/sparse_backend.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="../user_guide/sparse_backend.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -918,7 +955,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
     </a>
     
     
-    <a class="button is-medium pagination-next" href="generated/tensorly.set_backend.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="generated/tensorly.set_backend.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.set_backend </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -941,7 +978,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
 
     </div>
 
-        
+	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 

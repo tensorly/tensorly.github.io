@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>About us &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -131,7 +132,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -148,6 +149,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -174,10 +199,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -186,12 +211,12 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="about-us">
-<h1>About us<a class="headerlink" href="#about-us" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="origin">
-<h2>Origin<a class="headerlink" href="#origin" title="Permalink to this headline">¶</a></h2>
+  <section id="about-us">
+<h1>About us</h1>
+<section id="origin">
+<h2>Origin</h2>
 <p>TensorLy was created in 2015 by <a class="reference external" href="http://jeankossaifi.com/">Jean Kossaifi</a> to make tensor methods accessible and easy.
 It was first presented at the
 NeurIPS <a class="reference external" href="https://nips.cc/Conferences/2016/Schedule?showEvent=6230">workshop</a>
@@ -201,9 +226,9 @@ later published as a <a class="reference external" href="http://jmlr.org/papers/
 by <a class="reference external" href="http://jeankossaifi.com/">Jean Kossaifi</a>, <a class="reference external" href="https://ibug.doc.ic.ac.uk/people/ypanagakis">Yannis Panagakis</a>, <a class="reference external" href="http://tensorlab.cms.caltech.edu/users/anima/">Anima Anandkumar</a> and <a class="reference external" href="https://ibug.doc.ic.ac.uk/maja/">Maja Pantic</a>.</p>
 <p>Originally, TensorLy was built on top of NumPy and SciPy only. In order to combine tensor methods with deep learning and run them on multiple devices, CPU and GPU, a flexible backend system was added.
 This allows algorithms written in TensorLy to be ran with any major framework such as PyTorch, MXNet, TensorFlow, CuPy and JAX.</p>
-</div>
-<div class="section" id="core-developers">
-<h2>Core developers<a class="headerlink" href="#core-developers" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="core-developers">
+<h2>Core developers</h2>
 <p>TensorLy is first and formost a community
 aiming to make tensor learning easy and accessible.</p>
 <p>With a robust and active group of contributors, we would like to thank all those who have contributed, including (alphabetical order):</p>
@@ -220,9 +245,9 @@ aiming to make tensor learning easy and accessible.</p>
 <li><p><a class="reference external" href="https://github.com/caglayantuna">Caglayan Tuna</a></p></li>
 </ul>
 <p>For a full list of contributors check the <a class="reference external" href="https://github.com/tensorly/tensorly/graphs/contributors">Github page</a>.</p>
-</div>
-<div class="section" id="supporters">
-<h2>Supporters<a class="headerlink" href="#supporters" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="supporters">
+<h2>Supporters</h2>
 <p>The TensorLy project is and has been supported by various organizations and universities:</p>
 <a class="reference external image-reference" href="https://www.nvidia.com"><img alt="NVIDIA" class="align-center" src="_images/logo_nvidia.png" style="width: 150pt;" /></a>
 <hr class="docutils" />
@@ -239,16 +264,16 @@ aiming to make tensor learning easy and accessible.</p>
 <hr class="docutils" />
 <a class="reference external image-reference" href="https://www.ucla.edu/"><img alt="UCLA" class="align-center" src="_images/logo_ucla.png" style="width: 150pt;" /></a>
 <hr class="docutils" />
-</div>
-</div>
+</section>
+</section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="development_guide/backend_system.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="development_guide/backend_system.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -272,7 +297,7 @@ aiming to make tensor learning easy and accessible.</p>
 
     </div>
 
-        
+	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 

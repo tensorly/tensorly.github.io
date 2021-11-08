@@ -15,15 +15,15 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
@@ -130,68 +130,617 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
-      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
-    <aside class="sticky-nav sidebar-menu">
-<div class="sidebar-search">
-  <form class="field" id="searchbox" role="search" action="../../../search.html" method="get">
-    <!-- <label class="label" id="searchlabel">Quick search</label> -->
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
-      </div>
-      <div class="control">
-        <input class="button is-info" type="submit" value="Go" />
-      </div>
-    </div>
-  </form>
-  <script>$('#searchbox').show(0);</script>
-</div>
-      
-      <div class="sidebar-menu-toc">
-      <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installing tensorly</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user_guide/index.html">User guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules/api.html">API reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../development_guide/index.html">Development guide</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About us</a></li>
-</ul>
- 
-      </div>
-    </aside>
-  </div>
-  
+	
 
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
-        
+		
 
-        <div class="content">
+        <div class="content main-content">
           
   <h1>Source code for tensorly.tenalg.proximal</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 <span class="c1">#         Jeremy Cohen &lt;jeremy.cohen@irisa.fr&gt;</span>
 <span class="c1">#         Axel Marmoret &lt;axel.marmoret@inria.fr&gt;</span>
-<span class="c1">#         Caglayan TUna &lt;caglayantun@gmail.com&gt;</span>
+<span class="c1">#         Caglayan Tuna &lt;caglayantun@gmail.com&gt;</span>
 
 <span class="c1"># License: BSD 3 clause</span>
 
+
+<span class="k">def</span> <span class="nf">validate_constraints</span><span class="p">(</span><span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validates input constraints for constrained parafac decomposition and returns a constraint and a parameter for</span>
+<span class="sd">    proximal operator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    non_negative : bool or dictionary</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">    unimodality : bool or dictionary, optional</span>
+<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">    normalize : bool or dictionary, optional</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
+<span class="sd">        is applied to all modes.</span>
+<span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    n_const : int</span>
+<span class="sd">        Number of constraints. If it is None, function returns input tensor.</span>
+<span class="sd">        Default : 1</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Specifies which constraint to implement if several constraints are selected as input</span>
+<span class="sd">        Default : 0</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    constraint : string</span>
+<span class="sd">    parameter : float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_const</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_const</span>
+    <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">non_negative</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">non_negative</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;non_negative&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;non_negative&#39;</span>
+    <span class="k">if</span> <span class="n">l1_reg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l1_reg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">l1_reg</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;l1_reg&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">l1_reg</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l1_reg&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l1_reg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1_reg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1_reg</span>
+    <span class="k">if</span> <span class="n">l2_reg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l2_reg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">l2_reg</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;l2_reg&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">l2_reg</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l2_reg&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l2_reg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l2_reg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l2_reg</span>
+    <span class="k">if</span> <span class="n">l2_square_reg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l2_square_reg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">l2_square_reg</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;l2_square_reg&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">l2_square_reg</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;l2_square_reg&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l2_square_reg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l2_square_reg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">l2_square_reg</span>
+    <span class="k">if</span> <span class="n">normalized_sparsity</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">normalized_sparsity</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">normalized_sparsity</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;normalized_sparsity&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">normalized_sparsity</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normalized_sparsity&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">normalized_sparsity</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalized_sparsity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalized_sparsity</span>
+    <span class="k">if</span> <span class="n">soft_sparsity</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">soft_sparsity</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">soft_sparsity</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;soft_sparsity&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">soft_sparsity</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;soft_sparsity&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">soft_sparsity</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_sparsity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_sparsity</span>
+    <span class="k">if</span> <span class="n">hard_sparsity</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hard_sparsity</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">hard_sparsity</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;hard_sparsity&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">hard_sparsity</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;hard_sparsity&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hard_sparsity</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hard_sparsity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">hard_sparsity</span>
+    <span class="k">if</span> <span class="n">simplex</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">simplex</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">simplex</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;simplex&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">simplex</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;simplex&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">simplex</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simplex</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">simplex</span>
+    <span class="k">if</span> <span class="n">smoothness</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smoothness</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">smoothness</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;smoothness&#39;</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">smoothness</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;smoothness&#39;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smoothness</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">smoothness</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">smoothness</span>
+    <span class="k">if</span> <span class="n">unimodality</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unimodality</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">unimodality</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;unimodality&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;unimodality&#39;</span>
+    <span class="k">if</span> <span class="n">monotonicity</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">monotonicity</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">monotonicity</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;monotonicity&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;monotonicity&#39;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">normalize</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">modes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">normalize</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;normalize&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">constraints</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You selected two constraints for the same mode. Consider to check your input&#39;</span><span class="p">)</span>
+                <span class="n">constraints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normalize&#39;</span>
+    <span class="k">return</span> <span class="n">constraints</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">parameters</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">proximal_operator</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Proximal operator solves a convex optimization problem. Let f be a</span>
+<span class="sd">    convex proper lower-semicontinuous function, the proximal operator of f is :math:`\\argmin_x(f(x) + 1/2||x - v||_2^2)`.</span>
+<span class="sd">    This operator can be used to solve constrained optimization problems as a generalization to projections on convex sets.</span>
+<span class="sd">    Therefore, proximal gradients are used for constrained tensor decomposition problems in the literature.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    non_negative : bool or dictionary</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">    unimodality : bool or dictionary, optional</span>
+<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">    normalize : bool or dictionary, optional</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
+<span class="sd">        is applied to all modes.</span>
+<span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    n_const : int</span>
+<span class="sd">        Number of constraints. If it is None, function returns input tensor.</span>
+<span class="sd">        Default : 1</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Specifies which constraint to implement if several constraints are selected as input</span>
+<span class="sd">        Default : 0</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tensor : updated tensor according to the selected constraint, which is the solution of the optimization problem above.</span>
+<span class="sd">             If constraint is None, function returns the same tensor.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Moreau, J. J. (1962). Fonctions convexes duales et points proximaux dans un espace hilbertien.</span>
+<span class="sd">            Comptes rendus hebdomadaires des séances de l&#39;Académie des sciences, 255, 2897-2899.</span>
+<span class="sd">    .. [2]: Parikh, N., &amp; Boyd, S. (2014). Proximal algorithms.</span>
+<span class="sd">            Foundations and Trends in optimization, 1(3), 127-239.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n_const</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+    <span class="n">constraint</span><span class="p">,</span> <span class="n">parameter</span> <span class="o">=</span> <span class="n">validate_constraints</span><span class="p">(</span><span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span>
+                                                 <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
+                                                 <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+                                                 <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
+                                                 <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
+                                                 <span class="n">n_const</span><span class="o">=</span><span class="n">n_const</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">constraint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;non_negative&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;l1_reg&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;l2_reg&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l2_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;l2_square_reg&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">l2_square_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;unimodality&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">unimodality_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;normalize&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;simplex&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">simplex_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;normalized_sparsity&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">normalized_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;soft_sparsity&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">soft_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;smoothness&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smoothness_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;monotonicity&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">monotonicity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;hard_sparsity&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">hard_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">smoothness_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Proximal operator for smoothness</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    regularizer : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diag_matrix</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">regularizer</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> \
+                  <span class="n">tl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="o">-</span><span class="n">regularizer</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">k</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> \
+                  <span class="n">tl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="o">-</span><span class="n">regularizer</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">diag_matrix</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">monotonicity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">decreasing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function projects each column of the input array on the set of arrays so that</span>
+<span class="sd">          x[1] &lt;= x[2] &lt;= ... &lt;= x[n] (decreasing=False)</span>
+<span class="sd">                        or</span>
+<span class="sd">          x[1] &gt;= x[2] &gt;= ... &gt;= x[n] (decreasing=True)</span>
+<span class="sd">    is satisfied columnwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    decreasing : If it is True, function returns columnwise</span>
+<span class="sd">                 monotone decreasing tensor. Otherwise, returned array</span>
+<span class="sd">                 will be monotone increasing.</span>
+<span class="sd">                 Default: True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">          A tensor of which columns&#39; are monotonic.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: G. Chierchia, E. Chouzenoux, P. L. Combettes, and J.-C. Pesquet</span>
+<span class="sd">            &quot;The Proximity Operator Repository. User&#39;s guide&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Monotonicity prox doesn&#39;t support an input which has more than 2 dimensions.&quot;</span><span class="p">)</span>
+    <span class="n">tensor_mon</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">decreasing</span><span class="p">:</span>
+        <span class="n">tensor_mon</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">)</span>
+    <span class="n">cum_sum</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">column</span><span class="p">):</span>
+        <span class="n">assisted_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">assisted_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">assisted_tensor</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">:],</span> <span class="n">cum_sum</span><span class="p">[</span><span class="n">i</span><span class="p">:,</span> <span class="n">j</span><span class="p">]</span>
+                                                  <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">row</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">assisted_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">assisted_tensor</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">:],</span> <span class="p">(</span><span class="n">cum_sum</span><span class="p">[</span><span class="n">i</span><span class="p">:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">cum_sum</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+                                                  <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">row</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+        <span class="n">tensor_mon</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">assisted_tensor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">row</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">tensor_mon</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tensor_mon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]:</span>
+                <span class="n">tensor_mon</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">tensor_mon</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">decreasing</span><span class="p">:</span>
+        <span class="n">tensor_mon</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">tensor_mon</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tensor_mon</span>
+
+
+<span class="k">def</span> <span class="nf">unimodality_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function projects each column of the input array on the set of arrays so that</span>
+<span class="sd">          x[1] &lt;= x[2] &lt;= x[j] &gt;= x[j+1]... &gt;= x[n]</span>
+<span class="sd">    is satisfied columnwise.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">         A tensor of which columns&#39; distribution are unimodal.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Bro, R., &amp; Sidiropoulos, N. D. (1998). Least squares algorithms under</span>
+<span class="sd">            unimodality and non‐negativity constraints. Journal of Chemometrics:</span>
+<span class="sd">            A Journal of the Chemometrics Society, 12(4), 223-247.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unimodality prox doesn&#39;t support an input which has more than 2 dimensions.&quot;</span><span class="p">)</span>
+
+    <span class="n">tensor_unimodal</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="n">monotone_increasing</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">monotonicity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="n">monotone_decreasing</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">monotonicity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">decreasing</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="c1"># Next line finds mutual peak points</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">((</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">monotone_decreasing</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">monotone_increasing</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+
+    <span class="n">sum_inc</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">monotone_increasing</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+    <span class="n">sum_inc</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sum_inc</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">monotone_increasing</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+    <span class="n">sum_dec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">monotone_decreasing</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+    <span class="n">sum_dec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sum_dec</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">monotone_decreasing</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)))</span>
+
+    <span class="n">difference</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sum_inc</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">sum_dec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">sum_inc</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">sum_dec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="n">min_indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">difference</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">min_indice</span><span class="p">)):</span>
+        <span class="n">tensor_unimodal</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor_unimodal</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">min_indice</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">],</span> <span class="n">monotone_increasing</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">min_indice</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">i</span><span class="p">])</span>
+        <span class="n">tensor_unimodal</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor_unimodal</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">min_indice</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">):,</span> <span class="n">i</span><span class="p">],</span> <span class="n">monotone_decreasing</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">min_indice</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">):,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">tensor_unimodal</span>
+
+
+<span class="k">def</span> <span class="nf">l2_square_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Proximal operator of (regularizer * ||.||_2^2) (squared l2 norm).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    regularizer : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Combettes, P. L., &amp; Pesquet, J. C. (2011). Proximal splitting methods in signal processing.</span>
+<span class="sd">            In Fixed-point algorithms for inverse problems in science and engineering (pp. 185-212).</span>
+<span class="sd">            Springer, New York, NY.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tensor</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">regularizer</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">l2_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Proximal operator of (regularizer*|| ||_2) (l2 norm).</span>
+
+<span class="sd">    This proximal operator is sometimes called block soft thresholding.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    regularizer : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            prox_{\\gamma} ||x||_2 = (1 - \\gamma / \\max(|x||_2, \\gamma ))\\times x</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">norm</span> <span class="o">&gt;</span> <span class="n">regularizer</span><span class="p">:</span>
+        <span class="n">bigger_value</span> <span class="o">=</span> <span class="n">norm</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bigger_value</span> <span class="o">=</span> <span class="n">regularizer</span>
+    <span class="k">return</span> <span class="n">tensor</span> <span class="o">-</span> <span class="p">(</span><span class="n">tensor</span> <span class="o">*</span> <span class="n">regularizer</span> <span class="o">/</span> <span class="n">bigger_value</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">normalized_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalized sparsity operator by using hard thresholding.</span>
+<span class="sd">    The input is projected on the intersection of the unit l2 ball with the set of threshold-sparse vectors</span>
+<span class="sd">    \\{||x||_2^2=1 and ||x||_0\\leq threshold \\}</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    threshold : int</span>
+<span class="sd">                target sparsity level</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Le Magoarou, L., &amp; Gribonval, R. (2016). Flexible multilayer</span>
+<span class="sd">            sparse approximations of matrices and applications.</span>
+<span class="sd">            IEEE Journal of Selected Topics in Signal Processing, 10(4), 688-700.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            prox_\\threshold (||tensor||_0) / ||prox_(\\threshold ||tensor||_0)||_2</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tensor_hard</span> <span class="o">=</span> <span class="n">hard_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tensor_hard</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor_hard</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">soft_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Projects the input tensor on the set of tensors with l1 norm smaller than threshold, using Soft Thresholding.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    threshold :</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Schenker, C., Cohen, J. E., &amp; Acar, E. (2020). A Flexible Optimization Framework for</span>
+<span class="sd">            Regularized Matrix-Tensor Factorizations with Linear Couplings.</span>
+<span class="sd">            IEEE Journal of Selected Topics in Signal Processing.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">           \\lambda: prox_\\lambda (||tensor||_1) \\leq parameter</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">simplex_prox</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span> <span class="n">threshold</span><span class="p">)</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">simplex_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Projects the input tensor on the simplex of radius parameter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    parameter : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1]: Held, Michael, Philip Wolfe, and Harlan P. Crowder.</span>
+<span class="sd">            &quot;Validation of subgradient optimization.&quot;</span>
+<span class="sd">            Mathematical programming 6.1 (1974): 62-88.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="n">tensor_sort</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">to_change</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tensor_sort</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">tensor_sort</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">parameter</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">difference</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">to_change</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">difference</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tl</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">tensor_sort</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">to_change</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">difference</span> <span class="o">=</span> <span class="p">(</span><span class="n">difference</span> <span class="o">-</span> <span class="n">parameter</span><span class="p">)</span> <span class="o">/</span> <span class="n">to_change</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">tensor</span> <span class="o">-</span> <span class="n">difference</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">hard_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">number_of_non_zero</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Proximal operator of the l0 ``norm&#39;&#39;</span>
+<span class="sd">    Keeps greater &quot;number_of_non_zero&quot; elements untouched and sets other elements to zero.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    number_of_non_zero : int</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">          Thresholded tensor on which the operator has been applied</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tensor_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor_vec</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sorted_indices</span> <span class="o">&lt;</span> <span class="n">number_of_non_zero</span><span class="p">,</span> <span class="n">tensor_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor_vec</span><span class="p">))),</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="soft_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding">[docs]</a><span class="k">def</span> <span class="nf">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
@@ -327,6 +876,9 @@
 <span class="sd">        True if the lines of the V matrix can&#39;t be zero,</span>
 <span class="sd">        False if they can be zero</span>
 <span class="sd">        Default: False</span>
+<span class="sd">    exact: If it is True, the algorithm gives a results with high precision but it needs high computational cost.</span>
+<span class="sd">        If it is False, the algorithm gives an approximate solution</span>
+<span class="sd">        Default: False</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -380,10 +932,11 @@
         <span class="c1"># Scaling</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">UtM</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
                        <span class="n">UtU</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
-        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">scale</span>
+
     <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
-        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">5000</span>
-        <span class="n">tol</span> <span class="o">=</span> <span class="mf">10e-12</span>
+        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">50000</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">10e-16</span>
 
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="n">rec_error</span> <span class="o">=</span> <span class="mi">0</span>
@@ -433,17 +986,315 @@
                 <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">V</span><span class="p">,</span> <span class="n">rec_error</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">complexity_ratio</span>
+
+
+<span class="k">def</span> <span class="nf">fista</span><span class="p">(</span><span class="n">UtM</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sparsity_coef</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+          <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fast Iterative Shrinkage Thresholding Algorithm (FISTA)</span>
+
+<span class="sd">    Computes an approximate (nonnegative) solution for Ux=M linear system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and M</span>
+<span class="sd">    UtU : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and U</span>
+<span class="sd">    x : init</span>
+<span class="sd">       Default: None</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">        Default: 100</span>
+<span class="sd">    non_negative : bool, default is False</span>
+<span class="sd">                   if True, result will be non-negative</span>
+<span class="sd">    lr : float</span>
+<span class="sd">        learning rate</span>
+<span class="sd">        Default : None</span>
+<span class="sd">    sparsity_coef : float or None</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        stopping criterion</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : approximate solution such that Ux = M</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We solve the following problem :math: `1/2 ||m - Ux ||_2^2 + \\lambda |x|_1`</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [1] : Beck, A., &amp; Teboulle, M. (2009). A fast iterative</span>
+<span class="sd">          shrinkage-thresholding algorithm for linear inverse problems.</span>
+<span class="sd">          SIAM journal on imaging sciences, 2(1), 183-202.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sparsity_coef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sparsity_coef</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtM</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtM</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># Parameters</span>
+    <span class="n">momentum_old</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">norm_0</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">x_update</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="o">-</span> <span class="n">UtM</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">x_update</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="n">sparsity_coef</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="o">-</span> <span class="n">UtM</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_update</span><span class="p">)</span> <span class="o">+</span> <span class="n">sparsity_coef</span>
+
+        <span class="k">if</span> <span class="n">non_negative</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span> <span class="o">&lt;</span> <span class="n">x_update</span><span class="p">,</span> <span class="n">x_gradient</span><span class="p">,</span> <span class="n">x_update</span><span class="o">/</span><span class="n">lr</span><span class="p">)</span>
+
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_update</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span>
+        <span class="n">momentum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">momentum_old</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">x_update</span> <span class="o">=</span> <span class="n">x_new</span> <span class="o">+</span> <span class="p">((</span><span class="n">momentum_old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">momentum</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">momentum_old</span> <span class="o">=</span> <span class="n">momentum</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">norm_0</span> <span class="o">=</span> <span class="n">norm</span>
+        <span class="k">if</span> <span class="n">norm</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">norm_0</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">active_set_nnls</span><span class="p">(</span><span class="n">Utm</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">     Active set algorithm for non-negative least square solution.</span>
+
+<span class="sd">     Computes an approximate non-negative solution for Ux=m linear system.</span>
+
+<span class="sd">     Parameters</span>
+<span class="sd">     ----------</span>
+<span class="sd">     Utm : vectorized ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and m</span>
+<span class="sd">     UtU : ndarray</span>
+<span class="sd">        Pre-computed Kronecker product of the transposed of U and U</span>
+<span class="sd">     x : init</span>
+<span class="sd">        Default: None</span>
+<span class="sd">     n_iter_max : int</span>
+<span class="sd">         Maximum number of iteration</span>
+<span class="sd">         Default: 100</span>
+<span class="sd">     tol : float</span>
+<span class="sd">         Early stopping criterion</span>
+
+<span class="sd">     Returns</span>
+<span class="sd">     -------</span>
+<span class="sd">     x : ndarray</span>
+
+<span class="sd">     Notes</span>
+<span class="sd">     -----</span>
+<span class="sd">     This function solves following problem:</span>
+<span class="sd">     .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">             \\min_{x} ||Ux - m||^2</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">     According to [1], non-negativity-constrained least square estimation problem becomes:</span>
+<span class="sd">     .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">             x&#39; = (Utm) - (UTU)\\times x</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">     Reference</span>
+<span class="sd">     ----------</span>
+<span class="sd">     [1] : Bro, R., &amp; De Jong, S. (1997). A fast non‐negativity‐constrained</span>
+<span class="sd">           least squares algorithm. Journal of Chemometrics: A Journal of</span>
+<span class="sd">           the Chemometrics Society, 11(5), 393-401.</span>
+<span class="sd">     &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;tensorflow&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Active set is not supported with the tensorflow backend. Consider using fista method with tensorflow.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtU</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+    <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x_vec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># To avoid singularity error when initial x exists</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Start from zeros if solve is not achieved</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">):</span>
+                <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># update support vector if it is necessary</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)):</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]))</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">support_vec</span> <span class="o">-</span> <span class="n">x_vec</span><span class="p">)</span>
+                <span class="n">x_vec</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">+</span> <span class="n">update</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+                <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span>
+                <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)</span><span class="o">!=</span><span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="c1"># set x to s</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">support_vec</span><span class="p">))</span>
+
+        <span class="c1"># gradient update</span>
+        <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">)</span><span class="o">!=</span><span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">[</span><span class="n">active_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">x_vec</span>
+
+
+<span class="k">def</span> <span class="nf">admm</span><span class="p">(</span><span class="n">UtM</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">dual_var</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Alternating direction method of multipliers (ADMM) algorithm to minimize a quadratic function under convex constraints.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM: ndarray</span>
+<span class="sd">       Pre-computed product of the transposed of U and M.</span>
+<span class="sd">    UtU: ndarray</span>
+<span class="sd">       Pre-computed product of the transposed of U and U.</span>
+<span class="sd">    x: init</span>
+<span class="sd">       Default: None</span>
+<span class="sd">    dual_var : ndarray</span>
+<span class="sd">               Dual variable to update x</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">        Default: 100</span>
+<span class="sd">    n_const : int</span>
+<span class="sd">        Default : None</span>
+<span class="sd">    order : int</span>
+<span class="sd">        Default : None</span>
+<span class="sd">    non_negative : bool or dictionary</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">    l2_square : float or list or dictionary, optional</span>
+<span class="sd">    unimodality : bool or dictionary, optional</span>
+<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">    normalize : bool or dictionary, optional</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
+<span class="sd">        is applied to all modes.</span>
+<span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">    tol : float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : Updated ndarray</span>
+<span class="sd">    x_split : Updated ndarray</span>
+<span class="sd">    dual_var : Updated ndarray</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    ADMM solves the convex optimization problem :math:`\\min_ f(x) + g(z)` where :math: A(x_split) + Bx = c.</span>
+
+<span class="sd">    Following updates are iterated to solve the problem::</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            x_split = argmin_(x_split) f(x_split) + (rho/2)||A(x_split) + Bx - c||_2^2</span>
+<span class="sd">            x = argmin_x g(x) + (rho/2)||A(x_split) + Bx - c||_2^2</span>
+<span class="sd">            dual_var = dual_var + (Ax + B(x_split) - c)</span>
+<span class="sd">        \\end{equation}</span>
+
+<span class="sd">    where rho is a constant defined by the user.</span>
+
+<span class="sd">    Let us define a least square problem such as :math:`\\||Ux - M||^2 + r(x)`.</span>
+
+<span class="sd">    ADMM can be adapted to this least square problem as following::</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\begin{equation}</span>
+<span class="sd">            x_split = (UtU + rho\times I)\times(UtM + rho\times(x + dual_var)^T)</span>
+<span class="sd">            x = argmin r(x) + (rho/2)||x - x_split^T + dual_var||_2^2</span>
+<span class="sd">            dual_var = dual_var + x - x_split^T</span>
+<span class="sd">        \\end{equation}</span>
+<span class="sd">    where r is the regularization operator. Here, x can be updated by using proximity operator</span>
+<span class="sd">    of :math:`x_split^T - dual_var`.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Huang, Kejun, Nicholas D. Sidiropoulos, and Athanasios P. Liavas.</span>
+<span class="sd">           &quot;A flexible and efficient algorithmic framework for constrained matrix and tensor factorization.&quot;</span>
+<span class="sd">           IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">UtU</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="n">x_old</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x_split</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">UtU</span> <span class="o">+</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span>
+                           <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">UtM</span> <span class="o">+</span> <span class="n">rho</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dual_var</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">proximal_operator</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x_split</span><span class="p">)</span> <span class="o">-</span> <span class="n">dual_var</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
+                              <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+                              <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+                              <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
+                              <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="n">n_const</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_const</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">UtU</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">UtM</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_split</span><span class="p">,</span> <span class="n">dual_var</span>
+        <span class="n">dual_var</span> <span class="o">=</span> <span class="n">dual_var</span> <span class="o">+</span> <span class="n">x</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x_split</span><span class="p">)</span>
+
+        <span class="n">dual_residual</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x_split</span><span class="p">)</span>
+        <span class="n">primal_residual</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">x_old</span>
+
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dual_residual</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">primal_residual</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dual_var</span><span class="p">):</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_split</span><span class="p">,</span> <span class="n">dual_var</span>
 </pre></div>
 
         </div>
 
-            
-        <nav class="pagination" role="navigation" aria-label="pagination">
-    
-    
-</nav>
-
-        
+		
 
       </section>
 
@@ -457,10 +1308,7 @@
 
     </div>
 
-        
-    
-
-    
+	
 
   </div>
   </div>

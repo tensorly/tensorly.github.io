@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Contributing &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -175,10 +200,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -187,23 +212,23 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="contributing">
-<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+  <section id="contributing">
+<h1>Contributing</h1>
 <p>All contributions are welcome! So if you have a cool tensor method you want to add, if you spot a bug or even a typo or mistake in the documentation, please report it, and even better, open a Pull-Request!</p>
-<div class="section" id="how-to">
-<h2>How-to<a class="headerlink" href="#how-to" title="Permalink to this headline">¶</a></h2>
+<section id="how-to">
+<h2>How-to</h2>
 <p>To make sure the contribution is relevant and is not already worked on, you can <a class="reference external" href="https://github.com/tensorly/tensorly/issues">open an issue</a> or talk to us on <a class="reference external" href="https://gitter.im/tensorly/tensorly">Gitter</a>!</p>
 <p>To add code of fix issues in TensorLy, you will want to open a <a class="reference external" href="https://github.com/tensorly/tensorly/pulls">Pull-Request</a> on the Github repository of the project.</p>
-</div>
-<div class="section" id="guidelines">
-<h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="guidelines">
+<h2>Guidelines</h2>
 <p>For each function or class, we expect helpful docstrings in the NumPy format, as well as unit-tests to make sure it is working as expected (especially helpful for future refactoring to make sure no exising code is broken!)</p>
 <p>Check the existing code for examples, and don’t hesitate to contact the developers if you are unsure!</p>
-</div>
-<div class="section" id="backend-compatibility">
-<h2>Backend compatibility<a class="headerlink" href="#backend-compatibility" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="backend-compatibility">
+<h2>Backend compatibility</h2>
 <p>To contribute code to the TensorLy code-base, you must ensure compatibility with all the backends.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -220,8 +245,8 @@ or, if you cannot do otherwise, add the required function to all backends.</p>
 <p>In general, you should <strong>not</strong> use backend specific code, by testing for the backend.
 e.g. Do not include statements such as <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">tensorly.get_backend()</span> <span class="pre">==</span> <span class="pre">'pytorch'</span></code> in your code.</p>
 </div>
-<div class="section" id="in-practice">
-<h3>In practice<a class="headerlink" href="#in-practice" title="Permalink to this headline">¶</a></h3>
+<section id="in-practice">
+<h3>In practice</h3>
 <p>Practically, <strong>use the wrapped functions</strong>. For instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -236,9 +261,9 @@ e.g. Do not include statements such as <code class="docutils literal notranslate
 </div>
 <p>The reason is that you do not want your code to be restricted to any of the backends.
 You might be using NumPy but another user might be using MXNet and calling a NumPy function on an MXNet NDArray will most likely fail.</p>
-</div>
-<div class="section" id="context-of-a-tensor">
-<h3>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="context-of-a-tensor">
+<h3>Context of a tensor</h3>
 <p>An other aspect, when developing a new function or algorithm, is to make sure you perform the computation on the correct context specified by the user. To do so, always get the context from tensors you get as input, and use it for the tensors you create.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 <span class="c1"># when creating a new tensor we use these as parameters</span>
@@ -246,9 +271,9 @@ You might be using NumPy but another user might be using MXNet and calling a Num
 </pre></div>
 </div>
 <p>Check-out the page on <a class="reference internal" href="../user_guide/backend.html"><span class="doc">TensorLy’s backend system</span></a> for more on this.</p>
-</div>
-<div class="section" id="index-assignment-numpy-style">
-<h3>Index assignment (“NumPy style”)<a class="headerlink" href="#index-assignment-numpy-style" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="index-assignment-numpy-style">
+<h3>Index assignment (“NumPy style”)</h3>
 <p>In NumPy, PyTorch and MXNet, you can combined indexing and assignment in a convenient way,
 e.g. if you have a tensor <cite>t</cite>, you can update its values for given indices using the expression
 <code class="docutils literal notranslate"><span class="pre">t[indices]</span> <span class="pre">=</span> <span class="pre">values</span></code>.</p>
@@ -256,17 +281,50 @@ e.g. if you have a tensor <cite>t</cite>, you can update its values for given in
 you should use <a class="reference internal" href="../modules/generated/tensorly.index_update.html#tensorly.index_update" title="tensorly.index_update"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.index_update</span></code></a> and <a class="reference internal" href="../modules/generated/tensorly.index.html#tensorly.index" title="tensorly.index"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.index</span></code></a>.
 For instance, the previous statement becomes, in TensorLy:
 <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">tensorly.index_update(t,</span> <span class="pre">tensorly.index[indices],</span> <span class="pre">values)</span></code>.</p>
+</section>
+</section>
+<section id="testing-the-class-interface">
+<h2>Testing the class interface</h2>
+<p>Because TensorLy supports both a functional and an object-oriented interface, we should ensure that any
+change to one interface is also applied to the other interface. To automatically test for this, we have
+a test utility <code class="docutils literal notranslate"><span class="pre">tensorly.testing.assert_class_wrapper_correctly_passes_arguments</span></code>, which checks that all
+keyword arguments of the functional interface are available from the object-oriented interface.
+Here is an example that shows how you can use this utility:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">CP</span>
+
+<span class="k">def</span> <span class="nf">test_cp</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">):</span>
+   <span class="n">assert_class_wrapper_correctly_passes_arguments</span><span class="p">(</span><span class="n">monkeypatch</span><span class="p">,</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">CP</span><span class="p">,</span> <span class="n">ignore_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;return_errors&#39;</span><span class="p">},</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
 </div>
-</div>
-</div>
+<p>This code will check that all arguments of the <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function (except <code class="docutils literal notranslate"><span class="pre">return_errors</span></code>) can also be
+passed to the CP class, and that the input arguments to the CP class are forwarded to the <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function.
+Notice that the <code class="docutils literal notranslate"><span class="pre">test_cp</span></code> function takes an argument: <code class="docutils literal notranslate"><span class="pre">monkeypatch</span></code>. This lets PyTest know that we
+are planning to perform monkeypatching (more about that later), and that it should give us a utility object
+for this purpose. It is therefore essential that one of the arguments of the test function is <code class="docutils literal notranslate"><span class="pre">monkeypatch</span></code>
+and that this variable is passed as the first argument to <code class="docutils literal notranslate"><span class="pre">assert_class_wrapper_correctly_passes_arguments</span></code>.</p>
+<section id="how-the-class-wrapper-test-works">
+<h3>How the class wrapper test works</h3>
+<p>This test utility works because it uses the fact that the object-oriented interface calls the functional
+interface behind the scenes. To automatically test the interfaces, the
+<cite>tensorly.testing.assert_class_wrapper_correctly_passes_arguments</cite> function inspects the functional interface
+and notes down all possible arguments. Then, it <em>monkeypatches</em> the functional interface with a mock function.
+In other words, the functional interface is temporarily replaced with a mock function that, instead of fitting
+a tensor decomposition, asserts that every possible argument is given a particular placeholder value.</p>
+<p>Since the object-oriented interface uses the functional one behind the scenes, we can then use the object-oriented
+interface to fit a model and send in placeholder values for each possible argument of the functional interface.
+Then, the monkeypatched code will check that the placeholder value is passed to the functional interface for each argument.
+Finally, the functional interface is reset to normal behaviour (fitting a tensor decomposition).</p>
+</section>
+</section>
+</section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="index.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="index.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -274,7 +332,7 @@ For instance, the previous statement becomes, in TensorLy:
     </a>
     
     
-    <a class="button is-medium pagination-next" href="documentation.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="documentation.html" title="next page" accesskey="n">
         <span>Writing documentation </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -297,7 +355,7 @@ For instance, the previous statement becomes, in TensorLy:
 
     </div>
 
-        
+	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
@@ -312,6 +370,10 @@ For instance, the previous statement becomes, in TensorLy:
 <li><a class="reference internal" href="#in-practice">In practice</a></li>
 <li><a class="reference internal" href="#context-of-a-tensor">Context of a tensor</a></li>
 <li><a class="reference internal" href="#index-assignment-numpy-style">Index assignment (“NumPy style”)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-the-class-interface">Testing the class interface</a><ul>
+<li><a class="reference internal" href="#how-the-class-wrapper-test-works">How the class wrapper test works</a></li>
 </ul>
 </li>
 </ul>

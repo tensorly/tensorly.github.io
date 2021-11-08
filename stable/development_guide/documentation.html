@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Writing documentation &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -175,10 +200,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -187,14 +212,14 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="writing-documentation">
-<span id="documentation"></span><h1>Writing documentation<a class="headerlink" href="#writing-documentation" title="Permalink to this headline">¶</a></h1>
+  <section id="writing-documentation">
+<span id="documentation"></span><h1>Writing documentation</h1>
 <p>Documentation is a crutial part of this library. Here, we cover some elements of syntax
 with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the format we use.</p>
-<div class="section" id="docstrings">
-<h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this headline">¶</a></h2>
+<section id="docstrings">
+<h2>Docstrings</h2>
 <p>All functions and classes should come with useful docstrings. For these, we use the numpy style docstrings. For instance, for a function, we expect the following docstring:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;One line description</span>
@@ -236,31 +261,31 @@ with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the for
 <span class="s">   lines...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="refer-to-functions-or-modules">
-<h2>Refer to functions or modules<a class="headerlink" href="#refer-to-functions-or-modules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="refer-to-functions-or-modules">
+<h2>Refer to functions or modules</h2>
 <p>In the documentation, you can refer to modules as <code class="docutils literal notranslate"><span class="pre">:mod:`tensorly.module`</span></code>, for instance
 the tensor algebra module: <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.
 Similarly, use <code class="docutils literal notranslate"><span class="pre">:func:`tensorly.function`</span></code> to refer a function:
 <a class="reference internal" href="../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold" title="tensorly.base.unfold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.base.unfold</span></code></a>.</p>
-</div>
-<div class="section" id="titles">
-<h2>Titles<a class="headerlink" href="#titles" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="titles">
+<h2>Titles</h2>
 <p>Titles are created by underlying them, and the hierarchy is automatically determined by Sphinx.
 If you do not want your title to appear in the table of contents, use a <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric">rubric</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">rubric</span><span class="p">::</span> <span class="n">Title</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="contributing.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="contributing.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -268,7 +293,7 @@ If you do not want your title to appear in the table of contents, use a <a class
     </a>
     
     
-    <a class="button is-medium pagination-next" href="backend_system.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="backend_system.html" title="next page" accesskey="n">
         <span>Backend System </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -291,7 +316,7 @@ If you do not want your title to appear in the table of contents, use a <a class
 
     </div>
 
-        
+	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 

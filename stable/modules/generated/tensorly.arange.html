@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>tensorly.arange &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -186,10 +211,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -198,42 +223,93 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="tensorly-arange">
-<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.arange<a class="headerlink" href="#tensorly-arange" title="Permalink to this headline">¶</a></h1>
+  <section id="tensorly-arange">
+<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.arange</h1>
 <dl class="py function">
-<dt id="tensorly.arange">
-<code class="sig-name descname"><span class="pre">arange</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.arange" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tensorly.arange">
+<span class="sig-name descname"><span class="pre">arange</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">start</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">stop</span></em>, <span class="optional">[</span><em class="sig-param"><span class="pre">step</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">dtype=None</span></em>, <em class="sig-param"><span class="pre">*</span></em>, <em class="sig-param"><span class="pre">like=None</span></em><span class="sig-paren">)</span></dt>
 <dd><p>Return evenly spaced values within a given interval.</p>
-<dl class="field-list simple">
+<p>Values are generated within the half-open interval <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">stop)</span></code>
+(in other words, the interval including <cite>start</cite> but excluding <cite>stop</cite>).
+For integer arguments the function is equivalent to the Python built-in
+<cite>range</cite> function, but returns an ndarray rather than a list.</p>
+<p>When using a non-integer step, such as 0.1, the results will often not
+be consistent.  It is better to use <cite>numpy.linspace</cite> for these cases.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>start</strong><span class="classifier">number, optional</span></dt><dd><p>Start of the interval, inclusive. Default is 0.</p>
+<dd class="field-odd"><dl>
+<dt><strong>start</strong><span class="classifier">integer or real, optional</span></dt><dd><p>Start of interval.  The interval includes this value.  The default
+start value is 0.</p>
 </dd>
-<dt><strong>stop</strong><span class="classifier">number</span></dt><dd><p>End of the interval, exclusive.</p>
+<dt><strong>stop</strong><span class="classifier">integer or real</span></dt><dd><p>End of interval.  The interval does not include this value, except
+in some cases where <cite>step</cite> is not an integer and floating point
+round-off affects the length of <cite>out</cite>.</p>
 </dd>
-<dt><strong>step</strong><span class="classifier">number, optional</span></dt><dd><p>Spacing between values. Default is 1.</p>
+<dt><strong>step</strong><span class="classifier">integer or real, optional</span></dt><dd><p>Spacing between values.  For any output <cite>out</cite>, this is the distance
+between two adjacent values, <code class="docutils literal notranslate"><span class="pre">out[i+1]</span> <span class="pre">-</span> <span class="pre">out[i]</span></code>.  The default
+step size is 1.  If <cite>step</cite> is specified as a position argument,
+<cite>start</cite> must also be given.</p>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">dtype</span></dt><dd><p>The type of the output array.  If <cite>dtype</cite> is not given, infer the data
+type from the other input arguments.</p>
+</dd>
+<dt><strong>like</strong><span class="classifier">array_like</span></dt><dd><p>Reference object to allow the creation of arrays which are not
+NumPy arrays. If an array-like passed in as <code class="docutils literal notranslate"><span class="pre">like</span></code> supports
+the <code class="docutils literal notranslate"><span class="pre">__array_function__</span></code> protocol, the result will be defined
+by it. In this case, it ensures the creation of an array object
+compatible with that passed in via this argument.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.20.0.</span></p>
+</div>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>tensor</dt><dd></dd>
+<dd class="field-even"><dl>
+<dt><strong>arange</strong><span class="classifier">ndarray</span></dt><dd><p>Array of evenly spaced values.</p>
+<p>For floating point arguments, the length of the result is
+<code class="docutils literal notranslate"><span class="pre">ceil((stop</span> <span class="pre">-</span> <span class="pre">start)/step)</span></code>.  Because of floating point overflow,
+this rule may result in the last element of <cite>out</cite> being greater
+than <cite>stop</cite>.</p>
+</dd>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.linspace</span></code></dt><dd><p>Evenly spaced numbers with careful handling of endpoints.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ogrid</span></code></dt><dd><p>Arrays of evenly spaced numbers in N-dimensions.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.mgrid</span></code></dt><dd><p>Grid-shaped arrays of evenly spaced numbers in N-dimensions.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0, 1, 2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+<span class="go">array([ 0.,  1.,  2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">array([3, 4, 5, 6])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">array([3, 5])</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<div class="clearer"></div></section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.moveaxis.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.moveaxis.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -241,7 +317,7 @@
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.where.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.where.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.where </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -264,7 +340,7 @@
 
     </div>
 
-        
+	
     
 
     

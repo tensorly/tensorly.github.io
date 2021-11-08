@@ -4,7 +4,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>tensorly.solve &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
@@ -15,15 +16,15 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/tensorly_style.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
@@ -132,7 +133,7 @@
 
   <div id="column-container">
   <div class="columns is-mobile is-centered">
-      
+	
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
     <!-- Side menu  -->
     <aside class="sticky-nav sidebar-menu">
@@ -149,6 +150,30 @@
     </div>
   </form>
   <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
 </div>
       
       <div class="sidebar-menu-toc">
@@ -186,10 +211,10 @@
     <div class="column main-column">
 
       <!-- Main content  -->
-      <section class="main-content">
+      <section class="main-section">
 
         <!-- Toggle menu button -->
-            
+		
         <div class="side-menu-toggle">
           <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
             <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
@@ -198,43 +223,88 @@
         </div>
         
 
-        <div class="content">
+        <div class="content main-content">
           
-  <div class="section" id="tensorly-solve">
-<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.solve<a class="headerlink" href="#tensorly-solve" title="Permalink to this headline">¶</a></h1>
+  <section id="tensorly-solve">
+<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.solve</h1>
 <dl class="py function">
-<dt id="tensorly.solve">
-<code class="sig-name descname"><span class="pre">solve</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.solve" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tensorly.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Solve a linear matrix equation, or system of linear scalar equations.</p>
 <p>Computes the “exact” solution, <cite>x</cite>, of the well-determined, i.e., full
 rank, linear matrix equation <cite>ax = b</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>a</strong><span class="classifier">tensor, shape (M, M)</span></dt><dd><p>The coefficient matrix.</p>
+<dt><strong>a</strong><span class="classifier">(…, M, M) array_like</span></dt><dd><p>Coefficient matrix.</p>
 </dd>
-<dt><strong>b</strong><span class="classifier">tensor, shape (M,) or (M, K)</span></dt><dd><p>The ordinate values.</p>
+<dt><strong>b</strong><span class="classifier">{(…, M,), (…, M, K)}, array_like</span></dt><dd><p>Ordinate or “dependent variable” values.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">tensor, shape (M,) or (M, K)</span></dt><dd><p>Solution to the system a x = b. Returned shape is identical to <cite>b</cite>.</p>
+<dt><strong>x</strong><span class="classifier">{(…, M,), (…, M, K)} ndarray</span></dt><dd><p>Solution to the system a x = b.  Returned shape is identical to <cite>b</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>LinAlgError</dt><dd><p>If <cite>a</cite> is singular or not square.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.linalg.solve</span></code></dt><dd><p>Similar function in SciPy.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+</div>
+<p>Broadcasting rules apply, see the <cite>numpy.linalg</cite> documentation for
+details.</p>
+<p>The solutions are computed using LAPACK routine <code class="docutils literal notranslate"><span class="pre">_gesv</span></code>.</p>
+<p><cite>a</cite> must be square and of full-rank, i.e., all rows (or, equivalently,
+columns) must be linearly independent; if either is not true, use
+<cite>lstsq</cite> for the least-squares best “solution” of the
+system/equation.</p>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="r48422ad687d3-1"><span class="brackets">1</span></dt>
+<dd><p>G. Strang, <em>Linear Algebra and Its Applications</em>, 2nd Ed., Orlando,
+FL, Academic Press, Inc., 1980, pg. 22.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Solve the system of equations <code class="docutils literal notranslate"><span class="pre">x0</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">x0</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">2</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([-1.,  1.])</span>
+</pre></div>
+</div>
+<p>Check that the solution is correct:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<div class="clearer"></div></section>
 
 
         </div>
 
-            
+		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.kron.html" title="previous chapter" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.kron.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -242,7 +312,7 @@ rank, linear matrix equation <cite>ax = b</cite>.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.qr.html" title="next chapter" accesskey="n">
+    <a class="button is-medium pagination-next" href="tensorly.qr.html" title="next page" accesskey="n">
         <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.qr </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -265,7 +335,7 @@ rank, linear matrix equation <cite>ax = b</cite>.</p>
 
     </div>
 
-        
+	
     
 
     
