@@ -496,6 +496,7 @@
 <span class="sd">        If &#39;rec_error&#39;,  ALS stops at current iteration if ``(previous rec_error - current rec_error) &lt; tol``.</span>
 <span class="sd">        If &#39;abs_rec_error&#39;, ALS terminates when `|previous rec_error - current rec_error| &lt; tol`.</span>
 <span class="sd">    sparsity : float or int</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -801,8 +802,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
-                 <span class="n">sparsity_coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">):</span>
+                 <span class="n">sparsity_coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
@@ -816,6 +817,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span> <span class="o">=</span> <span class="n">normalize_factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span> <span class="o">=</span> <span class="n">cvg_criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
 
 <div class="viewcode-block" id="CP_NN_HALS.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP_NN_HALS.html#tensorly.decomposition.CP_NN_HALS.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
