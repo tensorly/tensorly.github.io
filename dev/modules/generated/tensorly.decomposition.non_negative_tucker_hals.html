@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>tensorly.decomposition.robust_pca &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.decomposition.non_negative_tucker_hals &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -42,8 +42,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.decomposition.tensor_train" href="tensorly.decomposition.tensor_train.html" />
-    <link rel="prev" title="tensorly.decomposition.non_negative_tucker_hals" href="tensorly.decomposition.non_negative_tucker_hals.html" />
+    <link rel="next" title="tensorly.decomposition.robust_pca" href="tensorly.decomposition.robust_pca.html" />
+    <link rel="prev" title="tensorly.decomposition.non_negative_tucker" href="tensorly.decomposition.non_negative_tucker.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -226,65 +226,97 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-decomposition-robust-pca">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.robust_pca</h1>
+  <section id="tensorly-decomposition-non-negative-tucker-hals">
+<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.non_negative_tucker_hals</h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.decomposition.robust_pca">
-<span class="sig-name descname"><span class="pre">robust_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_J</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/robust_decomposition.html#robust_pca"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Robust Tensor PCA via ALM with support for missing values</p>
-<blockquote>
-<div><p>Decomposes a tensor <cite>X</cite> into the sum of a low-rank component <cite>D</cite>
-and a sparse component <cite>E</cite>.</p>
-</div></blockquote>
-<dl class="field-list">
+<dt class="sig sig-object py" id="tensorly.decomposition.non_negative_tucker_hals">
+<span class="sig-name descname"><span class="pre">non_negative_tucker_hals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity_coefficients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_sparsity_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fista'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tucker.html#non_negative_tucker_hals"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Non-negative Tucker decomposition with HALS</p>
+<p>Uses HALS to update each factor columnwise and uses
+fista or active set algorithm to update the core, see <a class="reference internal" href="#rb5f83fc36539-1" id="id1">[1]</a></p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS)</p>
+<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">None, int or int list</span></dt><dd><p>size of the core tensor, <code class="docutils literal notranslate"><span class="pre">(len(ranks)</span> <span class="pre">==</span> <span class="pre">tensor.ndim)</span></code>
+if int, the same rank is used for all modes</p>
 </dd>
-<dt><strong>mask</strong><span class="classifier">ndarray</span></dt><dd><p>array of booleans with the same shape as <cite>X</cite>
-should be zero where the values are missing and 1 everywhere else</p>
+<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
 </dd>
-<dt><strong>tol</strong><span class="classifier">float</span></dt><dd><p>convergence value</p>
+<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
-<dt><strong>reg_E</strong><span class="classifier">float, optional, default is 1</span></dt><dd><p>regularisation on the sparse part <cite>E</cite></p>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>tolerance: the algorithm stops when the variation in
+the reconstruction error is less than the tolerance
+Default: 1e-8</p>
 </dd>
-<dt><strong>reg_J</strong><span class="classifier">float, optional, default is 1</span></dt><dd><p>regularisation on the low rank part <cite>D</cite></p>
+<dt><strong>sparsity_coefficients</strong><span class="classifier">array of float (as much as the number of modes)</span></dt><dd><p>The sparsity coefficients are used for each factor
+If set to None, the algorithm is computed without sparsity
+Default: None</p>
 </dd>
-<dt><strong>mu_init</strong><span class="classifier">float, optional, default is 10e-5</span></dt><dd><p>initial value for mu</p>
+<dt><strong>core_sparsity_coefficient</strong><span class="classifier">array of float. This coefficient imposes sparsity on core</span></dt><dd><p>when it is updated with fista.
+Default: None</p>
 </dd>
-<dt><strong>mu_max</strong><span class="classifier">float, optional, default is 10e9</span></dt><dd><p>maximal value for mu</p>
+<dt><strong>fixed_modes</strong><span class="classifier">array of integers (between 0 and the number of modes)</span></dt><dd><p>Has to be set not to update a factor, 0 and 1 for U and V respectively
+Default: None</p>
 </dd>
-<dt><strong>learning_rate</strong><span class="classifier">float, optional, default is 1.1</span></dt><dd><p>percentage increase of mu at each iteration</p>
+<dt><strong>verbose</strong><span class="classifier">boolean</span></dt><dd><p>Indicates whether the algorithm prints the successive
+reconstruction errors or not
+Default: False</p>
 </dd>
-<dt><strong>n_iter_max</strong><span class="classifier">int, optional, default is 100</span></dt><dd><p>maximum number of iteration</p>
+<dt><strong>normalize_factors</strong><span class="classifier">if True, aggregates the norms of the factors in the core.</span></dt><dd></dd>
+<dt><strong>return_errors</strong><span class="classifier">boolean</span></dt><dd><p>Indicates whether the algorithm should return all reconstruction errors
+and computation time of each iteration or not
+Default: False</p>
 </dd>
-<dt><strong>verbose</strong><span class="classifier">int, default is 1</span></dt><dd><p>level of verbosity</p>
+<dt><strong>exact</strong><span class="classifier">If it is True, the HALS nnls subroutines give results with high precision but it has a higher computational cost.</span></dt><dd><p>If it is False, the algorithm gives an approximate solution.
+Default: False</p>
+</dd>
+<dt><strong>algorithm</strong><span class="classifier">{‘fista’, ‘active_set’}</span></dt><dd><p>Non negative least square solution to update the core. 
+Default: ‘fista’</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt>(D, E)</dt><dd><p>Robust decomposition of <cite>X</cite></p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>factors</strong><span class="classifier">ndarray list</span></dt><dd><p>list of positive factors of the CP decomposition
+element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
 </dd>
-<dt><strong>D</strong><span class="classifier"><cite>X</cite>-like array</span></dt><dd><p>low-rank part</p>
-</dd>
-<dt><strong>E</strong><span class="classifier"><cite>X</cite>-like array</span></dt><dd><p>sparse error part</p>
+<dt>errors: list</dt><dd><p>A list of reconstruction errors at each iteration of the algorithm.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The problem we solve is, for an input tensor <span class="math notranslate nohighlight">\(\tilde X\)</span>:</p>
+<p>Tucker decomposes a tensor into a core tensor and list of factors:</p>
 <div class="math notranslate nohighlight">
- \begin{equation*}
- \begin{aligned}
-    &amp; \min_{\{J_i\}, \tilde D, \tilde E}
-    &amp; &amp; \sum_{i=1}^N  \text{reg}_J \|J_i\|_* + \text{reg}_E \|E\|_1 \\
-    &amp; \text{subject to}
-    &amp; &amp; \tilde X  = \tilde A + \tilde E \\
-    &amp; &amp; &amp; A_{[i]} =  J_i,  \text{ for each } i \in \{1, 2, \cdots, N\}\\
- \end{aligned}
- \end{equation*}</div></dd></dl>
+\[tensor = [| core; factors[0], ... ,factors[-1] |],\]</div>
+<p>We solve the following problem for each factor:</p>
+<div class="math notranslate nohighlight">
+\[\min_{tensor &gt;= 0} ||tensor_i - factors[i]\times core_i \times (\prod_{i\neq j}(factors[j]))^T||^2,\]</div>
+<p>If we define two variables such as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U = core_i \times (\prod_{i \neq j}(factors[j] \times factors[j]^T)), \\
+M = tensor_i,\end{split}\]</div>
+<p>Gradient of the problem becomes:</p>
+<div class="math notranslate nohighlight">
+\[\delta = -U^TM + factors[i] \times U^TU,\]</div>
+<p>In order to calculate UTU and UTM, we define two variables:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}CoreCross = \prod_{i\neq j}(core_i \times (\prod_{i\neq j}(factors[j]\times factors[j]^T)) \\
+TensorCross =  \prod_{i\neq j} tensor_i \times factors[i],\end{split}\]</div>
+<p>Then UTU and UTM becomes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U^TU = CoreCross_j \times core_j^T, \\
+U^TM = (TensorCross_j \times core_j^T)^T,\end{split}\]</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="rb5f83fc36539-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <div class="clearer"></div></section>
 
@@ -294,16 +326,16 @@ should be zero where the values are missing and 1 everywhere else</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.non_negative_tucker_hals.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.non_negative_tucker.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker_hals</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.non_negative_tucker</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.decomposition.tensor_train.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.tensor_train </span>
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.robust_pca.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.robust_pca </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
