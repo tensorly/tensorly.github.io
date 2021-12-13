@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Constrained CP decomposition in Tensorly &gt;=0.7 &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Image compression via tensor decomposition" href="plot_image_compression.html" />
+    <link rel="prev" title="Using line search with PARAFAC" href="plot_cp_line_search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        <!-- Always displayed, last item has to be navbar-burger -->
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+
+          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
+            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+          </a> -->
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        <!-- only on larger displays (> 1024px) -->
+
+          <div class="navbar-start">
+          <!-- RIGHT -->
+            <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+            <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+            <a class="navbar-item" href="../../modules/api.html">
+              API
+            </a>
+            <a class="navbar-item" href="../index.html">
+              Examples
+            </a>
+            <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+              Notebooks
+            </a>
+
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            <!-- LEFT -->
+
+            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fa fa-home"></i>
+                </span>
+                <span>Home</span>
+              </span>
+              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+            </a> -->
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
+            </a>
+
+            </div> <!-- navbar item -->
+          </div> <!-- navbar end -->
+        </div> <!-- only large items -->
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    <!-- Side menu  -->
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>$('#searchbox').show(0);</script>
+  <script>
+  $(document).ready(function() {
+    Document.highlightSearchWords = function() {
+      var params = $.getQueryParameters();
+      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
+      if (terms.length) {
+        var body = $('div.body');
+        if (!body.length) {
+          body = $('body');
+        }
+        window.setTimeout(function() {
+          $.each(terms, function() {
+            body.highlightText(this.toLowerCase(), 'highlighted');
+          });
+        }, 10);
+        $('<p class="highlight-link"><a href="javascript:Documentation.' +
+          'hideSearchWords()">' + _('Hide All')
+          + '<span class="tag is-delete"></span>'
+          + '</a></p>')
+            .appendTo($('#searchbox'));
+      }
+    };
+  });
+  </script>
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#tensor-decomposition">Tensor decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-regression-with-tensorly">Tensor regression with tensorly</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+    <div class="column main-column">
+
+      <!-- Main content  -->
+      <section class="main-section">
+
+        <!-- Toggle menu button -->
+		
+        <div class="side-menu-toggle">
+          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+            <span>menu</span> 
+          </button>
+        </div>
+        
+
+        <div class="content main-content">
+          
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-guide-for-constrained-cp-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="constrained-cp-decomposition-in-tensorly-0-7">
+<span id="sphx-glr-auto-examples-decomposition-plot-guide-for-constrained-cp-py"></span><h1>Constrained CP decomposition in Tensorly &gt;=0.7</h1>
+<p>On this page, you will find examples showing how to use constrained CP/Parafac.</p>
+<section id="introduction">
+<h2>Introduction</h2>
+<p>Since version 0.7, Tensorly includes constrained CP decomposition which penalizes or
+constrains factors as chosen by the user. The proposed implementation of constrained CP uses the
+Alternating Optimization Alternating Direction Method of Multipliers (AO-ADMM) algorithm from [1] which
+solves alternatively convex optimization problem using primal-dual optimization. In constrained CP
+decomposition, an auxilliary factor is introduced which is constrained or regularized using an operator called the
+proximal operator. The proximal operator may therefore change according to the selected constraint or penalization.</p>
+<p>Tensorly provides several constraints and their corresponding proximal operators, each can apply to one or all factors in the CP decomposition:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Non-negativity</dt><dd><ul class="simple">
+<li><p><cite>non_negative</cite> in signature</p></li>
+<li><p>Prevents negative values in CP factors.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>L1 regularization</dt><dd><ul class="simple">
+<li><p><cite>l1_reg</cite> in signature</p></li>
+<li><p>Adds a L1 regularization term on the CP factors to the CP cost function, this promotes sparsity in the CP factors. The user chooses the regularization amount.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>L2 regularization</dt><dd><ul class="simple">
+<li><p><cite>l2_reg</cite> in signature</p></li>
+<li><p>Adds a L2 regularization term on the CP factors to the CP cost function. The user chooses the regularization amount.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>L2 square regularization</dt><dd><ul class="simple">
+<li><p><cite>l2_square_reg</cite> in signature</p></li>
+<li><p>Adds a L2 regularization term on the CP factors to the CP cost function. The user chooses the regularization amount.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Unimodality</dt><dd><ul class="simple">
+<li><p><cite>unimodality</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that each column of the factors is unimodal (there is only one local maximum, like a Gaussian).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Simplex</dt><dd><ul class="simple">
+<li><p><cite>simplex</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that each column of the factors lives on the simplex or user-defined radius (entries are nonnegative and sum to a user-defined positive parameter columnwise).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Normalization</dt><dd><ul class="simple">
+<li><p><cite>normalize</cite> in signature</p></li>
+<li><p>Impose that the largest absolute value in the factors elementwise is 1.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Normalized sparsity</dt><dd><ul class="simple">
+<li><p><cite>normalized_sparsity</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that the columns of factors are both normalized with the L2 norm, and k-sparse (at most k-nonzeros per column) with k user-defined.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Soft sparsity</dt><dd><ul class="simple">
+<li><p><cite>soft_sparsity</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that the columns of factors have L1 norm bounded by a user-defined threshold.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Smoothness</dt><dd><ul class="simple">
+<li><p><cite>smoothness</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Favor smoothness in factors columns by penalizing the L2 norm of finite differences. The user chooses the regularization amount. The proximal operator in fact solves a banded system.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Monotonicity</dt><dd><ul class="simple">
+<li><p><cite>monotonicity</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that the factors are either always increasing or decreasing (user-specified) columnwise. This is based on isotonic regression.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Hard sparsity</dt><dd><ul class="simple">
+<li><p><cite>hard_sparsity</cite> in signature</p></li>
+<li><p>This constraint acts columnwise on the factors</p></li>
+<li><p>Impose that each column of the factors has at most k nonzero entries (k is user-defined).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<p>While some of these constraints (2, 3, 4, 6, 8, 9, 12) require a scalar
+input as its parameter or regularizer, boolean input could be enough
+for other constraints (1, 5, 7, 10, 11). Selection of one of these
+constraints for all mode (or factors) or using different constraints for different modes are both supported.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">constrained_parafac</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># tensor generation</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</section>
+<section id="using-one-constraint-for-all-modes">
+<h2>Using one constraint for all modes</h2>
+<p>Constraints are inputs of the constrained_parafac function, which itself uses the
+<code class="docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal.validate_constraints</span></code> function in order to process the input
+of the user. If a user wants to use the same constraint for all modes, an
+input (bool or a scalar value or list of scalar values) should be given to this constraint.
+Assume, one wants to use unimodality constraint for all modes. Since it does not require
+any scalar input, unimodality can be imposed by writing <cite>True</cite> for <cite>unimodality</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This constraint imposes that each column of all the factors in the CP decomposition are unimodal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;1. column&#39;</span><span class="p">,</span> <span class="s1">&#39;2. column&#39;</span><span class="p">,</span> <span class="s1">&#39;3. column&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_001.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_001.png" alt="plot guide for constrained cp" class = "sphx-glr-single-img"/><p>Constraints requiring a scalar input can be used similarly as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The same regularization coefficient l1_reg is used for all the modes. Here the l1 penalization induces sparsity given that the regularization coefficient is large enough.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 1. factor&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 2. factor&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_002.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_002.png" alt="Histogram of 1. factor" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_003.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_003.png" alt="Histogram of 2. factor" class = "sphx-glr-multi-img"/></li>
+</ul>
+</section>
+<section id="using-one-constraint-for-some-modes">
+<h2>Using one constraint for some modes</h2>
+<p>As a second option, constraint can be used for only a few selected modes by using
+a python dictionary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
+ [[4.68 0.11 0.4 ]
+ [4.93 0.68 0.28]
+ [5.16 0.15 0.42]
+ [4.1  0.09 0.36]
+ [4.9  0.31 0.37]
+ [4.31 0.48 0.29]]
+2. factor
+ [[-0.39  2.58  3.38]
+ [-0.36  1.77  3.55]
+ [-0.34  2.13  3.06]
+ [-0.35  1.91  3.18]
+ [-0.35  2.22  3.15]
+ [-0.37  0.75  4.05]
+ [-0.34  0.79  3.68]
+ [-0.32  0.87  3.37]]
+</pre></div>
+</div>
+<p>Since only the first and last factors are chosen, entries on the second mode factor could be negative.</p>
+</section>
+<section id="using-a-constraint-with-the-different-scalar-inputs-for-each-mode">
+<h2>Using a constraint with the different scalar inputs for each mode</h2>
+<p>One may prefer different scalar value for each mode. It is possible by
+using a list structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 1. factor&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 2. factor&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 3. factor&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_004.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_004.png" alt="Histogram of 1. factor" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_005.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_005.png" alt="Histogram of 2. factor" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_006.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_006.png" alt="Histogram of 3. factor" class = "sphx-glr-multi-img"/></li>
+</ul>
+</section>
+<section id="using-different-constraints-for-each-mode">
+<h2>Using different constraints for each mode</h2>
+<p>To use different constraint for different modes, the dictionary structure
+should be preferred:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+                                 <span class="n">l2_square_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>In the dictionary, <cite>key</cite> is the selected mode and <cite>value</cite> is a scalar value or
+only <cite>True</cite> depending on the selected constraint.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
+ [[-13.15 -11.94  12.71]
+ [-14.42  11.52  -0.21]
+ [-14.03  -5.4   12.54]
+ [-12.48   0.43   0.6 ]
+ [-15.42   8.93  -9.09]
+ [-13.58  -5.19  -3.76]]
+2. factor
+ [[0.4  1.15 0.24]
+ [0.39 0.3  0.  ]
+ [0.36 0.32 0.  ]
+ [0.35 0.02 0.84]
+ [0.37 0.69 0.16]
+ [0.38 0.26 0.79]
+ [0.37 0.   0.  ]
+ [0.34 0.18 0.38]]
+3. factor
+ [[-0.08  0.03 -0.01]
+ [-0.08  0.03  0.04]
+ [-0.11 -0.02 -0.  ]
+ [-0.11 -0.02 -0.02]
+ [-0.09 -0.01  0.03]
+ [-0.1   0.03  0.02]
+ [-0.1  -0.    0.04]
+ [-0.11  0.01 -0.  ]
+ [-0.1  -0.01  0.02]
+ [-0.1   0.    0.  ]]
+</pre></div>
+</div>
+<p>Thus, first factor will be non-negative, second factor will be regularized
+by <span class="math notranslate nohighlight">\(0.01\)</span> with <span class="math notranslate nohighlight">\(l_1\)</span> and last factor will be regularized by
+<span class="math notranslate nohighlight">\(0.01\)</span> with <span class="math notranslate nohighlight">\(l_2^2\)</span>.</p>
+</section>
+<section id="references">
+<h2>References</h2>
+<p>[1] Huang, Kejun, Nicholas D. Sidiropoulos, and Athanasios P. Liavas.
+“A flexible and efficient algorithmic framework for constrained
+matrix and tensor factorization.”
+IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
+<a class="reference external" href="https://ieeexplore.ieee.org/document/7484753">(Online version)</a></p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.713 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-guide-for-constrained-cp-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/02fe230fcb90df96787f11e615bb0af8/plot_guide_for_constrained_cp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_guide_for_constrained_cp.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0d7c4ccdff2f531825995c8fa152400c/plot_guide_for_constrained_cp.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_guide_for_constrained_cp.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+        </div>
+
+		
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button is-medium pagination-previous" href="plot_cp_line_search.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Using line search with PARAFAC</span>
+    </a>
+    
+    
+    <a class="button is-medium pagination-next" href="plot_image_compression.html" title="next page" accesskey="n">
+        <span>Image compression via tensor decomposition </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+        
+
+      </section>
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+	
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc">  
+        <div class="menu menu-list">
+        <p class="menu-label">On this page</p>
+        <ul>
+<li><a class="reference internal" href="#">Constrained CP decomposition in Tensorly &gt;=0.7</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#using-one-constraint-for-all-modes">Using one constraint for all modes</a></li>
+<li><a class="reference internal" href="#using-one-constraint-for-some-modes">Using one constraint for some modes</a></li>
+<li><a class="reference internal" href="#using-a-constraint-with-the-different-scalar-inputs-for-each-mode">Using a constraint with the different scalar inputs for each mode</a></li>
+<li><a class="reference internal" href="#using-different-constraints-for-each-mode">Using different constraints for each mode</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
+
+    
+
+  </div>
+  </div>
+
+  <!-- Include here scripts that need to be added after the page is loaded -->
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

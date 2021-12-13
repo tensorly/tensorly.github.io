@@ -164,21 +164,35 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    non_negative : bool or dictionary</span>
-<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;.</span>
+<span class="sd">        If it is True, non-negative constraint is applied to all modes.</span>
 <span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l1 norm using the input value as regularization parameter.</span>
 <span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 norm using the input value as regularization parameter.</span>
 <span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 square norm using the input value as regularization parameter.</span>
 <span class="sd">    unimodality : bool or dictionary, optional</span>
-<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">        If it is True, unimodality constraint is applied to all modes.</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalize : bool or dictionary, optional</span>
-<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
-<span class="sd">        is applied to all modes.</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array.</span>
+<span class="sd">        If it is True, normalize constraint is applied to all modes.</span>
 <span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">        Projects on the simplex with the given parameter</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Normalizes with the norm after hard thresholding</span>
 <span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Impose that the columns of factors have L1 norm bounded by a user-defined threshold.</span>
 <span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">        Optimizes the factors by solving a banded system</span>
 <span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">        Projects columns to monotonically decreasing distrbution</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">        If it is True, monotonicity constraint is applied to all modes.</span>
 <span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Hard thresholding with the given threshold</span>
 <span class="sd">    n_const : int</span>
 <span class="sd">        Number of constraints. If it is None, function returns input tensor.</span>
 <span class="sd">        Default : 1</span>
@@ -388,21 +402,35 @@
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">    non_negative : bool or dictionary</span>
-<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;.</span>
+<span class="sd">        If it is True, non-negative constraint is applied to all modes.</span>
 <span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the given regularizer</span>
 <span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the given regularizer</span>
 <span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the given regularizer</span>
 <span class="sd">    unimodality : bool or dictionary, optional</span>
-<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">        If it is True, unimodality constraint is applied to all modes.</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalize : bool or dictionary, optional</span>
-<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
-<span class="sd">        is applied to all modes.</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array.</span>
+<span class="sd">        If it is True, normalize constraint is applied to all modes.</span>
 <span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">        Projects on the simplex with the given parameter</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Normalizes with the norm after hard thresholding</span>
 <span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Simplex operator using soft thresholding</span>
 <span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">        Optimizes the factors by solving a banded system</span>
 <span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">        Projects columns to monotonically decreasing distrbution</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">        If it is True, monotonicity constraint is applied to all modes.</span>
 <span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Hard thresholding with the given threshold</span>
 <span class="sd">    n_const : int</span>
 <span class="sd">        Number of constraints. If it is None, function returns input tensor.</span>
 <span class="sd">        Default : 1</span>
@@ -442,7 +470,7 @@
     <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;unimodality&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">unimodality_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;normalize&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;simplex&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">simplex_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">constraint</span> <span class="o">==</span> <span class="s1">&#39;normalized_sparsity&#39;</span><span class="p">:</span>
@@ -1204,25 +1232,43 @@
 <span class="sd">        Maximum number of iteration</span>
 <span class="sd">        Default: 100</span>
 <span class="sd">    n_const : int</span>
+<span class="sd">        Number of constraints. If it is None, function solves least square problem without proximity operator</span>
+<span class="sd">        If ADMM function is used with a constraint apart from constrained parafac decomposition,</span>
+<span class="sd">        n_const value should be changed to &#39;1&#39;.</span>
 <span class="sd">        Default : None</span>
 <span class="sd">    order : int</span>
+<span class="sd">        Specifies which constraint to implement if several constraints are selected as input</span>
 <span class="sd">        Default : None</span>
 <span class="sd">    non_negative : bool or dictionary</span>
-<span class="sd">        This constraint is clipping negative values to &#39;0&#39;. If it is True non-negative constraint is applied to all modes.</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;.</span>
+<span class="sd">        If it is True, non-negative constraint is applied to all modes.</span>
 <span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l1 norm using the input value as regularization parameter.</span>
 <span class="sd">    l2_reg : float or list or dictionary, optional</span>
-<span class="sd">    l2_square : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 norm using the input value as regularization parameter.</span>
+<span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 square norm using the input value as regularization parameter.</span>
 <span class="sd">    unimodality : bool or dictionary, optional</span>
-<span class="sd">        If it is True unimodality constraint is applied to all modes.</span>
+<span class="sd">        If it is True, unimodality constraint is applied to all modes.</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalize : bool or dictionary, optional</span>
-<span class="sd">        This constraint divides all the values by maximum value of the input array. If it is True normalize constraint</span>
-<span class="sd">        is applied to all modes.</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array.</span>
+<span class="sd">        If it is True, normalize constraint is applied to all modes.</span>
 <span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">        Projects on the simplex with the given parameter</span>
+<span class="sd">        Applied to each column seperately.</span>
 <span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Normalizes with the norm after hard thresholding</span>
 <span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Impose that the columns of factors have L1 norm bounded by a user-defined threshold.</span>
 <span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">        Optimizes the factors by solving a banded system</span>
 <span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">        Projects columns to monotonically decreasing distrbution</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">        If it is True, monotonicity constraint is applied to all modes.</span>
 <span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Hard thresholding with the given threshold</span>
 <span class="sd">    tol : float</span>
 
 <span class="sd">    Returns</span>

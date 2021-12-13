@@ -264,22 +264,36 @@ reconstruction error is less than <cite>tol_outer</cite>.</p>
 </dd>
 <dt><strong>return_errors</strong><span class="classifier">bool, optional</span></dt><dd><p>Activate return of iteration errors</p>
 </dd>
-<dt><strong>non_negative</strong><span class="classifier">bool or dictionary</span></dt><dd><p>This constraint is clipping negative values to ‘0’. If it is True non-negative constraint is applied to all modes.</p>
+<dt><strong>non_negative</strong><span class="classifier">bool or dictionary</span></dt><dd><p>This constraint is clipping negative values to ‘0’.
+If it is True, non-negative constraint is applied to all modes.</p>
 </dd>
-<dt><strong>l1_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>l2_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>l2_square_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>unimodality</strong><span class="classifier">bool or dictionary, optional</span></dt><dd><p>If it is True unimodality constraint is applied to all modes.</p>
+<dt><strong>l1_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Penalizes the factor with the l1 norm using the input value as regularization parameter.</p>
 </dd>
-<dt><strong>normalize</strong><span class="classifier">bool or dictionary, optional</span></dt><dd><p>This constraint divides all the values by maximum value of the input array. If it is True normalize constraint
-is applied to all modes.</p>
+<dt><strong>l2_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Penalizes the factor with the l2 norm using the input value as regularization parameter.</p>
 </dd>
-<dt><strong>simplex</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>normalized_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>soft_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>smoothness</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
-<dt><strong>monotonicity</strong><span class="classifier">bool or dictionary, optional</span></dt><dd></dd>
-<dt><strong>hard_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd></dd>
+<dt><strong>l2_square_reg</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Penalizes the factor with the l2 square norm using the input value as regularization parameter.</p>
+</dd>
+<dt><strong>unimodality</strong><span class="classifier">bool or dictionary, optional</span></dt><dd><p>If it is True, unimodality constraint is applied to all modes.
+Applied to each column seperately.</p>
+</dd>
+<dt><strong>normalize</strong><span class="classifier">bool or dictionary, optional</span></dt><dd><p>This constraint divides all the values by maximum value of the input array.
+If it is True, normalize constraint is applied to all modes.</p>
+</dd>
+<dt><strong>simplex</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Projects on the simplex with the given parameter
+Applied to each column seperately.</p>
+</dd>
+<dt><strong>normalized_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Normalizes with the norm after hard thresholding</p>
+</dd>
+<dt><strong>soft_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Impose that the columns of factors have L1 norm bounded by a user-defined threshold.</p>
+</dd>
+<dt><strong>smoothness</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Optimizes the factors by solving a banded system</p>
+</dd>
+<dt><strong>monotonicity</strong><span class="classifier">bool or dictionary, optional</span></dt><dd><p>Projects columns to monotonically decreasing distrbution
+Applied to each column seperately.
+If it is True, monotonicity constraint is applied to all modes.</p>
+</dd>
+<dt><strong>hard_sparsity</strong><span class="classifier">float or list or dictionary, optional</span></dt><dd><p>Hard thresholding with the given threshold</p>
+</dd>
 <dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion if <cite>tol</cite> is not None.
 If ‘rec_error’,  algorithm stops at current iteration if <code class="docutils literal notranslate"><span class="pre">(previous</span> <span class="pre">rec_error</span> <span class="pre">-</span> <span class="pre">current</span> <span class="pre">rec_error)</span> <span class="pre">&lt;</span> <span class="pre">tol</span></code>.
 If ‘abs_rec_error’, algorithm terminates when <cite>|previous rec_error - current rec_error| &lt; tol</cite>.</p>
