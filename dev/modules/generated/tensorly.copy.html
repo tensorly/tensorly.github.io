@@ -285,6 +285,17 @@ returned array will be forced to be a base-class array (defaults to False).</p>
 <span class="go">False</span>
 </pre></div>
 </div>
+<p>Note that, np.copy clears previously set WRITEABLE=False flag.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;WRITEABLE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;WRITEABLE&quot;</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">array([3, 2, 3])</span>
+</pre></div>
+</div>
 <p>Note that np.copy is a shallow copy and will not copy object
 elements within arrays. This is mainly important for arrays
 containing Python objects. The new array will contain the
@@ -343,7 +354,7 @@ use <cite>copy.deepcopy</cite>:</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

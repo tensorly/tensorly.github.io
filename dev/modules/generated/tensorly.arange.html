@@ -235,8 +235,8 @@
 (in other words, the interval including <cite>start</cite> but excluding <cite>stop</cite>).
 For integer arguments the function is equivalent to the Python built-in
 <cite>range</cite> function, but returns an ndarray rather than a list.</p>
-<p>When using a non-integer step, such as 0.1, the results will often not
-be consistent.  It is better to use <cite>numpy.linspace</cite> for these cases.</p>
+<p>When using a non-integer step, such as 0.1, it is often better to use
+<cite>numpy.linspace</cite>. See the warnings section below for more information.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -277,6 +277,24 @@ than <cite>stop</cite>.</p>
 </dl>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The length of the output might not be numerically stable.</p>
+<p>Another stability issue is due to the internal implementation of
+<cite>numpy.arange</cite>.
+The actual step value used to populate the array is
+<code class="docutils literal notranslate"><span class="pre">dtype(start</span> <span class="pre">+</span> <span class="pre">step)</span> <span class="pre">-</span> <span class="pre">dtype(start)</span></code> and not <cite>step</cite>. Precision loss
+can occur here, due to casting or due to using floating points when
+<cite>start</cite> is much larger than <cite>step</cite>. This can lead to unexpected
+behaviour. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="go">array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="go">array([-3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8])</span>
+</pre></div>
+</div>
+<p>In such cases, the use of <cite>numpy.linspace</cite> should be preferred.</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -333,7 +351,7 @@ than <cite>stop</cite>.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

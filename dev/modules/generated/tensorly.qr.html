@@ -236,14 +236,18 @@ upper-triangular.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>a</strong><span class="classifier">array_like, shape (M, N)</span></dt><dd><p>Matrix to be factored.</p>
+<dt><strong>a</strong><span class="classifier">array_like, shape (…, M, N)</span></dt><dd><p>An array-like object with the dimensionality of at least 2.</p>
 </dd>
 <dt><strong>mode</strong><span class="classifier">{‘reduced’, ‘complete’, ‘r’, ‘raw’}, optional</span></dt><dd><p>If K = min(M, N), then</p>
 <ul class="simple">
-<li><p>‘reduced’  : returns q, r with dimensions (M, K), (K, N) (default)</p></li>
-<li><p>‘complete’ : returns q, r with dimensions (M, M), (M, N)</p></li>
-<li><p>‘r’        : returns r only with dimensions (K, N)</p></li>
-<li><p>‘raw’      : returns h, tau with dimensions (N, M), (K,)</p></li>
+<li><dl class="simple">
+<dt>‘reduced’<span class="classifier">returns q, r with dimensions</span></dt><dd><p>(…, M, K), (…, K, N) (default)</p>
+</dd>
+</dl>
+</li>
+<li><p>‘complete’ : returns q, r with dimensions (…, M, M), (…, M, N)</p></li>
+<li><p>‘r’        : returns r only with dimensions (…, K, N)</p></li>
+<li><p>‘raw’      : returns h, tau with dimensions (…, N, M), (…, K,)</p></li>
 </ul>
 <p>The options ‘reduced’, ‘complete, and ‘raw’ are new in numpy 1.8,
 see the notes for more information. The default is ‘reduced’, and to
@@ -262,9 +266,13 @@ explanation.</p>
 <dt><strong>q</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>A matrix with orthonormal columns. When mode = ‘complete’ the
 result is an orthogonal/unitary matrix depending on whether or not
 a is real/complex. The determinant may be either +/- 1 in that
-case.</p>
+case. In case the number of dimensions in the input array is
+greater than 2 then a stack of the matrices with above properties
+is returned.</p>
 </dd>
-<dt><strong>r</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>The upper-triangular matrix.</p>
+<dt><strong>r</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>The upper-triangular matrix or a stack of upper-triangular
+matrices if the number of dimensions in the input array is greater
+than 2.</p>
 </dd>
 <dt><strong>(h, tau)</strong><span class="classifier">ndarrays of np.double or np.cdouble, optional</span></dt><dd><p>The array h contains the Householder reflectors that generate q
 along with r. The tau array contains scaling factors for the
@@ -313,6 +321,14 @@ in lapack_lite and just await the necessary work.</p>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>  <span class="c1"># mode=&#39;r&#39; returns the same r as mode=&#39;full&#39;</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c1"># Stack of 2 x 2 matrices as input</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -377,7 +393,7 @@ however, we simply use <cite>lstsq</cite>.)</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
