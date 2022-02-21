@@ -231,6 +231,7 @@ with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the for
 <span class="sd">   ----------</span>
 <span class="sd">   arg : type</span>
 <span class="sd">      description</span>
+<span class="sd">      **Notice the space before and after the colon!**</span>
 
 <span class="sd">   Returns</span>
 <span class="sd">   -------</span>
@@ -274,6 +275,40 @@ Similarly, use <code class="docutils literal notranslate"><span class="pre">:fun
 <p>Titles are created by underlying them, and the hierarchy is automatically determined by Sphinx.
 If you do not want your title to appear in the table of contents, use a <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric">rubric</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">rubric</span><span class="p">::</span> <span class="n">Title</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples</h2>
+<p>Examples are located in <cite>tensorly/examples</cite> and executed everytime the documentation is built.
+We use the <a class="reference external" href="https://sphinx-gallery.github.io/stable/index.html">Sphinx-Gallery</a> which you can refer to for documentation but,
+in short, your example should be called <cite>plot_xyz.py</cite> and the the structure of that file should typically look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Title of your example</span>
+<span class="sd">=====================</span>
+
+<span class="sd">The above title will be the name of the example. The remainder of this text is included in the generated example.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Comments are converted into text, while code (below) is executed (and displayed)</span>
+<span class="n">myvariable</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;my variable is </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">myvariable</span><span class="p">))</span>
+
+<span class="c1"># %%</span>
+<span class="c1"># This is a section header</span>
+<span class="c1"># ------------------------</span>
+<span class="c1">#</span>
+<span class="c1"># In the built documentation, it will be rendered as rST. All rST lines</span>
+<span class="c1"># must begin with &#39;# &#39; (note the space) including underlines below section</span>
+<span class="c1"># headers.</span>
+<span class="c1">#</span>
+<span class="c1"># Note</span>
+<span class="c1"># ----</span>
+<span class="c1"># You can embed rST in your Python examples by including a line of &gt;= 20 # symbols, #%%, or # %%.</span>
+<span class="c1"># For consistency, it is recommended that you use only one of the above three ‘block splitter’ options in your project.</span>
+<span class="c1"># If using a line of #’s, we recommend using 79 #’s, like this:</span>
+<span class="c1">###############################################################################</span>
 </pre></div>
 </div>
 </section>
@@ -328,6 +363,7 @@ If you do not want your title to appear in the table of contents, use a <a class
 <li><a class="reference internal" href="#docstrings">Docstrings</a></li>
 <li><a class="reference internal" href="#refer-to-functions-or-modules">Refer to functions or modules</a></li>
 <li><a class="reference internal" href="#titles">Titles</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 </ul>

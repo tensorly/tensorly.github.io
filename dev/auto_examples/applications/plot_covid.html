@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Introduction &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>COVID-19 Serology Dataset Analysis with CP &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -41,8 +41,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Non-negative CP decomposition in Tensorly &gt;=0.6" href="plot_nn_cp_hals.html" />
-    <link rel="prev" title="Non-negative Tucker decomposition in Tensorly &gt;=0.6" href="plot_nn_tucker.html" />
+    <link rel="next" title="Using line search with PARAFAC" href="../decomposition/plot_cp_line_search.html" />
+    <link rel="prev" title="Image compression via tensor decomposition" href="plot_image_compression.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -183,7 +183,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#tensor-decomposition">Tensor decomposition</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#practical-applications-of-tensor-methods">Practical applications of tensor methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-decomposition">Tensor decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-regression-with-tensorly">Tensor regression with tensorly</a></li>
 </ul>
 </li>
@@ -216,25 +217,31 @@
           
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-apply-covid-py"><span class="std std-ref">here</span></a>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-applications-plot-covid-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<p class="sphx-glr-example-title" id="sphx-glr-auto-examples-decomposition-apply-covid-py">Apply CP decomposition to COVID-19 Serology Dataset</p>
+<section class="sphx-glr-example-title" id="covid-19-serology-dataset-analysis-with-cp">
+<span id="sphx-glr-auto-examples-applications-plot-covid-py"></span><h1>COVID-19 Serology Dataset Analysis with CP</h1>
+<p>Apply CP decomposition to COVID-19 Serology Dataset</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
+</pre></div>
+</div>
 <section id="introduction">
-<h1>Introduction</h1>
+<h2>Introduction</h2>
 <p>PARAFAC (CP) decomposition is extremely useful in dimensionality reduction, allowing us
 to develop models that are both representative and compact while retaining crucial patterns
 between subjects. Here, we provide an example of how it can be applied to biomedical research.</p>
 <p>Systems serology is a new technology that examines the antibodies from a patient’s serum, aiming
 to comprehensively profile the interactions between the antibodies and
-[Fc receptors](<a class="reference external" href="https://en.wikipedia.org/wiki/Fc_receptor">https://en.wikipedia.org/wiki/Fc_receptor</a>) alongside other types of immunological
-and demographic data. Here, we will apply CP decomposition to a [COVID-19 system serology dataset]
-(<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0092867420314598">https://www.sciencedirect.com/science/article/pii/S0092867420314598</a>). In this dataset, serum antibodies
+<a class="reference external" href="https://en.wikipedia.org/wiki/Fc_receptor">Fc receptors</a> alongside other types of immunological
+and demographic data. Here, we will apply CP decomposition to a
+<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0092867420314598">COVID-19 system serology dataset</a>.
+In this dataset, serum antibodies
 of 438 samples collected from COVID-19 patients were systematically profiled by their binding behavior
 to SARS-CoV-2 (the virus that causes COVID-19) antigens and Fc receptors activities. Samples are
 labeled by the status of the patients.</p>
 <p>Details of this analysis as well as more in-depth biological implications can be found in
-[this work](<a class="reference external" href="https://www.embopress.org/doi/full/10.15252/msb.202110243">https://www.embopress.org/doi/full/10.15252/msb.202110243</a>). It also includes applying
+<a class="reference external" href="https://www.embopress.org/doi/full/10.15252/msb.202110243">this work</a>. It also includes applying
 tensor methods to HIV systems serology measurements and using them to predict patient status.</p>
 <p>We first import this dataset of a panel of COVID-19 patients:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -249,7 +256,7 @@ tensor methods to HIV systems serology measurements and using them to predict pa
 </div>
 </section>
 <section id="apply-cp-decomposition-to-this-dataset-with-tensorly">
-<h1>Apply CP decomposition to this dataset with Tensorly</h1>
+<h2>Apply CP decomposition to this dataset with Tensorly</h2>
 <p>Now we apply CP decomposition to this dataset.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">comps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="n">CMTFfacs</span> <span class="o">=</span> <span class="p">[</span><span class="n">parafac</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
@@ -274,9 +281,13 @@ variance reconstructed (R2X) for a range of ranks.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
+<img src="../../_images/sphx_glr_plot_covid_001.png" srcset="../../_images/sphx_glr_plot_covid_001.png" alt="plot covid" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(0.0, 1.0)
+</pre></div>
+</div>
 </section>
 <section id="inspect-the-biological-insights-from-cp-components">
-<h1>Inspect the biological insights from CP components</h1>
+<h2>Inspect the biological insights from CP components</h2>
 <p>Eventually, we wish CP decomposition can bring insights to this dataset. For example, in this
 case, revealing the underlying trend of COVID-19 serum-level immunity. To do this, we can inspect
 how each component looks like on weights.</p>
@@ -307,6 +318,10 @@ how each component looks like on weights.</p>
 <span class="n">fig2</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;PiYG&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
+<img src="../../_images/sphx_glr_plot_covid_002.png" srcset="../../_images/sphx_glr_plot_covid_002.png" alt="samples, antigens, receptors" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar object at 0x7fb3fdf274f0&gt;
+</pre></div>
+</div>
 <p>From the results, we can see that serum COVID-19 immunity separates into two distinct signals,
 represented by two CP components: a clear acute response with IgG3, IgM, and IgA, and a long-term,
 IgG1-specific response. Samples from patients with different symptoms can be distinguished from
@@ -314,23 +329,24 @@ these two components. This indicates that CP decomposition is a great tool to fi
 significant signals.</p>
 </section>
 <section id="references">
-<h1>References</h1>
+<h2>References</h2>
 <p>[1] Tan, Z. C., Murphy, M. C., Alpay, H. S., Taylor, S. D., &amp; Meyer, A. S. (2021). Tensor‐structured
 decomposition improves systems serology analysis. Molecular systems biology, 17(9), e10243.
-&lt;<a class="reference external" href="https://www.embopress.org/doi/full/10.15252/msb.202110243">https://www.embopress.org/doi/full/10.15252/msb.202110243</a>&gt;</p>
+<a href="#id1"><span class="problematic" id="id2">`https://www.embopress.org/doi/full/10.15252/msb.202110243`_</span></a></p>
 <p>[2] Zohar, T., Loos, C., Fischinger, S., Atyeo, C., Wang, C., Slein, M. D., … &amp; Alter, G. (2020).
 Compromised humoral functional evolution tracks with SARS-CoV-2 mortality. Cell, 183(6), 1508-1519.
-&lt;<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0092867420314598">https://www.sciencedirect.com/science/article/pii/S0092867420314598</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-apply-covid-py">
+<a href="#id3"><span class="problematic" id="id4">`https://www.sciencedirect.com/science/article/pii/S0092867420314598`_</span></a></p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.609 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-covid-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/65f7ac51bc5975bb86fab00c5a444e85/apply_covid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">apply_covid.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/2d1781e05b6ef942fb097ff181023668/plot_covid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_covid.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/62485408519048785b0ea6ca85f7b33e/apply_covid.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">apply_covid.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/2e3d154df5c15282f0c4a6209fe4ae14/plot_covid.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_covid.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
 </section>
 
 
@@ -339,16 +355,16 @@ Compromised humoral functional evolution tracks with SARS-CoV-2 mortality. Cell,
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="plot_nn_tucker.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="plot_image_compression.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Non-negative Tucker decomposition in Tensorly &gt;=0.6</span>
+        <span>Image compression via tensor decomposition</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="plot_nn_cp_hals.html" title="next page" accesskey="n">
-        <span>Non-negative CP decomposition in Tensorly &gt;=0.6 </span>
+    <a class="button is-medium pagination-next" href="../decomposition/plot_cp_line_search.html" title="next page" accesskey="n">
+        <span>Using line search with PARAFAC </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -378,10 +394,13 @@ Compromised humoral functional evolution tracks with SARS-CoV-2 mortality. Cell,
         <div class="menu menu-list">
         <p class="menu-label">On this page</p>
         <ul>
-<li><a class="reference internal" href="#">Introduction</a></li>
+<li><a class="reference internal" href="#">COVID-19 Serology Dataset Analysis with CP</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#apply-cp-decomposition-to-this-dataset-with-tensorly">Apply CP decomposition to this dataset with Tensorly</a></li>
 <li><a class="reference internal" href="#inspect-the-biological-insights-from-cp-components">Inspect the biological insights from CP components</a></li>
 <li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
