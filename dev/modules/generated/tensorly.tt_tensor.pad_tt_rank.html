@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>tensorly.tt_matrix.tt_matrix_to_tensor &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.tt_tensor.pad_tt_rank &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -41,8 +41,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.tt_matrix.tt_matrix_to_unfolded" href="tensorly.tt_matrix.tt_matrix_to_unfolded.html" />
-    <link rel="prev" title="tensorly.tt_tensor.pad_tt_rank" href="tensorly.tt_tensor.pad_tt_rank.html" />
+    <link rel="next" title="tensorly.tt_matrix.tt_matrix_to_tensor" href="tensorly.tt_matrix.tt_matrix_to_tensor.html" />
+    <link rel="prev" title="tensorly.tt_tensor.tt_to_vec" href="tensorly.tt_tensor.tt_to_vec.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -185,8 +185,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in CP form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker form</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Tensor-Train (MPS) form</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT form</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Tensor-Train (MPS) form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-tenalg-tensor-algebra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor Algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
@@ -225,27 +225,27 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-tt-matrix-tt-matrix-to-tensor">
-<h1><a class="reference internal" href="../api.html#module-tensorly.tt_matrix" title="tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code></a>.tt_matrix_to_tensor</h1>
+  <section id="tensorly-tt-tensor-pad-tt-rank">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tt_tensor" title="tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code></a>.pad_tt_rank</h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.tt_matrix.tt_matrix_to_tensor">
-<span class="sig-name descname"><span class="pre">tt_matrix_to_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tt_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/_tt_matrix.html#tt_matrix_to_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Returns the full tensor whose TT-Matrix decomposition is given by ‘factors’</p>
-<blockquote>
-<div><p>Re-assembles ‘factors’, which represent a tensor in TT-Matrix format
-into the corresponding full tensor</p>
-</div></blockquote>
+<dt class="sig sig-object py" id="tensorly.tt_tensor.pad_tt_rank">
+<span class="sig-name descname"><span class="pre">pad_tt_rank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_boundaries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tt_tensor.html#pad_tt_rank"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Pads the factors of a Tensor-Train so as to increase its rank without changing its reconstruction</p>
+<p>The tensor-train (ring) will be padded with 0s to increase its rank only but not the underlying tensor it represents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>factors: list of 4D-arrays</strong></dt><dd><p>TT-Matrix factors (known as core) of shape (rank_k, left_dim_k, right_dim_k, rank_{k+1})</p>
+<dt><strong>factor_list</strong><span class="classifier">tensor list</span></dt><dd></dd>
+<dt><strong>n_padding</strong><span class="classifier">int, default is 1</span></dt><dd><p>how much to increase the rank (bond dimension) by</p>
+</dd>
+<dt><strong>pad_boundaries</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, also pad the boundaries (useful for a tensor-ring)
+should be False for a tensor-train to keep the boundary rank to be 1</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>output_tensor: ndarray</dt><dd><p>tensor whose TT-Matrix decomposition was given by ‘factors’</p>
-</dd>
+<dt>padded_factor_list</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -259,16 +259,16 @@ into the corresponding full tensor</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.tt_tensor.pad_tt_rank.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tt_tensor.tt_to_vec.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>.pad_tt_rank</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>.tt_to_vec</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tt_matrix.tt_matrix_to_unfolded.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>.tt_matrix_to_unfolded </span>
+    <a class="button is-medium pagination-next" href="tensorly.tt_matrix.tt_matrix_to_tensor.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>.tt_matrix_to_tensor </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>

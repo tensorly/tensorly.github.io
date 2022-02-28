@@ -445,6 +445,43 @@
     <span class="k">def</span> <span class="nf">to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tt_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+
+<div class="viewcode-block" id="pad_tt_rank"><a class="viewcode-back" href="../../modules/generated/tensorly.tt_tensor.pad_tt_rank.html#tensorly.tt_tensor.pad_tt_rank">[docs]</a><span class="k">def</span> <span class="nf">pad_tt_rank</span><span class="p">(</span><span class="n">factor_list</span><span class="p">,</span> <span class="n">n_padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad_boundaries</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pads the factors of a Tensor-Train so as to increase its rank without changing its reconstruction</span>
+<span class="sd">    </span>
+<span class="sd">    The tensor-train (ring) will be padded with 0s to increase its rank only but not the underlying tensor it represents.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factor_list : tensor list</span>
+<span class="sd">    n_padding : int, default is 1 </span>
+<span class="sd">        how much to increase the rank (bond dimension) by</span>
+<span class="sd">    pad_boundaries : bool, default is False</span>
+<span class="sd">        if True, also pad the boundaries (useful for a tensor-ring)</span>
+<span class="sd">        should be False for a tensor-train to keep the boundary rank to be 1</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    padded_factor_list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factor_list</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factor_list</span><span class="p">):</span>
+        <span class="n">n_padding_left</span> <span class="o">=</span> <span class="n">n_padding_right</span> <span class="o">=</span> <span class="n">n_padding</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pad_boundaries</span><span class="p">:</span>
+            <span class="n">n_padding_left</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">n_factors</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pad_boundaries</span><span class="p">:</span>
+            <span class="n">n_padding_right</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">r1</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+        <span class="n">new_factor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r1</span> <span class="o">+</span> <span class="n">n_padding_left</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">n_padding_right</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factor</span><span class="p">))</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">new_factor</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="n">r1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">r2</span><span class="p">],</span> <span class="n">factor</span><span class="p">)</span>
+        <span class="n">new_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_factor</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_factors</span></div>
+
+
 <span class="n">mps_to_tensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;mps_to_tensor&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">tt_to_tensor</span><span class="p">)</span>
 <span class="n">mps_to_unfolded</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;mps_to_unfolded&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">tt_to_unfolded</span><span class="p">)</span>
 <span class="n">mps_to_vec</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;mps_to_vec&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">tt_to_vec</span><span class="p">)</span>
