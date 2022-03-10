@@ -571,7 +571,7 @@
         <span class="k">return</span> <span class="n">cp_tensor</span></div>
     
 
-<div class="viewcode-block" id="sample_khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="sample_khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span><span class="n">matrices</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indices_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">return_sampled_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Random subsample of the Khatri-Rao product of the given list of matrices</span>
 
@@ -590,6 +590,10 @@
 
 <span class="sd">    skip_matrix : None or int, optional, default is None</span>
 <span class="sd">        if not None, index of a matrix to skip</span>
+
+<span class="sd">    indices_list : list, default is None</span>
+<span class="sd">        Contains, for each matrix in `matrices`, a list of indices of rows to sample.</span>
+<span class="sd">        if None, random indices will be created</span>
 
 <span class="sd">    random_state : None, int or numpy.random.RandomState</span>
 <span class="sd">        if int, used to set the seed of the random number generator</span>
@@ -610,22 +614,23 @@
 <span class="sd">    indices_kr : int list</span>
 <span class="sd">        list of length `n_samples` containing the sampled row indices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">):</span>
-        <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You are creating a new random number generator at each call.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                      <span class="s1">&#39;If you are calling sample_khatri_rao inside a loop this will be slow:&#39;</span>
-                      <span class="s1">&#39; best to create a rng outside and pass it as argument (random_state=rng).&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">rng</span> <span class="o">=</span> <span class="n">random_state</span>
-
     <span class="k">if</span> <span class="n">skip_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrices</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">skip_matrix</span><span class="p">]</span>
+
+    <span class="c1"># For each matrix, randomly choose n_samples indices for which to compute the khatri-rao product</span>
+    <span class="k">if</span> <span class="n">indices_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">):</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You are creating a new random number generator at each call.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                          <span class="s1">&#39;If you are calling sample_khatri_rao inside a loop this will be slow:&#39;</span>
+                          <span class="s1">&#39; best to create a rng outside and pass it as argument (random_state=rng).&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="n">indices_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">]</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">]</span>
 
-    <span class="c1"># For each matrix, randomly choose n_samples indices for which to compute the khatri-rao product</span>
-    <span class="n">indices_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrices</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">return_sampled_rows</span><span class="p">:</span>
         <span class="c1"># Compute corresponding rows of the full khatri-rao product</span>
         <span class="n">indices_kr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_samples</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
