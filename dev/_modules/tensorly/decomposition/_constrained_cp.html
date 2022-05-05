@@ -148,6 +148,7 @@
 
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">random_cp</span>
+<span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CPTensor</span><span class="p">,</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span>
                          <span class="n">validate_cp_rank</span><span class="p">)</span>
@@ -482,6 +483,174 @@
         <span class="k">return</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">rec_errors</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">cp_tensor</span></div>
+
+
+<div class="viewcode-block" id="ConstrainedCP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP">[docs]</a><span class="k">class</span> <span class="nc">ConstrainedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating optimization of</span>
+<span class="sd">    alternating direction method of multipliers (AO-ADMM):</span>
+
+<span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that::</span>
+
+<span class="sd">        tensor = [|weights; factors[0], ..., factors[-1] |],</span>
+
+<span class="sd">    where factors are either penalized or constrained according to the user-defined constraint.</span>
+
+<span class="sd">    In order to compute the factors efficiently, the ADMM algorithm</span>
+<span class="sd">    introduces an auxilliary factor which is called factor_aux in the function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">    rank  : int</span>
+<span class="sd">        Number of components.</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration for outer loop</span>
+<span class="sd">    n_iter_max_inner : int</span>
+<span class="sd">        Number of iteration for inner loop</span>
+<span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, cptensor}, optional</span>
+<span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
+<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">    tol_outer : float, optional</span>
+<span class="sd">        (Default: 1e-8) Relative reconstruction error tolerance for outer loop. The</span>
+<span class="sd">        algorithm is considered to have found a local minimum when the</span>
+<span class="sd">        reconstruction error is less than `tol_outer`.</span>
+<span class="sd">    tol_inner : float, optional</span>
+<span class="sd">        (Default: 1e-6) Absolute reconstruction error tolerance for factor update during inner loop, i.e. ADMM optimization.</span>
+<span class="sd">    random_state : {None, int, np.random.RandomState}</span>
+<span class="sd">    verbose : int, optional</span>
+<span class="sd">        Level of verbosity</span>
+<span class="sd">    return_errors : bool, optional</span>
+<span class="sd">        Activate return of iteration errors</span>
+<span class="sd">    non_negative : bool or dictionary</span>
+<span class="sd">        This constraint is clipping negative values to &#39;0&#39;.</span>
+<span class="sd">        If it is True, non-negative constraint is applied to all modes.</span>
+<span class="sd">    l1_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l1 norm using the input value as regularization parameter.</span>
+<span class="sd">    l2_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 norm using the input value as regularization parameter.</span>
+<span class="sd">    l2_square_reg : float or list or dictionary, optional</span>
+<span class="sd">        Penalizes the factor with the l2 square norm using the input value as regularization parameter.</span>
+<span class="sd">    unimodality : bool or dictionary, optional</span>
+<span class="sd">        If it is True, unimodality constraint is applied to all modes.</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">    normalize : bool or dictionary, optional</span>
+<span class="sd">        This constraint divides all the values by maximum value of the input array.</span>
+<span class="sd">        If it is True, normalize constraint is applied to all modes.</span>
+<span class="sd">    simplex : float or list or dictionary, optional</span>
+<span class="sd">        Projects on the simplex with the given parameter</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">    normalized_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Normalizes with the norm after hard thresholding</span>
+<span class="sd">    soft_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Impose that the columns of factors have L1 norm bounded by a user-defined threshold.</span>
+<span class="sd">    smoothness : float or list or dictionary, optional</span>
+<span class="sd">        Optimizes the factors by solving a banded system</span>
+<span class="sd">    monotonicity : bool or dictionary, optional</span>
+<span class="sd">        Projects columns to monotonically decreasing distrbution</span>
+<span class="sd">        Applied to each column seperately.</span>
+<span class="sd">        If it is True, monotonicity constraint is applied to all modes.</span>
+<span class="sd">    hard_sparsity : float or list or dictionary, optional</span>
+<span class="sd">        Hard thresholding with the given threshold</span>
+<span class="sd">    cvg_criterion : {&#39;abs_rec_error&#39;, &#39;rec_error&#39;}, optional</span>
+<span class="sd">       Stopping criterion if `tol` is not None.</span>
+<span class="sd">       If &#39;rec_error&#39;,  algorithm stops at current iteration if ``(previous rec_error - current rec_error) &lt; tol``.</span>
+<span class="sd">       If &#39;abs_rec_error&#39;, algorithm terminates when `|previous rec_error - current rec_error| &lt; tol`.</span>
+<span class="sd">    fixed_modes : list, default is None</span>
+<span class="sd">        A list of modes for which the initial value is not modified.</span>
+<span class="sd">        The last mode cannot be fixed due to error computation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    CPTensor : (weight, factors)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">        * factors : List of factors of the CP decomposition element `i` is of shape ``(tensor.shape[i], rank)``</span>
+<span class="sd">    errors : list</span>
+<span class="sd">        A list of reconstruction errors at each iteration of the algorithms.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] T.G.Kolda and B.W.Bader, &quot;Tensor Decompositions and Applications&quot;, SIAM</span>
+<span class="sd">           REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</span>
+<span class="sd">    .. [2] Huang, Kejun, Nicholas D. Sidiropoulos, and Athanasios P. Liavas.</span>
+<span class="sd">           &quot;A flexible and efficient algorithmic framework for constrained matrix and tensor factorization.&quot; IEEE</span>
+<span class="sd">           Transactions on Signal Processing 64.19 (2016): 5052-5065.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol_outer</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">tol_inner</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
+                 <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max_inner</span> <span class="o">=</span> <span class="n">n_iter_max_inner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol_outer</span> <span class="o">=</span> <span class="n">tol_outer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol_inner</span> <span class="o">=</span> <span class="n">tol_inner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_errors</span> <span class="o">=</span> <span class="n">return_errors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span> <span class="o">=</span> <span class="n">cvg_criterion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fixed_modes</span> <span class="o">=</span> <span class="n">fixed_modes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_negative</span> <span class="o">=</span> <span class="n">non_negative</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l1_reg</span> <span class="o">=</span> <span class="n">l1_reg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l2_reg</span> <span class="o">=</span> <span class="n">l2_reg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l2_square_reg</span> <span class="o">=</span> <span class="n">l2_square_reg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unimodality</span> <span class="o">=</span> <span class="n">unimodality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span> <span class="o">=</span> <span class="n">normalize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simplex</span> <span class="o">=</span> <span class="n">simplex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized_sparsity</span> <span class="o">=</span> <span class="n">normalized_sparsity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soft_sparsity</span> <span class="o">=</span> <span class="n">soft_sparsity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smoothness</span> <span class="o">=</span> <span class="n">smoothness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monotonicity</span> <span class="o">=</span> <span class="n">monotonicity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hard_sparsity</span> <span class="o">=</span> <span class="n">hard_sparsity</span>
+
+<div class="viewcode-block" id="ConstrainedCP.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tensor : tensorly tensor</span>
+<span class="sd">            input tensor to decompose</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CPTensor</span>
+<span class="sd">            decomposed tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span>
+            <span class="n">tensor</span><span class="p">,</span>
+            <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span>
+            <span class="n">n_iter_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">,</span>
+            <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max_inner</span><span class="p">,</span>
+            <span class="n">init</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">,</span>
+            <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
+            <span class="n">tol_outer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol_outer</span><span class="p">,</span>
+            <span class="n">tol_inner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol_inner</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">cvg_criterion</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cvg_criterion</span><span class="p">,</span>
+            <span class="n">fixed_modes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed_modes</span><span class="p">,</span>
+            <span class="n">non_negative</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">non_negative</span><span class="p">,</span>
+            <span class="n">l1_reg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l1_reg</span><span class="p">,</span>
+            <span class="n">l2_reg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l2_reg</span><span class="p">,</span>
+            <span class="n">l2_square_reg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">l2_square_reg</span><span class="p">,</span>
+            <span class="n">unimodality</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unimodality</span><span class="p">,</span>
+            <span class="n">normalize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">,</span>
+            <span class="n">simplex</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">simplex</span><span class="p">,</span>
+            <span class="n">normalized_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+            <span class="n">soft_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">soft_sparsity</span><span class="p">,</span>
+            <span class="n">smoothness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">smoothness</span><span class="p">,</span>
+            <span class="n">monotonicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monotonicity</span> <span class="p">,</span>
+            <span class="n">hard_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hard_sparsity</span><span class="p">,</span>
+            <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div></div>
 </pre></div>
 
         </div>
