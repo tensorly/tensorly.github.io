@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Constrained CP decomposition in Tensorly &gt;=0.7 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -27,6 +27,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
@@ -403,21 +404,21 @@ a python dictionary:</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[4.55 1.25 0.6 ]
- [4.07 0.   0.  ]
- [4.48 0.7  0.  ]
- [3.87 0.   1.57]
- [5.05 0.46 0.  ]
- [3.74 1.07 1.33]]
+ [[0.   0.93 0.27]
+ [0.   0.87 0.17]
+ [0.   0.73 0.27]
+ [0.   0.6  0.39]
+ [0.   0.24 0.61]
+ [0.   0.56 0.39]]
 2. factor
- [[ 0.4  -0.23  0.07]
- [ 0.26  0.37  0.46]
- [ 0.38 -0.29  0.08]
- [ 0.29  0.84 -0.06]
- [ 0.29  0.29  0.74]
- [ 0.38 -0.51  0.01]
- [ 0.31 -0.03  0.48]
- [ 0.34 -0.39  0.56]]
+ [[0.33 1.03 3.46]
+ [0.38 1.85 2.59]
+ [0.37 1.9  2.34]
+ [0.37 1.73 2.8 ]
+ [0.35 1.28 3.32]
+ [0.32 1.59 2.13]
+ [0.4  1.59 3.5 ]
+ [0.3  1.19 2.63]]
 </pre></div>
 </div>
 <p>Since only the first and last factors are chosen, entries on the second mode factor could be negative.</p>
@@ -464,32 +465,32 @@ only <cite>True</cite> depending on the selected constraint.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[ 23.43 -16.33  21.43]
- [ 21.55  10.72  -3.8 ]
- [ 24.64  -3.13  36.03]
- [ 23.44  -8.67   9.81]
- [ 21.83  -9.69 -17.53]
- [ 20.64 -19.8   17.48]]
+ [[ 29.62   3.88  10.85]
+ [ 23.11 -11.21   9.64]
+ [ 26.47  17.73   7.74]
+ [ 24.82  19.58  15.67]
+ [ 26.62  43.05  11.62]
+ [ 23.41  11.76  15.17]]
 2. factor
- [[0.46 0.02 1.39]
- [0.33 0.66 0.04]
- [0.4  0.02 0.58]
- [0.35 0.73 0.  ]
- [0.38 0.79 0.62]
- [0.38 0.   0.59]
- [0.39 0.   0.  ]
- [0.38 0.41 0.96]]
+ [[0.16 0.   1.2 ]
+ [0.45 0.17 0.19]
+ [0.47 0.94 0.08]
+ [0.43 1.09 0.23]
+ [0.35 0.73 0.48]
+ [0.42 0.27 0.  ]
+ [0.39 0.55 0.59]
+ [0.12 0.   1.22]]
 3. factor
- [[ 4.23e-02 -7.65e-03  7.13e-03]
- [ 4.78e-02 -2.91e-02 -5.26e-05]
- [ 6.21e-02  1.03e-02 -4.32e-03]
- [ 5.56e-02  8.58e-03 -1.82e-03]
- [ 5.27e-02 -6.67e-03  1.23e-03]
- [ 6.15e-02 -2.29e-02 -1.06e-02]
- [ 5.45e-02 -1.64e-02 -5.71e-04]
- [ 5.15e-02 -2.40e-02 -9.87e-03]
- [ 5.31e-02 -5.17e-03 -3.36e-03]
- [ 5.28e-02 -1.44e-02 -7.83e-03]]
+ [[ 0.03  0.01  0.04]
+ [ 0.06 -0.01  0.01]
+ [ 0.03  0.    0.03]
+ [ 0.04  0.    0.02]
+ [ 0.04  0.    0.03]
+ [ 0.03  0.01  0.01]
+ [ 0.05 -0.01  0.02]
+ [ 0.05 -0.01  0.02]
+ [ 0.04 -0.    0.02]
+ [ 0.05  0.    0.01]]
 </pre></div>
 </div>
 <p>Thus, first factor will be non-negative, second factor will be regularized
@@ -503,7 +504,7 @@ by <span class="math notranslate nohighlight">\(0.01\)</span> with <span class="
 matrix and tensor factorization.”
 IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
 <a class="reference external" href="https://ieeexplore.ieee.org/document/7484753">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.957 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.162 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-guide-for-constrained-cp-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/02fe230fcb90df96787f11e615bb0af8/plot_guide_for_constrained_cp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_guide_for_constrained_cp.py</span></code></a></p>

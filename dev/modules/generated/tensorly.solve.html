@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>tensorly.solve &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -27,6 +27,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -234,7 +235,7 @@
 <p>Computes the “exact” solution, <cite>x</cite>, of the well-determined, i.e., full
 rank, linear matrix equation <cite>ax = b</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>a</strong><span class="classifier">(…, M, M) array_like</span></dt><dd><p>Coefficient matrix.</p>
 </dd>
@@ -242,13 +243,13 @@ rank, linear matrix equation <cite>ax = b</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>x</strong><span class="classifier">{(…, M,), (…, M, K)} ndarray</span></dt><dd><p>Solution to the system a x = b.  Returned shape is identical to <cite>b</cite>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>LinAlgError</dt><dd><p>If <cite>a</cite> is singular or not square.</p>
 </dd>
@@ -274,12 +275,13 @@ columns) must be linearly independent; if either is not true, use
 <cite>lstsq</cite> for the least-squares best “solution” of the
 system/equation.</p>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r48422ad687d3-1"><span class="brackets">1</span></dt>
-<dd><p>G. Strang, <em>Linear Algebra and Its Applications</em>, 2nd Ed., Orlando,
+<div role="list" class="citation-list">
+<div class="citation" id="r48422ad687d3-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>G. Strang, <em>Linear Algebra and Its Applications</em>, 2nd Ed., Orlando,
 FL, Academic Press, Inc., 1980, pg. 22.</p>
-</dd>
-</dl>
+</div>
+</div>
 <p class="rubric">Examples</p>
 <p>Solve the system of equations <code class="docutils literal notranslate"><span class="pre">x0</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">x0</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">2</span></code>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
