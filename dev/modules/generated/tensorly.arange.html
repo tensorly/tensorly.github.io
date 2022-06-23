@@ -232,12 +232,23 @@
 <dt class="sig sig-object py" id="tensorly.arange">
 <span class="sig-name descname"><span class="pre">arange</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">dtype=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">like=None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Return evenly spaced values within a given interval.</p>
-<p>Values are generated within the half-open interval <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">stop)</span></code>
-(in other words, the interval including <cite>start</cite> but excluding <cite>stop</cite>).
-For integer arguments the function is equivalent to the Python built-in
-<cite>range</cite> function, but returns an ndarray rather than a list.</p>
+<p><code class="docutils literal notranslate"><span class="pre">arange</span></code> can be called with a varying number of positional arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">arange(stop)</span></code>: Values are generated within the half-open interval
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">stop)</span></code> (in other words, the interval including <cite>start</cite> but
+excluding <cite>stop</cite>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arange(start,</span> <span class="pre">stop)</span></code>: Values are generated within the half-open
+interval <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">stop)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arange(start,</span> <span class="pre">stop,</span> <span class="pre">step)</span></code> Values are generated within the half-open
+interval <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">stop)</span></code>, with spacing between values given by
+<code class="docutils literal notranslate"><span class="pre">step</span></code>.</p></li>
+</ul>
+<p>For integer arguments the function is roughly equivalent to the Python
+built-in <code class="xref py py-class docutils literal notranslate"><span class="pre">range</span></code>, but returns an ndarray rather than a <code class="docutils literal notranslate"><span class="pre">range</span></code>
+instance.</p>
 <p>When using a non-integer step, such as 0.1, it is often better to use
-<cite>numpy.linspace</cite>. See the warnings section below for more information.</p>
+<cite>numpy.linspace</cite>.</p>
+<p>See the Warning sections below for more information.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -253,10 +264,10 @@ between two adjacent values, <code class="docutils literal notranslate"><span cl
 step size is 1.  If <cite>step</cite> is specified as a position argument,
 <cite>start</cite> must also be given.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier">dtype</span></dt><dd><p>The type of the output array.  If <cite>dtype</cite> is not given, infer the data
+<dt><strong>dtype</strong><span class="classifier">dtype, optional</span></dt><dd><p>The type of the output array.  If <cite>dtype</cite> is not given, infer the data
 type from the other input arguments.</p>
 </dd>
-<dt><strong>like</strong><span class="classifier">array_like</span></dt><dd><p>Reference object to allow the creation of arrays which are not
+<dt><strong>like</strong><span class="classifier">array_like, optional</span></dt><dd><p>Reference object to allow the creation of arrays which are not
 NumPy arrays. If an array-like passed in as <code class="docutils literal notranslate"><span class="pre">like</span></code> supports
 the <code class="docutils literal notranslate"><span class="pre">__array_function__</span></code> protocol, the result will be defined
 by it. In this case, it ensures the creation of an array object
@@ -295,6 +306,20 @@ behaviour. For example:</p>
 </pre></div>
 </div>
 <p>In such cases, the use of <cite>numpy.linspace</cite> should be preferred.</p>
+<p>The built-in <code class="xref py py-class docutils literal notranslate"><span class="pre">range</span></code> generates <span class="xref std std-doc">Python built-in integers
+that have arbitrary size</span>, while <cite>numpy.arange</cite> produces
+<cite>numpy.int32</cite> or <cite>numpy.int64</cite> numbers. This may result in incorrect
+results for large integer values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">power</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modulo</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulo</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="p">[(</span><span class="n">n</span> <span class="o">**</span> <span class="n">power</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulo</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+<span class="go">[0, 1, 7776, 8801, 6176, 625, 6576, 4001]  # correct</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+<span class="go">[0, 1, 7776, 7185, 0, 5969, 4816, 3361]  # incorrect</span>
+</pre></div>
+</div>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
