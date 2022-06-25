@@ -842,7 +842,7 @@
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span></div>
 
 
-<span class="k">def</span> <span class="nf">cp_permute_factors</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="p">,</span> <span class="n">tensors_to_permute</span><span class="p">):</span>
+<div class="viewcode-block" id="cp_permute_factors"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_permute_factors.html#tensorly.cp_tensor.cp_permute_factors">[docs]</a><span class="k">def</span> <span class="nf">cp_permute_factors</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="p">,</span> <span class="n">tensors_to_permute</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compares factors of a reference cp tensor with factors of other another tensor (or list of tensor) in order to match component order.</span>
 <span class="sd">    Permutation occurs on the columns of factors, minimizing the cosine distance to reference cp tensor with scipy</span>
@@ -868,8 +868,6 @@
             <span class="n">permuted_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cp_copy</span><span class="p">())</span>
             <span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="n">ref_cp_tensor</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="p">)</span>
-
-    <span class="n">rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">n_tensors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">)</span>
     <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="o">.</span><span class="n">factors</span><span class="p">)</span>
     <span class="n">permutation</span> <span class="o">=</span> <span class="p">[]</span>
@@ -883,7 +881,7 @@
         <span class="n">permutation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">permuted_tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">permuted_tensors</span> <span class="o">=</span> <span class="n">permuted_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">permuted_tensors</span><span class="p">,</span> <span class="n">permutation</span>
+    <span class="k">return</span> <span class="n">permuted_tensors</span><span class="p">,</span> <span class="n">permutation</span></div>
 
 <span class="c1"># Deprecated classes and functions</span>
 <span class="n">KruskalTensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;KruskalTensor&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">CPTensor</span><span class="p">)</span>

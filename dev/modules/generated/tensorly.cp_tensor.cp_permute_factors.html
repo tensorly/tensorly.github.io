@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>tensorly.cp_tensor.unfolding_dot_khatri_rao &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.cp_tensor.cp_permute_factors &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -42,8 +42,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.tucker_tensor.tucker_to_tensor" href="tensorly.tucker_tensor.tucker_to_tensor.html" />
-    <link rel="prev" title="tensorly.cp_tensor.cp_permute_factors" href="tensorly.cp_tensor.cp_permute_factors.html" />
+    <link rel="next" title="tensorly.cp_tensor.unfolding_dot_khatri_rao" href="tensorly.cp_tensor.unfolding_dot_khatri_rao.html" />
+    <link rel="prev" title="tensorly.cp_tensor.cp_mode_dot" href="tensorly.cp_tensor.cp_mode_dot.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -226,74 +226,29 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-cp-tensor-unfolding-dot-khatri-rao">
-<h1><a class="reference internal" href="../api.html#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>.unfolding_dot_khatri_rao</h1>
+  <section id="tensorly-cp-tensor-cp-permute-factors">
+<h1><a class="reference internal" href="../api.html#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>.cp_permute_factors</h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.cp_tensor.unfolding_dot_khatri_rao">
-<span class="sig-name descname"><span class="pre">unfolding_dot_khatri_rao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/cp_tensor.html#unfolding_dot_khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>mode-n unfolding times khatri-rao product of factors</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">tl.tensor</span></dt><dd><p>tensor to unfold</p>
-</dd>
-<dt><strong>factors</strong><span class="classifier">tl.tensor list</span></dt><dd><p>list of matrices of which to the khatri-rao product</p>
-</dd>
-<dt><strong>mode</strong><span class="classifier">int</span></dt><dd><p>mode on which to unfold <cite>tensor</cite></p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>mttkrp</dt><dd><p>dot(unfold(tensor, mode), khatri-rao(factors))</p>
+<dt class="sig sig-object py" id="tensorly.cp_tensor.cp_permute_factors">
+<span class="sig-name descname"><span class="pre">cp_permute_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensors_to_permute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/cp_tensor.html#cp_permute_factors"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compares factors of a reference cp tensor with factors of other another tensor (or list of tensor) in order to match component order.
+Permutation occurs on the columns of factors, minimizing the cosine distance to reference cp tensor with scipy
+Linear Sum Assignment method. The permuted tensor (or list of tensors) and list of permutation for each permuted tensors are returned.
+Parameters
+———-
+ref_cp_tensor : cp tensor</p>
+<blockquote>
+<div><p>The tensor that serves as a reference for permutation.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>tensors_to_permute<span class="classifier">cp tensor or list of cp tensors</span></dt><dd><p>The tensors to permute so that the order of components match the reference tensor. Number of components must match.</p>
 </dd>
 </dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This is a variant of:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unfolded</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
-<span class="n">kr_factors</span> <span class="o">=</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
-<span class="n">mttkrp2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">kr_factors</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Multiplying with the Khatri-Rao product is equivalent to multiplying,
-for each rank, with the kronecker product of each factor. 
-In code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mttkrp_parts</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
-    <span class="n">component</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">f</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
-    <span class="n">mttkrp_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
-<span class="n">mttkrp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">return</span> <span class="n">mttkrp</span> 
-</pre></div>
-</div>
-<p>This can be done by taking n-mode-product with the full factors 
-(faster but more memory consuming):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">projected</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ndims</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">mode</span>  <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndims</span><span class="p">)])</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">projected</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-<span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The same idea could be expressed using einsum:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ndims</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-<span class="n">tensor_idx</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndims</span><span class="p">))</span>
-<span class="n">rank</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">ndims</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">op</span> <span class="o">=</span> <span class="n">tensor_idx</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndims</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
-        <span class="n">op</span> <span class="o">+=</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">tensor_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">tensor_idx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">])</span>
-<span class="n">op</span> <span class="o">+=</span> <span class="s1">&#39;-&gt;&#39;</span> <span class="o">+</span> <span class="n">result</span>
-<span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">]</span>
-<span class="k">return</span> <span class="n">tl_einsum</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="o">*</span><span class="n">factors</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>permuted_tensors : permuted cp tensor or list of cp tensors
+permutation : list</p>
+<blockquote>
+<div><p>list of permuted indices. Lenght is equal to rank of cp_tensors.</p>
+</div></blockquote>
 </dd></dl>
 
 <div class="clearer"></div></section>
@@ -304,16 +259,16 @@ In code:</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.cp_tensor.cp_permute_factors.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.cp_tensor.cp_mode_dot.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>.cp_permute_factors</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>.cp_mode_dot</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tucker_tensor.tucker_to_tensor.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_to_tensor </span>
+    <a class="button is-medium pagination-next" href="tensorly.cp_tensor.unfolding_dot_khatri_rao.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>.unfolding_dot_khatri_rao </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
