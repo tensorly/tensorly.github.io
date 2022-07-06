@@ -230,8 +230,99 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.dot</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.dot">
-<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Dot product of two arrays. Specifically,</p>
+<ul>
+<li><p>If both <cite>a</cite> and <cite>b</cite> are 1-D arrays, it is inner product of vectors
+(without complex conjugation).</p></li>
+<li><p>If both <cite>a</cite> and <cite>b</cite> are 2-D arrays, it is matrix multiplication,
+but using <a class="reference internal" href="tensorly.matmul.html#tensorly.matmul" title="tensorly.matmul"><code class="xref py py-func docutils literal notranslate"><span class="pre">matmul</span></code></a> or <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">&#64;</span> <span class="pre">b</span></code> is preferred.</p></li>
+<li><p>If either <cite>a</cite> or <cite>b</cite> is 0-D (scalar), it is equivalent to <code class="xref py py-func docutils literal notranslate"><span class="pre">multiply</span></code>
+and using <code class="docutils literal notranslate"><span class="pre">numpy.multiply(a,</span> <span class="pre">b)</span></code> or <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span></code> is preferred.</p></li>
+<li><p>If <cite>a</cite> is an N-D array and <cite>b</cite> is a 1-D array, it is a sum product over
+the last axis of <cite>a</cite> and <cite>b</cite>.</p></li>
+<li><p>If <cite>a</cite> is an N-D array and <cite>b</cite> is an M-D array (where <code class="docutils literal notranslate"><span class="pre">M&gt;=2</span></code>), it is a
+sum product over the last axis of <cite>a</cite> and the second-to-last axis of <cite>b</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">,:,</span><span class="n">m</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">array_like</span></dt><dd><p>First argument.</p>
+</dd>
+<dt><strong>b</strong><span class="classifier">array_like</span></dt><dd><p>Second argument.</p>
+</dd>
+<dt><strong>out</strong><span class="classifier">ndarray, optional</span></dt><dd><p>Output argument. This must have the exact kind that would be returned
+if it was not used. In particular, it must have the right type, must be
+C-contiguous, and its dtype must be the dtype that would be returned
+for <cite>dot(a,b)</cite>. This is a performance feature. Therefore, if these
+conditions are not met, an exception is raised, instead of attempting
+to be flexible.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>output</strong><span class="classifier">ndarray</span></dt><dd><p>Returns the dot product of <cite>a</cite> and <cite>b</cite>.  If <cite>a</cite> and <cite>b</cite> are both
+scalars or both 1-D arrays then a scalar is returned; otherwise
+an array is returned.
+If <cite>out</cite> is given, then it is returned.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the last dimension of <cite>a</cite> is not the same size as
+the second-to-last dimension of <cite>b</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vdot</span></code></dt><dd><p>Complex-conjugating dot product.</p>
+</dd>
+<dt><a class="reference internal" href="tensorly.tensordot.html#tensorly.tensordot" title="tensorly.tensordot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensordot</span></code></a></dt><dd><p>Sum products over arbitrary axes.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">einsum</span></code></dt><dd><p>Einstein summation convention.</p>
+</dd>
+<dt><a class="reference internal" href="tensorly.matmul.html#tensorly.matmul" title="tensorly.matmul"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matmul</span></code></a></dt><dd><p>‘&#64;’ operator as method with out parameter.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">linalg.multi_dot</span></code></dt><dd><p>Chained dot product.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<p>Neither argument is complex-conjugated:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">([</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">])</span>
+<span class="go">(-13+0j)</span>
+</pre></div>
+</div>
+<p>For 2-D arrays it is the matrix product:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">array([[4, 1],</span>
+<span class="go">       [2, 2]])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="o">*</span><span class="mi">6</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">499128</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,:,</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">499128</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <div class="clearer"></div></section>
 
