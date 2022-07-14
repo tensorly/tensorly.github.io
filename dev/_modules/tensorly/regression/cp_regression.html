@@ -156,7 +156,7 @@
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<div class="viewcode-block" id="CPRegressor"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor">[docs]</a><span class="k">class</span> <span class="nc">CPRegressor</span><span class="p">():</span>
+<div class="viewcode-block" id="CPRegressor"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor">[docs]</a><span class="k">class</span> <span class="nc">CPRegressor</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;CP tensor regression</span>
 
 <span class="sd">        Learns a low rank CP tensor weight</span>
@@ -176,7 +176,15 @@
 <span class="sd">        level of verbosity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight_rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">weight_rank</span><span class="p">,</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span>
+        <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span> <span class="o">=</span> <span class="n">weight_rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">=</span> <span class="n">reg_W</span>
@@ -185,9 +193,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
 <div class="viewcode-block" id="CPRegressor.get_params"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary of parameters</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;weight_rank&#39;</span><span class="p">,</span> <span class="s1">&#39;tol&#39;</span><span class="p">,</span> <span class="s1">&#39;reg_W&#39;</span><span class="p">,</span> <span class="s1">&#39;n_iter_max&#39;</span><span class="p">,</span> <span class="s1">&#39;random_state&#39;</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary of parameters&quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;weight_rank&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tol&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reg_W&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;n_iter_max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;random_state&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;verbose&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">param_name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="n">params</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="CPRegressor.set_params"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
@@ -214,7 +228,9 @@
 
         <span class="c1"># Initialise randomly the weights</span>
         <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>  <span class="c1"># The first dimension of X is the number of samples</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="p">):</span>  <span class="c1"># The first dimension of X is the number of samples</span>
             <span class="n">W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
 
         <span class="c1"># Norm of the weight tensor at each iteration</span>
@@ -226,11 +242,18 @@
             <span class="c1"># Optimise each factor of W</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">)):</span>
                 <span class="n">phi</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                          <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-                                <span class="n">khatri_rao</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">i</span><span class="p">)),</span>
-                      <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-                <span class="n">inv_term</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
-                <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">inv_term</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">y</span><span class="p">)),</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span><span class="p">))</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                        <span class="n">partial_unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="n">inv_term</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_W</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">W</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">inv_term</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">y</span><span class="p">)),</span>
+                    <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_rank</span><span class="p">),</span>
+                <span class="p">)</span>
 
             <span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">cp_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">W</span><span class="p">))</span>
             <span class="n">norm_W</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">weight_tensor_</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -239,9 +262,9 @@
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">weight_evolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="n">weight_evolution</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">weight_evolution</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Converged in </span><span class="si">{}</span><span class="s1"> iterations&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{}</span><span class="s2"> iterations&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
                     <span class="k">break</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_tensor_</span> <span class="o">=</span> <span class="n">weight_tensor_</span>
@@ -263,7 +286,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_W_</span><span class="p">)</span></div></div>
 
-<span class="n">KruskalRegressor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="s1">&#39;KruskalRegressor&#39;</span><span class="p">,</span> <span class="n">CPRegressor</span><span class="p">)</span>
+
+<span class="n">KruskalRegressor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="s2">&quot;KruskalRegressor&quot;</span><span class="p">,</span> <span class="n">CPRegressor</span><span class="p">)</span>
 </pre></div>
 
         </div>

@@ -151,8 +151,7 @@
 <span class="kn">from</span> <span class="nn">..random</span> <span class="kn">import</span> <span class="n">random_cp</span>
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
-<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CPTensor</span><span class="p">,</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span>
-                         <span class="n">validate_cp_rank</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span><span class="p">,</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span> <span class="n">validate_cp_rank</span>
 <span class="kn">from</span> <span class="nn">..tenalg.proximal</span> <span class="kn">import</span> <span class="n">admm</span><span class="p">,</span> <span class="n">proximal_operator</span><span class="p">,</span> <span class="n">validate_constraints</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
@@ -162,12 +161,25 @@
 <span class="c1"># License: BSD 3 clause</span>
 
 
-<span class="k">def</span> <span class="nf">initialize_constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
-                                   <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">initialize_constrained_parafac</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span>
+    <span class="n">rank</span><span class="p">,</span>
+    <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
+    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize factors used in `constrained_parafac`.</span>
 
 <span class="sd">    Parameters</span>
@@ -227,15 +239,18 @@
     <span class="n">n_modes</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
-        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
+        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="p">)</span>
 
-    <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s1">&#39;svd&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span><span class="p">[</span><span class="n">svd</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Got svd=</span><span class="si">{}</span><span class="s1">. However, for the current backend (</span><span class="si">{}</span><span class="s1">), the possible choices are </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">svd</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(),</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Got svd=</span><span class="si">{}</span><span class="s2">. However, for the current backend (</span><span class="si">{}</span><span class="s2">), the possible choices are </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">svd</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(),</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -248,8 +263,10 @@
                 <span class="n">U</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="p">:</span><span class="n">idx</span><span class="p">],</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">S</span><span class="p">[:</span><span class="n">idx</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
-                <span class="n">random_part</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">mode</span><span class="p">])),</span>
-                                        <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+                <span class="n">random_part</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="n">rng</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">mode</span><span class="p">])),</span>
+                    <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+                <span class="p">)</span>
                 <span class="n">U</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">U</span><span class="p">,</span> <span class="n">random_part</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">rank</span><span class="p">])</span>
@@ -268,31 +285,61 @@
             <span class="k">return</span> <span class="n">kt</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;If initialization method is a mapping, then it must &#39;</span>
-                <span class="s1">&#39;be possible to convert it to a CPTensor instance&#39;</span>
+                <span class="s2">&quot;If initialization method is a mapping, then it must &quot;</span>
+                <span class="s2">&quot;be possible to convert it to a CPTensor instance&quot;</span>
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Initialization method &quot;</span><span class="si">{}</span><span class="s1">&quot; not recognized&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">init</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_modes</span><span class="p">):</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">proximal_operator</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
-                                       <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
-                                       <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
-                                       <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
-                                       <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="n">n_modes</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">proximal_operator</span><span class="p">(</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
+            <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
+            <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span>
+            <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
+            <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
+            <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+            <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
+            <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+            <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
+            <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
+            <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
+            <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
+            <span class="n">n_const</span><span class="o">=</span><span class="n">n_modes</span><span class="p">,</span>
+            <span class="n">order</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="n">kt</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">kt</span>
 
 
-<div class="viewcode-block" id="constrained_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac">[docs]</a><span class="k">def</span> <span class="nf">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                        <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span>
-                        <span class="n">tol_outer</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">tol_inner</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
-                        <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="constrained_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac">[docs]</a><span class="k">def</span> <span class="nf">constrained_parafac</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span>
+    <span class="n">rank</span><span class="p">,</span>
+    <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
+    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+    <span class="n">tol_outer</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">tol_inner</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cvg_criterion</span><span class="o">=</span><span class="s2">&quot;abs_rec_error&quot;</span><span class="p">,</span>
+    <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating optimization of</span>
 <span class="sd">    alternating direction method of multipliers (AO-ADMM):</span>
 
@@ -384,21 +431,41 @@
 <span class="sd">           Transactions on Signal Processing 64.19 (2016): 5052-5065.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_cp_rank</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">validate_constraints</span><span class="p">(</span><span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
-                                <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
-                                <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
-                                <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
-                                <span class="n">n_const</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">validate_constraints</span><span class="p">(</span>
+        <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
+        <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
+        <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span>
+        <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
+        <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
+        <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+        <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
+        <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+        <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
+        <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
+        <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
+        <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
+        <span class="n">n_const</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
+    <span class="p">)</span>
 
-    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
-                                                      <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
-                                                      <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
-                                                      <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
-                                                      <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
-                                                      <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
-                                                      <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
-                                                      <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
-                                                      <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_constrained_parafac</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
+        <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
+        <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
+        <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span>
+        <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
+        <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
+        <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+        <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
+        <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+        <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
+        <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
+        <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
+        <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -407,8 +474,10 @@
         <span class="n">fixed_modes</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You asked for fixing the last mode, which is not supported.</span><span class="se">\n</span><span class="s1"> &#39;</span>
-                      <span class="s1">&#39;The last mode will not be fixed. Consider using tl.moveaxis()&#39;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;You asked for fixing the last mode, which is not supported.</span><span class="se">\n</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;The last mode will not be fixed. Consider using tl.moveaxis()&quot;</span>
+        <span class="p">)</span>
         <span class="n">fixed_modes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">modes_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fixed_modes</span><span class="p">]</span>
 
@@ -429,42 +498,64 @@
             <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
-                    <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">pseudo_inverse</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span><span class="p">)</span>
+                    <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">pseudo_inverse</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                        <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span>
+                    <span class="p">)</span>
 
             <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
 
-            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">factors_aux</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">dual_variables</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">admm</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">,</span> <span class="n">pseudo_inverse</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">dual_variables</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
-                                                                          <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max_inner</span><span class="p">,</span> <span class="n">n_const</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
-                                                                          <span class="n">order</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
-                                                                          <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
-                                                                          <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
-                                                                          <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
-                                                                          <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
-                                                                          <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
-                                                                          <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol_inner</span><span class="p">)</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">factors_aux</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">dual_variables</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">admm</span><span class="p">(</span>
+                <span class="n">mttkrp</span><span class="p">,</span>
+                <span class="n">pseudo_inverse</span><span class="p">,</span>
+                <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
+                <span class="n">dual_variables</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
+                <span class="n">n_iter_max</span><span class="o">=</span><span class="n">n_iter_max_inner</span><span class="p">,</span>
+                <span class="n">n_const</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
+                <span class="n">order</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
+                <span class="n">l1_reg</span><span class="o">=</span><span class="n">l1_reg</span><span class="p">,</span>
+                <span class="n">l2_reg</span><span class="o">=</span><span class="n">l2_reg</span><span class="p">,</span>
+                <span class="n">l2_square_reg</span><span class="o">=</span><span class="n">l2_square_reg</span><span class="p">,</span>
+                <span class="n">unimodality</span><span class="o">=</span><span class="n">unimodality</span><span class="p">,</span>
+                <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+                <span class="n">simplex</span><span class="o">=</span><span class="n">simplex</span><span class="p">,</span>
+                <span class="n">normalized_sparsity</span><span class="o">=</span><span class="n">normalized_sparsity</span><span class="p">,</span>
+                <span class="n">soft_sparsity</span><span class="o">=</span><span class="n">soft_sparsity</span><span class="p">,</span>
+                <span class="n">smoothness</span><span class="o">=</span><span class="n">smoothness</span><span class="p">,</span>
+                <span class="n">monotonicity</span><span class="o">=</span><span class="n">monotonicity</span><span class="p">,</span>
+                <span class="n">hard_sparsity</span><span class="o">=</span><span class="n">hard_sparsity</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="n">tol_inner</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="n">factors_norm</span> <span class="o">=</span> <span class="n">cp_norm</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
         <span class="n">iprod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mttkrp</span> <span class="o">*</span> <span class="n">factors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span>
-        <span class="n">rec_error</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">iprod</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
+        <span class="n">rec_error</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">iprod</span><span class="p">))</span>
+            <span class="o">/</span> <span class="n">norm_tensor</span>
+        <span class="p">)</span>
         <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
         <span class="n">constraint_error</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes_list</span><span class="p">:</span>
-            <span class="n">constraint_error</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors_aux</span><span class="p">[</span><span class="n">mode</span><span class="p">]))</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+            <span class="n">constraint_error</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+                <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factors_aux</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">tol_outer</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">rec_error_decrease</span> <span class="o">=</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;iteration </span><span class="si">{}</span><span class="s2">, reconstruction error: </span><span class="si">{}</span><span class="s2">, decrease = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span>
-                                                                                         <span class="n">rec_error</span><span class="p">,</span>
-                                                                                         <span class="n">rec_error_decrease</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;iteration </span><span class="si">{}</span><span class="s2">, reconstruction error: </span><span class="si">{}</span><span class="s2">, decrease = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">iteration</span><span class="p">,</span> <span class="n">rec_error</span><span class="p">,</span> <span class="n">rec_error_decrease</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">constraint_error</span> <span class="o">&lt;</span> <span class="n">tol_outer</span><span class="p">:</span>
                     <span class="k">break</span>
-                <span class="k">if</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s1">&#39;abs_rec_error&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;abs_rec_error&quot;</span><span class="p">:</span>
                     <span class="n">stop_flag</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_error_decrease</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol_outer</span>
-                <span class="k">elif</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s1">&#39;rec_error&#39;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;rec_error&quot;</span><span class="p">:</span>
                     <span class="n">stop_flag</span> <span class="o">=</span> <span class="n">rec_error_decrease</span> <span class="o">&lt;</span> <span class="n">tol_outer</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Unknown convergence criterion&quot;</span><span class="p">)</span>
@@ -476,7 +567,7 @@
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstruction error=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reconstruction error=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="n">cp_tensor</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
@@ -578,12 +669,33 @@
 <span class="sd">           Transactions on Signal Processing 64.19 (2016): 5052-5065.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                 <span class="n">init</span><span class="o">=</span><span class="s1">&#39;svd&#39;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s1">&#39;numpy_svd&#39;</span><span class="p">,</span> <span class="n">tol_outer</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">tol_inner</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cvg_criterion</span><span class="o">=</span><span class="s1">&#39;abs_rec_error&#39;</span><span class="p">,</span>
-                 <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">n_iter_max_inner</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
+        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+        <span class="n">tol_outer</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+        <span class="n">tol_inner</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">cvg_criterion</span><span class="o">=</span><span class="s2">&quot;abs_rec_error&quot;</span><span class="p">,</span>
+        <span class="n">fixed_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">l1_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">l2_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">l2_square_reg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">unimodality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">simplex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">normalized_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">soft_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">smoothness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">monotonicity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max_inner</span> <span class="o">=</span> <span class="n">n_iter_max_inner</span>
@@ -645,7 +757,7 @@
             <span class="n">normalized_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalized_sparsity</span><span class="p">,</span>
             <span class="n">soft_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">soft_sparsity</span><span class="p">,</span>
             <span class="n">smoothness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">smoothness</span><span class="p">,</span>
-            <span class="n">monotonicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monotonicity</span> <span class="p">,</span>
+            <span class="n">monotonicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">monotonicity</span><span class="p">,</span>
             <span class="n">hard_sparsity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hard_sparsity</span><span class="p">,</span>
             <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>

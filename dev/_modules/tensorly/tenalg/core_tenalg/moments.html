@@ -150,30 +150,27 @@
 
 <div class="viewcode-block" id="higher_order_moment"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.higher_order_moment.html#tensorly.tenalg.higher_order_moment">[docs]</a><span class="k">def</span> <span class="nf">higher_order_moment</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Computes the Higher-Order Momemt</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : 2D-tensor -- or ND-tensor</span>
 <span class="sd">        matrix of size (n_samples, n_features)</span>
 <span class="sd">        or tensor of size(n_samples, D1, ..., DN)</span>
-<span class="sd">        </span>
+
 <span class="sd">    order : int</span>
 <span class="sd">        order of the higher-order moment to compute</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tensor : moment</span>
-<span class="sd">        if tensor is a matrix of size (n_samples, n_features), </span>
+<span class="sd">        if tensor is a matrix of size (n_samples, n_features),</span>
 <span class="sd">        tensor of size (n_features, )*order</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">moment</span> <span class="o">=</span> <span class="n">tensor</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">moment</span> <span class="o">=</span> <span class="n">batched_outer</span><span class="p">(</span><span class="n">moment</span><span class="p">,</span> <span class="n">tensor</span><span class="p">)</span>
-        
+
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">moment</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-
-
-
 </pre></div>
 
         </div>

@@ -150,6 +150,7 @@
 <span class="kn">from</span> <span class="nn">..tt_matrix</span> <span class="kn">import</span> <span class="n">validate_tt_matrix_rank</span><span class="p">,</span> <span class="n">TTMatrix</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 
+
 <div class="viewcode-block" id="tensor_train"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train">[docs]</a><span class="k">def</span> <span class="nf">tensor_train</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TT decomposition via recursive SVD</span>
 
@@ -186,56 +187,64 @@
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
 
         <span class="c1"># Reshape the unfolding matrix of the remaining factors</span>
-        <span class="n">n_row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">tensor_size</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">n_row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">tensor_size</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
         <span class="n">unfolding</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
         <span class="c1"># SVD of unfolding matrix</span>
         <span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_column</span><span class="p">)</span> <span class="o">=</span> <span class="n">unfolding</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">current_rank</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_column</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">current_rank</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_column</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">partial_svd</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="n">current_rank</span><span class="p">)</span>
-        <span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_rank</span>
+        <span class="n">rank</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_rank</span>
 
         <span class="c1"># Get kth TT factor</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tensor_size</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tensor_size</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
 
-        <span class="k">if</span><span class="p">(</span><span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TT factor &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;TT factor &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="c1"># Get new unfolding matrix for the remaining factors</span>
-        <span class="n">unfolding</span><span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">V</span>
+        <span class="n">unfolding</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">V</span>
 
     <span class="c1"># Getting the last factor</span>
     <span class="p">(</span><span class="n">prev_rank</span><span class="p">,</span> <span class="n">last_dim</span><span class="p">)</span> <span class="o">=</span> <span class="n">unfolding</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">factors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolding</span><span class="p">,</span> <span class="p">(</span><span class="n">prev_rank</span><span class="p">,</span> <span class="n">last_dim</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
-    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TT factor &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">n_dim</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;TT factor &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; computed with shape &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">n_dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">TTTensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="tensor_train_matrix"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.tensor_train_matrix.html#tensorly.decomposition.tensor_train_matrix">[docs]</a><span class="k">def</span> <span class="nf">tensor_train_matrix</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decompose a tensor into a matrix in tt-format</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    tensor : tensorized matrix </span>
+<span class="sd">    tensor : tensorized matrix</span>
 <span class="sd">        if your input matrix is of size (4, 9) and your tensorized_shape (2, 2, 3, 3)</span>
 <span class="sd">        then tensor should be tl.reshape(matrix, (2, 2, 3, 3))</span>
 <span class="sd">    rank : &#39;same&#39;, float or int tuple</span>
 <span class="sd">        - if &#39;same&#39; creates a decomposition with the same number of parameters as `tensor`</span>
 <span class="sd">        - if float, creates a decomposition with `rank` x the number of parameters of `tensor`</span>
 <span class="sd">        - otherwise, the actual rank to be used, e.g. (1, rank_2, ..., 1) of size tensor.ndim//2. Note that boundary conditions dictate that the first rank = last rank = 1.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tt_matrix</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">order</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-    <span class="n">n_input</span> <span class="o">=</span> <span class="n">order</span> <span class="o">//</span> <span class="mi">2</span> <span class="c1"># (n_output = n_input)</span>
-    
-    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_input</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;The tensor should have as many dimensions for inputs and outputs, i.e. order should be even &#39;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;but got a tensor of order tl.ndim(tensor)=</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s1"> which is odd.&#39;</span>
+    <span class="n">n_input</span> <span class="o">=</span> <span class="n">order</span> <span class="o">//</span> <span class="mi">2</span>  <span class="c1"># (n_output = n_input)</span>
+
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_input</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The tensor should have as many dimensions for inputs and outputs, i.e. order should be even &quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;but got a tensor of order tl.ndim(tensor)=</span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2"> which is odd.&quot;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">in_shape</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[:</span><span class="n">n_input</span><span class="p">]</span>
@@ -245,14 +254,22 @@
         <span class="c1"># A TTM with a single factor is just a matrix...</span>
         <span class="k">return</span> <span class="n">TTMatrix</span><span class="p">([</span><span class="n">tensor</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">in_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">out_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)])</span>
 
-    <span class="n">new_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">idx</span> <span class="k">for</span> <span class="n">tuple_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n_input</span><span class="p">))</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tuple_</span><span class="p">])</span>
-    <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">a</span><span class="o">*</span><span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">in_shape</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">)])</span>
+    <span class="n">new_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">idx</span>
+            <span class="k">for</span> <span class="n">tuple_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_input</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_input</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">tuple_</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">in_shape</span><span class="p">,</span> <span class="n">out_shape</span><span class="p">)])</span>
     <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">new_idx</span><span class="p">),</span> <span class="n">new_shape</span><span class="p">)</span>
-    
+
     <span class="n">factors</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span><span class="o">.</span><span class="n">factors</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    
+        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">in_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">out_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">TTMatrix</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span></div>
 
 
@@ -281,6 +298,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    .. [1] Ivan V. Oseledets. &quot;Tensor-train decomposition&quot;, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
@@ -289,7 +307,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
 
-<span class="n">matrix_product_state</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="s1">&#39;matrix_product_state&#39;</span><span class="p">,</span> <span class="n">tensor_train</span><span class="p">)</span>
+
+<span class="n">matrix_product_state</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="s2">&quot;matrix_product_state&quot;</span><span class="p">,</span> <span class="n">tensor_train</span><span class="p">)</span>
 </pre></div>
 
         </div>

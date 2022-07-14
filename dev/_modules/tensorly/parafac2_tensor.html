@@ -155,9 +155,10 @@
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
+
 <span class="k">class</span> <span class="nc">Parafac2Tensor</span><span class="p">(</span><span class="n">FactorizedTensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper class for the PARAFAC2 decomposition.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A wrapper class for the PARAFAC2 decomposition.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parafac2_tensor</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -173,7 +174,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projections</span> <span class="o">=</span> <span class="n">projections</span>
-        
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_CPTensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">parafac2_tensor_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Parafac2Tensor from a CPTensor</span>
@@ -193,8 +194,10 @@
         <span class="k">if</span> <span class="n">parafac2_tensor_ok</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input is not a CPTensor. If it is a Parafac2Tensor, then the argument ``parafac2_tensor_ok`` must be True&#39;</span><span class="p">)</span>
-        
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Input is not a CPTensor. If it is a Parafac2Tensor, then the argument ``parafac2_tensor_ok`` must be True&quot;</span>
+            <span class="p">)</span>
+
         <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span> <span class="o">=</span> <span class="n">cp_tensor</span>
         <span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
         <span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">Q</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">A</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
@@ -206,23 +209,29 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
-        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;You tried to access index </span><span class="si">{}</span><span class="s1"> of a PARAFAC2 tensor.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                             <span class="s1">&#39;You can only access index 0, 1 and 2 of a PARAFAC2 tensor&#39;</span>
-                             <span class="s1">&#39;(corresponding respectively to the weights, factors and projections)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-    
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
+                <span class="s2">&quot;You tried to access index </span><span class="si">{}</span><span class="s2"> of a PARAFAC2 tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;You can only access index 0, 1 and 2 of a PARAFAC2 tensor&quot;</span>
+                <span class="s2">&quot;(corresponding respectively to the weights, factors and projections)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">index</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span>
-        
+
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">3</span>
-    
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors, projections) : rank-</span><span class="si">{}</span><span class="s1"> Parafac2Tensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;(weights, factors, projections) : rank-</span><span class="si">{}</span><span class="s2"> Parafac2Tensor of shape </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -230,20 +239,20 @@
 
     <span class="k">def</span> <span class="nf">to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">parafac2_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">parafac2_to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates a parafac2_tensor in the form (weights, factors)</span>
-<span class="sd">    </span>
+
 <span class="sd">        Returns the rank and shape of the validated tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parafac2_tensor : Parafac2Tensor or (weights, factors)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    (shape, rank) : (int tuple, int)</span>
@@ -254,15 +263,19 @@
         <span class="k">return</span> <span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">rank</span>
 
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
-            
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A PARAFAC2 tensor should be composed of exactly three factors.&#39;</span>
-                         <span class="s1">&#39;However, </span><span class="si">{}</span><span class="s1"> factors was given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;A PARAFAC2 tensor should be composed of exactly three factors.&quot;</span>
+            <span class="s2">&quot;However, </span><span class="si">{}</span><span class="s2"> factors was given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">)</span> <span class="o">!=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A PARAFAC2 tensor should have one projection matrix for each horisontal&#39;</span>
-                         <span class="s1">&#39; slice. However, </span><span class="si">{}</span><span class="s1"> projection matrices was given and the first mode has&#39;</span>
-                         <span class="s1">&#39;length </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">),</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;A PARAFAC2 tensor should have one projection matrix for each horisontal&quot;</span>
+            <span class="s2">&quot; slice. However, </span><span class="si">{}</span><span class="s2"> projection matrices was given and the first mode has&quot;</span>
+            <span class="s2">&quot;length </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">),</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">)</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
 
@@ -271,8 +284,8 @@
         <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;All the projection matrices of a PARAFAC2 tensor should have the same number of &#39;</span>
-                <span class="s1">&#39;columns as the rank. However, rank=</span><span class="si">{}</span><span class="s1"> but projections[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;All the projection matrices of a PARAFAC2 tensor should have the same number of &quot;</span>
+                <span class="s2">&quot;columns as the rank. However, rank=</span><span class="si">{}</span><span class="s2"> but projections[</span><span class="si">{}</span><span class="s2">].shape[1]=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -280,27 +293,36 @@
         <span class="n">inner_product</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">projection</span><span class="p">),</span> <span class="n">projection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">))))</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;All the projection matrices must be orthonormal, that is, P.T@P = I. &#39;</span>
-                <span class="s1">&#39;However, T.norm(projection[</span><span class="si">{}</span><span class="s1">].T@projection[</span><span class="si">{}</span><span class="s1">] - T.eye(rank)) = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">)))</span> 
+                <span class="s2">&quot;All the projection matrices must be orthonormal, that is, P.T@P = I. &quot;</span>
+                <span class="s2">&quot;However, T.norm(projection[</span><span class="si">{}</span><span class="s2">].T@projection[</span><span class="si">{}</span><span class="s2">] - T.eye(rank)) = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">i</span><span class="p">,</span>
+                    <span class="n">i</span><span class="p">,</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">))),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        
-        <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_mode_size</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]))</span>  <span class="c1"># Tuple unpacking to possibly support higher order PARAFAC2 tensors in the future</span>
 
-    
+        <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">current_mode_size</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">:]])</span>
+        <span class="p">)</span>  <span class="c1"># Tuple unpacking to possibly support higher order PARAFAC2 tensors in the future</span>
+
     <span class="c1"># Skip first factor matrix since the rank is extracted from it.</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
         <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the factors of a PARAFAC2 tensor should have the same number of columns.&#39;</span>
-                             <span class="s1">&#39;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s1"> but factors[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                 <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;All the factors of a PARAFAC2 tensor should have the same number of columns.&quot;</span>
+                <span class="s2">&quot;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s2"> but factors[</span><span class="si">{}</span><span class="s2">].shape[1]=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given factors for a rank-</span><span class="si">{}</span><span class="s1"> PARAFAC2 tensor but len(weights)=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">rank</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
-        
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Given factors for a rank-</span><span class="si">{}</span><span class="s2"> PARAFAC2 tensor but len(weights)=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">rank</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span>
 
 
@@ -330,38 +352,40 @@
     <span class="c1"># allocate variables for weights, and normalized factors</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
-    
+
     <span class="c1"># if (not copy) and (weights is None):</span>
     <span class="c1">#     warnings.warn(&#39;Provided copy=False and weights=None: a new Parafac2Tensor&#39;</span>
     <span class="c1">#                   &#39;with new weights and factors normalised inplace will be returned.&#39;)</span>
     <span class="c1">#     weights = T.ones(rank, **T.context(factors[0]))</span>
-    
+
     <span class="c1"># The if test below was added to enable inplace edits</span>
     <span class="c1"># however, TensorFlow does not support inplace edits</span>
     <span class="c1"># so this is always set to True</span>
-    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>  
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
         <span class="n">projections</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        
+
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
         <span class="n">scales</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="n">scales</span>
-        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">scales</span><span class="p">)</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span><span class="o">/</span><span class="n">scales_non_zero</span>
-        
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">scales</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">scales</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">scales</span>
+        <span class="p">)</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">/</span> <span class="n">scales_non_zero</span>
+
     <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">apply_parafac2_projections</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Apply the projection matrices to the evolving factor.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parafac2_tensor : Parafac2Tensor</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    (weights, factors) : ndarray, tuple</span>
@@ -378,7 +402,7 @@
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
 
     <span class="n">evolving_factor</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">projection</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
-    
+
     <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">evolving_factor</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
 
@@ -389,13 +413,13 @@
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">    </span>
+
 <span class="sd">        X_i = B_i diag(a_i) C^T,</span>
-<span class="sd">    </span>
+
 <span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
-<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i`</span>
 <span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
-<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix.</span>
 <span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
 
 <span class="sd">    .. math::</span>
@@ -411,7 +435,7 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
-<span class="sd">    </span>
+
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
 <span class="sd">    Parameters</span>
@@ -423,7 +447,7 @@
 <span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
 <span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
 <span class="sd">            factors.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -436,12 +460,12 @@
     <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">slice_idx</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">weights</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">weights</span>
 
     <span class="n">Ct</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
 
     <span class="n">B_i</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">projections</span><span class="p">[</span><span class="n">slice_idx</span><span class="p">],</span> <span class="n">B</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B_i</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">Ct</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">B_i</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span> <span class="n">Ct</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="parafac2_to_slices"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_slices.html#tensorly.parafac2_tensor.parafac2_to_slices">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_slices</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -455,13 +479,13 @@
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">    </span>
+
 <span class="sd">        X_i = B_i diag(a_i) C^T,</span>
-<span class="sd">    </span>
+
 <span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
-<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i`</span>
 <span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
-<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix.</span>
 <span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
 
 <span class="sd">    .. math::</span>
@@ -477,7 +501,7 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
-<span class="sd">    </span>
+
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
 <span class="sd">    Parameters</span>
@@ -489,7 +513,7 @@
 <span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
 <span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
 <span class="sd">            factors.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    List[ndarray]</span>
@@ -501,7 +525,7 @@
         <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">weights</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">weights</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">decomposition</span> <span class="o">=</span> <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span>
@@ -516,13 +540,13 @@
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">    </span>
+
 <span class="sd">        X_i = B_i diag(a_i) C^T,</span>
-<span class="sd">    </span>
+
 <span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
-<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i`</span>
 <span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
-<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix.</span>
 <span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
 
 <span class="sd">    .. math::</span>
@@ -538,7 +562,7 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
-<span class="sd">    </span>
+
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
 <span class="sd">    Parameters</span>
@@ -550,7 +574,7 @@
 <span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
 <span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
 <span class="sd">            factors.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -559,8 +583,8 @@
     <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">parafac2_tensor</span>
     <span class="n">slices</span> <span class="o">=</span> <span class="n">parafac2_to_slices</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">)</span>
     <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">projection</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">projection</span> <span class="ow">in</span> <span class="n">projections</span><span class="p">]</span>
-    
-    <span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="n">lengths</span><span class="p">),</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>  <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="n">lengths</span><span class="p">),</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">slice_</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">lengths</span><span class="p">)):</span>
         <span class="n">tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">length</span><span class="p">],</span> <span class="n">slice_</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tensor</span></div>
@@ -573,13 +597,13 @@
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">    </span>
+
 <span class="sd">        X_i = B_i diag(a_i) C^T,</span>
-<span class="sd">    </span>
+
 <span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
-<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i`</span>
 <span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
-<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix.</span>
 <span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
 
 <span class="sd">    .. math::</span>
@@ -595,7 +619,7 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
-<span class="sd">    </span>
+
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
 <span class="sd">    Parameters</span>
@@ -607,7 +631,7 @@
 <span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
 <span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
 <span class="sd">            factors.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -623,13 +647,13 @@
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">    </span>
+
 <span class="sd">        X_i = B_i diag(a_i) C^T,</span>
-<span class="sd">    </span>
+
 <span class="sd">    where :math:`diag(a_i)` is the diagonal matrix whose nonzero entries are equal to</span>
-<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i` </span>
+<span class="sd">    the :math:`i`-th row of the :math:`I \times R` factor matrix :math:`A`, :math:`B_i`</span>
 <span class="sd">    is a :math:`J_i \times R` factor matrix such that the cross product matrix :math:`B_{i_1}^T B_{i_1}`</span>
-<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix. </span>
+<span class="sd">    is constant for all :math:`i`, and :math:`C` is a :math:`K \times R` factor matrix.</span>
 <span class="sd">    To compute this decomposition, we reformulate the expression for :math:`B_i` such that</span>
 
 <span class="sd">    .. math::</span>
@@ -645,7 +669,7 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
-<span class="sd">    </span>
+
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
 <span class="sd">    Parameters</span>
@@ -657,7 +681,7 @@
 <span class="sd">            Contains the matrices :math:`A`, :math:`B` and :math:`C` described above</span>
 <span class="sd">        * projection_matrices : List of projection matrices used to create evolving</span>
 <span class="sd">            factors.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>

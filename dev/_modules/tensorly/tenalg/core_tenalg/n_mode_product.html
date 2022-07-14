@@ -147,78 +147,93 @@
 <span></span><span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
 
+
 <div class="viewcode-block" id="mode_dot"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot">[docs]</a><span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;n-mode product of a tensor and a matrix or vector at the specified mode</span>
+    <span class="sd">&quot;&quot;&quot;n-mode product of a tensor and a matrix or vector at the specified mode</span>
 
-<span class="sd">        Mathematically: :math:`\\text{tensor} \\times_{\\text{mode}} \\text{matrix or vector}`</span>
+<span class="sd">    Mathematically: :math:`\\text{tensor} \\times_{\\text{mode}} \\text{matrix or vector}`</span>
 
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        tensor : ndarray</span>
-<span class="sd">            tensor of shape ``(i_1, ..., i_k, ..., i_N)``</span>
-<span class="sd">        matrix_or_vector : ndarray</span>
-<span class="sd">            1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
-<span class="sd">            matrix or vectors to which to n-mode multiply the tensor</span>
-<span class="sd">        mode : int</span>
-<span class="sd">        transpose : bool, default is False</span>
-<span class="sd">            If True, the matrix is transposed. </span>
-<span class="sd">            For complex tensors, the conjugate transpose is used. </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : ndarray</span>
+<span class="sd">        tensor of shape ``(i_1, ..., i_k, ..., i_N)``</span>
+<span class="sd">    matrix_or_vector : ndarray</span>
+<span class="sd">        1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
+<span class="sd">        matrix or vectors to which to n-mode multiply the tensor</span>
+<span class="sd">    mode : int</span>
+<span class="sd">    transpose : bool, default is False</span>
+<span class="sd">        If True, the matrix is transposed.</span>
+<span class="sd">        For complex tensors, the conjugate transpose is used.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray</span>
-<span class="sd">            `mode`-mode product of `tensor` by `matrix_or_vector`</span>
-<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
-<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        `mode`-mode product of `tensor` by `matrix_or_vector`</span>
+<span class="sd">        * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
+<span class="sd">        * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
 
-<span class="sd">        See also</span>
-<span class="sd">        --------</span>
-<span class="sd">        multi_mode_dot : chaining several mode_dot in one call</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># the mode along which to fold might decrease if we take product with a vector</span>
-        <span class="n">fold_mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    multi_mode_dot : chaining several mode_dot in one call</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># the mode along which to fold might decrease if we take product with a vector</span>
+    <span class="n">fold_mode</span> <span class="o">=</span> <span class="n">mode</span>
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
-            <span class="c1"># Test for the validity of the operation</span>
-            <span class="n">dim</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">transpose</span> <span class="k">else</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned in mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (dim 1 of matrix)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span>
-                    <span class="p">))</span>
-            
-            <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
-                <span class="n">matrix_or_vector</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
+        <span class="c1"># Test for the validity of the operation</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">transpose</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;shapes </span><span class="si">{0}</span><span class="s2"> and </span><span class="si">{1}</span><span class="s2"> not aligned in mode-</span><span class="si">{2}</span><span class="s2"> multiplication: </span><span class="si">{3}</span><span class="s2"> (mode </span><span class="si">{2}</span><span class="s2">) != </span><span class="si">{4}</span><span class="s2"> (dim 1 of matrix)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="p">,</span>
+                    <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
+                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
-            <span class="n">new_shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">vec</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span>
+            <span class="n">matrix_or_vector</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">))</span>
 
-        <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
-            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned for mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (vector size)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="p">))</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">new_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Ideally this should be (), i.e. order-0 tensors</span>
-                <span class="c1"># MXNet currently doesn&#39;t support this though..</span>
-                <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">vec</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">new_shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="kc">False</span>
 
+    <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
+        <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;shapes </span><span class="si">{0}</span><span class="s2"> and </span><span class="si">{1}</span><span class="s2"> not aligned for mode-</span><span class="si">{2}</span><span class="s2"> multiplication: </span><span class="si">{3}</span><span class="s2"> (mode </span><span class="si">{2}</span><span class="s2">) != </span><span class="si">{4}</span><span class="s2"> (vector size)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="p">,</span>
+                    <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
+                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can only take n_mode_product with a vector or a matrix.&#39;</span>
-                             <span class="s1">&#39;Provided array of dimension </span><span class="si">{}</span><span class="s1"> not in [1, 2].&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)))</span>
+            <span class="c1"># Ideally this should be (), i.e. order-0 tensors</span>
+            <span class="c1"># MXNet currently doesn&#39;t support this though..</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vec</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">res</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Can only take n_mode_product with a vector or a matrix.&quot;</span>
+            <span class="s2">&quot;Provided array of dimension </span><span class="si">{}</span><span class="s2"> not in [1, 2].&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">vec</span><span class="p">:</span> <span class="c1"># We contracted with a vector, leading to a vector</span>
-            <span class="k">return</span> <span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># tensor times vec: refold the unfolding</span>
-            <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">vec</span><span class="p">:</span>  <span class="c1"># We contracted with a vector, leading to a vector</span>
+        <span class="k">return</span> <span class="n">vec_to_tensor</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">new_shape</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># tensor times vec: refold the unfolding</span>
+        <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="multi_mode_dot"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -231,14 +246,14 @@
 <span class="sd">    matrix_or_vec_list : list of matrices or vectors of length ``tensor.ndim``</span>
 
 <span class="sd">    skip : None or int, optional, default is None</span>
-<span class="sd">        If not None, index of a matrix to skip. </span>
+<span class="sd">        If not None, index of a matrix to skip.</span>
 <span class="sd">        Note that in any case, `modes`, if provided, should have a length of ``tensor.ndim``</span>
 
 <span class="sd">    modes : None or int list, optional, default is None</span>
 
 <span class="sd">    transpose : bool, optional, default is False</span>
 <span class="sd">        If True, the matrices or vectors in in the list are transposed.</span>
-<span class="sd">        For complex tensors, the conjugate transpose is used. </span>
+<span class="sd">        For complex tensors, the conjugate transpose is used.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -278,7 +293,6 @@
             <span class="n">decrement</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
-
 </pre></div>
 
         </div>

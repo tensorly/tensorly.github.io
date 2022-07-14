@@ -233,15 +233,15 @@
 <dt class="sig sig-object py" id="tensorly.decomposition.Parafac2">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parafac2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_parafac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_parafac2.html#Parafac2"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>PARAFAC2 decomposition <a class="reference internal" href="#r08ccc3506ae1-1" id="id1">[1]</a> of a third order tensor via alternating least squares (ALS)</p>
-<p>Computes a rank-<cite>rank</cite> PARAFAC2 decomposition of the third-order tensor defined by 
+<p>Computes a rank-<cite>rank</cite> PARAFAC2 decomposition of the third-order tensor defined by
 <cite>tensor_slices</cite>. The decomposition is on the form <span class="math notranslate nohighlight">\((A [B_i] C)\)</span> such that the
 i-th frontal slice, <span class="math notranslate nohighlight">\(X_i\)</span>, of <span class="math notranslate nohighlight">\(X\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[X_i = B_i diag(a_i) C^T,\]</div>
 <p>where <span class="math notranslate nohighlight">\(diag(a_i)\)</span> is the diagonal matrix whose nonzero entries are equal to
-the <span class="math notranslate nohighlight">\(i\)</span>-th row of the <span class="math notranslate nohighlight">\(I \times R\)</span> factor matrix <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B_i\)</span> 
+the <span class="math notranslate nohighlight">\(i\)</span>-th row of the <span class="math notranslate nohighlight">\(I \times R\)</span> factor matrix <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B_i\)</span>
 is a <span class="math notranslate nohighlight">\(J_i \times R\)</span> factor matrix such that the cross product matrix <span class="math notranslate nohighlight">\(B_{i_1}^T B_{i_1}\)</span>
-is constant for all <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> is a <span class="math notranslate nohighlight">\(K \times R\)</span> factor matrix. 
+is constant for all <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> is a <span class="math notranslate nohighlight">\(K \times R\)</span> factor matrix.
 To compute this decomposition, we reformulate the expression for <span class="math notranslate nohighlight">\(B_i\)</span> such that</p>
 <div class="math notranslate nohighlight">
 \[B_i = P_i B,\]</div>
@@ -281,7 +281,7 @@ than the tolerance.</p>
 </div>
 </dd>
 <dt><strong>absolute_tol</strong><span class="classifier">float, optional</span></dt><dd><p>(Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm
-is considered to have converged when 
+is considered to have converged when
 <span class="math notranslate nohighlight">\(\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}\)</span>.
 That is, when the relative sum of squared error is less than the specified tolerance.
 The absolute tolerance is necessary for stopping the algorithm when used on noise-free
@@ -338,7 +338,7 @@ any reordering of the modes.</p>
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>)</span>
 <p>Kiers, H.A.L., ten Berge, J.M.F. and Bro, R. (1999),
-PARAFAC2—Part I. A direct fitting algorithm for the PARAFAC2 model. 
+PARAFAC2—Part I. A direct fitting algorithm for the PARAFAC2 model.
 J. Chemometrics, 13: 275-294.</p>
 </div>
 </div>

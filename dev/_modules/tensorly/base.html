@@ -147,32 +147,33 @@
 <span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">tl</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">prod</span>
 
+
 <div class="viewcode-block" id="tensor_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.base.tensor_to_vec.html#tensorly.base.tensor_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorises a tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">             tensor of shape ``(i_1, ..., i_n)``</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    1D-array</span>
 <span class="sd">        vectorised tensor of shape ``(i_1 * i_2 * ... * i_n)``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span></div>
 
 
 <div class="viewcode-block" id="vec_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.base.vec_to_tensor.html#tensorly.base.vec_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">vec_to_tensor</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Folds a vectorised tensor back into a tensor of shape `shape`</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    vec : 1D-array</span>
 <span class="sd">        vectorised tensor of shape ``(i_1 * i_2 * ... * i_n)``</span>
 <span class="sd">    shape : tuple</span>
 <span class="sd">        shape of the ful tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -183,13 +184,13 @@
 
 <div class="viewcode-block" id="unfold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold">[docs]</a><span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns the mode-`mode` unfolding of `tensor` with modes starting at `0`.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">    mode : int, default is 0</span>
 <span class="sd">           indexing starts at 0, therefore mode is in ``range(0, tensor.ndim)``</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -200,10 +201,10 @@
 
 <div class="viewcode-block" id="fold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.fold.html#tensorly.base.fold">[docs]</a><span class="k">def</span> <span class="nf">fold</span><span class="p">(</span><span class="n">unfolded_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Refolds the mode-`mode` unfolding into a tensor of shape `shape`</span>
-<span class="sd">    </span>
+
 <span class="sd">        In other words, refolds the n-mode unfolded tensor</span>
 <span class="sd">        into the original tensor of the specified shape.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    unfolded_tensor : ndarray</span>
@@ -212,7 +213,7 @@
 <span class="sd">        the mode of the unfolding</span>
 <span class="sd">    shape : tuple</span>
 <span class="sd">        shape of the original tensor before unfolding</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -223,10 +224,11 @@
     <span class="n">full_shape</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">mode_dim</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolded_tensor</span><span class="p">,</span> <span class="n">full_shape</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="partial_unfold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold">[docs]</a><span class="k">def</span> <span class="nf">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Partially unfolds a tensor while ignoring the specified number of dimensions at the beginning and the end.                                       </span>
 
-<span class="sd">        For instance, if the first dimension of the tensor is the number of samples, to unfold each sample, </span>
+<div class="viewcode-block" id="partial_unfold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold">[docs]</a><span class="k">def</span> <span class="nf">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partially unfolds a tensor while ignoring the specified number of dimensions at the beginning and the end.</span>
+
+<span class="sd">        For instance, if the first dimension of the tensor is the number of samples, to unfold each sample,</span>
 <span class="sd">        set skip_begin=1.</span>
 <span class="sd">        This would, for each i in ``range(tensor.shape[0])``, unfold ``tensor[i, ...]``.</span>
 
@@ -259,12 +261,12 @@
     <span class="k">if</span> <span class="n">skip_end</span><span class="p">:</span>
         <span class="n">new_shape</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">skip_end</span><span class="p">)]</span>
 
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">+</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_begin</span><span class="p">),</span> <span class="n">new_shape</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span> <span class="o">+</span> <span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_begin</span><span class="p">),</span> <span class="n">new_shape</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="partial_fold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_fold.html#tensorly.base.partial_fold">[docs]</a><span class="k">def</span> <span class="nf">partial_fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Re-folds a partially unfolded tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    unfolded : ndarray</span>
@@ -277,7 +279,7 @@
 <span class="sd">        number of dimensions to leave untouched at the beginning</span>
 <span class="sd">    skip_end : int, optional</span>
 <span class="sd">        number of dimensions to leave untouched at the end</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
@@ -286,14 +288,16 @@
     <span class="n">transposed_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">mode_dim</span> <span class="o">=</span> <span class="n">transposed_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">skip_begin</span> <span class="o">+</span> <span class="n">mode</span><span class="p">)</span>
     <span class="n">transposed_shape</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">mode_dim</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">transposed_shape</span><span class="p">),</span> <span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_begin</span> <span class="o">+</span> <span class="n">mode</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">transposed_shape</span><span class="p">),</span> <span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_begin</span> <span class="o">+</span> <span class="n">mode</span>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="partial_tensor_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec">[docs]</a><span class="k">def</span> <span class="nf">partial_tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Partially vectorises a tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">        Partially vectorises a tensor while ignoring the specified dimension at the beginning and the end</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : ndarray</span>
@@ -302,17 +306,20 @@
 <span class="sd">        number of dimensions to leave untouched at the beginning</span>
 <span class="sd">    skip_end : int, optional</span>
 <span class="sd">        number of dimensions to leave untouched at the end</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        partially vectorised tensor with the `skip_begin` first and `skip_end` last dimensions untouched</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">partial_unfold</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="partial_vec_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_vec_to_tensor.html#tensorly.base.partial_vec_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">partial_vec_to_tensor</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Refolds a partially vectorised tensor into a full one</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    matrix : ndarray</span>
@@ -323,18 +330,20 @@
 <span class="sd">        number of dimensions to leave untouched at the beginning</span>
 <span class="sd">    skip_end : int, optional</span>
 <span class="sd">        number of dimensions to leave untouched at the end</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray</span>
 <span class="sd">        full tensor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">partial_fold</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">partial_fold</span><span class="p">(</span>
+        <span class="n">matrix</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span>
+    <span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">matricize</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">row_modes</span><span class="p">,</span> <span class="n">column_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Matricizes the given tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor : tl.tensor</span>
@@ -343,7 +352,7 @@
 <span class="sd">    column_modes : tuple[int], default is None</span>
 <span class="sd">        modes to use as column of the matrix, in the desired order</span>
 <span class="sd">        if None, the modes not in `row_modes` will be used in ascending order</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    matrix : tl.tensor of size (prod(tensor.shape[i] for i in row_modes), -1)</span>
@@ -352,7 +361,7 @@
         <span class="n">row_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">row_modes</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
         <span class="n">row_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">row_modes</span><span class="p">]</span>
-    
+
     <span class="k">if</span> <span class="n">column_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">column_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">row_indices</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
@@ -360,17 +369,20 @@
             <span class="n">column_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">column_modes</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="n">column_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">column_modes</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">column_indices</span><span class="o">+</span><span class="n">row_indices</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;If you provide both column and row modes for the matricization&#39;</span>
-                   <span class="s1">&#39; then column_modes + row_modes must contain all the modes of the tensor.&#39;</span>
-                   <span class="sa">f</span><span class="s1">&#39; Yet, got row_modes=</span><span class="si">{</span><span class="n">row_modes</span><span class="si">}</span><span class="s1"> and column_modes=</span><span class="si">{</span><span class="n">column_modes</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">column_indices</span> <span class="o">+</span> <span class="n">row_indices</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;If you provide both column and row modes for the matricization&quot;</span>
+                <span class="s2">&quot; then column_modes + row_modes must contain all the modes of the tensor.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; Yet, got row_modes=</span><span class="si">{</span><span class="n">row_modes</span><span class="si">}</span><span class="s2"> and column_modes=</span><span class="si">{</span><span class="n">column_modes</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    
+
     <span class="n">row_size</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">row_indices</span><span class="p">)</span>
     <span class="n">column_size</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">column_indices</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">row_indices</span><span class="o">+</span><span class="n">column_indices</span><span class="p">),</span>
-                      <span class="p">(</span><span class="n">row_size</span><span class="p">,</span> <span class="n">column_size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">row_indices</span> <span class="o">+</span> <span class="n">column_indices</span><span class="p">),</span> <span class="p">(</span><span class="n">row_size</span><span class="p">,</span> <span class="n">column_size</span><span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 
         </div>

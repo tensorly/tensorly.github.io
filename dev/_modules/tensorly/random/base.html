@@ -145,8 +145,7 @@
           
   <h1>Source code for tensorly.random.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="p">(</span><span class="n">cp_to_tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">,</span>
-                         <span class="n">cp_normalize</span><span class="p">,</span> <span class="n">validate_cp_rank</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">cp_to_tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">,</span> <span class="n">cp_normalize</span><span class="p">,</span> <span class="n">validate_cp_rank</span>
 <span class="kn">from</span> <span class="nn">..tucker_tensor</span> <span class="kn">import</span> <span class="n">tucker_to_tensor</span><span class="p">,</span> <span class="n">TuckerTensor</span><span class="p">,</span> <span class="n">validate_tucker_rank</span>
 <span class="kn">from</span> <span class="nn">..tt_tensor</span> <span class="kn">import</span> <span class="n">tt_to_tensor</span><span class="p">,</span> <span class="n">TTTensor</span><span class="p">,</span> <span class="n">validate_tt_rank</span>
 <span class="kn">from</span> <span class="nn">..tt_matrix</span> <span class="kn">import</span> <span class="n">tt_matrix_to_tensor</span><span class="p">,</span> <span class="n">TTMatrix</span><span class="p">,</span> <span class="n">validate_tt_matrix_rank</span>
@@ -158,14 +157,14 @@
 
 
 <span class="k">def</span> <span class="nf">random_tensor</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a random tensor</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Create a random tensor&quot;&quot;&quot;</span>
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="random_parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_parafac2.html#tensorly.random.random_parafac2">[docs]</a><span class="k">def</span> <span class="nf">random_parafac2</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+<div class="viewcode-block" id="random_parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_parafac2.html#tensorly.random.random_parafac2">[docs]</a><span class="k">def</span> <span class="nf">random_parafac2</span><span class="p">(</span>
+    <span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate a random PARAFAC2 tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -184,15 +183,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All matrices must have equal number of columns.&#39;</span><span class="p">)</span>
-    
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All matrices must have equal number of columns.&quot;</span><span class="p">)</span>
+
     <span class="n">projection_matrices</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">context</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span>
+        <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span>
     <span class="p">]</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">random_cp</span><span class="p">(</span>
-        <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-        <span class="n">random_state</span><span class="o">=</span><span class="n">rns</span><span class="p">,</span>  <span class="o">**</span><span class="n">context</span>
+        <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">shapes</span><span class="p">),</span> <span class="n">rank</span><span class="p">,</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
+        <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rns</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">context</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">parafac2_tensor</span> <span class="o">=</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projection_matrices</span><span class="p">))</span>
@@ -203,8 +205,15 @@
         <span class="k">return</span> <span class="n">parafac2_tensor</span></div>
 
 
-<div class="viewcode-block" id="random_cp"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_cp.html#tensorly.random.random_cp">[docs]</a><span class="k">def</span> <span class="nf">random_cp</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                   <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+<div class="viewcode-block" id="random_cp"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_cp.html#tensorly.random.random_cp">[docs]</a><span class="k">def</span> <span class="nf">random_cp</span><span class="p">(</span>
+    <span class="n">shape</span><span class="p">,</span>
+    <span class="n">rank</span><span class="p">,</span>
+    <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">normalise_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">context</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates a random CP tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -230,8 +239,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_cp_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="ow">and</span> <span class="n">orthogonal</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Can only construct orthogonal tensors when rank &lt;= min(shape) but got &#39;</span>
-                      <span class="s1">&#39;a tensor with min(shape)=</span><span class="si">{}</span><span class="s1"> &lt; rank=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span><span class="p">))</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Can only construct orthogonal tensors when rank &lt;= min(shape) but got &quot;</span>
+            <span class="s2">&quot;a tensor with min(shape)=</span><span class="si">{}</span><span class="s2"> &lt; rank=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
     <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]</span>
@@ -246,7 +257,10 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="random_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tucker.html#tensorly.random.random_tucker">[docs]</a><span class="k">def</span> <span class="nf">random_tucker</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">):</span>
+
+<div class="viewcode-block" id="random_tucker"><a class="viewcode-back" href="../../../modules/generated/tensorly.random.random_tucker.html#tensorly.random.random_tucker">[docs]</a><span class="k">def</span> <span class="nf">random_tucker</span><span class="p">(</span>
+    <span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates a random Tucker tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -277,14 +291,16 @@
     <span class="k">if</span> <span class="n">orthogonal</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">s</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Selected orthogonal=True, but selected a rank larger than the tensor size for mode </span><span class="si">{0}</span><span class="s1">: &#39;</span>
-                             <span class="s1">&#39;rank[</span><span class="si">{0}</span><span class="s1">]=</span><span class="si">{1}</span><span class="s1"> &gt; shape[</span><span class="si">{0}</span><span class="s1">]=</span><span class="si">{2}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Selected orthogonal=True, but selected a rank larger than the tensor size for mode </span><span class="si">{0}</span><span class="s2">: &quot;</span>
+                    <span class="s2">&quot;rank[</span><span class="si">{0}</span><span class="s2">]=</span><span class="si">{1}</span><span class="s2"> &gt; shape[</span><span class="si">{0}</span><span class="s2">]=</span><span class="si">{2}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                <span class="p">)</span>
 
     <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">orthogonal</span><span class="p">:</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">)),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
-            <span class="n">Q</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">Q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
             <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">Q</span><span class="p">[:,</span> <span class="p">:</span><span class="n">r</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">)),</span> <span class="o">**</span><span class="n">context</span><span class="p">))</span>
@@ -320,7 +336,7 @@
 <span class="sd">        * ND-array : full tensor if `full` is True</span>
 <span class="sd">        * 3D-array list : list of factors otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> 
+    <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tt_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
 
@@ -329,15 +345,21 @@
 
     <span class="c1"># Initialization</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided rank[0] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[0] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[0] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Provided rank[-1] == </span><span class="si">{}</span><span class="s1"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>\
-               <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">)]</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="p">]</span>
 
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tt_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
@@ -377,8 +399,13 @@
 
     <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dim</span><span class="p">):</span>
-         <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random_tensor</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">left_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">right_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
-                                             <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">))</span>
+        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">random_tensor</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">left_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">right_shape</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+                <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">context</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
@@ -419,11 +446,14 @@
 
     <span class="c1"># Initialization</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Provided rank[0] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> and rank[-1] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> but boundary conditions dictatate rank[0] == rank[-1].&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Provided rank[0] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> and rank[-1] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> but boundary conditions dictatate rank[0] == rank[-1].&quot;</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">)]</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rns</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">rank</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">rank</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+    <span class="p">]</span>
 
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">tr_to_tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
@@ -431,8 +461,10 @@
         <span class="k">return</span> <span class="n">TRTensor</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
 
 
-<span class="n">random_kruskal</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_kruskal&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_cp</span><span class="p">)</span>
-<span class="n">random_mps</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;random_mps&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_tt</span><span class="p">)</span>
+<span class="n">random_kruskal</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
+    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;random_kruskal&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_cp</span>
+<span class="p">)</span>
+<span class="n">random_mps</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;random_mps&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">random_tt</span><span class="p">)</span>
 </pre></div>
 
         </div>

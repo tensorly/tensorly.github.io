@@ -258,17 +258,17 @@
 </pre></div>
 </div>
 <p>Multiplying with the Khatri-Rao product is equivalent to multiplying,
-for each rank, with the kronecker product of each factor. 
+for each rank, with the kronecker product of each factor.
 In code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mttkrp_parts</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
     <span class="n">component</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">f</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
     <span class="n">mttkrp_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
 <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">return</span> <span class="n">mttkrp</span> 
+<span class="k">return</span> <span class="n">mttkrp</span>
 </pre></div>
 </div>
-<p>This can be done by taking n-mode-product with the full factors 
+<p>This can be done by taking n-mode-product with the full factors
 (faster but more memory consuming):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">projected</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ndims</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
