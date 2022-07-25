@@ -45,7 +45,7 @@ obtained from a non-negative tensor.
     import numpy as np
     import tensorly as tl
     from tensorly.decomposition import non_negative_parafac, non_negative_parafac_hals
-    from tensorly.decomposition._nn_cp import initialize_nn_cp
+    from tensorly.decomposition._cp import initialize_cp
     from tensorly.cp_tensor import CPTensor
     import time
     from copy import deepcopy
@@ -79,7 +79,7 @@ Here we chose to generate a random from the sequence of integers from 1 to 24000
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-47
+.. GENERATED FROM PYTHON SOURCE LINES 39-48
 
 Our goal here is to produce an approximation of the tensor generated above
 which follows a low-rank CP model, with non-negative coefficients. Before
@@ -87,15 +87,16 @@ using these algorithms, we can use Tensorly to produce a good initial guess
 for our NCP. In fact, in order to compare both algorithmic options in a
 fair way, it is a good idea to use same initialized factors in decomposition
 algorithms. We make use of the ``initialize_cp`` function to initialize the
-factors of the NCP, and transform these factors (and factors weights) into
+factors of the NCP (setting the ``non_negative`` option to `True`) 
+and transform these factors (and factors weights) into
 an instance of the CPTensor class:
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-52
+.. GENERATED FROM PYTHON SOURCE LINES 48-53
 
 .. code-block:: default
 
 
-    weights_init, factors_init = initialize_nn_cp(tensor, init='random', rank=10)
+    weights_init, factors_init = initialize_cp(tensor, non_negative=True, init='random', rank=10)
 
     cp_init = CPTensor((weights_init, factors_init))
 
@@ -106,7 +107,7 @@ an instance of the CPTensor class:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-58
+.. GENERATED FROM PYTHON SOURCE LINES 54-59
 
 Non-negative Parafac
 -----------------------
@@ -114,7 +115,7 @@ From now on, we can use the same ``cp_init`` tensor as the initial tensor when
 we use decomposition functions. Now let us first use the algorithm based on
 Multiplicative Update, which can be called as follows:
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-64
+.. GENERATED FROM PYTHON SOURCE LINES 59-65
 
 .. code-block:: default
 
@@ -131,7 +132,7 @@ Multiplicative Update, which can be called as follows:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-70
+.. GENERATED FROM PYTHON SOURCE LINES 66-71
 
 Here, we also compute the output tensor from the decomposed factors by using
 the cp_to_tensor function. The tensor cp_reconstruction_mu is therefore a
@@ -139,7 +140,7 @@ low-rank non-negative approximation of the input tensor; looking at the
 first few values of both tensors shows that this is indeed
 the case but the approximation is quite coarse.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-74
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 .. code-block:: default
 
@@ -158,11 +159,11 @@ the case but the approximation is quite coarse.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8530.69 8171.66]
-      [8322.58 8221.93]]
+     [[[8234.83 8296.48]
+      [8291.91 8379.67]]
 
-     [[9206.88 8888.14]
-      [9094.   9111.04]]] 
+     [[9134.83 9206.91]
+      [8975.59 9078.87]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -174,14 +175,14 @@ the case but the approximation is quite coarse.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-79
+.. GENERATED FROM PYTHON SOURCE LINES 76-80
 
 Non-negative Parafac with HALS
 ------------------------------
 Our second (new) option to compute NCP is the HALS algorithm, which can be
 used as follows:
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-85
+.. GENERATED FROM PYTHON SOURCE LINES 80-86
 
 .. code-block:: default
 
@@ -198,11 +199,11 @@ used as follows:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-87
+.. GENERATED FROM PYTHON SOURCE LINES 87-88
 
 Again, we can look at the reconstructed tensor entries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-91
+.. GENERATED FROM PYTHON SOURCE LINES 88-92
 
 .. code-block:: default
 
@@ -221,11 +222,11 @@ Again, we can look at the reconstructed tensor entries.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8208.11 8207.48]
-      [8231.81 8228.42]]
+     [[[8212.02 8208.98]
+      [8230.23 8234.02]]
 
-     [[9008.36 9007.69]
-      [9031.67 9028.59]]] 
+     [[9011.79 9009.2 ]
+      [9030.27 9033.67]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -237,7 +238,7 @@ Again, we can look at the reconstructed tensor entries.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-102
+.. GENERATED FROM PYTHON SOURCE LINES 93-103
 
 Non-negative Parafac with Exact HALS
 ------------------------------------
@@ -250,7 +251,7 @@ the input data, but will need longer to reach convergence.
 Exact subroutine solution option can be used simply choosing exact as True
 in the function:
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-108
+.. GENERATED FROM PYTHON SOURCE LINES 103-109
 
 .. code-block:: default
 
@@ -267,13 +268,13 @@ in the function:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-112
+.. GENERATED FROM PYTHON SOURCE LINES 110-113
 
 Comparison
 -----------------------
 First comparison option is processing time for each algorithm:
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-117
+.. GENERATED FROM PYTHON SOURCE LINES 113-118
 
 .. code-block:: default
 
@@ -293,13 +294,13 @@ First comparison option is processing time for each algorithm:
  .. code-block:: none
 
     0.20 seconds
-    0.59 seconds
-    3174.60 seconds
+    0.63 seconds
+    3212.35 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-125
+.. GENERATED FROM PYTHON SOURCE LINES 119-126
 
 As it is expected, the exact solution takes much longer than the approximate
 solution, while the gain in performance is often void. Therefore we recommend
@@ -309,7 +310,7 @@ However, a closer look suggest they are indeed behaving quite differently.
 Computing the error between the output and the input tensor tells that story better.
 In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-131
+.. GENERATED FROM PYTHON SOURCE LINES 126-132
 
 .. code-block:: default
 
@@ -329,21 +330,21 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
  .. code-block:: none
 
-    245.65936
-    3.1552584
-    0.4764806
+    245.42122
+    3.9134269
+    0.3066492
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-136
+.. GENERATED FROM PYTHON SOURCE LINES 133-137
 
 According to the RMSE results, HALS is better than the multiplicative update
 with both exact and approximate solution. In particular, HALS converged to a
 much lower reconstruction error than MU. We can better appreciate the difference
 in convergence speed on the following error per iteration plot:
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-150
+.. GENERATED FROM PYTHON SOURCE LINES 137-151
 
 .. code-block:: default
 
@@ -373,14 +374,14 @@ in convergence speed on the following error per iteration plot:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-155
+.. GENERATED FROM PYTHON SOURCE LINES 152-156
 
 In conclusion, on this quick test, it appears that the HALS algorithm gives
 much better results than the MU original Tensorly methods. Our recommendation
 is to use HALS as a default, and only resort to MU in specific cases (only
 encountered by expert users most likely).
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-164
+.. GENERATED FROM PYTHON SOURCE LINES 158-165
 
 References
 ----------
@@ -393,7 +394,7 @@ Neural computation, 24(4), 1085-1105. (Link)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 52 minutes  55.479 seconds)
+   **Total running time of the script:** ( 53 minutes  33.271 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_nn_cp_hals.py:

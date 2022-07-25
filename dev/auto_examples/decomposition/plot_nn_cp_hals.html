@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Non-negative CP decomposition in Tensorly &gt;=0.6 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -239,7 +239,7 @@ obtained from a non-negative tensor.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac</span><span class="p">,</span> <span class="n">non_negative_parafac_hals</span>
-<span class="kn">from</span> <span class="nn">tensorly.decomposition._nn_cp</span> <span class="kn">import</span> <span class="n">initialize_nn_cp</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition._cp</span> <span class="kn">import</span> <span class="n">initialize_cp</span>
 <span class="kn">from</span> <span class="nn">tensorly.cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
@@ -260,9 +260,10 @@ using these algorithms, we can use Tensorly to produce a good initial guess
 for our NCP. In fact, in order to compare both algorithmic options in a
 fair way, it is a good idea to use same initialized factors in decomposition
 algorithms. We make use of the <code class="docutils literal notranslate"><span class="pre">initialize_cp</span></code> function to initialize the
-factors of the NCP, and transform these factors (and factors weights) into
+factors of the NCP (setting the <code class="docutils literal notranslate"><span class="pre">non_negative</span></code> option to <cite>True</cite>)
+and transform these factors (and factors weights) into
 an instance of the CPTensor class:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span> <span class="o">=</span> <span class="n">initialize_nn_cp</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span> <span class="o">=</span> <span class="n">initialize_cp</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="n">cp_init</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span><span class="p">))</span>
 </pre></div>
@@ -290,11 +291,11 @@ the case but the approximation is quite coarse.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8530.69 8171.66]
-  [8322.58 8221.93]]
+ [[[8234.83 8296.48]
+  [8291.91 8379.67]]
 
- [[9206.88 8888.14]
-  [9094.   9111.04]]]
+ [[9134.83 9206.91]
+  [8975.59 9078.87]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -322,11 +323,11 @@ used as follows:</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8208.11 8207.48]
-  [8231.81 8228.42]]
+ [[[8212.02 8208.98]
+  [8230.23 8234.02]]
 
- [[9008.36 9007.69]
-  [9031.67 9028.59]]]
+ [[9011.79 9009.2 ]
+  [9030.27 9033.67]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -364,8 +365,8 @@ in the function:</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.20 seconds
-0.59 seconds
-3174.60 seconds
+0.63 seconds
+3212.35 seconds
 </pre></div>
 </div>
 <p>As it is expected, the exact solution takes much longer than the approximate
@@ -382,9 +383,9 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):</
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>245.65936
-3.1552584
-0.4764806
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>245.42122
+3.9134269
+0.3066492
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
@@ -416,7 +417,7 @@ encountered by expert users most likely).</p>
 hierarchical ALS algorithms for nonnegative matrix factorization.
 Neural computation, 24(4), 1085-1105. (Link)
 &lt;<a class="reference external" href="https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and">https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 52 minutes  55.479 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 53 minutes  33.271 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c50dd76f48de56cb97a914c7c62591e6/plot_nn_cp_hals.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_cp_hals.py</span></code></a></p>

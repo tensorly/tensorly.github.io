@@ -159,6 +159,7 @@
     <span class="n">cp_normalize</span><span class="p">,</span>
     <span class="n">validate_cp_rank</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..tenalg.svd</span> <span class="kn">import</span> <span class="n">svd_interface</span>
 
 <span class="c1"># Authors: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
 <span class="c1">#          Chris Swierczewski &lt;csw@amazon.com&gt;</span>
@@ -172,9 +173,12 @@
     <span class="n">tensor</span><span class="p">,</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
-    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
+    <span class="n">non_negative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize factors used in `parafac`.</span>
 
@@ -189,7 +193,7 @@
 <span class="sd">    tensor : ndarray</span>
 <span class="sd">    rank : int</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;, cptensor}, optional</span>
-<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    non_negative : bool, default is False</span>
 <span class="sd">        if True, non-negative factors are returned</span>
@@ -212,17 +216,17 @@
         <span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span><span class="p">[</span><span class="n">svd</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Got svd=</span><span class="si">{}</span><span class="s2">. However, for the current backend (</span><span class="si">{}</span><span class="s2">), the possible choices are </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">svd</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(),</span> <span class="n">tl</span><span class="o">.</span><span class="n">SVD_FUNS</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
         <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">)):</span>
-            <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
+            <span class="n">mask_unfold</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">unfold</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span>
+                <span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span>
+                <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
+                <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span><span class="p">,</span>
+                <span class="n">mask</span><span class="o">=</span><span class="n">mask_unfold</span><span class="p">,</span>
+                <span class="n">n_iter_mask_imputation</span><span class="o">=</span><span class="n">svd_mask_repeats</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="c1"># Put SVD initialization on the same scaling as the tensor in case normalize_factors=False</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -259,6 +263,8 @@
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
                     <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights_avg</span>
                 <span class="n">kt</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">kt</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;If initialization method is a mapping, then it must &quot;</span>
@@ -266,6 +272,10 @@
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Initialization method &quot;</span><span class="si">{}</span><span class="s1">&quot; not recognized&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">init</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+        <span class="c1"># Make decomposition feasible by taking the absolute value of all factor matrices</span>
+        <span class="n">kt</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">kt</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
 
     <span class="k">if</span> <span class="n">normalize_factors</span><span class="p">:</span>
         <span class="n">kt</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">kt</span><span class="p">)</span>
@@ -368,7 +378,7 @@
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
-    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
     <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
@@ -399,7 +409,7 @@
 <span class="sd">        Type of factor matrix initialization.</span>
 <span class="sd">        If a CPTensor is passed, this is directly used for initalization.</span>
 <span class="sd">        See `initialize_factors`.</span>
-<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
 <span class="sd">        of shape (rank, ), which will contain the norms of the factors</span>
@@ -474,20 +484,9 @@
         <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
         <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
         <span class="n">normalize_factors</span><span class="o">=</span><span class="n">normalize_factors</span><span class="p">,</span>
+        <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+        <span class="n">svd_mask_repeats</span><span class="o">=</span><span class="n">svd_mask_repeats</span><span class="p">,</span>
     <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">svd_mask_repeats</span><span class="p">):</span>
-            <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">*</span> <span class="n">mask</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mask</span><span class="p">)</span>
-
-            <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">initialize_cp</span><span class="p">(</span>
-                <span class="n">tensor</span><span class="p">,</span>
-                <span class="n">rank</span><span class="p">,</span>
-                <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span>
-                <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span>
-                <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-                <span class="n">normalize_factors</span><span class="o">=</span><span class="n">normalize_factors</span><span class="p">,</span>
-            <span class="p">)</span>
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -748,7 +747,7 @@
     <span class="n">n_samples</span><span class="p">,</span>
     <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span>
-    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
     <span class="n">tol</span><span class="o">=</span><span class="mf">10e-9</span><span class="p">,</span>
     <span class="n">max_stagnation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -767,7 +766,7 @@
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">                 maximum number of iteration</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">          tolerance: the algorithm stops when the variation in</span>
@@ -872,7 +871,7 @@
 <span class="sd">        Maximum number of iteration</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
 <span class="sd">        Type of factor matrix initialization. See `initialize_factors`.</span>
-<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    normalize_factors : if True, aggregate the weights of each factor in a 1D-tensor</span>
 <span class="sd">        of shape (rank, ), which will contain the norms of the factors</span>
@@ -937,7 +936,7 @@
         <span class="n">rank</span><span class="p">,</span>
         <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
-        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
         <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">orthogonalise</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
@@ -1022,7 +1021,7 @@
 <span class="sd">    n_iter_max : int</span>
 <span class="sd">                maximum number of iteration</span>
 <span class="sd">    init : {&#39;svd&#39;, &#39;random&#39;}, optional</span>
-<span class="sd">    svd : str, default is &#39;numpy_svd&#39;</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
 <span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        tolerance: the algorithm stops when the variation in</span>
@@ -1052,7 +1051,7 @@
         <span class="n">n_samples</span><span class="p">,</span>
         <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
         <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span>
-        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;numpy_svd&quot;</span><span class="p">,</span>
+        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
         <span class="n">tol</span><span class="o">=</span><span class="mf">10e-9</span><span class="p">,</span>
         <span class="n">max_stagnation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
         <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
