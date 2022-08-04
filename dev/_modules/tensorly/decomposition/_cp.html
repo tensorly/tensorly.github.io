@@ -490,7 +490,10 @@
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">Id</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="o">*</span> <span class="n">l2_reg</span>
+    <span class="k">if</span> <span class="n">l2_reg</span><span class="p">:</span>
+        <span class="n">Id</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span> <span class="o">*</span> <span class="n">l2_reg</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Id</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">if</span> <span class="n">fixed_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">fixed_modes</span> <span class="o">=</span> <span class="p">[]</span>
