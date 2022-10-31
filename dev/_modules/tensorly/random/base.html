@@ -346,13 +346,13 @@
 
     <span class="c1"># Initialization</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[0] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundaring conditions dictatate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -438,6 +438,8 @@
 <span class="sd">        * ND-array : full tensor if `full` is True</span>
 <span class="sd">        * 3D-array list : list of factors otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
     <span class="n">rank</span> <span class="o">=</span> <span class="n">validate_tr_rank</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
 
     <span class="c1"># Make sure it&#39;s not a tuple but a list</span>
