@@ -251,18 +251,15 @@
 
     <span class="c1"># Initialize rank</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1: setting rank[0] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1: setting rank[-1] to 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="c1"># list col_idx: column indices (right indices) for skeleton-decomposition: indicate which columns used in each core.</span>
     <span class="c1"># list row_idx: row indices    (left indices)  for skeleton-decomposition: indicate which rows used in each core.</span>
