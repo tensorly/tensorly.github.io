@@ -232,18 +232,18 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="tensorly.decomposition.TensorTrain">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TensorTrain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tt.html#TensorTrain"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>TT decomposition via recursive SVD</p>
-<blockquote>
-<div><p>Decomposes <cite>input_tensor</cite> into a sequence of order-3 tensors (factors)
-– also known as Tensor-Train decomposition <a class="reference internal" href="#r651fc1cb4b78-1" id="id1">[1]</a>.</p>
-</div></blockquote>
+<dd><p>Decompose a tensor into a matrix in tt-format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input_tensor</strong><span class="classifier">tensorly.tensor</span></dt><dd></dd>
-<dt><strong>rank</strong><span class="classifier">{int, int list}</span></dt><dd><p>maximum allowable TT rank of the factors
-if int, then this is the same for all the factors
-if int list, then rank[k] is the rank of the kth factor</p>
+<dt><strong>tensor</strong><span class="classifier">tensorized matrix</span></dt><dd><p>if your input matrix is of size (4, 9) and your tensorized_shape (2, 2, 3, 3)
+then tensor should be tl.reshape(matrix, (2, 2, 3, 3))</p>
+</dd>
+<dt><strong>rank</strong><span class="classifier">‘same’, float or int tuple</span></dt><dd><ul class="simple">
+<li><p>if ‘same’ creates a decomposition with the same number of parameters as <cite>tensor</cite></p></li>
+<li><p>if float, creates a decomposition with <cite>rank</cite> x the number of parameters of <cite>tensor</cite></p></li>
+<li><p>otherwise, the actual rank to be used, e.g. (1, rank_2, …, 1) of size tensor.ndim//2. Note that boundary conditions dictate that the first rank = last rank = 1.</p></li>
+</ul>
 </dd>
 <dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
@@ -253,18 +253,10 @@ if int list, then rank[k] is the rank of the kth factor</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>factors</strong><span class="classifier">TT factors</span></dt><dd><p>order-3 tensors of the TT decomposition</p>
-</dd>
+<dt>tt_matrix</dt><dd></dd>
 </dl>
 </dd>
 </dl>
-<p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="r651fc1cb4b78-1" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>Ivan V. Oseledets. “Tensor-train decomposition”, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</p>
-</div>
-</div>
 </dd></dl>
 
 <div class="clearer"></div></section>

@@ -283,6 +283,40 @@
 
 
 <div class="viewcode-block" id="TensorTrain"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.TensorTrain.html#tensorly.decomposition.TensorTrain">[docs]</a><span class="k">class</span> <span class="nc">TensorTrain</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decompose a tensor into a matrix in tt-format</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tensorized matrix</span>
+<span class="sd">        if your input matrix is of size (4, 9) and your tensorized_shape (2, 2, 3, 3)</span>
+<span class="sd">        then tensor should be tl.reshape(matrix, (2, 2, 3, 3))</span>
+<span class="sd">    rank : &#39;same&#39;, float or int tuple</span>
+<span class="sd">        - if &#39;same&#39; creates a decomposition with the same number of parameters as `tensor`</span>
+<span class="sd">        - if float, creates a decomposition with `rank` x the number of parameters of `tensor`</span>
+<span class="sd">        - otherwise, the actual rank to be used, e.g. (1, rank_2, ..., 1) of size tensor.ndim//2. Note that boundary conditions dictate that the first rank = last rank = 1.</span>
+<span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
+<span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">    verbose : boolean, optional</span>
+<span class="sd">            level of verbosity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tt_matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span>
+            <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
+
+
+<div class="viewcode-block" id="TensorTrainMatrix"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.TensorTrainMatrix.html#tensorly.decomposition.TensorTrainMatrix">[docs]</a><span class="k">class</span> <span class="nc">TensorTrainMatrix</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;TT decomposition via recursive SVD</span>
 
 <span class="sd">        Decomposes `input_tensor` into a sequence of order-3 tensors (factors)</span>
@@ -316,7 +350,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tensor_train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">tensor_train_matrix</span><span class="p">(</span>
             <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>

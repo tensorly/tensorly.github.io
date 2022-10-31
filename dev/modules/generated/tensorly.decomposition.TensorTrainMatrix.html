@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.decomposition.parafac &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.decomposition.TensorTrainMatrix &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -43,8 +43,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.decomposition.power_iteration" href="tensorly.decomposition.power_iteration.html" />
-    <link rel="prev" title="tensorly.decomposition.TensorTrainMatrix" href="tensorly.decomposition.TensorTrainMatrix.html" />
+    <link rel="next" title="tensorly.decomposition.parafac" href="tensorly.decomposition.parafac.html" />
+    <link rel="prev" title="tensorly.decomposition.TensorRing" href="tensorly.decomposition.TensorRing.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -227,96 +227,42 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-decomposition-parafac">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.parafac</h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="tensorly.decomposition.parafac">
-<span class="sig-name descname"><span class="pre">parafac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthogonalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cvg_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abs_rec_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_mask_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp.html#parafac"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
-Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r2df4af999528-1" id="id1">[1]</a> such that:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="p">[</span><span class="o">|</span><span class="n">weights</span><span class="p">;</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span><span class="p">]</span><span class="o">.</span>
-</pre></div>
-</div>
+  <section id="tensorly-decomposition-tensortrainmatrix">
+<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.TensorTrainMatrix</h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tensorly.decomposition.TensorTrainMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TensorTrainMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_tt.html#TensorTrainMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>TT decomposition via recursive SVD</p>
+<blockquote>
+<div><p>Decomposes <cite>input_tensor</cite> into a sequence of order-3 tensors (factors)
+– also known as Tensor-Train decomposition <a class="reference internal" href="#r5438c9963939-1" id="id1">[1]</a>.</p>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
-<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>Number of components.</p>
-</dd>
-<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>Maximum number of iteration</p>
-</dd>
-<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’, CPTensor}, optional</span></dt><dd><p>Type of factor matrix initialization.
-If a CPTensor is passed, this is directly used for initalization.
-See <cite>initialize_factors</cite>.</p>
+<dt><strong>input_tensor</strong><span class="classifier">tensorly.tensor</span></dt><dd></dd>
+<dt><strong>rank</strong><span class="classifier">{int, int list}</span></dt><dd><p>maximum allowable TT rank of the factors
+if int, then this is the same for all the factors
+if int list, then rank[k] is the rank of the kth factor</p>
 </dd>
 <dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
-<dt><strong>normalize_factors</strong><span class="classifier">if True, aggregate the weights of each factor in a 1D-tensor</span></dt><dd><p>of shape (rank, ), which will contain the norms of the factors</p>
-</dd>
-<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>(Default: 1e-6) Relative reconstruction error tolerance. The
-algorithm is considered to have found the global minimum when the
-reconstruction error is less than <cite>tol</cite>.</p>
-</dd>
-<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}</span></dt><dd></dd>
-<dt><strong>verbose</strong><span class="classifier">int, optional</span></dt><dd><p>Level of verbosity</p>
-</dd>
-<dt><strong>return_errors</strong><span class="classifier">bool, optional</span></dt><dd><p>Activate return of iteration errors</p>
-</dd>
-<dt><strong>mask</strong><span class="classifier">ndarray</span></dt><dd><p>array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">tensor</span></code> should be 0 where
-the values are missing and 1 everywhere else. Note:  if tensor is
-sparse, then mask should also be sparse with a fill value of 1 (or
-True). Allows for missing values <a class="reference internal" href="#r2df4af999528-2" id="id2">[2]</a></p>
-</dd>
-<dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None.
-If ‘rec_error’,  ALS stops at current iteration if <code class="docutils literal notranslate"><span class="pre">(previous</span> <span class="pre">rec_error</span> <span class="pre">-</span> <span class="pre">current</span> <span class="pre">rec_error)</span> <span class="pre">&lt;</span> <span class="pre">tol</span></code>.
-If ‘abs_rec_error’, ALS terminates when <cite>|previous rec_error - current rec_error| &lt; tol</cite>.</p>
-</dd>
-<dt><strong>sparsity</strong><span class="classifier">float or int</span></dt><dd><p>If <cite>sparsity</cite> is not None, we approximate tensor as a sum of low_rank_component and sparse_component, where low_rank_component = cp_to_tensor((weights, factors)). <cite>sparsity</cite> denotes desired fraction or number of non-zero elements in the sparse_component of the <cite>tensor</cite>.</p>
-</dd>
-<dt><strong>fixed_modes</strong><span class="classifier">list, default is None</span></dt><dd><p>A list of modes for which the initial value is not modified.
-The last mode cannot be fixed due to error computation.</p>
-</dd>
-<dt><strong>svd_mask_repeats: int</strong></dt><dd><p>If using a tensor with masked values, this initializes using SVD multiple times to
-remove the effect of these missing values on the initialization.</p>
-</dd>
-<dt><strong>linesearch</strong><span class="classifier">bool, default is False</span></dt><dd><p>Whether to perform line search as proposed by Bro [3].</p>
+<dt><strong>verbose</strong><span class="classifier">boolean, optional</span></dt><dd><p>level of verbosity</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>CPTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul class="simple">
-<li><p>weights : 1D array of shape (rank, )</p>
-<ul>
-<li><p>all ones if normalize_factors is False (default)</p></li>
-<li><p>weights of the (normalized) factors otherwise</p></li>
-</ul>
-</li>
-<li><p>factors : List of factors of the CP decomposition element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p></li>
-<li><p>sparse_component : nD array of shape tensor.shape. Returns only if <cite>sparsity</cite> is not None.</p></li>
-</ul>
-</dd>
-<dt><strong>errors</strong><span class="classifier">list</span></dt><dd><p>A list of reconstruction errors at each iteration of the algorithms.</p>
+<dt><strong>factors</strong><span class="classifier">TT factors</span></dt><dd><p>order-3 tensors of the TT decomposition</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
-<div class="citation" id="r2df4af999528-1" role="doc-biblioentry">
+<div class="citation" id="r5438c9963939-1" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
-<p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”, SIAM
-REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
-</div>
-<div class="citation" id="r2df4af999528-2" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.”
-Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</p>
-</div>
-<div class="citation" id="r2df4af999528-3" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and
-Applications”, PhD., University of Amsterdam, 1998</p>
+<p>Ivan V. Oseledets. “Tensor-train decomposition”, SIAM J. Scientific Computing, 33(5):2295–2317, 2011.</p>
 </div>
 </div>
 </dd></dl>
@@ -329,16 +275,16 @@ Applications”, PhD., University of Amsterdam, 1998</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.decomposition.TensorTrainMatrix.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.decomposition.TensorRing.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.TensorTrainMatrix</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.TensorRing</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.decomposition.power_iteration.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.power_iteration </span>
+    <a class="button is-medium pagination-next" href="tensorly.decomposition.parafac.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -368,8 +314,8 @@ Applications”, PhD., University of Amsterdam, 1998</p>
         <div class="menu menu-list">
         <p class="menu-label">On this page</p>
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.parafac</a><ul>
-<li><a class="reference internal" href="#tensorly.decomposition.parafac"><code class="docutils literal notranslate"><span class="pre">parafac</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.TensorTrainMatrix</a><ul>
+<li><a class="reference internal" href="#tensorly.decomposition.TensorTrainMatrix"><code class="docutils literal notranslate"><span class="pre">TensorTrainMatrix</span></code></a></li>
 </ul>
 </li>
 </ul>
