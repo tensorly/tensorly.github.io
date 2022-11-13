@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.cp_tensor.unfolding_dot_khatri_rao &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.tenalg.unfolding_dot_khatri_rao &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -43,8 +43,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.tucker_tensor.tucker_to_tensor" href="tensorly.tucker_tensor.tucker_to_tensor.html" />
-    <link rel="prev" title="tensorly.cp_tensor.cp_permute_factors" href="tensorly.cp_tensor.cp_permute_factors.html" />
+    <link rel="next" title="tensorly.tenalg.kronecker" href="tensorly.tenalg.kronecker.html" />
+    <link rel="prev" title="tensorly.tenalg.khatri_rao" href="tensorly.tenalg.khatri_rao.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -185,12 +185,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-a-unified-backend-interface"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>: A unified backend interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>: Core tensor functions</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in CP form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>: Tensors in CP form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>: Tensors in Tucker form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>: Tensors in Tensor-Train (MPS) form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>: Matrices in TT form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>: Tensors in PARAFAC2 form</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-tenalg-tensor-algebra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor Algebra</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#tensorly-tenalg-tensor-algebra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>: Tensor Algebra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>: Tensor Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>: Tensor Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
@@ -227,11 +227,11 @@
 
         <div class="content main-content">
           
-  <section id="tensorly-cp-tensor-unfolding-dot-khatri-rao">
-<h1><a class="reference internal" href="../api.html#module-tensorly.cp_tensor" title="tensorly.cp_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code></a>.unfolding_dot_khatri_rao</h1>
+  <section id="tensorly-tenalg-unfolding-dot-khatri-rao">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.unfolding_dot_khatri_rao</h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.cp_tensor.unfolding_dot_khatri_rao">
-<span class="sig-name descname"><span class="pre">unfolding_dot_khatri_rao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/cp_tensor.html#unfolding_dot_khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dt class="sig sig-object py" id="tensorly.tenalg.unfolding_dot_khatri_rao">
+<span class="sig-name descname"><span class="pre">unfolding_dot_khatri_rao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/core_tenalg/mttkrp.html#unfolding_dot_khatri_rao"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>mode-n unfolding times khatri-rao product of factors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -305,16 +305,16 @@ In code:</p>
 		
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensorly.cp_tensor.cp_permute_factors.html" title="previous page" accesskey="p">
+    <a class="button is-medium pagination-previous" href="tensorly.tenalg.khatri_rao.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>.cp_permute_factors</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao</span>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensorly.tucker_tensor.tucker_to_tensor.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>.tucker_to_tensor </span>
+    <a class="button is-medium pagination-next" href="tensorly.tenalg.kronecker.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.kronecker </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -344,8 +344,8 @@ In code:</p>
         <div class="menu menu-list">
         <p class="menu-label">On this page</p>
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>.unfolding_dot_khatri_rao</a><ul>
-<li><a class="reference internal" href="#tensorly.cp_tensor.unfolding_dot_khatri_rao"><code class="docutils literal notranslate"><span class="pre">unfolding_dot_khatri_rao</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.unfolding_dot_khatri_rao</a><ul>
+<li><a class="reference internal" href="#tensorly.tenalg.unfolding_dot_khatri_rao"><code class="docutils literal notranslate"><span class="pre">unfolding_dot_khatri_rao</span></code></a></li>
 </ul>
 </li>
 </ul>
