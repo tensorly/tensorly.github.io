@@ -178,9 +178,7 @@
                 <span class="s2">&quot;Taking a generalised product between two tensors without specifying common modes&quot;</span>
                 <span class="s2">&quot; is equivalent to taking inner product.&quot;</span>
                 <span class="s2">&quot;This requires tensor1.shape == tensor2.shape.&quot;</span>
-                <span class="s2">&quot;However, got tensor1.shape=</span><span class="si">{}</span><span class="s2"> and tensor2.shape=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">tensor1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tensor2</span><span class="o">.</span><span class="n">shape</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;However, got </span><span class="si">{</span><span class="n">tensor1</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2"> and </span><span class="si">{</span><span class="n">tensor2</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor1</span> <span class="o">*</span> <span class="n">tensor2</span><span class="p">)</span>
 
@@ -193,8 +191,8 @@
 
     <span class="k">if</span> <span class="n">common_modes</span> <span class="o">!=</span> <span class="n">shape_t2</span><span class="p">[:</span><span class="n">n_modes</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Incorrect shapes for inner product along </span><span class="si">{}</span><span class="s2"> common modes.&quot;</span>
-            <span class="s2">&quot;tensor_1.shape=</span><span class="si">{}</span><span class="s2">, tensor_2.shape=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_modes</span><span class="p">,</span> <span class="n">shape_t1</span><span class="p">,</span> <span class="n">shape_t2</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Incorrect shapes for inner product along </span><span class="si">{</span><span class="n">n_modes</span><span class="si">}</span><span class="s2"> common modes.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tensor_1</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">tensor_2</span><span class="o">.</span><span class="n">shape</span><span class="si">=}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
     <span class="n">inner_product</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
         <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">common_size</span><span class="p">)),</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor2</span><span class="p">,</span> <span class="p">(</span><span class="n">common_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>

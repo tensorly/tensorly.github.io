@@ -214,11 +214,9 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
-                <span class="s2">&quot;You tried to access index </span><span class="si">{}</span><span class="s2"> of a PARAFAC2 tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;You tried to access index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of a PARAFAC2 tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;You can only access index 0, 1 and 2 of a PARAFAC2 tensor&quot;</span>
-                <span class="s2">&quot;(corresponding respectively to the weights, factors and projections)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">index</span>
-                <span class="p">)</span>
+                <span class="s2">&quot;(corresponding respectively to the weights, factors and projections)&quot;</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -230,9 +228,7 @@
         <span class="k">return</span> <span class="mi">3</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;(weights, factors, projections) : rank-</span><span class="si">{}</span><span class="s2"> Parafac2Tensor of shape </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span>
-        <span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(weights, factors, projections) : rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2"> Parafac2Tensor of shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
         <span class="k">return</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -268,14 +264,14 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;A PARAFAC2 tensor should be composed of exactly three factors.&quot;</span>
-            <span class="s2">&quot;However, </span><span class="si">{}</span><span class="s2"> factors was given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+            <span class="sa">f</span><span class="s2">&quot;However, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span><span class="si">}</span><span class="s2"> factors was given.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">)</span> <span class="o">!=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;A PARAFAC2 tensor should have one projection matrix for each horisontal&quot;</span>
-            <span class="s2">&quot; slice. However, </span><span class="si">{}</span><span class="s2"> projection matrices was given and the first mode has&quot;</span>
-            <span class="s2">&quot;length </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">),</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="sa">f</span><span class="s2">&quot; slice. However, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">projections</span><span class="p">)</span><span class="si">}</span><span class="s2"> projection matrices was given and the first mode has&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;length </span><span class="si">{</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
@@ -286,20 +282,15 @@
         <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;All the projection matrices of a PARAFAC2 tensor should have the same number of &quot;</span>
-                <span class="s2">&quot;columns as the rank. However, rank=</span><span class="si">{}</span><span class="s2"> but projections[</span><span class="si">{}</span><span class="s2">].shape[1]=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;columns as the rank. However, rank=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> but projections[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].shape[1]=</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="n">inner_product</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">projection</span><span class="p">),</span> <span class="n">projection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">))))</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;All the projection matrices must be orthonormal, that is, P.T@P = I. &quot;</span>
-                <span class="s2">&quot;However, T.norm(projection[</span><span class="si">{}</span><span class="s2">].T@projection[</span><span class="si">{}</span><span class="s2">] - T.eye(rank)) = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">i</span><span class="p">,</span>
-                    <span class="n">i</span><span class="p">,</span>
-                    <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">))),</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;However, T.norm(projection[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].T@projection[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">] - T.eye(rank)) = &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">)))</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -312,16 +303,12 @@
         <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;All the factors of a PARAFAC2 tensor should have the same number of columns.&quot;</span>
-                <span class="s2">&quot;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s2"> but factors[</span><span class="si">{}</span><span class="s2">].shape[1]=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;However, factors[0].shape[1]=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> but factors[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].shape[1]=</span><span class="si">{</span><span class="n">current_rank</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Given factors for a rank-</span><span class="si">{}</span><span class="s2"> PARAFAC2 tensor but len(weights)=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rank</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Given factors for a rank-</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> PARAFAC2 tensor but len(weights)=</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span>

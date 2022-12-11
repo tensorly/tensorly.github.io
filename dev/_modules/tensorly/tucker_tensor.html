@@ -169,15 +169,13 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;A Tucker tensor should be composed of at least two factors and a core.&quot;</span>
-            <span class="s2">&quot;However, </span><span class="si">{}</span><span class="s2"> factor was given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+            <span class="sa">f</span><span class="s2">&quot;However, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span><span class="si">}</span><span class="s2"> factor was given.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">!=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">core</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;Tucker decompositions should have one factor per more of the core tensor.&quot;</span>
-            <span class="s2">&quot;However, core has </span><span class="si">{}</span><span class="s2"> modes but </span><span class="si">{}</span><span class="s2"> factors have been provided&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">core</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;However, core has </span><span class="si">{</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">core</span><span class="p">)</span><span class="si">}</span><span class="s2"> modes but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span><span class="si">}</span><span class="s2"> factors have been provided&quot;</span>
         <span class="p">)</span>
 
     <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
@@ -188,9 +186,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;Factor `n` of Tucker decomposition should verify:</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;factors[n].shape[1] = core.shape[n].&quot;</span>
-                <span class="s2">&quot;However, factors[</span><span class="si">{0}</span><span class="s2">].shape[1]=</span><span class="si">{1}</span><span class="s2"> but core.shape[</span><span class="si">{0}</span><span class="s2">]=</span><span class="si">{2}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">i</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">core</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;However, factors[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].shape[1]=</span><span class="si">{</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> but core.shape[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]=</span><span class="si">{</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">core</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
         <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_shape</span><span class="p">)</span>
         <span class="n">rank</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_rank</span><span class="p">)</span>
@@ -340,25 +336,15 @@
         <span class="c1"># Test for the validity of the operation</span>
         <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;shapes </span><span class="si">{0}</span><span class="s2"> and </span><span class="si">{1}</span><span class="s2"> not aligned in mode-</span><span class="si">{2}</span><span class="s2"> multiplication: </span><span class="si">{3}</span><span class="s2"> (mode </span><span class="si">{2}</span><span class="s2">) != </span><span class="si">{4}</span><span class="s2"> (dim 1 of matrix)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">shape</span><span class="p">,</span>
-                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-                    <span class="n">mode</span><span class="p">,</span>
-                    <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
-                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;shapes </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> not aligned in mode-</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> multiplication: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mode</span> <span class="si">= }</span><span class="s2">) != </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (dim 1 of matrix)&quot;</span>
             <span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
         <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;shapes </span><span class="si">{0}</span><span class="s2"> and </span><span class="si">{1}</span><span class="s2"> not aligned for mode-</span><span class="si">{2}</span><span class="s2"> multiplication: </span><span class="si">{3}</span><span class="s2"> (mode </span><span class="si">{2}</span><span class="s2">) != </span><span class="si">{4}</span><span class="s2"> (vector size)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">shape</span><span class="p">,</span>
-                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-                    <span class="n">mode</span><span class="p">,</span>
-                    <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span>
-                    <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;shapes </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> not aligned for mode-</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> multiplication: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mode</span> <span class="si">= }</span><span class="s2">) != </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (vector size)&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_dim</span><span class="p">:</span>
             <span class="n">contract</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Contract over that mode</span>
@@ -397,9 +383,9 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
-                <span class="s2">&quot;You tried to access index </span><span class="si">{}</span><span class="s2"> of a Tucker tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;You tried to access index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of a Tucker tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;You can only access index 0 and 1 of a Tucker tensor&quot;</span>
-                <span class="s2">&quot;(corresponding respectively to core and factors)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="s2">&quot;(corresponding respectively to core and factors)&quot;</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -409,9 +395,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
-                <span class="s2">&quot;You tried to set index </span><span class="si">{}</span><span class="s2"> of a Tucker tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;You tried to set index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of a Tucker tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;You can only set index 0 and 1 of a Tucker tensor&quot;</span>
-                <span class="s2">&quot;(corresponding respectively to core and factors)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="s2">&quot;(corresponding respectively to core and factors)&quot;</span>
             <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -422,9 +408,7 @@
         <span class="k">return</span> <span class="mi">2</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Decomposed rank-</span><span class="si">{}</span><span class="s2"> TuckerTensor of shape </span><span class="si">{}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span>
-        <span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Decomposed rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2"> TuckerTensor of shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
         <span class="k">return</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -584,9 +568,7 @@
 
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">n_modes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Given only one int for &#39;rank&#39; for decomposition a tensor of order </span><span class="si">{}</span><span class="s2">. Using this rank for all modes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">n_modes</span>
-        <span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Given only one int for &#39;rank&#39; for decomposition a tensor of order </span><span class="si">{</span><span class="n">n_modes</span><span class="si">}</span><span class="s2">. Using this rank for all modes.&quot;</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fixed_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rank</span> <span class="o">=</span> <span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_modes</span>

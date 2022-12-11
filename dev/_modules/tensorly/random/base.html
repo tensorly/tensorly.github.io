@@ -242,7 +242,7 @@
     <span class="k">if</span> <span class="p">(</span><span class="n">rank</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span> <span class="ow">and</span> <span class="n">orthogonal</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Can only construct orthogonal tensors when rank &lt;= min(shape) but got &quot;</span>
-            <span class="s2">&quot;a tensor with min(shape)=</span><span class="si">{}</span><span class="s2"> &lt; rank=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;a tensor with min(shape)=</span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> &lt; rank=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="n">rns</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
@@ -294,7 +294,7 @@
             <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">s</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                     <span class="s2">&quot;Selected orthogonal=True, but selected a rank larger than the tensor size for mode </span><span class="si">{0}</span><span class="s2">: &quot;</span>
-                    <span class="s2">&quot;rank[</span><span class="si">{0}</span><span class="s2">]=</span><span class="si">{1}</span><span class="s2"> &gt; shape[</span><span class="si">{0}</span><span class="s2">]=</span><span class="si">{2}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;rank[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]=</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2"> &gt; shape[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">]=</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
 
     <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
