@@ -196,6 +196,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-plugins-tensorly-plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>: TensorLy plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
 </ul>
 </li>
@@ -238,17 +239,20 @@
 (without complex conjugation).</p></li>
 <li><p>If both <cite>a</cite> and <cite>b</cite> are 2-D arrays, it is matrix multiplication,
 but using <a class="reference internal" href="tensorly.matmul.html#tensorly.matmul" title="tensorly.matmul"><code class="xref py py-func docutils literal notranslate"><span class="pre">matmul</span></code></a> or <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">&#64;</span> <span class="pre">b</span></code> is preferred.</p></li>
-<li><p>If either <cite>a</cite> or <cite>b</cite> is 0-D (scalar), it is equivalent to <code class="xref py py-func docutils literal notranslate"><span class="pre">multiply</span></code>
-and using <code class="docutils literal notranslate"><span class="pre">numpy.multiply(a,</span> <span class="pre">b)</span></code> or <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span></code> is preferred.</p></li>
+<li><p>If either <cite>a</cite> or <cite>b</cite> is 0-D (scalar), it is equivalent to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">multiply</span></code> and using <code class="docutils literal notranslate"><span class="pre">numpy.multiply(a,</span> <span class="pre">b)</span></code> or <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">b</span></code> is
+preferred.</p></li>
 <li><p>If <cite>a</cite> is an N-D array and <cite>b</cite> is a 1-D array, it is a sum product over
 the last axis of <cite>a</cite> and <cite>b</cite>.</p></li>
 <li><p>If <cite>a</cite> is an N-D array and <cite>b</cite> is an M-D array (where <code class="docutils literal notranslate"><span class="pre">M&gt;=2</span></code>), it is a
-sum product over the last axis of <cite>a</cite> and the second-to-last axis of <cite>b</cite>:</p>
+sum product over the last axis of <cite>a</cite> and the second-to-last axis of
+<cite>b</cite>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">,:,</span><span class="n">m</span><span class="p">])</span>
 </pre></div>
 </div>
 </li>
 </ul>
+<p>It uses an optimized BLAS library when possible (see <cite>numpy.linalg</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">

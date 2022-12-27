@@ -196,6 +196,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tensorly-plugins-tensorly-plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>: TensorLy plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
 </ul>
 </li>
@@ -351,7 +352,7 @@ not all backends support this. Instead of
 <td><p>Gives a new shape to an array without changing its data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.transpose.html#tensorly.transpose" title="tensorly.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(a[, axes])</p></td>
-<td><p>Reverse or permute the axes of an array; returns the modified array.</p></td>
+<td><p>Returns an array with axes transposed.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.moveaxis.html#tensorly.moveaxis" title="tensorly.moveaxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moveaxis</span></code></a>(a, source, destination)</p></td>
 <td><p>Move axes of an array to new positions.</p></td>
@@ -401,7 +402,7 @@ not all backends support this. Instead of
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.norm.html#tensorly.norm" title="tensorly.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>(tensor[, order, axis])</p></td>
 <td><p>Computes the l-<cite>order</cite> norm of a tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.stack.html#tensorly.stack" title="tensorly.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(arrays[, axis, out])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.stack.html#tensorly.stack" title="tensorly.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(arrays[, axis, out, dtype, casting])</p></td>
 <td><p>Join a sequence of arrays along a new axis.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.sort.html#tensorly.sort" title="tensorly.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(a[, axis, kind, order])</p></td>
@@ -832,6 +833,20 @@ create synthetic data, e.g. for testing purposes.</p>
 </tbody>
 </table>
 </section>
+<section id="tensorly-plugins-tensorly-plugins">
+<h2><a class="reference internal" href="#module-tensorly.plugins" title="tensorly.plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code></a>: TensorLy plugins</h2>
+<p>Automatically cache the optimal contraction path when using the <cite>einsum</cite> tensor algebra backend</p>
+<span class="target" id="module-tensorly.plugins"></span><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.plugins.use_opt_einsum.html#tensorly.plugins.use_opt_einsum" title="tensorly.plugins.use_opt_einsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_opt_einsum</span></code></a>([optimize])</p></td>
+<td><p>Plugin to use opt-einsum to precompute (and cache) a better contraction path</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.plugins.use_default_einsum.html#tensorly.plugins.use_default_einsum" title="tensorly.plugins.use_default_einsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_default_einsum</span></code></a>()</p></td>
+<td><p>Revert to the original einsum for the current backend</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="module-tensorly.contrib">
 <span id="tensorly-contrib-experimental-features"></span><h2><a class="reference internal" href="#module-tensorly.contrib" title="tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code></a>: Experimental features</h2>
 <p>A module for experimental functions</p>
@@ -954,6 +969,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
 <li><a class="reference internal" href="#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
 <li><a class="reference internal" href="#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
 <li><a class="reference internal" href="#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
+<li><a class="reference internal" href="#tensorly-plugins-tensorly-plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>: TensorLy plugins</a></li>
 <li><a class="reference internal" href="#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a><ul>
 <li><a class="reference internal" href="#sparse-tensors">Sparse tensors</a></li>
 </ul>

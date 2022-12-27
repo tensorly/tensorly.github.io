@@ -196,6 +196,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>: Performance measures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>: Sampling tensors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>: Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensorly-plugins-tensorly-plugins"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>: TensorLy plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>: Experimental features</a></li>
 </ul>
 </li>
@@ -317,13 +318,16 @@ raised on overflow.  That means that, on a 32-bit platform:</p>
 </pre></div>
 </div>
 <p>Even when the input array is two-dimensional:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">],[</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="go">24.0</span>
 </pre></div>
 </div>
 <p>But we can also specify the axis over which to multiply:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">],[</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">array([  2.,  12.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([3., 8.])</span>
 </pre></div>
 </div>
 <p>Or select specific elements to include:</p>
