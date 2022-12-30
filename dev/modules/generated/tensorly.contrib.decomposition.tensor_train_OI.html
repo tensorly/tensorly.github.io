@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.is_tensor &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.contrib.decomposition.tensor_train_OI &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -40,8 +40,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.to_numpy" href="tensorly.to_numpy.html" />
-    <link rel="prev" title="tensorly.context" href="tensorly.context.html" />
+    <link rel="next" title="Gallery of examples" href="../../auto_examples/index.html" />
+    <link rel="prev" title="tensorly.contrib.decomposition.tensor_train_cross" href="tensorly.contrib.decomposition.tensor_train_cross.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -184,7 +184,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensors-in-tucker-form-tensorly-tucker-tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
@@ -198,7 +198,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#plugin-functionalities-tensorly-plugins">Plugin functionalities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib">Experimental features (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.contrib">Experimental features (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
@@ -229,12 +229,54 @@
 
       <div class="container content main-content">
         
-  <section id="tensorly-is-tensor">
-<h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.is_tensor<a class="headerlink" href="#tensorly-is-tensor" title="Permalink to this heading">¶</a></h1>
+  <section id="tensorly-contrib-decomposition-tensor-train-oi">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib.decomposition</span></code>.tensor_train_OI<a class="headerlink" href="#tensorly-contrib-decomposition-tensor-train-oi" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.is_tensor">
-<span class="sig-name descname"><span class="pre">is_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tensorly.is_tensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="tensorly.contrib.decomposition.tensor_train_OI">
+<span class="sig-name descname"><span class="pre">tensor_train_OI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/contrib/decomposition/tt_TTOI.html#tensor_train_OI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.contrib.decomposition.tensor_train_OI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform tensor-train orthogonal iteration (TTOI) <a class="reference internal" href="#r2611546cc1a1-1" id="id1">[1]</a> for tensor train decomposition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_tensor: tl.tensor</strong></dt><dd><p>observed tensor data</p>
+</dd>
+<dt><strong>rank</strong><span class="classifier">tuple</span></dt><dd><p>rank of the TT decomposition
+must verify rank[0] == rank[-1] == 1 (boundary conditions)
+and len(rank) == len(tl.shape(data_tensor))+1</p>
+</dd>
+<dt><strong>n_iter</strong><span class="classifier">int</span></dt><dd><p>the number of iterations</p>
+</dd>
+<dt><strong>trajectory</strong><span class="classifier">bool, optional, default is False</span></dt><dd><p>if True, the output of each iteration of TTOI is returned: 2*n_iter outputs
+otherwise, only the output of the last iteration is returned</p>
+</dd>
+<dt><strong>return_errors</strong><span class="classifier">bool, optional, default is True</span></dt><dd><p>if True, the approximation/reconstruction error of each iteration of TTOI is returned: 2*n_iter outputs</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>factors</strong><span class="classifier">list of n_iter lists of tensor-train factors or one list of tensor-train factors::</span></dt><dd><ul class="simple">
+<li><p>n_iter lists of factors (if <cite>trajectory</cite> is True) : each list contains the returned list of tensor-train factors from each iteration</p></li>
+<li><p>one list of factors (otherwise): returned list of tensor-train factors from the last iteration</p></li>
+</ul>
+</dd>
+<dt><strong>full_tensor</strong><span class="classifier">list of n_iter tensors or one tensor::</span></dt><dd><ul class="simple">
+<li><p>n_iter tensors (if <cite>trajectory</cite> is True) : each list contains the returned full tensor from each iteration</p></li>
+<li><p>one tensor (otherwise): returned full tensor from the last iteration</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r2611546cc1a1-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Zhou, Y., Zhang, A. R., Zheng, L., &amp; Wang, Y. (2022). Optimal high-order tensor svd via tensor-train orthogonal iteration.</p>
+</div>
+</div>
+<p>IEEE Transactions on Information Theory, 68(6), 3991-4019.</p>
+</dd></dl>
 
 <div class="clearer"></div></section>
 
@@ -244,16 +286,16 @@
       
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button pagination-previous" href="tensorly.context.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensorly.contrib.decomposition.tensor_train_cross.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.context</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib.decomposition</span></code>.tensor_train_cross</span>
     </a>
     
     
-    <a class="button pagination-next" href="tensorly.to_numpy.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.to_numpy </span>
+    <a class="button pagination-next" href="../../auto_examples/index.html" title="next page" accesskey="n">
+        <span>Gallery of examples </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -289,8 +331,8 @@
 
         <div class="menu menu-list localtoc-list">
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>.is_tensor</a><ul>
-<li><a class="reference internal" href="#tensorly.is_tensor"><code class="docutils literal notranslate"><span class="pre">is_tensor</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib.decomposition</span></code>.tensor_train_OI</a><ul>
+<li><a class="reference internal" href="#tensorly.contrib.decomposition.tensor_train_OI"><code class="docutils literal notranslate"><span class="pre">tensor_train_OI</span></code></a></li>
 </ul>
 </li>
 </ul>

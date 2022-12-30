@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -54,15 +51,13 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
-            <img src="../_static/logo_tensorly.png" height="28">
+			      
+            tensorly
+            
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -76,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../user_guide/index.html">
+              <a class="navbar-item" href="../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -121,23 +121,24 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
@@ -199,29 +200,29 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="writing-documentation">
-<span id="documentation"></span><h1>Writing documentation</h1>
+<span id="documentation"></span><h1>Writing documentation<a class="headerlink" href="#writing-documentation" title="Permalink to this heading">¶</a></h1>
 <p>Documentation is a crutial part of this library. Here, we cover some elements of syntax
 with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the format we use.</p>
 <section id="docstrings">
-<h2>Docstrings</h2>
+<h2>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this heading">¶</a></h2>
 <p>All functions and classes should come with useful docstrings. For these, we use the numpy style docstrings. For instance, for a function, we expect the following docstring:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;One line description</span>
@@ -266,14 +267,14 @@ with Sphinx and reStructuredText (the <cite>.rst</cite> files), which is the for
 </div>
 </section>
 <section id="refer-to-functions-or-modules">
-<h2>Refer to functions or modules</h2>
+<h2>Refer to functions or modules<a class="headerlink" href="#refer-to-functions-or-modules" title="Permalink to this heading">¶</a></h2>
 <p>In the documentation, you can refer to modules as <code class="docutils literal notranslate"><span class="pre">:mod:`tensorly.module`</span></code>, for instance
 the tensor algebra module: <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.
 Similarly, use <code class="docutils literal notranslate"><span class="pre">:func:`tensorly.function`</span></code> to refer a function:
 <a class="reference internal" href="../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold" title="tensorly.base.unfold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.base.unfold</span></code></a>.</p>
 </section>
 <section id="titles">
-<h2>Titles</h2>
+<h2>Titles<a class="headerlink" href="#titles" title="Permalink to this heading">¶</a></h2>
 <p>Titles are created by underlying them, and the hierarchy is automatically determined by Sphinx.
 If you do not want your title to appear in the table of contents, use a <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html#rubric">rubric</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">rubric</span><span class="p">::</span> <span class="n">Title</span>
@@ -281,7 +282,7 @@ If you do not want your title to appear in the table of contents, use a <a class
 </div>
 </section>
 <section id="examples">
-<h2>Examples</h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <p>Examples are located in <cite>tensorly/examples</cite> and executed everytime the documentation is built.
 We use the <a class="reference external" href="https://sphinx-gallery.github.io/stable/index.html">Sphinx-Gallery</a> which you can refer to for documentation but,
 in short, your example should be called <cite>plot_xyz.py</cite> and the the structure of that file should typically look like:</p>
@@ -317,12 +318,12 @@ in short, your example should be called <cite>plot_xyz.py</cite> and the the str
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="contributing.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="contributing.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -330,7 +331,7 @@ in short, your example should be called <cite>plot_xyz.py</cite> and the the str
     </a>
     
     
-    <a class="button is-medium pagination-next" href="backend_system.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="backend_system.html" title="next page" accesskey="n">
         <span>Backend System </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -339,9 +340,7 @@ in short, your example should be called <cite>plot_xyz.py</cite> and the the str
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -353,13 +352,21 @@ in short, your example should be called <cite>plot_xyz.py</cite> and the the str
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">Writing documentation</a><ul>
 <li><a class="reference internal" href="#docstrings">Docstrings</a></li>
@@ -374,12 +381,12 @@ in short, your example should be called <cite>plot_xyz.py</cite> and the the str
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

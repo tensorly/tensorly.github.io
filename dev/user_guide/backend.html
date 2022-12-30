@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -54,15 +51,13 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
-            <img src="../_static/logo_tensorly.png" height="28">
+			      
+            tensorly
+            
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -76,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="index.html">
+              <a class="navbar-item" href="index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -121,23 +121,24 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
@@ -202,44 +203,44 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensorly-s-backend-system">
-<span id="user-guide-backend"></span><h1><span class="section-number">2. </span>TensorLy’s backend system</h1>
+<span id="user-guide-backend"></span><h1><span class="section-number">2. </span>TensorLy’s backend system<a class="headerlink" href="#tensorly-s-backend-system" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In short, you can write your code using TensorLy and you can transparently combine it and execute with any of the backends.
 Currently we support NumPy PyTorch, MXNet, JAX, TensorFlow and CuPy as backends.</p>
 </div>
 <section id="backend">
-<h2><span class="section-number">2.1. </span>Backend?</h2>
+<h2><span class="section-number">2.1. </span>Backend?<a class="headerlink" href="#backend" title="Permalink to this heading">¶</a></h2>
 <p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), MXNet, and PyTorch.
 For the end user, the interface is exactly the same, but under the hood, a different library is used to represent multi-dimensional arrays and perform computations on these.</p>
 <p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or MXNet.</p>
 </section>
 <section id="why-backends">
-<h2><span class="section-number">2.2. </span>Why backends?</h2>
+<h2><span class="section-number">2.2. </span>Why backends?<a class="headerlink" href="#why-backends" title="Permalink to this heading">¶</a></h2>
 <p>The goal of TensorLy is to make tensor methods accessible.
 While NumPy needs no introduction, other backends such as MXNet and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
 Last but not least, using MXNet or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
 </section>
 <section id="how-do-i-change-the-backend">
-<h2><span class="section-number">2.3. </span>How do I change the backend?</h2>
+<h2><span class="section-number">2.3. </span>How do I change the backend?<a class="headerlink" href="#how-do-i-change-the-backend" title="Permalink to this heading">¶</a></h2>
 <p>To change the backend, e.g. to NumPy, you can change the value of <code class="docutils literal notranslate"><span class="pre">default_backend</span></code> in tensorly/__init__.
 Alternatively during the execution, assuming you have imported TensorLy as <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">tensorly</span> <span class="pre">as</span> <span class="pre">tl</span></code>, you can change the backend in your code by calling <code class="docutils literal notranslate"><span class="pre">tl.set_backend('numpy')</span></code>.</p>
 <div class="admonition important">
@@ -258,7 +259,7 @@ It is easy however, simply refer to their respective installation instructions:<
 <p>Once you change the backend, all the computation is done using that backend.</p>
 </section>
 <section id="context-of-a-tensor">
-<h2><span class="section-number">2.4. </span>Context of a tensor</h2>
+<h2><span class="section-number">2.4. </span>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this heading">¶</a></h2>
 <p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
 <p>For instance:</p>
@@ -277,7 +278,7 @@ It is easy however, simply refer to their respective installation instructions:<
 </div>
 </section>
 <section id="basic-functions">
-<h2><span class="section-number">2.5. </span>Basic functions</h2>
+<h2><span class="section-number">2.5. </span>Basic functions<a class="headerlink" href="#basic-functions" title="Permalink to this heading">¶</a></h2>
 <p>We have isolated the basic functions required for tensor methods in the backend, and provide a uniform API using wrappers when necessary.
 In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <cite>reshape</cite>, etc, are accessible from the backend:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -297,10 +298,10 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
 <p>This will allow your code to work transparently with any of the backend.</p>
 </section>
 <section id="case-study-tensorly-and-pytorch">
-<h2><span class="section-number">2.6. </span>Case study: TensorLy and PyTorch</h2>
+<h2><span class="section-number">2.6. </span>Case study: TensorLy and PyTorch<a class="headerlink" href="#case-study-tensorly-and-pytorch" title="Permalink to this heading">¶</a></h2>
 <p>Let’s go through the creation and decomposition of a tensor, using PyTorch.</p>
 <section id="on-cpu">
-<h3><span class="section-number">2.6.1. </span>On CPU</h3>
+<h3><span class="section-number">2.6.1. </span>On CPU<a class="headerlink" href="#on-cpu" title="Permalink to this heading">¶</a></h3>
 <p>First, we import tensorly and set the backend:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="n">tl</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">)</span>
@@ -329,7 +330,7 @@ and with a random initialization. We then fit it to our tensor.</p>
 </div>
 </section>
 <section id="on-gpu">
-<h3><span class="section-number">2.6.2. </span>On GPU</h3>
+<h3><span class="section-number">2.6.2. </span>On GPU<a class="headerlink" href="#on-gpu" title="Permalink to this heading">¶</a></h3>
 <p>Now, imaging you want everything to run on GPU: this is very easy using TensorLy and the PyTorch backend:
 you simply send the tensor to the GPU!</p>
 <p>There are to main ways to do this: either you specify the context during the creation of the tensor
@@ -352,12 +353,12 @@ or you use pytorch tensors’ properties to send them to the desired device post
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="quickstart.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="quickstart.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -365,7 +366,7 @@ or you use pytorch tensors’ properties to send them to the desired device post
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensor_basics.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="tensor_basics.html" title="next page" accesskey="n">
         <span><span class="section-number">3. </span>Tensor basics </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -374,9 +375,7 @@ or you use pytorch tensors’ properties to send them to the desired device post
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -388,13 +387,21 @@ or you use pytorch tensors’ properties to send them to the desired device post
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">2. TensorLy’s backend system</a><ul>
 <li><a class="reference internal" href="#backend">2.1. Backend?</a></li>
@@ -415,12 +422,12 @@ or you use pytorch tensors’ properties to send them to the desired device post
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

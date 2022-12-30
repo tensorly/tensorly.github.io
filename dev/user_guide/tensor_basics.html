@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -55,15 +52,13 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
-            <img src="../_static/logo_tensorly.png" height="28">
+			      
+            tensorly
+            
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -77,44 +72,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="index.html">
+              <a class="navbar-item" href="index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -122,23 +122,24 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
@@ -203,27 +204,27 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensor-basics">
-<h1><span class="section-number">3. </span>Tensor basics</h1>
+<h1><span class="section-number">3. </span>Tensor basics<a class="headerlink" href="#tensor-basics" title="Permalink to this heading">¶</a></h1>
 <section id="creating-a-tensor">
-<h2><span class="section-number">3.1. </span>Creating a tensor</h2>
+<h2><span class="section-number">3.1. </span>Creating a tensor<a class="headerlink" href="#creating-a-tensor" title="Permalink to this heading">¶</a></h2>
 <p>A tensor is nothing more than a multi-dimensional array.</p>
 <p>Let’s take for this example the tensor <span class="math notranslate nohighlight">\(\tilde X\)</span> defined by its frontal slices:</p>
 <div class="math notranslate nohighlight">
@@ -262,7 +263,7 @@
 </div>
 </section>
 <section id="unfolding">
-<h2><span class="section-number">3.2. </span>Unfolding</h2>
+<h2><span class="section-number">3.2. </span>Unfolding<a class="headerlink" href="#unfolding" title="Permalink to this heading">¶</a></h2>
 <p>Also called <strong>matrization</strong>, <strong>unfolding</strong> a tensor is done by reading the element in a given way as to obtain a matrix instead of a tensor.</p>
 <p>For a tensor of size <span class="math notranslate nohighlight">\((I_0, I_1, \cdots, I_N)\)</span>, the n-mode unfolding of this tensor will be of size <span class="math notranslate nohighlight">\((I_n, I_0 \times I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)\)</span>.</p>
 <div class="admonition important">
@@ -326,7 +327,7 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </section>
 <section id="folding">
-<h2><span class="section-number">3.3. </span>Folding</h2>
+<h2><span class="section-number">3.3. </span>Folding<a class="headerlink" href="#folding" title="Permalink to this heading">¶</a></h2>
 <p>You can <strong>fold</strong> an unfolded tensor back from matrix to full tensor using the <a class="reference internal" href="../modules/generated/tensorly.base.fold.html#tensorly.base.fold" title="tensorly.base.fold"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.base.fold</span></code></a> function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">fold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfolding</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -350,7 +351,7 @@ in tensorly, unfolding also starts at zero!</p>
 </div>
 </section>
 <section id="references">
-<h2><span class="section-number">3.4. </span>References</h2>
+<h2><span class="section-number">3.4. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id2" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
@@ -362,12 +363,12 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="backend.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="backend.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -375,7 +376,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensor_decomposition.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="tensor_decomposition.html" title="next page" accesskey="n">
         <span><span class="section-number">4. </span>Tensor decomposition </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -384,9 +385,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -398,13 +397,21 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">3. Tensor basics</a><ul>
 <li><a class="reference internal" href="#creating-a-tensor">3.1. Creating a tensor</a></li>
@@ -419,12 +426,12 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

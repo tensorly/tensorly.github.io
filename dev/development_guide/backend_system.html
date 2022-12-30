@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -54,15 +51,13 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
-            <img src="../_static/logo_tensorly.png" height="28">
+			      
+            tensorly
+            
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -76,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../user_guide/index.html">
+              <a class="navbar-item" href="../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -121,23 +121,24 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
@@ -199,25 +200,25 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="backend-system">
-<span id="id1"></span><h1>Backend System</h1>
+<span id="id1"></span><h1>Backend System<a class="headerlink" href="#backend-system" title="Permalink to this heading">¶</a></h1>
 <p>The TensorLy backend system allows for switching between multiple backends in
 a thread-local way.  You can obtain the back that is currently being used with the
 <code class="docutils literal notranslate"><span class="pre">get_backend()</span></code> function:</p>
@@ -249,9 +250,9 @@ third-party libraries that wish to ensure a particular backend is used,
 no matter what the global backend is set to at the time the library code
 is executed.</p>
 <section id="how-the-backend-system-works">
-<h2>How the Backend System Works</h2>
+<h2>How the Backend System Works<a class="headerlink" href="#how-the-backend-system-works" title="Permalink to this heading">¶</a></h2>
 <section id="the-backend-class">
-<h3>The Backend class</h3>
+<h3>The Backend class<a class="headerlink" href="#the-backend-class" title="Permalink to this heading">¶</a></h3>
 <p>A backend is represented as a class, which implements the various functions needed
 (e.g. <cite>transpose</cite>, <cite>clip</cite>, etc).</p>
 <p>A base class <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.Backend</span></code> is given in <cite>tensorly/backend/core.py</cite>,
@@ -261,7 +262,7 @@ It will also provide some useful functions by default (e.g. <cite>kron</cite>, <
 <p>This base class should be subclassed when defining a new backend.</p>
 </section>
 <section id="loading-a-backend">
-<h3>Loading a backend</h3>
+<h3>Loading a backend<a class="headerlink" href="#loading-a-backend" title="Permalink to this heading">¶</a></h3>
 <p>The logic for loading is in <cite>tensorly/backend/__init__.py</cite>.
 A cache of already loaded backend is maintained
 as in a dictionary <code class="docutils literal notranslate"><span class="pre">_LOADED_BACKENDS</span></code>
@@ -280,7 +281,7 @@ and set as the current backend (<code class="docutils literal notranslate"><span
 Note that <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core._STATE.backend</span></code> is a thread-local storage.</p>
 </section>
 <section id="backend-function-s-dispatching">
-<h3>Backend function’s dispatching</h3>
+<h3>Backend function’s dispatching<a class="headerlink" href="#backend-function-s-dispatching" title="Permalink to this heading">¶</a></h3>
 <p>The TensorLy API functions are then dynamically farmed out to the backend
 staticmethods via the dispatching mechanism provided by
 <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.dispatch</span></code>. This ensure that the API function is
@@ -315,12 +316,12 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="documentation.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="documentation.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -328,7 +329,7 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
     </a>
     
     
-    <a class="button is-medium pagination-next" href="../about.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="../about.html" title="next page" accesskey="n">
         <span>About us </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -337,9 +338,7 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -351,13 +350,21 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">Backend System</a><ul>
 <li><a class="reference internal" href="#how-the-backend-system-works">How the Backend System Works</a><ul>
@@ -374,12 +381,12 @@ subclassing <code class="docutils literal notranslate"><span class="pre">types.M
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

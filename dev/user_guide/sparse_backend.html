@@ -25,9 +25,6 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
  <script src="../_static/navbar_burger.js"></script>
@@ -54,15 +51,13 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
-            <img src="../_static/logo_tensorly.png" height="28">
+			      
+            tensorly
+            
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -76,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="index.html">
+              <a class="navbar-item" href="index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -121,23 +121,24 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
@@ -202,25 +203,25 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="sparse-backend">
-<span id="id1"></span><h1><span class="section-number">6. </span>Sparse Backend</h1>
+<span id="id1"></span><h1><span class="section-number">6. </span>Sparse Backend<a class="headerlink" href="#sparse-backend" title="Permalink to this heading">¶</a></h1>
 <p>TensorLy supports sparse tensors for some backends and algorithms.</p>
 <p>When selecting a backend to be used for tensorly, this backend will also
 be applied to the sparse implementations. This is because many backends
@@ -229,7 +230,7 @@ TensorFlow and PyTorch both have (some) support for sparse tensors.
 Using TensorLy’s dense or sparse interfaces will give you
 appropriate objects for the selected backend.</p>
 <section id="why-a-separate-sparse-backend">
-<h2><span class="section-number">6.1. </span>Why a separate sparse backend?</h2>
+<h2><span class="section-number">6.1. </span>Why a separate sparse backend?<a class="headerlink" href="#why-a-separate-sparse-backend" title="Permalink to this heading">¶</a></h2>
 <p>Some algorithms need to be adapted to be <em>sparse-safe</em>.</p>
 <p>In addition, not all backends have a native sparse representation. For instance,
 NumPy lacks a sparse array structure.
@@ -240,7 +241,7 @@ backend, the <a class="reference external" href="https://sparse.pydata.org">PyDa
 as the sparse representation.</p>
 </section>
 <section id="algorithms">
-<h2><span class="section-number">6.2. </span>Algorithms</h2>
+<h2><span class="section-number">6.2. </span>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">parafac</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">non_negative_parafac</span></code></p></li>
@@ -248,7 +249,7 @@ as the sparse representation.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></p></li>
 </ul>
 <section id="usage">
-<h3><span class="section-number">6.2.1. </span>Usage</h3>
+<h3><span class="section-number">6.2.1. </span>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h3>
 <p>The sparse sub-package in <code class="docutils literal notranslate"><span class="pre">tensorly.contrib.sparse</span></code> contains a mirror of the
 interfaces in the usual, dense <code class="docutils literal notranslate"><span class="pre">tensorly</span></code> package. For example, unfolding a
 sparse tensor would use:</p>
@@ -287,7 +288,7 @@ sparse input tensor.</p>
 </section>
 </section>
 <section id="missing-values">
-<h2><span class="section-number">6.3. </span>Missing Values</h2>
+<h2><span class="section-number">6.3. </span>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">parafac</span></code> function supports masks for missing values. A mask should be a
 boolean array of the same shape as the original tensor that is <code class="docutils literal notranslate"><span class="pre">False</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code>
 where the value is missing and <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> where it is not. It is passed to
@@ -303,7 +304,7 @@ mask.</p></li>
 backend <code class="docutils literal notranslate"><span class="pre">parafac</span></code> will densify the array.</p></li>
 </ul>
 <section id="example">
-<h3><span class="section-number">6.3.1. </span>Example</h3>
+<h3><span class="section-number">6.3.1. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h3>
 <p>In the following example, we construct a random sparse tensor that has a known
 rank (by construction), and decompose it with parafac.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly.contrib.sparse</span> <span class="k">as</span> <span class="nn">stl</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">sparse</span>
@@ -361,12 +362,12 @@ intermediate matrices.</p>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensor_regression.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensor_regression.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -374,7 +375,7 @@ intermediate matrices.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="../modules/api.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="../modules/api.html" title="next page" accesskey="n">
         <span>API reference </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -383,9 +384,7 @@ intermediate matrices.</p>
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
@@ -397,13 +396,21 @@ intermediate matrices.</p>
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">6. Sparse Backend</a><ul>
 <li><a class="reference internal" href="#why-a-separate-sparse-backend">6.1. Why a separate sparse backend?</a></li>
@@ -423,12 +430,12 @@ intermediate matrices.</p>
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");
