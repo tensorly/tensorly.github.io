@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.metrics.regression.MSE &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.regression.CP_PLSR &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -40,8 +40,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.metrics.regression.RMSE" href="tensorly.metrics.regression.RMSE.html" />
-    <link rel="prev" title="tensorly.regression.CP_PLSR" href="tensorly.regression.CP_PLSR.html" />
+    <link rel="next" title="tensorly.metrics.regression.MSE" href="tensorly.metrics.regression.MSE.html" />
+    <link rel="prev" title="tensorly.regression.cp_regression.CPRegressor" href="tensorly.regression.cp_regression.CPRegressor.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -193,8 +193,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#plugin-functionalities-tensorly-plugins">Plugin functionalities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>)</a></li>
@@ -229,27 +229,130 @@
 
       <div class="container content main-content">
         
-  <section id="tensorly-metrics-regression-mse">
-<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.MSE<a class="headerlink" href="#tensorly-metrics-regression-mse" title="Permalink to this heading">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="tensorly.metrics.regression.MSE">
-<span class="sig-name descname"><span class="pre">MSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/metrics/regression.html#MSE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.metrics.regression.MSE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the mean squared error between the two predictions</p>
+  <section id="tensorly-regression-cp-plsr">
+<h1><a class="reference internal" href="../api.html#module-tensorly.regression" title="tensorly.regression"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code></a>.CP_PLSR<a class="headerlink" href="#tensorly-regression-cp-plsr" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CP_PLSR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR" title="Permalink to this definition">¶</a></dt>
+<dd><p>CP tensor regression</p>
+<p>Learns a low rank CP tensor weight, This performs a partial least square regression to a tensor X (&gt;= 2 modes)
+against a matrix Y. The first modes of X and Y will be considered coupled, and the decomposition will maximize
+the covariance between them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>y_true</strong><span class="classifier">array of shape (n_samples, )</span></dt><dd><p>Ground truth (correct) target values.</p>
+<dt><strong>n_components</strong><span class="classifier">int</span></dt><dd><p>rank of the CP decomposition of the regression weights</p>
 </dd>
-<dt><strong>y_pred</strong><span class="classifier">array of shape (n_samples, )</span></dt><dd><p>Estimated target values.</p>
+<dt><strong>tol</strong><span class="classifier">float</span></dt><dd><p>convergence value</p>
+</dd>
+<dt><strong>n_iter_max</strong><span class="classifier">int, optional, default is 100</span></dt><dd><p>maximum number of iteration</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">None, int or RandomState, optional, default is None</span></dt><dd></dd>
+<dt><strong>verbose</strong><span class="classifier">bool, default is False</span></dt><dd><p>whether to be verbose during fitting</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r87a0ecdb7b47-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Rasmus Bro, “Multiway calibration. Multilinear PLS”, Chemometrics, 1996</p>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the model to the data (X, Y)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS)</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">2D-array of shape (n_samples, n_predictions)</span></dt><dd><p>labels associated with each sample</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>float</dt><dd></dd>
+<dt>self</dt><dd></dd>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn and apply the dimension reduction on the train data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training vectors, where <cite>n_samples</cite> is the number of samples and
+<cite>n_features</cite> is the number of predictors.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples, n_targets), default=None</span></dt><dd><p>Target vectors, where <cite>n_samples</cite> is the number of samples and
+<cite>n_targets</cite> is the number of response variables.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Return <cite>x_scores</cite> if <cite>Y</cite> is not given, <cite>(x_scores, y_scores)</cite> otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of parameters</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the predicted labels for a new data tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the value of the provided parameters</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.regression.CP_PLSR.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the dimension reduction from fitting to a new tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Samples to transform.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, n_targets), default=None</span></dt><dd><p>Target vectors.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_scores, Y_scores</strong><span class="classifier">array-like or tuple of array-like</span></dt><dd><p>Return <cite>X_scores</cite> if <cite>Y</cite> is not given, <cite>(X_scores, Y_scores)</cite> otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <div class="clearer"></div></section>
@@ -260,16 +363,16 @@
       
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button pagination-previous" href="tensorly.regression.CP_PLSR.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensorly.regression.cp_regression.CPRegressor.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>.CP_PLSR</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression.cp_regression</span></code>.CPRegressor</span>
     </a>
     
     
-    <a class="button pagination-next" href="tensorly.metrics.regression.RMSE.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.RMSE </span>
+    <a class="button pagination-next" href="tensorly.metrics.regression.MSE.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.MSE </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -305,8 +408,16 @@
 
         <div class="menu menu-list localtoc-list">
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.MSE</a><ul>
-<li><a class="reference internal" href="#tensorly.metrics.regression.MSE"><code class="docutils literal notranslate"><span class="pre">MSE</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>.CP_PLSR</a><ul>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR"><code class="docutils literal notranslate"><span class="pre">CP_PLSR</span></code></a><ul>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.fit"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.fit</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.fit_transform"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.fit_transform</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.get_params"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.get_params</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.predict"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.predict</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.set_params"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.set_params</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.transform"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.transform</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
