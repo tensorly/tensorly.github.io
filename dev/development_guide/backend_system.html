@@ -218,7 +218,7 @@
       <div class="container content main-content">
         
   <section id="backend-system">
-<span id="id1"></span><h1>Backend System</h1>
+<span id="id1"></span><h1>Backend System<a class="headerlink" href="#backend-system" title="Permalink to this heading">¶</a></h1>
 <p>The TensorLy backend system allows for switching between multiple backends in
 a thread-local way.  You can obtain the back that is currently being used with the
 <code class="docutils literal notranslate"><span class="pre">get_backend()</span></code> function:</p>
@@ -250,9 +250,9 @@ third-party libraries that wish to ensure a particular backend is used,
 no matter what the global backend is set to at the time the library code
 is executed.</p>
 <section id="how-the-backend-system-works">
-<h2>How the Backend System Works</h2>
+<h2>How the Backend System Works<a class="headerlink" href="#how-the-backend-system-works" title="Permalink to this heading">¶</a></h2>
 <section id="the-backend-class">
-<h3>The Backend class</h3>
+<h3>The Backend class<a class="headerlink" href="#the-backend-class" title="Permalink to this heading">¶</a></h3>
 <p>A backend is represented as a class, which implements the various functions needed
 (e.g. <cite>transpose</cite>, <cite>clip</cite>, etc).</p>
 <p>A base class <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.Backend</span></code> is given in <cite>tensorly/backend/core.py</cite>,
@@ -262,7 +262,7 @@ It will also provide some useful functions by default (e.g. <cite>kron</cite>, <
 <p>This base class should be subclassed when defining a new backend.</p>
 </section>
 <section id="loading-a-backend">
-<h3>Loading a backend</h3>
+<h3>Loading a backend<a class="headerlink" href="#loading-a-backend" title="Permalink to this heading">¶</a></h3>
 <p>The logic for loading is in <cite>tensorly/backend/__init__.py</cite>.
 A cache of already loaded backend is maintained
 as in a dictionary <code class="docutils literal notranslate"><span class="pre">_LOADED_BACKENDS</span></code>
@@ -281,7 +281,7 @@ and set as the current backend (<code class="docutils literal notranslate"><span
 Note that <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core._STATE.backend</span></code> is a thread-local storage.</p>
 </section>
 <section id="backend-function-s-dispatching">
-<h3>Backend function’s dispatching</h3>
+<h3>Backend function’s dispatching<a class="headerlink" href="#backend-function-s-dispatching" title="Permalink to this heading">¶</a></h3>
 <p>The TensorLy API functions are then dynamically farmed out to the backend
 staticmethods via the dispatching mechanism provided by
 <code class="docutils literal notranslate"><span class="pre">tensorly.backend.core.dispatch</span></code>. This ensure that the API function is

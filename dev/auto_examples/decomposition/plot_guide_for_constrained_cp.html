@@ -225,10 +225,10 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="constrained-cp-decomposition-in-tensorly-0-7">
-<span id="sphx-glr-auto-examples-decomposition-plot-guide-for-constrained-cp-py"></span><h1>Constrained CP decomposition in Tensorly &gt;=0.7</h1>
+<span id="sphx-glr-auto-examples-decomposition-plot-guide-for-constrained-cp-py"></span><h1>Constrained CP decomposition in Tensorly &gt;=0.7<a class="headerlink" href="#constrained-cp-decomposition-in-tensorly-0-7" title="Permalink to this heading">¶</a></h1>
 <p>On this page, you will find examples showing how to use constrained CP/Parafac.</p>
 <section id="introduction">
-<h2>Introduction</h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>Since version 0.7, Tensorly includes constrained CP decomposition which penalizes or
 constrains factors as chosen by the user. The proposed implementation of constrained CP uses the
 Alternating Optimization Alternating Direction Method of Multipliers (AO-ADMM) algorithm from [1] which
@@ -359,7 +359,7 @@ constraints for all mode (or factors) or using different constraints for differe
 </div>
 </section>
 <section id="using-one-constraint-for-all-modes">
-<h2>Using one constraint for all modes</h2>
+<h2>Using one constraint for all modes<a class="headerlink" href="#using-one-constraint-for-all-modes" title="Permalink to this heading">¶</a></h2>
 <p>Constraints are inputs of the constrained_parafac function, which itself uses the
 <code class="docutils literal notranslate"><span class="pre">tensorly.tenalg.proximal.validate_constraints</span></code> function in order to process the input
 of the user. If a user wants to use the same constraint for all modes, an
@@ -396,7 +396,7 @@ any scalar input, unimodality can be imposed by writing <cite>True</cite> for <c
 </ul>
 </section>
 <section id="using-one-constraint-for-some-modes">
-<h2>Using one constraint for some modes</h2>
+<h2>Using one constraint for some modes<a class="headerlink" href="#using-one-constraint-for-some-modes" title="Permalink to this heading">¶</a></h2>
 <p>As a second option, constraint can be used for only a few selected modes by using
 a python dictionary:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
@@ -405,27 +405,27 @@ a python dictionary:</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[4.65 1.1  0.52]
- [3.69 0.13 0.83]
- [3.95 0.   0.21]
- [3.89 0.   0.  ]
- [5.17 1.44 0.  ]
- [5.21 1.59 1.52]]
+ [[3.43 1.3  0.23]
+ [4.15 0.88 0.19]
+ [4.85 0.93 0.84]
+ [4.72 0.28 0.8 ]
+ [5.22 0.17 0.95]
+ [4.79 0.98 1.4 ]]
 2. factor
- [[ 0.36 -0.25  0.06]
- [ 0.45 -0.37 -0.44]
- [ 0.41 -0.39  0.1 ]
- [ 0.42 -0.45 -0.27]
- [ 0.33 -0.45  0.56]
- [ 0.43 -0.78  0.46]
- [ 0.3  -0.21  0.37]
- [ 0.35 -0.03 -0.48]]
+ [[ 0.12  0.81  0.75]
+ [ 0.42  0.37 -0.5 ]
+ [ 0.49 -0.09 -0.69]
+ [ 0.32  0.54 -0.27]
+ [ 0.33  0.26  0.12]
+ [ 0.29  0.41 -0.01]
+ [ 0.37  0.54 -0.41]
+ [ 0.31  0.16  0.4 ]]
 </pre></div>
 </div>
 <p>Since only the first and last factors are chosen, entries on the second mode factor could be negative.</p>
 </section>
 <section id="using-a-constraint-with-the-different-scalar-inputs-for-each-mode">
-<h2>Using a constraint with the different scalar inputs for each mode</h2>
+<h2>Using a constraint with the different scalar inputs for each mode<a class="headerlink" href="#using-a-constraint-with-the-different-scalar-inputs-for-each-mode" title="Permalink to this heading">¶</a></h2>
 <p>One may prefer different scalar value for each mode. It is possible by
 using a list structure:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
@@ -450,7 +450,7 @@ using a list structure:</p>
 </ul>
 </section>
 <section id="using-different-constraints-for-each-mode">
-<h2>Using different constraints for each mode</h2>
+<h2>Using different constraints for each mode<a class="headerlink" href="#using-different-constraints-for-each-mode" title="Permalink to this heading">¶</a></h2>
 <p>To use different constraint for different modes, the dictionary structure
 should be preferred:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
@@ -465,32 +465,32 @@ only <cite>True</cite> depending on the selected constraint.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[ 32.89 -10.02 -43.07]
- [ 28.09  -3.44  -0.27]
- [ 30.09  22.29  26.62]
- [ 32.74 -47.58 -53.82]
- [ 32.71  -7.87 -20.26]
- [ 31.88  -2.31  -5.11]]
+ [[11.79 11.39  1.95]
+ [15.35  5.54 -0.  ]
+ [14.93  9.78 11.57]
+ [15.58  2.8   6.96]
+ [16.02  3.46 12.13]
+ [13.68 11.56 14.85]]
 2. factor
- [[0.38 0.36 0.04]
- [0.42 0.31 0.  ]
- [0.44 0.   1.15]
- [0.42 1.3  1.46]
- [0.37 0.69 0.71]
- [0.41 0.26 0.1 ]
- [0.35 1.07 0.93]
- [0.37 0.   0.  ]]
+ [[0.21 0.87 1.03]
+ [0.39 0.48 0.  ]
+ [0.46 0.   0.  ]
+ [0.33 0.52 0.  ]
+ [0.4  0.23 0.47]
+ [0.31 0.51 0.31]
+ [0.36 0.6  0.  ]
+ [0.37 0.31 0.83]]
 3. factor
- [[ 4.31e-02  6.03e-03 -2.39e-03]
- [ 3.53e-02  3.78e-03  1.02e-03]
- [ 4.04e-02 -1.73e-03  7.80e-03]
- [ 4.10e-02  1.55e-02 -5.93e-03]
- [ 3.21e-02  7.00e-03 -3.24e-03]
- [ 3.90e-02 -1.84e-05  2.68e-03]
- [ 3.93e-02 -1.56e-02  7.95e-03]
- [ 3.18e-02 -9.98e-03  2.43e-03]
- [ 4.20e-02 -1.01e-02  4.61e-03]
- [ 4.06e-02 -7.18e-03  6.61e-03]]
+ [[ 0.1   0.02 -0.02]
+ [ 0.07  0.03  0.02]
+ [ 0.09  0.02 -0.  ]
+ [ 0.07  0.06 -0.02]
+ [ 0.08  0.    0.03]
+ [ 0.11  0.01 -0.01]
+ [ 0.05  0.09 -0.02]
+ [ 0.09 -0.01  0.04]
+ [ 0.07  0.04 -0.  ]
+ [ 0.07  0.03  0.03]]
 </pre></div>
 </div>
 <p>Thus, first factor will be non-negative, second factor will be regularized
@@ -498,13 +498,13 @@ by <span class="math notranslate nohighlight">\(0.01\)</span> with <span class="
 <span class="math notranslate nohighlight">\(0.01\)</span> with <span class="math notranslate nohighlight">\(l_2^2\)</span>.</p>
 </section>
 <section id="references">
-<h2>References</h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
 <p>[1] Huang, Kejun, Nicholas D. Sidiropoulos, and Athanasios P. Liavas.
 “A flexible and efficient algorithmic framework for constrained
 matrix and tensor factorization.”
 IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
 <a class="reference external" href="https://ieeexplore.ieee.org/document/7484753">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.000 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.903 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-guide-for-constrained-cp-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/02fe230fcb90df96787f11e615bb0af8/plot_guide_for_constrained_cp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_guide_for_constrained_cp.py</span></code></a></p>

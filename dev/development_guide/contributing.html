@@ -218,15 +218,15 @@
       <div class="container content main-content">
         
   <section id="contributing">
-<h1>Contributing</h1>
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">¶</a></h1>
 <p>All contributions are welcome! So if you have a cool tensor method you want to add, if you spot a bug or even a typo or mistake in the documentation, please report it, and even better, open a Pull-Request!</p>
 <section id="how-to">
-<h2>How-to</h2>
+<h2>How-to<a class="headerlink" href="#how-to" title="Permalink to this heading">¶</a></h2>
 <p>To make sure the contribution is relevant and is not already worked on, you can <a class="reference external" href="https://github.com/tensorly/tensorly/issues">open an issue</a> or talk to us on <a class="reference external" href="https://gitter.im/tensorly/tensorly">Gitter</a>!</p>
 <p>To add code of fix issues in TensorLy, you will want to open a <a class="reference external" href="https://github.com/tensorly/tensorly/pulls">Pull-Request</a> on the Github repository of the project.</p>
 </section>
 <section id="guidelines">
-<h2>Guidelines</h2>
+<h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this heading">¶</a></h2>
 <p>For each function or class, we expect helpful docstrings in the NumPy format, as well as unit-tests to make sure it is working as expected (especially helpful for future refactoring to make sure no exising code is broken!)</p>
 <p>Before you submit your changes, you should also make sure your code adheres to our style-guide. The easiest way to do this is with <cite>black</cite>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install black
@@ -236,7 +236,7 @@ black .
 <p>Check the existing code for examples, and don’t hesitate to contact the developers if you are unsure!</p>
 </section>
 <section id="backend-compatibility">
-<h2>Backend compatibility</h2>
+<h2>Backend compatibility<a class="headerlink" href="#backend-compatibility" title="Permalink to this heading">¶</a></h2>
 <p>To contribute code to the TensorLy code-base, you must ensure compatibility with all the backends.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -254,7 +254,7 @@ or, if you cannot do otherwise, add the required function to all backends.</p>
 e.g. Do not include statements such as <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">tensorly.get_backend()</span> <span class="pre">==</span> <span class="pre">'pytorch'</span></code> in your code.</p>
 </div>
 <section id="in-practice">
-<h3>In practice</h3>
+<h3>In practice<a class="headerlink" href="#in-practice" title="Permalink to this heading">¶</a></h3>
 <p>Practically, <strong>use the wrapped functions</strong>. For instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -271,7 +271,7 @@ e.g. Do not include statements such as <code class="docutils literal notranslate
 You might be using NumPy but another user might be using MXNet and calling a NumPy function on an MXNet NDArray will most likely fail.</p>
 </section>
 <section id="context-of-a-tensor">
-<h3>Context of a tensor</h3>
+<h3>Context of a tensor<a class="headerlink" href="#context-of-a-tensor" title="Permalink to this heading">¶</a></h3>
 <p>An other aspect, when developing a new function or algorithm, is to make sure you perform the computation on the correct context specified by the user. To do so, always get the context from tensors you get as input, and use it for the tensors you create.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 <span class="c1"># when creating a new tensor we use these as parameters</span>
@@ -281,7 +281,7 @@ You might be using NumPy but another user might be using MXNet and calling a Num
 <p>Check-out the page on <a class="reference internal" href="../user_guide/backend.html"><span class="doc">TensorLy’s backend system</span></a> for more on this.</p>
 </section>
 <section id="index-assignment-numpy-style">
-<h3>Index assignment (“NumPy style”)</h3>
+<h3>Index assignment (“NumPy style”)<a class="headerlink" href="#index-assignment-numpy-style" title="Permalink to this heading">¶</a></h3>
 <p>In NumPy, PyTorch and MXNet, you can combined indexing and assignment in a convenient way,
 e.g. if you have a tensor <cite>t</cite>, you can update its values for given indices using the expression
 <code class="docutils literal notranslate"><span class="pre">t[indices]</span> <span class="pre">=</span> <span class="pre">values</span></code>.</p>
@@ -292,7 +292,7 @@ For instance, the previous statement becomes, in TensorLy:
 </section>
 </section>
 <section id="testing-the-class-interface">
-<h2>Testing the class interface</h2>
+<h2>Testing the class interface<a class="headerlink" href="#testing-the-class-interface" title="Permalink to this heading">¶</a></h2>
 <p>Because TensorLy supports both a functional and an object-oriented interface, we should ensure that any
 change to one interface is also applied to the other interface. To automatically test for this, we have
 a test utility <code class="docutils literal notranslate"><span class="pre">tensorly.testing.assert_class_wrapper_correctly_passes_arguments</span></code>, which checks that all
@@ -311,7 +311,7 @@ are planning to perform monkeypatching (more about that later), and that it shou
 for this purpose. It is therefore essential that one of the arguments of the test function is <code class="docutils literal notranslate"><span class="pre">monkeypatch</span></code>
 and that this variable is passed as the first argument to <code class="docutils literal notranslate"><span class="pre">assert_class_wrapper_correctly_passes_arguments</span></code>.</p>
 <section id="how-the-class-wrapper-test-works">
-<h3>How the class wrapper test works</h3>
+<h3>How the class wrapper test works<a class="headerlink" href="#how-the-class-wrapper-test-works" title="Permalink to this heading">¶</a></h3>
 <p>This test utility works because it uses the fact that the object-oriented interface calls the functional
 interface behind the scenes. To automatically test the interfaces, the
 <cite>tensorly.testing.assert_class_wrapper_correctly_passes_arguments</cite> function inspects the functional interface
