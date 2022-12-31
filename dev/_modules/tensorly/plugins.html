@@ -160,8 +160,9 @@
     <span class="sd">&quot;&quot;&quot;Revert to the original einsum for the current backend&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">PREVIOUS_EINSUM</span>
 
-    <span class="n">tl</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">BackendManager</span><span class="o">.</span><span class="n">register_backend_method</span><span class="p">(</span><span class="s2">&quot;einsum&quot;</span><span class="p">,</span> <span class="n">PREVIOUS_EINSUM</span><span class="p">)</span>
-    <span class="n">PREVIOUS_EINSUM</span> <span class="o">=</span> <span class="kc">None</span></div>
+    <span class="k">if</span> <span class="n">PREVIOUS_EINSUM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">BackendManager</span><span class="o">.</span><span class="n">register_backend_method</span><span class="p">(</span><span class="s2">&quot;einsum&quot;</span><span class="p">,</span> <span class="n">PREVIOUS_EINSUM</span><span class="p">)</span>
+        <span class="n">PREVIOUS_EINSUM</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="use_opt_einsum"><a class="viewcode-back" href="../../modules/generated/tensorly.plugins.use_opt_einsum.html#tensorly.plugins.use_opt_einsum">[docs]</a><span class="k">def</span> <span class="nf">use_opt_einsum</span><span class="p">(</span><span class="n">optimize</span><span class="o">=</span><span class="s2">&quot;auto-hq&quot;</span><span class="p">):</span>
