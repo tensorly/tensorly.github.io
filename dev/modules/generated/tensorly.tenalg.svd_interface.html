@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.parafac2_tensor.parafac2_to_vec &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.tenalg.svd_interface &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -27,7 +27,6 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -41,8 +40,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.tenalg.svd_interface" href="tensorly.tenalg.svd_interface.html" />
-    <link rel="prev" title="tensorly.parafac2_tensor.parafac2_to_unfolded" href="tensorly.parafac2_tensor.parafac2_to_unfolded.html" />
+    <link rel="next" title="tensorly.tenalg.khatri_rao" href="tensorly.tenalg.khatri_rao.html" />
+    <link rel="prev" title="tensorly.parafac2_tensor.parafac2_to_vec" href="tensorly.parafac2_tensor.parafac2_to_vec.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -191,8 +190,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensors-in-tucker-form-tensorly-tucker-tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
@@ -230,56 +229,46 @@
 
       <div class="container content main-content">
         
-  <section id="tensorly-parafac2-tensor-parafac2-to-vec">
-<h1><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor" title="tensorly.parafac2_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code></a>.parafac2_to_vec<a class="headerlink" href="#tensorly-parafac2-tensor-parafac2-to-vec" title="Permalink to this heading">¶</a></h1>
+  <section id="tensorly-tenalg-svd-interface">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.svd_interface<a class="headerlink" href="#tensorly-tenalg-svd-interface" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.parafac2_tensor.parafac2_to_vec">
-<span class="sig-name descname"><span class="pre">parafac2_to_vec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parafac2_tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/parafac2_tensor.html#parafac2_to_vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.parafac2_tensor.parafac2_to_vec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct a vectorized tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</p>
-<p>The decomposition is on the form <span class="math notranslate nohighlight">\((A [B_i] C)\)</span> such that the i-th frontal slice,
-<span class="math notranslate nohighlight">\(X_i\)</span>, of <span class="math notranslate nohighlight">\(X\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[X_i = B_i diag(a_i) C^T,\]</div>
-<p>where <span class="math notranslate nohighlight">\(diag(a_i)\)</span> is the diagonal matrix whose nonzero entries are equal to
-the <span class="math notranslate nohighlight">\(i\)</span>-th row of the <span class="math notranslate nohighlight">\(I \times R\)</span> factor matrix <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B_i\)</span>
-is a <span class="math notranslate nohighlight">\(J_i \times R\)</span> factor matrix such that the cross product matrix <span class="math notranslate nohighlight">\(B_{i_1}^T B_{i_1}\)</span>
-is constant for all <span class="math notranslate nohighlight">\(i\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> is a <span class="math notranslate nohighlight">\(K \times R\)</span> factor matrix.
-To compute this decomposition, we reformulate the expression for <span class="math notranslate nohighlight">\(B_i\)</span> such that</p>
-<div class="math notranslate nohighlight">
-\[B_i = P_i B,\]</div>
-<p>where <span class="math notranslate nohighlight">\(P_i\)</span> is a <span class="math notranslate nohighlight">\(J_i \times R\)</span> orthogonal matrix and <span class="math notranslate nohighlight">\(B\)</span> is a
-<span class="math notranslate nohighlight">\(R \times R\)</span> matrix.</p>
-<p>An alternative formulation of the PARAFAC2 decomposition is that the tensor element
-<span class="math notranslate nohighlight">\(X_{ijk}\)</span> is given by</p>
-<div class="math notranslate nohighlight">
-\[X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},\]</div>
-<p>with the same constraints hold for <span class="math notranslate nohighlight">\(B_i\)</span> as above.</p>
+<dt class="sig sig-object py" id="tensorly.tenalg.svd_interface">
+<span class="sig-name descname"><span class="pre">svd_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eigenvecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_sign</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_based_flip_sign</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_mask_imputation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/svd.html#svd_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.tenalg.svd_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatching function to various SVD algorithms, alongside additional
+properties such as resolving sign invariance, imputation, and non-negativity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>parafac2_tensor</strong><span class="classifier">Parafac2Tensor - (weight, factors, projection_matrices)</span></dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt>weights<span class="classifier">1D array of shape (rank, )</span></dt><dd><p>weights of the factors</p>
+<dt><strong>matrix</strong><span class="classifier">tensor</span></dt><dd><p>A 2D tensor.</p>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>factors<span class="classifier">List of factors of the PARAFAC2 decomposition</span></dt><dd><p>Contains the matrices <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span> described above</p>
+<dt><strong>method</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>Function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS or a callable.</p>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>projection_matrices<span class="classifier">List of projection matrices used to create evolving</span></dt><dd><p>factors.</p>
+<dt><strong>n_eigenvecs</strong><span class="classifier">int, optional, default is None</span></dt><dd><p>If specified, number of eigen[vectors-values] to return.</p>
 </dd>
-</dl>
-</li>
-</ul>
+<dt><strong>flip_sign</strong><span class="classifier">bool, optional, default is True</span></dt><dd><p>Whether to resolve the sign indeterminacy of SVD.</p>
+</dd>
+<dt><strong>u_based_flip_sign</strong><span class="classifier">bool, optional, default is True</span></dt><dd><p>Whether the sign indeterminacy should be resolved using U (vs. V).</p>
+</dd>
+<dt><strong>non_negative</strong><span class="classifier">bool, optional, default is False</span></dt><dd><p>Whether to make the SVD results non-negative.</p>
+</dd>
+<dt><strong>nn_type</strong><span class="classifier">str, default is ‘nndsvd’</span></dt><dd><p>Algorithm to use for converting U to be non-negative.</p>
+</dd>
+<dt><strong>mask</strong><span class="classifier">tensor, default is None.</span></dt><dd><p>Array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">matrix</span></code>. Should be 0 where
+the values are missing and 1 everywhere else. None if nothing is missing.</p>
+</dd>
+<dt><strong>n_iter_mask_imputation</strong><span class="classifier">int, default is 5</span></dt><dd><p>Number of repetitions to apply in missing value imputation.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">optional</span></dt><dd><p>Arguments passed along to individual SVD algorithms.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>ndarray</dt><dd><p>Full constructed tensor. Uneven slices are padded with zeros.</p>
+<dt><strong>U</strong><span class="classifier">2-D tensor, shape (matrix.shape[0], n_eigenvecs)</span></dt><dd><p>Contains the right singular vectors of <cite>matrix</cite></p>
+</dd>
+<dt><strong>S</strong><span class="classifier">1-D tensor, shape (n_eigenvecs, )</span></dt><dd><p>Contains the singular values of <cite>matrix</cite></p>
+</dd>
+<dt><strong>V</strong><span class="classifier">2-D tensor, shape (n_eigenvecs, matrix.shape[1])</span></dt><dd><p>Contains the left singular vectors of <cite>matrix</cite></p>
 </dd>
 </dl>
 </dd>
@@ -294,16 +283,16 @@ To compute this decomposition, we reformulate the expression for <span class="ma
       
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button pagination-previous" href="tensorly.parafac2_tensor.parafac2_to_unfolded.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensorly.parafac2_tensor.parafac2_to_vec.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>.parafac2_to_unfolded</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>.parafac2_to_vec</span>
     </a>
     
     
-    <a class="button pagination-next" href="tensorly.tenalg.svd_interface.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.svd_interface </span>
+    <a class="button pagination-next" href="tensorly.tenalg.khatri_rao.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -339,8 +328,8 @@ To compute this decomposition, we reformulate the expression for <span class="ma
 
         <div class="menu menu-list localtoc-list">
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>.parafac2_to_vec</a><ul>
-<li><a class="reference internal" href="#tensorly.parafac2_tensor.parafac2_to_vec"><code class="docutils literal notranslate"><span class="pre">parafac2_to_vec</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.svd_interface</a><ul>
+<li><a class="reference internal" href="#tensorly.tenalg.svd_interface"><code class="docutils literal notranslate"><span class="pre">svd_interface</span></code></a></li>
 </ul>
 </li>
 </ul>
