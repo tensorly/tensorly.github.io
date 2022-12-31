@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tensorly.datasets.data_imports &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+ <script src="../../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../../index.html">
+			      
+            tensorly
+            
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../../../modules/api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../../../auto_examples/index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+
+      <div class="container content main-content">
+        
+  <h1>Source code for tensorly.datasets.data_imports</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Load example datasets.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+
+
+<span class="k">class</span> <span class="nc">Bunch</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Bunch, exposing dict keys as a keys() method.</span>
+<span class="sd">    Definition from scikit-learn.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="load_IL2data"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.load_IL2data.html#tensorly.datasets.load_IL2data">[docs]</a><span class="k">def</span> <span class="nf">load_IL2data</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads tensor of IL-2 mutein treatment responses.</span>
+<span class="sd">    Tensor contains the signaling responses of eight different cell types to 13 IL-2 mutants.</span>
+<span class="sd">    Dose-responses to 12 concentrations of muteins were collected at four time points for each mutant and cell type.</span>
+<span class="sd">    Ligands include IL-2 mutants with modified receptor affinities, and in both mono- and bivalent formats.</span>
+<span class="sd">    Useful for demonstrating execution and interpretation of non-negative CP decomposition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path_here</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path_here</span> <span class="o">+</span> <span class="s2">&quot;/data/IL2_Response_Tensor.npy&quot;</span><span class="p">)</span>
+    <span class="n">ligands</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;IL2 (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IL15 (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WT N-term (Biv)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;H16N N-term (Biv)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;R38Q N-term (Biv)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;R38Q/H16N (Biv)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WT N-term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;H16N N-term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WT C-term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;V91K C-term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;R38Q N-term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F42Q N-Term (Mono)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;N88D C-term (Mono)&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Treg IL2Ra_hi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Treg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Treg IL2Ra_lo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Thelper IL2Ra_hi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Thelper&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Thelper IL2Ra_lo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CD8+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NK&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+    <span class="n">doses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">84.0</span><span class="p">,</span> <span class="mf">0.000474</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ligands&quot;</span><span class="p">,</span> <span class="s2">&quot;times&quot;</span><span class="p">,</span> <span class="s2">&quot;doses&quot;</span><span class="p">,</span> <span class="s2">&quot;cells&quot;</span><span class="p">]</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Orcutt-Jahns, B., Emmel, P. C., Snyder, E. M., Posner, C., </span><span class="se">\</span>
+<span class="s2">                Carlson, S. M., &amp; Meyer, A. S. (2021). Multivalency enhances the </span><span class="se">\</span>
+<span class="s2">                specificity of Fc-cytokine fusions. BioRxiv.&quot;</span>
+    <span class="p">]</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Non-Negative CP&quot;</span><span class="p">]</span>
+    <span class="n">DESC</span> <span class="o">=</span> <span class="s2">&quot;This dataset includes a tensor of eight cell types&#39; responses to 13 IL-2 muteins, at 4 different time points, and at 12 different IL-2 concentrations.&quot;</span>
+    <span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Copyright 2021 The Regents of the University of California</span>
+
+<span class="s2">        Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="s2">        of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="s2">        in the Software without restriction, including without limitation the rights</span>
+<span class="s2">        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="s2">        copies of the Software, and to permit persons to whom the Software is</span>
+<span class="s2">        furnished to do so, subject to the following conditions:</span>
+
+<span class="s2">        The above copyright notice and this permission notice shall be included in all</span>
+<span class="s2">        copies or substantial portions of the Software.</span>
+
+<span class="s2">        THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="s2">        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="s2">        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="s2">        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="s2">        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="s2">        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="s2">        SOFTWARE.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
+        <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="n">ligands</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">doses</span><span class="p">,</span> <span class="n">cells</span><span class="p">],</span>
+        <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+        <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">,</span>
+        <span class="n">DESC</span><span class="o">=</span><span class="n">DESC</span><span class="p">,</span>
+        <span class="n">LICENSE</span><span class="o">=</span><span class="n">LICENSE</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_covid19_serology"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.load_covid19_serology.html#tensorly.datasets.load_covid19_serology">[docs]</a><span class="k">def</span> <span class="nf">load_covid19_serology</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load an example dataset of COVID-19 systems serology.</span>
+<span class="sd">    Formatted in a three-mode tensor of samples, antigens, and receptors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">path_here</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path_here</span> <span class="o">+</span> <span class="s2">&quot;/data/COVID19_data.npy&quot;</span><span class="p">)</span>
+
+    <span class="n">sampleLabels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Negative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Mild&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Severe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">antigenLabels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;RBD&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;S1&quot;</span><span class="p">,</span> <span class="s2">&quot;S2&quot;</span><span class="p">,</span> <span class="s2">&quot;S1 Trimer&quot;</span><span class="p">]</span>
+    <span class="n">receptorLabels</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;IgG1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IgG2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IgG3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IgA1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IgA2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;IgM&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FcRalpha&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FcR2A&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FcR2B&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FcR3A&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FcR3B&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="s2">&quot;antigens&quot;</span><span class="p">,</span> <span class="s2">&quot;receptors&quot;</span><span class="p">]</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;Tan, Z. C., Murphy, M. C., Alpay, H. S., Taylor, S. D., &amp; Meyer, A. S. (2021). Tensor‐structured decomposition improves systems serology analysis.  Molecular systems biology, 17(9), e10243.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Zohar, T., Loos, C., Fischinger, S., Atyeo, C., Wang, C., Slein, M. D., ... &amp; Alter, G. (2020). Compromised humoral functional evolution tracks with SARS-CoV-2 mortality. Cell, 183(6), 1508-1519.&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">DESC</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; A demonstration on applying CP decomposition to a COVID-19 systems serology dataset.</span>
+<span class="s2">            Here, serum antibodies of 438 samples were systematically profiled by their binding behavior</span>
+<span class="s2">            to SARS-CoV-2 (the virus that causes COVID-19) antigens and Fc receptors (a type of receptors </span>
+<span class="s2">            that expressed by immune cells) activities. Samples are labeled by the status of the patients.</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+    <span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Copyright 2022 The Regents of the University of California</span>
+
+<span class="s2">            Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="s2">            of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="s2">            in the Software without restriction, including without limitation the rights</span>
+<span class="s2">            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="s2">            copies of the Software, and to permit persons to whom the Software is</span>
+<span class="s2">            furnished to do so, subject to the following conditions:</span>
+
+<span class="s2">            The above copyright notice and this permission notice shall be included in all</span>
+<span class="s2">            copies or substantial portions of the Software.</span>
+
+<span class="s2">            THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="s2">            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="s2">            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="s2">            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="s2">            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="s2">            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="s2">            SOFTWARE.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
+        <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="n">sampleLabels</span><span class="p">,</span> <span class="n">antigenLabels</span><span class="p">,</span> <span class="n">receptorLabels</span><span class="p">],</span>
+        <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+        <span class="n">DESC</span><span class="o">=</span><span class="n">DESC</span><span class="p">,</span>
+        <span class="n">LICENSE</span><span class="o">=</span><span class="n">LICENSE</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_indian_pines"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.fetch_indian_pines.html#tensorly.datasets.fetch_indian_pines">[docs]</a><span class="k">def</span> <span class="nf">fetch_indian_pines</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads indian pines hyperspectral data from th website and returns it as a tensorly tensor without storing the data</span>
+<span class="sd">    in the hard drive. This dataset could be useful for non-negative constrained decomposition methods and</span>
+<span class="sd">    classification/segmentation applications with tha available ground truth in</span>
+<span class="sd">    http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.ehu.eus/ccwintco/uploads/6/67/Indian_pines_corrected.mat&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()))[</span><span class="s2">&quot;indian_pines_corrected&quot;</span><span class="p">]</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Baumgardner, M. F., Biehl, L. L., Landgrebe, D. A. (2015). 220 Band AVIRIS Hyperspectral &quot;</span>
+        <span class="s2">&quot;Image Data Set: June 12, 1992 Indian Pine Test Site 3. Purdue University Research Repository. &quot;</span>
+        <span class="s2">&quot;doi:10.4231/R7RX991C&quot;</span>
+    <span class="p">)</span>
+    <span class="n">licence</span> <span class="o">=</span> <span class="s2">&quot;Licensed under Attribution 3.0 Unported (https://creativecommons.org/licenses/by/3.0/legalcode)&quot;</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Airborne Visible / Infrared Imaging Spectrometer (AVIRIS)  hyperspectral sensor data (aviris.jpl.nasa.gov/) &quot;</span>
+        <span class="s2">&quot;were acquired on June 12, 1992 over the Purdue University Agronomy farm northwest &quot;</span>
+        <span class="s2">&quot;of West Lafayette and the surrounding area. This scene consists of 145 times 145 pixels and 220 spectral &quot;</span>
+        <span class="s2">&quot;reflectance bands in the wavelength range 0.4–2.5 10^(-6) meters.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">url_gt</span> <span class="o">=</span> <span class="s2">&quot;http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url_gt</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()))[</span><span class="s2">&quot;indian_pines_gt&quot;</span><span class="p">]</span>
+    <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mf">400.02</span><span class="p">,</span>
+        <span class="mf">409.82</span><span class="p">,</span>
+        <span class="mf">419.62</span><span class="p">,</span>
+        <span class="mf">429.43</span><span class="p">,</span>
+        <span class="mf">439.25</span><span class="p">,</span>
+        <span class="mf">449.07</span><span class="p">,</span>
+        <span class="mf">458.9</span><span class="p">,</span>
+        <span class="mf">468.73</span><span class="p">,</span>
+        <span class="mf">478.57</span><span class="p">,</span>
+        <span class="mf">488.41</span><span class="p">,</span>
+        <span class="mf">498.26</span><span class="p">,</span>
+        <span class="mf">508.12</span><span class="p">,</span>
+        <span class="mf">517.98</span><span class="p">,</span>
+        <span class="mf">527.85</span><span class="p">,</span>
+        <span class="mf">537.72</span><span class="p">,</span>
+        <span class="mf">547.6</span><span class="p">,</span>
+        <span class="mf">557.49</span><span class="p">,</span>
+        <span class="mf">567.38</span><span class="p">,</span>
+        <span class="mf">577.28</span><span class="p">,</span>
+        <span class="mf">587.18</span><span class="p">,</span>
+        <span class="mf">597.09</span><span class="p">,</span>
+        <span class="mf">607.01</span><span class="p">,</span>
+        <span class="mf">616.93</span><span class="p">,</span>
+        <span class="mf">626.85</span><span class="p">,</span>
+        <span class="mf">636.78</span><span class="p">,</span>
+        <span class="mf">646.72</span><span class="p">,</span>
+        <span class="mf">656.67</span><span class="p">,</span>
+        <span class="mf">666.61</span><span class="p">,</span>
+        <span class="mf">676.57</span><span class="p">,</span>
+        <span class="mf">686.53</span><span class="p">,</span>
+        <span class="mf">696.5</span><span class="p">,</span>
+        <span class="mf">686.91</span><span class="p">,</span>
+        <span class="mf">696.55</span><span class="p">,</span>
+        <span class="mf">706.19</span><span class="p">,</span>
+        <span class="mf">715.83</span><span class="p">,</span>
+        <span class="mf">725.47</span><span class="p">,</span>
+        <span class="mf">735.11</span><span class="p">,</span>
+        <span class="mf">744.74</span><span class="p">,</span>
+        <span class="mf">754.38</span><span class="p">,</span>
+        <span class="mf">764.01</span><span class="p">,</span>
+        <span class="mf">773.64</span><span class="p">,</span>
+        <span class="mf">783.27</span><span class="p">,</span>
+        <span class="mf">792.91</span><span class="p">,</span>
+        <span class="mf">802.53</span><span class="p">,</span>
+        <span class="mf">812.21</span><span class="p">,</span>
+        <span class="mf">821.79</span><span class="p">,</span>
+        <span class="mf">831.41</span><span class="p">,</span>
+        <span class="mf">841.04</span><span class="p">,</span>
+        <span class="mf">850.66</span><span class="p">,</span>
+        <span class="mf">860.28</span><span class="p">,</span>
+        <span class="mf">869.91</span><span class="p">,</span>
+        <span class="mf">879.53</span><span class="p">,</span>
+        <span class="mf">889.14</span><span class="p">,</span>
+        <span class="mf">898.76</span><span class="p">,</span>
+        <span class="mf">908.38</span><span class="p">,</span>
+        <span class="mf">917.99</span><span class="p">,</span>
+        <span class="mf">927.61</span><span class="p">,</span>
+        <span class="mf">937.22</span><span class="p">,</span>
+        <span class="mf">946.83</span><span class="p">,</span>
+        <span class="mf">956.45</span><span class="p">,</span>
+        <span class="mf">966.06</span><span class="p">,</span>
+        <span class="mf">975.66</span><span class="p">,</span>
+        <span class="mf">985.27</span><span class="p">,</span>
+        <span class="mf">994.88</span><span class="p">,</span>
+        <span class="mf">1004.48</span><span class="p">,</span>
+        <span class="mf">1014.09</span><span class="p">,</span>
+        <span class="mf">1023.69</span><span class="p">,</span>
+        <span class="mf">1033.29</span><span class="p">,</span>
+        <span class="mf">1042.89</span><span class="p">,</span>
+        <span class="mf">1052.49</span><span class="p">,</span>
+        <span class="mf">1062.09</span><span class="p">,</span>
+        <span class="mf">1071.69</span><span class="p">,</span>
+        <span class="mf">1081.29</span><span class="p">,</span>
+        <span class="mf">1090.88</span><span class="p">,</span>
+        <span class="mf">1100.48</span><span class="p">,</span>
+        <span class="mf">1110.07</span><span class="p">,</span>
+        <span class="mf">1119.66</span><span class="p">,</span>
+        <span class="mf">1129.25</span><span class="p">,</span>
+        <span class="mf">1138.84</span><span class="p">,</span>
+        <span class="mf">1148.43</span><span class="p">,</span>
+        <span class="mf">1158.02</span><span class="p">,</span>
+        <span class="mf">1167.61</span><span class="p">,</span>
+        <span class="mf">1177.19</span><span class="p">,</span>
+        <span class="mf">1186.77</span><span class="p">,</span>
+        <span class="mf">1196.36</span><span class="p">,</span>
+        <span class="mf">1205.94</span><span class="p">,</span>
+        <span class="mf">1215.52</span><span class="p">,</span>
+        <span class="mf">1225.1</span><span class="p">,</span>
+        <span class="mf">1234.68</span><span class="p">,</span>
+        <span class="mf">1244.26</span><span class="p">,</span>
+        <span class="mf">1253.83</span><span class="p">,</span>
+        <span class="mf">1263.41</span><span class="p">,</span>
+        <span class="mf">1272.98</span><span class="p">,</span>
+        <span class="mf">1282.55</span><span class="p">,</span>
+        <span class="mf">1273.0</span><span class="p">,</span>
+        <span class="mf">1282.96</span><span class="p">,</span>
+        <span class="mf">1292.93</span><span class="p">,</span>
+        <span class="mf">1302.89</span><span class="p">,</span>
+        <span class="mf">1312.85</span><span class="p">,</span>
+        <span class="mf">1322.81</span><span class="p">,</span>
+        <span class="mf">1332.77</span><span class="p">,</span>
+        <span class="mf">1342.73</span><span class="p">,</span>
+        <span class="mf">1352.68</span><span class="p">,</span>
+        <span class="mf">1422.34</span><span class="p">,</span>
+        <span class="mf">1432.28</span><span class="p">,</span>
+        <span class="mf">1442.23</span><span class="p">,</span>
+        <span class="mf">1452.17</span><span class="p">,</span>
+        <span class="mf">1462.11</span><span class="p">,</span>
+        <span class="mf">1472.05</span><span class="p">,</span>
+        <span class="mf">1481.99</span><span class="p">,</span>
+        <span class="mf">1491.92</span><span class="p">,</span>
+        <span class="mf">1501.86</span><span class="p">,</span>
+        <span class="mf">1511.79</span><span class="p">,</span>
+        <span class="mf">1521.73</span><span class="p">,</span>
+        <span class="mf">1531.66</span><span class="p">,</span>
+        <span class="mf">1541.59</span><span class="p">,</span>
+        <span class="mf">1551.52</span><span class="p">,</span>
+        <span class="mf">1561.44</span><span class="p">,</span>
+        <span class="mf">1571.37</span><span class="p">,</span>
+        <span class="mf">1581.3</span><span class="p">,</span>
+        <span class="mf">1591.22</span><span class="p">,</span>
+        <span class="mf">1601.14</span><span class="p">,</span>
+        <span class="mf">1611.06</span><span class="p">,</span>
+        <span class="mf">1620.98</span><span class="p">,</span>
+        <span class="mf">1630.9</span><span class="p">,</span>
+        <span class="mf">1640.81</span><span class="p">,</span>
+        <span class="mf">1650.73</span><span class="p">,</span>
+        <span class="mf">1660.64</span><span class="p">,</span>
+        <span class="mf">1670.56</span><span class="p">,</span>
+        <span class="mf">1680.47</span><span class="p">,</span>
+        <span class="mf">1690.38</span><span class="p">,</span>
+        <span class="mf">1700.28</span><span class="p">,</span>
+        <span class="mf">1710.19</span><span class="p">,</span>
+        <span class="mf">1720.1</span><span class="p">,</span>
+        <span class="mf">1730.0</span><span class="p">,</span>
+        <span class="mf">1739.9</span><span class="p">,</span>
+        <span class="mf">1749.81</span><span class="p">,</span>
+        <span class="mf">1759.71</span><span class="p">,</span>
+        <span class="mf">1769.6</span><span class="p">,</span>
+        <span class="mf">1779.5</span><span class="p">,</span>
+        <span class="mf">1789.4</span><span class="p">,</span>
+        <span class="mf">1799.29</span><span class="p">,</span>
+        <span class="mf">1809.19</span><span class="p">,</span>
+        <span class="mf">1819.08</span><span class="p">,</span>
+        <span class="mf">1953.26</span><span class="p">,</span>
+        <span class="mf">1963.25</span><span class="p">,</span>
+        <span class="mf">1973.24</span><span class="p">,</span>
+        <span class="mf">1983.23</span><span class="p">,</span>
+        <span class="mf">1993.22</span><span class="p">,</span>
+        <span class="mf">2003.2</span><span class="p">,</span>
+        <span class="mf">2013.18</span><span class="p">,</span>
+        <span class="mf">2023.16</span><span class="p">,</span>
+        <span class="mf">2033.13</span><span class="p">,</span>
+        <span class="mf">2043.1</span><span class="p">,</span>
+        <span class="mf">2053.07</span><span class="p">,</span>
+        <span class="mf">2063.04</span><span class="p">,</span>
+        <span class="mf">2073.0</span><span class="p">,</span>
+        <span class="mf">2082.97</span><span class="p">,</span>
+        <span class="mf">2092.92</span><span class="p">,</span>
+        <span class="mf">2102.88</span><span class="p">,</span>
+        <span class="mf">2112.83</span><span class="p">,</span>
+        <span class="mf">2122.78</span><span class="p">,</span>
+        <span class="mf">2132.73</span><span class="p">,</span>
+        <span class="mf">2142.68</span><span class="p">,</span>
+        <span class="mf">2152.62</span><span class="p">,</span>
+        <span class="mf">2162.56</span><span class="p">,</span>
+        <span class="mf">2172.5</span><span class="p">,</span>
+        <span class="mf">2182.43</span><span class="p">,</span>
+        <span class="mf">2192.37</span><span class="p">,</span>
+        <span class="mf">2202.3</span><span class="p">,</span>
+        <span class="mf">2260.22</span><span class="p">,</span>
+        <span class="mf">2270.15</span><span class="p">,</span>
+        <span class="mf">2232.07</span><span class="p">,</span>
+        <span class="mf">2241.99</span><span class="p">,</span>
+        <span class="mf">2251.9</span><span class="p">,</span>
+        <span class="mf">2261.82</span><span class="p">,</span>
+        <span class="mf">2271.73</span><span class="p">,</span>
+        <span class="mf">2281.64</span><span class="p">,</span>
+        <span class="mf">2291.54</span><span class="p">,</span>
+        <span class="mf">2301.45</span><span class="p">,</span>
+        <span class="mf">2311.35</span><span class="p">,</span>
+        <span class="mf">2321.25</span><span class="p">,</span>
+        <span class="mf">2331.14</span><span class="p">,</span>
+        <span class="mf">2341.03</span><span class="p">,</span>
+        <span class="mf">2350.92</span><span class="p">,</span>
+        <span class="mf">2360.81</span><span class="p">,</span>
+        <span class="mf">2370.7</span><span class="p">,</span>
+        <span class="mf">2380.58</span><span class="p">,</span>
+        <span class="mf">2390.46</span><span class="p">,</span>
+        <span class="mf">2400.33</span><span class="p">,</span>
+        <span class="mf">2410.21</span><span class="p">,</span>
+        <span class="mf">2420.08</span><span class="p">,</span>
+        <span class="mf">2429.95</span><span class="p">,</span>
+        <span class="mf">2439.81</span><span class="p">,</span>
+        <span class="mf">2449.68</span><span class="p">,</span>
+        <span class="mf">2459.54</span><span class="p">,</span>
+        <span class="mf">2469.4</span><span class="p">,</span>
+        <span class="mf">2479.25</span><span class="p">,</span>
+        <span class="mf">2489.11</span><span class="p">,</span>
+        <span class="mf">2498.96</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)),</span>
+        <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="n">labels</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">],</span>
+        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Spatial dimension&quot;</span><span class="p">,</span> <span class="s2">&quot;Spatial dimension&quot;</span><span class="p">,</span> <span class="s2">&quot;Hyperspectral bands&quot;</span><span class="p">],</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+        <span class="n">DESC</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+        <span class="n">LICENCE</span><span class="o">=</span><span class="n">licence</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_kinetic"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.fetch_kinetic.html#tensorly.datasets.fetch_kinetic">[docs]</a><span class="k">def</span> <span class="nf">fetch_kinetic</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads kinetic fluorescence dataset from website and returns it as tensorly tensor without storing the data</span>
+<span class="sd">    in the hard drive.The data is well suited for Parafac and multi-way partial least squares regression (N-PLS).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://models.life.ku.dk/sites/default/files/Kinetic_Fluor.zip&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="nb">zip</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="nb">zip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;Xlarge.mat&quot;</span><span class="p">))[</span><span class="s2">&quot;Xlarge&quot;</span><span class="p">]</span>
+    <span class="n">tensor</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">tensor</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="s2">&quot;Nikolajsen, R. P., Booksh, K. S., Hansen, Å. M., &amp; Bro, R. (2003). </span><span class="se">\</span>
+<span class="s2">                Quantifying catecholamines using multi-way kinetic modelling. </span><span class="se">\</span>
+<span class="s2">                Analytica Chimica Acta, 475(1-2), 137-150.&quot;</span>
+    <span class="n">licence</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;http://www.models.life.ku.dk/datasets. All downloadable material listed on these pages - &quot;</span>
+        <span class="s2">&quot;appended by specifics mentioned under &quot;</span>
+        <span class="s2">&quot;the individual headers/chapters - is available for public use. &quot;</span>
+        <span class="s2">&quot;Please note that while great care has been taken, the software, code and data are provided&quot;</span>
+        <span class="s2">&quot;as is and that Q&amp;T, LIFE, KU does not accept any responsibility or liability.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;A four-way data set with the modes: Concentration, excitation wavelength, emission wavelength and time&quot;</span>
+
+    <span class="k">return</span> <span class="n">Bunch</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">tensor</span><span class="p">),</span>
+        <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Measurements&quot;</span><span class="p">,</span> <span class="s2">&quot;Emissions&quot;</span><span class="p">,</span> <span class="s2">&quot;Excitations&quot;</span><span class="p">,</span> <span class="s2">&quot;Time points&quot;</span><span class="p">],</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+        <span class="n">DESC</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
+        <span class="n">LICENCE</span><span class="o">=</span><span class="n">licence</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+      </div>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

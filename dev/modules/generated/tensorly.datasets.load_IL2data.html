@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tensorly.decomposition.randomised_parafac &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>tensorly.datasets.load_IL2data &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -40,8 +40,8 @@
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.decomposition.tucker" href="tucker-function.html" />
-    <link rel="prev" title="tensorly.decomposition.sample_khatri_rao" href="tensorly.decomposition.sample_khatri_rao.html" />
+    <link rel="next" title="tensorly.datasets.load_covid19_serology" href="tensorly.datasets.load_covid19_serology.html" />
+    <link rel="prev" title="tensorly.datasets.synthetic.gen_image" href="tensorly.datasets.synthetic.gen_image.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -192,11 +192,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#plugin-functionalities-tensorly-plugins">Plugin functionalities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib">Experimental features (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>)</a></li>
 </ul>
@@ -229,54 +229,16 @@
 
       <div class="container content main-content">
         
-  <section id="tensorly-decomposition-randomised-parafac">
-<h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.randomised_parafac<a class="headerlink" href="#tensorly-decomposition-randomised-parafac" title="Permalink to this heading">¶</a></h1>
+  <section id="tensorly-datasets-load-il2data">
+<h1><a class="reference internal" href="../api.html#module-tensorly.datasets" title="tensorly.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code></a>.load_IL2data<a class="headerlink" href="#tensorly-datasets-load-il2data" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="tensorly.decomposition.randomised_parafac">
-<span class="sig-name descname"><span class="pre">randomised_parafac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_stagnation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_cp.html#randomised_parafac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.decomposition.randomised_parafac" title="Permalink to this definition">¶</a></dt>
-<dd><p>Randomised CP decomposition via sampled ALS</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
-<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>number of components</p>
-</dd>
-<dt><strong>n_samples</strong><span class="classifier">int</span></dt><dd><p>number of samples per ALS step</p>
-</dd>
-<dt><strong>n_iter_max</strong><span class="classifier">int</span></dt><dd><p>maximum number of iteration</p>
-</dd>
-<dt><strong>init</strong><span class="classifier">{‘svd’, ‘random’}, optional</span></dt><dd></dd>
-<dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
-</dd>
-<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>tolerance: the algorithm stops when the variation in
-the reconstruction error is less than the tolerance</p>
-</dd>
-<dt><strong>max_stagnation: int, optional, default is 0</strong></dt><dd><p>if not zero, the maximum allowed number
-of iterations with no decrease in fit</p>
-</dd>
-<dt><strong>random_state</strong><span class="classifier">{None, int, np.random.RandomState}, default is None</span></dt><dd></dd>
-<dt><strong>return_errors</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, return a list of all errors</p>
-</dd>
-<dt><strong>verbose</strong><span class="classifier">int, optional, default is 0</span></dt><dd><p>level of verbosity</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>factors</strong><span class="classifier">ndarray list</span></dt><dd><p>list of positive factors of the CP decomposition
-element <cite>i</cite> is of shape <code class="docutils literal notranslate"><span class="pre">(tensor.shape[i],</span> <span class="pre">rank)</span></code></p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="rfe3f26443c3b-3" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p>Casey Battaglino, Grey Ballard and Tamara G. Kolda,
-“A Practical Randomized CP Tensor Decomposition”,</p>
-</div>
-</div>
+<dt class="sig sig-object py" id="tensorly.datasets.load_IL2data">
+<span class="sig-name descname"><span class="pre">load_IL2data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/datasets/data_imports.html#load_IL2data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tensorly.datasets.load_IL2data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads tensor of IL-2 mutein treatment responses.
+Tensor contains the signaling responses of eight different cell types to 13 IL-2 mutants.
+Dose-responses to 12 concentrations of muteins were collected at four time points for each mutant and cell type.
+Ligands include IL-2 mutants with modified receptor affinities, and in both mono- and bivalent formats.
+Useful for demonstrating execution and interpretation of non-negative CP decomposition.</p>
 </dd></dl>
 
 <div class="clearer"></div></section>
@@ -287,16 +249,16 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
       
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button pagination-previous" href="tensorly.decomposition.sample_khatri_rao.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensorly.datasets.synthetic.gen_image.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.sample_khatri_rao</span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets.synthetic</span></code>.gen_image</span>
     </a>
     
     
-    <a class="button pagination-next" href="tucker-function.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.tucker </span>
+    <a class="button pagination-next" href="tensorly.datasets.load_covid19_serology.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>.load_covid19_serology </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -332,8 +294,8 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
 
         <div class="menu menu-list localtoc-list">
         <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>.randomised_parafac</a><ul>
-<li><a class="reference internal" href="#tensorly.decomposition.randomised_parafac"><code class="docutils literal notranslate"><span class="pre">randomised_parafac</span></code></a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>.load_IL2data</a><ul>
+<li><a class="reference internal" href="#tensorly.datasets.load_IL2data"><code class="docutils literal notranslate"><span class="pre">load_IL2data</span></code></a></li>
 </ul>
 </li>
 </ul>
