@@ -224,10 +224,10 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="non-negative-cp-decomposition-in-tensorly-0-6">
-<span id="sphx-glr-auto-examples-decomposition-plot-nn-cp-hals-py"></span><h1>Non-negative CP decomposition in Tensorly &gt;=0.6<a class="headerlink" href="#non-negative-cp-decomposition-in-tensorly-0-6" title="Permalink to this heading">¶</a></h1>
+<span id="sphx-glr-auto-examples-decomposition-plot-nn-cp-hals-py"></span><h1>Non-negative CP decomposition in Tensorly &gt;=0.6</h1>
 <p>Example and comparison of Non-negative Parafac decompositions.</p>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<h2>Introduction</h2>
 <p>Since version 0.6 in Tensorly, several options are available to compute
 non-negative CP (NCP), in particular several
 algorithms:</p>
@@ -249,7 +249,7 @@ obtained from a non-negative tensor.</p>
 </div>
 </section>
 <section id="create-synthetic-tensor">
-<h2>Create synthetic tensor<a class="headerlink" href="#create-synthetic-tensor" title="Permalink to this heading">¶</a></h2>
+<h2>Create synthetic tensor</h2>
 <p>There are several ways to create a tensor with non-negative entries in Tensorly.
 Here we chose to generate a random from the sequence of integers from 1 to 24000.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor generation</span>
@@ -272,7 +272,7 @@ an instance of the CPTensor class:</p>
 </div>
 </section>
 <section id="non-negative-parafac">
-<h2>Non-negative Parafac<a class="headerlink" href="#non-negative-parafac" title="Permalink to this heading">¶</a></h2>
+<h2>Non-negative Parafac</h2>
 <p>From now on, we can use the same <code class="docutils literal notranslate"><span class="pre">cp_init</span></code> tensor as the initial tensor when
 we use decomposition functions. Now let us first use the algorithm based on
 Multiplicative Update, which can be called as follows:</p>
@@ -292,11 +292,11 @@ the case but the approximation is quite coarse.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[7829.57 8350.3 ]
-  [8208.34 8541.24]]
+ [[[8467.11 8522.43]
+  [8228.47 8299.5 ]]
 
- [[8680.81 8842.28]
-  [9019.84 8965.8 ]]]
+ [[9006.15 8973.03]
+  [9161.19 9054.43]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -308,7 +308,7 @@ input data tensor
 </div>
 </section>
 <section id="non-negative-parafac-with-hals">
-<h2>Non-negative Parafac with HALS<a class="headerlink" href="#non-negative-parafac-with-hals" title="Permalink to this heading">¶</a></h2>
+<h2>Non-negative Parafac with HALS</h2>
 <p>Our second (new) option to compute NCP is the HALS algorithm, which can be
 used as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -323,11 +323,11 @@ used as follows:</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8202.8  8212.48]
-  [8231.5  8227.53]]
+ [[[8241.65 8227.82]
+  [8237.24 8247.19]]
 
- [[9003.44 9012.44]
-  [9031.17 9028.06]]]
+ [[9038.18 9025.87]
+  [9036.43 9045.46]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -339,7 +339,7 @@ input data tensor
 </div>
 </section>
 <section id="non-negative-parafac-with-exact-hals">
-<h2>Non-negative Parafac with Exact HALS<a class="headerlink" href="#non-negative-parafac-with-exact-hals" title="Permalink to this heading">¶</a></h2>
+<h2>Non-negative Parafac with Exact HALS</h2>
 <p>From only looking at a few entries of the reconstructed tensors, we can
 already see a huge gap between HALS and MU outputs.
 Additionally, HALS algorithm has an option for exact solution to the non-negative
@@ -356,7 +356,7 @@ in the function:</p>
 </div>
 </section>
 <section id="comparison">
-<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">¶</a></h2>
+<h2>Comparison</h2>
 <p>First comparison option is processing time for each algorithm:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_mu</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_hals</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
@@ -364,8 +364,8 @@ in the function:</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.18 seconds
-0.14 seconds
-495.60 seconds
+0.29 seconds
+263.09 seconds
 </pre></div>
 </div>
 <p>As it is expected, the exact solution takes much longer than the approximate
@@ -381,9 +381,9 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):</
 <span class="nb">print</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_reconstruction_exact_hals</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>235.36111
-6.4954233
-0.593788
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>213.2548
+35.24877
+1.0417465
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
@@ -410,12 +410,12 @@ is to use HALS as a default, and only resort to MU in specific cases (only
 encountered by expert users most likely).</p>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<h2>References</h2>
 <p>Gillis, N., &amp; Glineur, F. (2012). Accelerated multiplicative updates and
 hierarchical ALS algorithms for nonnegative matrix factorization.
 Neural computation, 24(4), 1085-1105. (Link)
 &lt;<a class="reference external" href="https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and">https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 8 minutes  16.005 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 4 minutes  23.642 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c50dd76f48de56cb97a914c7c62591e6/plot_nn_cp_hals.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_cp_hals.py</span></code></a></p>
