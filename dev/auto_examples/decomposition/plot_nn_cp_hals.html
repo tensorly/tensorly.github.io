@@ -39,9 +39,10 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Demonstration of PARAFAC2" href="plot_parafac2.html" />
-    <link rel="prev" title="Non-negative Tucker decomposition in Tensorly &gt;=0.6" href="plot_nn_tucker.html" />
+    <link rel="prev" title="Non-negative Tucker decomposition" href="plot_nn_tucker.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -54,9 +55,7 @@
         
 
           <a class="navbar-item" href="../../index.html">
-			      
-            tensorly
-            
+            <img src="../../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -145,38 +144,15 @@
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -292,11 +268,11 @@ the case but the approximation is quite coarse.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8200.56 8182.78]
-  [8344.5  8376.26]]
+ [[[8258.31 8265.95]
+  [8572.44 8512.51]]
 
- [[8960.91 8928.86]
-  [9119.9  9145.48]]]
+ [[9168.53 9036.84]
+  [9521.63 9273.29]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -323,11 +299,11 @@ used as follows:</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8215.08 8202.64]
-  [8233.25 8226.43]]
+ [[[8209.47 8210.67]
+  [8231.45 8231.17]]
 
- [[9014.51 9003.6 ]
-  [9032.92 9026.99]]]
+ [[9009.63 9010.72]
+  [9031.45 9031.19]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -363,9 +339,9 @@ in the function:</p>
 <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_exact_hals</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.20 seconds
-0.22 seconds
-367.02 seconds
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.29 seconds
+0.24 seconds
+530.37 seconds
 </pre></div>
 </div>
 <p>As it is expected, the exact solution takes much longer than the approximate
@@ -381,9 +357,9 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):</
 <span class="nb">print</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_reconstruction_exact_hals</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>226.2259
-15.207506
-1.2831185
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>224.09337
+2.0875971
+1.0851074
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
@@ -415,7 +391,7 @@ encountered by expert users most likely).</p>
 hierarchical ALS algorithms for nonnegative matrix factorization.
 Neural computation, 24(4), 1085-1105. (Link)
 &lt;<a class="reference external" href="https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and">https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 6 minutes  7.521 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 8 minutes  51.005 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c50dd76f48de56cb97a914c7c62591e6/plot_nn_cp_hals.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_cp_hals.py</span></code></a></p>
@@ -438,7 +414,7 @@ Neural computation, 24(4), 1085-1105. (Link)
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Non-negative Tucker decomposition in Tensorly &gt;=0.6</span>
+        <span>Non-negative Tucker decomposition</span>
     </a>
     
     
@@ -456,7 +432,7 @@ Neural computation, 24(4), 1085-1105. (Link)
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

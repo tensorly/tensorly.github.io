@@ -38,6 +38,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -51,9 +52,7 @@
         
 
           <a class="navbar-item" href="../../index.html">
-			      
-            tensorly
-            
+            <img src="../../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -159,7 +158,7 @@
 
 
 <span class="k">class</span> <span class="nc">Parafac2Tensor</span><span class="p">(</span><span class="n">FactorizedTensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper class for the PARAFAC2 decomposition.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class for the PARAFAC2 decomposition.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parafac2_tensor</span><span class="p">):</span>
 
@@ -179,7 +178,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_CPTensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">parafac2_tensor_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Parafac2Tensor from a CPTensor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Parafac2Tensor from a CPTensor</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -243,7 +242,7 @@
 
 
 <span class="k">def</span> <span class="nf">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Validates a parafac2_tensor in the form (weights, factors)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates a parafac2_tensor in the form (weights, factors)</span>
 
 <span class="sd">        Returns the rank and shape of the validated tensor</span>
 
@@ -291,7 +290,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;All the projection matrices must be orthonormal, that is, P.T@P = I. &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;However, T.norm(projection[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].T@projection[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">] - T.eye(rank)) = &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">)))</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inner_product</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">inner_product</span><span class="p">)))</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -316,7 +315,7 @@
 
 
 <span class="k">def</span> <span class="nf">parafac2_normalise</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns parafac2_tensor with factors normalised to unit length</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns parafac2_tensor with factors normalised to unit length</span>
 
 <span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
 <span class="sd">    where the columns of each `V_k` are normalized to unit Euclidean length</span>
@@ -369,7 +368,7 @@
 
 
 <span class="k">def</span> <span class="nf">apply_parafac2_projections</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply the projection matrices to the evolving factor.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply the projection matrices to the evolving factor.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -396,7 +395,7 @@
 
 
 <div class="viewcode-block" id="parafac2_to_slice"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_slice.html#tensorly.parafac2_tensor.parafac2_to_slice">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_slice</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">slice_idx</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a single slice along the first mode from the PARAFAC2 tensor.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a single slice along the first mode from the PARAFAC2 tensor.</span>
 
 <span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
@@ -458,7 +457,7 @@
 
 
 <div class="viewcode-block" id="parafac2_to_slices"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_slices.html#tensorly.parafac2_tensor.parafac2_to_slices">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_slices</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate all slices along the first mode from a PARAFAC2 tensor.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate all slices along the first mode from a PARAFAC2 tensor.</span>
 
 <span class="sd">    Generates a list of all slices from a PARAFAC2 tensor. A list is returned</span>
 <span class="sd">    since the tensor might have varying size along the second mode. To return</span>
@@ -523,7 +522,7 @@
 
 
 <div class="viewcode-block" id="parafac2_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_tensor.html#tensorly.parafac2_tensor.parafac2_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_tensor</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a full tensor from a PARAFAC2 decomposition.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a full tensor from a PARAFAC2 decomposition.</span>
 
 <span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
@@ -580,7 +579,7 @@
 
 
 <div class="viewcode-block" id="parafac2_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_unfolded.html#tensorly.parafac2_tensor.parafac2_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_unfolded</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct an unfolded tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct an unfolded tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
 
 <span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
@@ -630,7 +629,7 @@
 
 
 <div class="viewcode-block" id="parafac2_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.parafac2_tensor.parafac2_to_vec.html#tensorly.parafac2_tensor.parafac2_to_vec">[docs]</a><span class="k">def</span> <span class="nf">parafac2_to_vec</span><span class="p">(</span><span class="n">parafac2_tensor</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a vectorized tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a vectorized tensor from a PARAFAC2 decomposition. Uneven slices are padded by zeros.</span>
 
 <span class="sd">    The decomposition is on the form :math:`(A [B_i] C)` such that the i-th frontal slice,</span>
 <span class="sd">    :math:`X_i`, of :math:`X` is given by</span>
@@ -686,7 +685,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

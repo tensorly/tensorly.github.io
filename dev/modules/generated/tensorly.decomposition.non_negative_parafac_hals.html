@@ -39,6 +39,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="tensorly.decomposition.sample_khatri_rao" href="tensorly.decomposition.sample_khatri_rao.html" />
     <link rel="prev" title="tensorly.decomposition.non_negative_parafac" href="tensorly.decomposition.non_negative_parafac.html" />
@@ -54,9 +55,7 @@
         
 
           <a class="navbar-item" href="../../index.html">
-			      
-            tensorly
-            
+            <img src="../../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -145,38 +144,15 @@
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -187,7 +163,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#tensors-in-tucker-form-tensorly-tucker-tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
@@ -235,7 +211,8 @@
 <dt class="sig sig-object py" id="tensorly.decomposition.non_negative_parafac_hals">
 <span class="sig-name descname"><span class="pre">non_negative_parafac_hals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity_coefficients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cvg_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abs_rec_error'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_nn_cp.html#non_negative_parafac_hals"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Non-negative CP decomposition via HALS</p>
-<p>Uses Hierarchical ALS (Alternating Least Squares) which updates each factor column-wise (one column at a time while keeping all other columns fixed), see <span id="id1">[R2e3307d426ae-1]</span></p>
+<p>Uses Hierarchical ALS (Alternating Least Squares)
+which updates each factor column-wise (one column at a time while keeping all other columns fixed), see <a class="reference internal" href="#r2e3307d426ae-1" id="id1">[1]</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -295,6 +272,14 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
 </dd>
 </dl>
 <p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r2e3307d426ae-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>N. Gillis and F. Glineur, Accelerated Multiplicative Updates and
+Hierarchical ALS Algorithms for Nonnegative Matrix Factorization,
+Neural Computation 24 (4): 1085-1105, 2012.</p>
+</div>
+</div>
 </dd></dl>
 
 <div class="clearer"></div></section>
@@ -327,7 +312,7 @@ element <cite>i</cite> is of shape <code class="docutils literal notranslate"><s
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

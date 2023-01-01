@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Non-negative Tucker decomposition in Tensorly &gt;=0.6 &#8212; TensorLy: Tensor Learning in Python</title> 
+    <title>Non-negative Tucker decomposition &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
@@ -40,6 +40,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Non-negative CP decomposition in Tensorly &gt;=0.6" href="plot_nn_cp_hals.html" />
     <link rel="prev" title="Constrained CP decomposition in Tensorly &gt;=0.7" href="plot_guide_for_constrained_cp.html" />
@@ -55,9 +56,7 @@
         
 
           <a class="navbar-item" href="../../index.html">
-			      
-            tensorly
-            
+            <img src="../../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -146,38 +145,15 @@
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -224,8 +200,8 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-nn-tucker-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<section class="sphx-glr-example-title" id="non-negative-tucker-decomposition-in-tensorly-0-6">
-<span id="sphx-glr-auto-examples-decomposition-plot-nn-tucker-py"></span><h1>Non-negative Tucker decomposition in Tensorly &gt;=0.6</h1>
+<section class="sphx-glr-example-title" id="non-negative-tucker-decomposition">
+<span id="sphx-glr-auto-examples-decomposition-plot-nn-tucker-py"></span><h1>Non-negative Tucker decomposition</h1>
 <p>Example and comparison of Non-negative Tucker decompositions.</p>
 <section id="introduction">
 <h2>Introduction</h2>
@@ -318,9 +294,9 @@ processing time:</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time for HALS with as:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_as</span><span class="p">)))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>time for tensorly nntucker: 0.09
-time for HALS with fista: 1.66
-time for HALS with as: 0.40
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>time for tensorly nntucker: 0.14
+time for HALS with fista: 2.37
+time for HALS with as: 0.52
 </pre></div>
 </div>
 <p>All algorithms should run with about the same number of iterations on our
@@ -333,9 +309,9 @@ to compute Root Mean Square Error (RMSE):</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RMSE for hals with as:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_as</span><span class="p">)))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RMSE tensorly nntucker: 286.58967113373586
-RMSE for hals with fista: 283.3364193957917
-RMSE for hals with as: 284.2255999741585
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RMSE tensorly nntucker: 285.1804055352545
+RMSE for hals with fista: 281.5737774424066
+RMSE for hals with as: 282.0237853681921
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
@@ -366,9 +342,9 @@ Therefore, we recommend to use FISTA with high rank decomposition.</p>
 <h2>References</h2>
 <p>Gillis, N., &amp; Glineur, F. (2012). Accelerated multiplicative updates and
 hierarchical ALS algorithms for nonnegative matrix factorization.
-Neural computation, 24(4), 1085-1105. (Link)
-&lt;<a class="reference external" href="https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and">https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.225 seconds)</p>
+Neural computation, 24(4), 1085-1105.
+<a href="#id1"><span class="problematic" id="id2">`(Link) https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and&gt;`_</span></a></p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.131 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-tucker-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5a995fc29a1b64970094cc40854ffae2/plot_nn_tucker.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_tucker.py</span></code></a></p>
@@ -409,7 +385,7 @@ Neural computation, 24(4), 1085-1105. (Link)
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
@@ -432,7 +408,7 @@ Neural computation, 24(4), 1085-1105. (Link)
 
         <div class="menu menu-list localtoc-list">
         <ul>
-<li><a class="reference internal" href="#">Non-negative Tucker decomposition in Tensorly &gt;=0.6</a><ul>
+<li><a class="reference internal" href="#">Non-negative Tucker decomposition</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#create-synthetic-tensor">Create synthetic tensor</a></li>
 <li><a class="reference internal" href="#non-negative-tucker">Non-negative Tucker</a></li>

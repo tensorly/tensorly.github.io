@@ -38,6 +38,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -51,9 +52,7 @@
         
 
           <a class="navbar-item" href="../../../index.html">
-			      
-            tensorly
-            
+            <img src="../../../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -173,7 +172,7 @@
     <span class="n">n_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validates input constraints for constrained parafac decomposition and returns a constraint and a parameter for</span>
 <span class="sd">    proximal operator.</span>
 
@@ -466,7 +465,7 @@
     <span class="n">n_const</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">order</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Proximal operator solves a convex optimization problem. Let f be a</span>
 <span class="sd">    convex proper lower-semicontinuous function, the proximal operator of f is :math:`\\argmin_x(f(x) + 1/2||x - v||_2^2)`.</span>
 <span class="sd">    This operator can be used to solve constrained optimization problems as a generalization to projections on convex sets.</span>
@@ -570,7 +569,7 @@
 
 
 <span class="k">def</span> <span class="nf">smoothness_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Proximal operator for smoothness</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Proximal operator for smoothness</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -591,7 +590,7 @@
 
 
 <span class="k">def</span> <span class="nf">monotonicity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">decreasing</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function projects each column of the input array on the set of arrays so that</span>
 <span class="sd">          x[1] &lt;= x[2] &lt;= ... &lt;= x[n] (decreasing=False)</span>
 <span class="sd">                        or</span>
@@ -658,7 +657,7 @@
 
 
 <span class="k">def</span> <span class="nf">unimodality_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function projects each column of the input array on the set of arrays so that</span>
 <span class="sd">          x[1] &lt;= x[2] &lt;= x[j] &gt;= x[j+1]... &gt;= x[n]</span>
 <span class="sd">    is satisfied columnwise.</span>
@@ -744,7 +743,7 @@
 
 
 <span class="k">def</span> <span class="nf">l2_square_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Proximal operator of (regularizer * ||.||_2^2) (squared l2 norm).</span>
 
 <span class="sd">    Parameters</span>
@@ -766,7 +765,7 @@
 
 
 <span class="k">def</span> <span class="nf">l2_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Proximal operator of (regularizer*|| ||_2) (l2 norm).</span>
 
 <span class="sd">    This proximal operator is sometimes called block soft thresholding.</span>
@@ -796,7 +795,7 @@
 
 
 <span class="k">def</span> <span class="nf">normalized_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normalized sparsity operator by using hard thresholding.</span>
 <span class="sd">    The input is projected on the intersection of the unit l2 ball with the set of threshold-sparse vectors</span>
 <span class="sd">    \\{||x||_2^2=1 and ||x||_0\\leq threshold \\}</span>
@@ -829,7 +828,7 @@
 
 
 <span class="k">def</span> <span class="nf">soft_sparsity_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Projects the input tensor on the set of tensors with l1 norm smaller than threshold, using Soft Thresholding.</span>
 
 <span class="sd">    Parameters</span>
@@ -858,7 +857,7 @@
 
 
 <span class="k">def</span> <span class="nf">simplex_prox</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">parameter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Projects the input tensor on the simplex of radius parameter.</span>
 
 <span class="sd">    Parameters</span>
@@ -902,7 +901,7 @@
 
 
 <span class="k">def</span> <span class="nf">hard_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">number_of_non_zero</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Proximal operator of the l0 ``norm&#39;&#39;</span>
 <span class="sd">    Keeps greater &quot;number_of_non_zero&quot; elements untouched and sets other elements to zero.</span>
 
@@ -931,7 +930,7 @@
 
 
 <div class="viewcode-block" id="soft_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.soft_thresholding.html#tensorly.tenalg.proximal.soft_thresholding">[docs]</a><span class="k">def</span> <span class="nf">soft_thresholding</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Soft-thresholding operator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Soft-thresholding operator</span>
 
 <span class="sd">        sign(tensor) * max[abs(tensor) - threshold, 0]</span>
 
@@ -974,7 +973,7 @@
 
 
 <div class="viewcode-block" id="svd_thresholding"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.svd_thresholding.html#tensorly.tenalg.proximal.svd_thresholding">[docs]</a><span class="k">def</span> <span class="nf">svd_thresholding</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Singular value thresholding operator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Singular value thresholding operator</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -995,7 +994,7 @@
 
 
 <div class="viewcode-block" id="procrustes"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.proximal.procrustes.html#tensorly.tenalg.proximal.procrustes">[docs]</a><span class="k">def</span> <span class="nf">procrustes</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Procrustes operator</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Procrustes operator</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1028,7 +1027,7 @@
     <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Non Negative Least Squares (NNLS)</span>
 
 <span class="sd">    Computes an approximate solution of a nonnegative least</span>
@@ -1203,7 +1202,7 @@
     <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fast Iterative Shrinkage Thresholding Algorithm (FISTA)</span>
 
 <span class="sd">    Computes an approximate (nonnegative) solution for Ux=M linear system.</span>
@@ -1281,7 +1280,7 @@
 
 
 <span class="k">def</span> <span class="nf">active_set_nnls</span><span class="p">(</span><span class="n">Utm</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Active set algorithm for non-negative least square solution.</span>
 
 <span class="sd">    Computes an approximate non-negative solution for Ux=m linear system.</span>
@@ -1451,7 +1450,7 @@
     <span class="n">hard_sparsity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Alternating direction method of multipliers (ADMM) algorithm to minimize a quadratic function under convex constraints.</span>
 
 <span class="sd">    Parameters</span>
@@ -1593,7 +1592,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

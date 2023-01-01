@@ -39,6 +39,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="tensorly.set_backend" href="generated/tensorly.set_backend.html" />
     <link rel="prev" title="6. Sparse Backend" href="../user_guide/sparse_backend.html" />
@@ -54,9 +55,7 @@
         
 
           <a class="navbar-item" href="../index.html">
-			      
-            tensorly
-            
+            <img src="../_static/logo_tensorly.png" height="28">
           </a>
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
@@ -145,38 +144,15 @@
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -187,7 +163,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tensors-in-tucker-form-tensorly-tucker-tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-tensorly.tucker_tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
@@ -253,6 +229,12 @@ You can also use the context manager <code class="docutils literal notranslate">
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.backend_context.html#tensorly.backend_context" title="tensorly.backend_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_context</span></code></a>(backend[, local_threadsafe])</p></td>
 <td><p>Context manager to set the backend for TensorLy.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.use_dynamic_dispatch.html#tensorly.use_dynamic_dispatch" title="tensorly.use_dynamic_dispatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_dynamic_dispatch</span></code></a>()</p></td>
+<td><p>Dispatch all backend functions dynamically to enable changing backend during runtime</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.use_static_dispatch.html#tensorly.use_static_dispatch" title="tensorly.use_static_dispatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_static_dispatch</span></code></a>()</p></td>
+<td><p>Switch to static dispatching: backend functions no longer will be dynamically dispatched.</p></td>
 </tr>
 </tbody>
 </table>
@@ -504,9 +486,9 @@ not all backends support this. Instead of
 </tbody>
 </table>
 </section>
-<section id="tensors-in-tucker-form-tensorly-tucker-tensor">
-<h2>Tensors in Tucker form (<a class="reference internal" href="#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>)</h2>
-<span class="target" id="module-tensorly.tucker_tensor"></span><p>Core operations on Tucker tensors.</p>
+<section id="module-tensorly.tucker_tensor">
+<span id="tensors-in-tucker-form-tensorly-tucker-tensor"></span><h2>Tensors in Tucker form (<a class="reference internal" href="#module-tensorly.tucker_tensor" title="tensorly.tucker_tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code></a>)</h2>
+<p>Core operations on Tucker tensors.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.tucker_tensor.tucker_to_tensor.html#tensorly.tucker_tensor.tucker_to_tensor" title="tensorly.tucker_tensor.tucker_to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker_to_tensor</span></code></a>(tucker_tensor[, ...])</p></td>
@@ -718,7 +700,7 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac</span></code></a>(tensor, rank[, n_iter_max, init, ...])</p></td>
-<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.decomposition.parafac.html#r2df4af999528-1" id="id2"><span>[R2df4af999528-1]</span></a> such that.</p></td>
+<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.decomposition.parafac.html#r2df4af999528-1" id="id2"><span>[R2df4af999528-1]</span></a> such that:</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.decomposition.power_iteration.html#tensorly.decomposition.power_iteration" title="tensorly.decomposition.power_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">power_iteration</span></code></a>(tensor[, n_repeat, ...])</p></td>
 <td><p>A single Robust Tensor Power Iteration</p></td>
@@ -742,7 +724,7 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <td><p>Random subsample of the Khatri-Rao product of the given list of matrices</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac" title="tensorly.decomposition.randomised_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">randomised_parafac</span></code></a>(tensor, rank, n_samples)</p></td>
-<td><p>Randomised CP decomposition via sampled ALS</p></td>
+<td><p>Randomised CP decomposition via sampled ALS <a class="reference internal" href="generated/tensorly.decomposition.randomised_parafac.html#rfe3f26443c3b-3" id="id3"><span>[Rfe3f26443c3b-3]</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tucker-function.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tucker</span></code></a>(tensor, rank[, fixed_factors, ...])</p></td>
 <td><p>Tucker decomposition via Higher Order Orthogonal Iteration (HOI)</p></td>
@@ -769,7 +751,7 @@ tensor decomposition such as CANDECOMP-PARAFAC and Tucker.</p>
 <td><p>Tensor Ring decomposition via recursive SVD</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/parafac2-function.html#tensorly.decomposition.parafac2" title="tensorly.decomposition.parafac2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parafac2</span></code></a>(tensor_slices, rank[, n_iter_max, ...])</p></td>
-<td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/parafac2-function.html#ra07d22ce3f71-1" id="id3"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
+<td><p>PARAFAC2 decomposition <a class="reference internal" href="generated/parafac2-function.html#ra07d22ce3f71-1" id="id4"><span>[Ra07d22ce3f71-1]</span></a> of a third order tensor via alternating least squares (ALS)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac" title="tensorly.decomposition.constrained_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrained_parafac</span></code></a>(tensor, rank[, ...])</p></td>
 <td><p>CANDECOMP/PARAFAC decomposition via alternating optimization of alternating direction method of multipliers (AO-ADMM):</p></td>
@@ -869,7 +851,7 @@ create synthetic data, e.g. for testing purposes.</p>
 <span class="target" id="module-tensorly.plugins"></span><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.plugins.use_opt_einsum.html#tensorly.plugins.use_opt_einsum" title="tensorly.plugins.use_opt_einsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_opt_einsum</span></code></a>([optimize])</p></td>
-<td><p>Plugin to use opt-einsum <a class="reference internal" href="generated/tensorly.plugins.use_opt_einsum.html#r7bf64e8a9b16-1" id="id4"><span>[R7bf64e8a9b16-1]</span></a> to precompute (and cache) a better contraction path</p></td>
+<td><p>Plugin to use opt-einsum <a class="reference internal" href="generated/tensorly.plugins.use_opt_einsum.html#r7bf64e8a9b16-1" id="id5"><span>[R7bf64e8a9b16-1]</span></a> to precompute (and cache) a better contraction path</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.plugins.use_default_einsum.html#tensorly.plugins.use_default_einsum" title="tensorly.plugins.use_default_einsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_default_einsum</span></code></a>()</p></td>
 <td><p>Revert to the original einsum for the current backend</p></td>
@@ -890,7 +872,7 @@ create synthetic data, e.g. for testing purposes.</p>
 <td><p>TT (tensor-train) decomposition via cross-approximation (TTcross) [1]</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.decomposition.tensor_train_OI.html#tensorly.contrib.decomposition.tensor_train_OI" title="tensorly.contrib.decomposition.tensor_train_OI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decomposition.tensor_train_OI</span></code></a>(data_tensor, rank)</p></td>
-<td><p>Perform tensor-train orthogonal iteration (TTOI) <a class="reference internal" href="generated/tensorly.contrib.decomposition.tensor_train_OI.html#r2611546cc1a1-1" id="id5"><span>[R2611546cc1a1-1]</span></a> for tensor train decomposition</p></td>
+<td><p>Perform tensor-train orthogonal iteration (TTOI) <a class="reference internal" href="generated/tensorly.contrib.decomposition.tensor_train_OI.html#r2611546cc1a1-1" id="id6"><span>[R2611546cc1a1-1]</span></a> for tensor train decomposition</p></td>
 </tr>
 </tbody>
 </table>
@@ -913,7 +895,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
 <td><p>Robust Tensor PCA via ALM with support for missing values</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#tensorly.contrib.sparse.decomposition.parafac" title="tensorly.contrib.sparse.decomposition.parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.parafac</span></code></a>(tensor, rank[, ...])</p></td>
-<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#r8eaaee98a9c3-1" id="id6"><span>[R8eaaee98a9c3-1]</span></a> such that.</p></td>
+<td><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS) Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.parafac.html#r8eaaee98a9c3-1" id="id7"><span>[R8eaaee98a9c3-1]</span></a> such that:</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/tensorly.contrib.sparse.decomposition.non_negative_parafac.html#tensorly.contrib.sparse.decomposition.non_negative_parafac" title="tensorly.contrib.sparse.decomposition.non_negative_parafac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse.decomposition.non_negative_parafac</span></code></a>(...)</p></td>
 <td><p>Non-negative CP decomposition</p></td>
@@ -955,7 +937,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2022, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
@@ -993,7 +975,7 @@ Currently, the following decomposition methods are supported (for the NumPy back
 </li>
 <li><a class="reference internal" href="#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
 <li><a class="reference internal" href="#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
-<li><a class="reference internal" href="#tensors-in-tucker-form-tensorly-tucker-tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
+<li><a class="reference internal" href="#module-tensorly.tucker_tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
 <li><a class="reference internal" href="#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
 <li><a class="reference internal" href="#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
 <li><a class="reference internal" href="#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
