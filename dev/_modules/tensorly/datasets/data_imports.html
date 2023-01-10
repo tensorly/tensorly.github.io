@@ -764,17 +764,16 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="fetch_indian_pines"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.fetch_indian_pines.html#tensorly.datasets.fetch_indian_pines">[docs]</a><span class="k">def</span> <span class="nf">fetch_indian_pines</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">load_indian_pines</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Loads indian pines hyperspectral data from th website and returns it as a tensorly tensor without storing the data</span>
-<span class="sd">    in the hard drive. This dataset could be useful for non-negative constrained decomposition methods and</span>
-<span class="sd">    classification/segmentation applications with tha available ground truth in</span>
+<span class="sd">    Loads Indian pines hyperspectral data from tensorly datasets and returns it as a bunch. This dataset could be useful for non-negative constrained decomposition methods and</span>
+<span class="sd">    classification/segmentation applications with the available ground truth in</span>
 <span class="sd">    http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat.</span>
+<span class="sd">    The data itself can be downloaded at &quot;http://www.ehu.eus/ccwintco/uploads/6/67/Indian_pines_corrected.mat&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.ehu.eus/ccwintco/uploads/6/67/Indian_pines_corrected.mat&quot;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()))[</span><span class="s2">&quot;indian_pines_corrected&quot;</span><span class="p">]</span>
+    <span class="n">path_here</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path_here</span> <span class="o">+</span> <span class="s2">&quot;/data/Indian_pines_corrected.npy&quot;</span><span class="p">)</span>
     <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot;Baumgardner, M. F., Biehl, L. L., Landgrebe, D. A. (2015). 220 Band AVIRIS Hyperspectral &quot;</span>
         <span class="s2">&quot;Image Data Set: June 12, 1992 Indian Pine Test Site 3. Purdue University Research Repository. &quot;</span>
@@ -787,9 +786,7 @@
         <span class="s2">&quot;of West Lafayette and the surrounding area. This scene consists of 145 times 145 pixels and 220 spectral &quot;</span>
         <span class="s2">&quot;reflectance bands in the wavelength range 0.4–2.5 10^(-6) meters.&quot;</span>
     <span class="p">)</span>
-    <span class="n">url_gt</span> <span class="o">=</span> <span class="s2">&quot;http://www.ehu.eus/ccwintco/uploads/c/c4/Indian_pines_gt.mat&quot;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url_gt</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">read</span><span class="p">()))[</span><span class="s2">&quot;indian_pines_gt&quot;</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path_here</span> <span class="o">+</span> <span class="s2">&quot;/data/Indian_pines_gt.npy&quot;</span><span class="p">)</span>
     <span class="n">wavelengths</span> <span class="o">=</span> <span class="p">[</span>
         <span class="mf">400.02</span><span class="p">,</span>
         <span class="mf">409.82</span><span class="p">,</span>
@@ -1000,7 +997,7 @@
         <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
         <span class="n">DESC</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">LICENCE</span><span class="o">=</span><span class="n">licence</span><span class="p">,</span>
-    <span class="p">)</span></div>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="fetch_kinetic"><a class="viewcode-back" href="../../../modules/generated/tensorly.datasets.fetch_kinetic.html#tensorly.datasets.fetch_kinetic">[docs]</a><span class="k">def</span> <span class="nf">fetch_kinetic</span><span class="p">():</span>
