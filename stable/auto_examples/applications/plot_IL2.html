@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Non-negative PARAFAC Decomposition of IL-2 Response Data &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="COVID-19 Serology Dataset Analysis with CP" href="plot_covid.html" />
+    <link rel="prev" title="Image compression via tensor decomposition" href="plot_image_compression.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../../modules/api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#practical-applications-of-tensor-methods">Practical applications of tensor methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-decomposition">Tensor decomposition</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#tensor-regression-with-tensorly">Tensor regression with tensorly</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
+        
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-applications-plot-il2-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="non-negative-parafac-decomposition-of-il-2-response-data">
+<span id="sphx-glr-auto-examples-applications-plot-il2-py"></span><h1>Non-negative PARAFAC Decomposition of IL-2 Response Data</h1>
+<p>Here we will provide an example of how to use non-negative PARAFAC tensor
+decomposition (<a class="reference internal" href="../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code></a>) to first reduce the dimensionality
+of a tensor of experimental data, and then make insights about the underlying structure
+of that data.</p>
+<p>To do this, we will work with a tensor of experimentally measured cell signaling data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">tensorly.datasets</span> <span class="kn">import</span> <span class="n">load_IL2data</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac</span>
+<span class="kn">from</span> <span class="nn">tensorly.cp_tensor</span> <span class="kn">import</span> <span class="n">cp_normalize</span>
+</pre></div>
+</div>
+<p>Here we will load a tensor of experimentally measured cellular responses to
+IL-2 stimulation. IL-2 is a naturally occurring immune signaling molecule
+which has been engineered by pharmaceutical companies and drug designers
+in attempts to act as an effective immunotherapy. In order to make effective IL-2
+therapies, pharmaceutical engineer have altered IL-2’s signaling activity in order to
+increase or decrease its interactions with particular cell types.</p>
+<p>IL-2 signals through the Jak/STAT pathway and transmits a signal into immune cells by
+phosphorylating STAT5 (pSTAT5). When phosphorylated, STAT5 will cause various immune
+cell types to proliferate, and depending on whether regulatory (regulatory T cells, or Tregs)
+or effector cells (helper T cells, natural killer cells, and cytotoxic T cells,
+or Thelpers, NKs, and CD8+ cells) respond, IL-2 signaling can result in
+immunosuppression or immunostimulation respectively. Thus, when designing a drug
+meant to repress the immune system, potentially for the treatment of autoimmune
+diseases, IL-2 which primarily enacts a response in Tregs is desirable. Conversely,
+when designing a drug that is meant to stimulate the immune system, potentially for
+the treatment of cancer, IL-2 which primarily enacts a response in effector cells
+is desirable. In order to achieve either signaling bias, IL-2 variants with altered
+affinity for it’s various receptors (IL2Rα or IL2Rβ) have been designed. Furthermore
+IL-2 variants with multiple binding domains have been designed as multivalent
+IL-2 may act as a more effective therapeutic. In order to understand how these mutations
+and alterations affect which cells respond to an IL-2 mutant, we will perform
+non-negative PARAFAC tensor decomposition on our cell response data tensor.</p>
+<p>Here, our data contains the responses of 8 different cell types to 13 different
+IL-2 mutants, at 4 different timepoints, at 12 standardized IL-2 concentrations.
+Therefore, our tensor will have shape (13 x 4 x 12 x 8), with dimensions
+representing IL-2 mutant, stimulation time, dose, and cell type respectively. Each
+measured quantity represents the amount of phosphorlyated STAT5 (pSTAT5) in a
+given cell population following stimulation with the specified IL-2 mutant.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response_data</span> <span class="o">=</span> <span class="n">load_IL2data</span><span class="p">()</span>
+<span class="n">IL2mutants</span><span class="p">,</span> <span class="n">cells</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">response_data</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">response_data</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(13, 4, 12, 8) [&#39;ligands&#39;, &#39;times&#39;, &#39;doses&#39;, &#39;cells&#39;]
+</pre></div>
+</div>
+<p>Now we will run non-negative PARAFAC tensor decomposition to reduce the dimensionality
+of our tensor. We will use 3 components, and normalize our resulting tensor to aid in
+future comparisons of correlations across components.</p>
+<p>First we must preprocess our tensor to ready it for factorization. Our data has a
+few missing values, and so we must first generate a mask to mark where those values
+occur.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve marked where those non-finite values occur, we can regenerate our
+tensor without including non-finite values, allowing it to be factorized.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response_data_fin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using this mask, and finite-value only tensor, we can decompose our signaling data into
+three components. We will also normalize this tensor, which will allow for easier
+comparisons to be made between the meanings, and magnitudes of our resulting components.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sig_tensor_fact</span> <span class="o">=</span> <span class="n">non_negative_parafac</span><span class="p">(</span><span class="n">response_data_fin</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">tensor_mask</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sig_tensor_fact</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">sig_tensor_fact</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we will load the names of our cell types and IL-2 mutants, in the order in which
+they are present in our original tensor. IL-2 mutant names refer to the specific
+mutations made to their amino acid sequence, as well as their valency
+format (monovalent or bivalent).</p>
+<p>Finally, we label, plot, and analyze our factored tensor of data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+
+<span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="n">lig_facs</span> <span class="o">=</span> <span class="n">sig_tensor_fact</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ligands</span> <span class="o">=</span> <span class="n">IL2mutants</span>
+<span class="n">x_lig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ligands</span><span class="p">))</span>
+
+<span class="n">lig_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 1&#39;</span><span class="p">)</span>
+<span class="n">lig_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 2&#39;</span><span class="p">)</span>
+<span class="n">lig_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Ligand&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Component Weight&quot;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x_lig</span><span class="p">,</span> <span class="n">ligands</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+
+<span class="n">cell_facs</span> <span class="o">=</span> <span class="n">sig_tensor_fact</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">x_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">))</span>
+
+<span class="n">cell_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 1&#39;</span><span class="p">)</span>
+<span class="n">cell_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 2&#39;</span><span class="p">)</span>
+<span class="n">cell_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Cell&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Component Weight&quot;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x_cell</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_IL2_001.png" srcset="../../_images/sphx_glr_plot_IL2_001.png" alt="plot IL2" class = "sphx-glr-single-img"/><p>Here we observe the correlations which both ligands and cell types have with each of
+our three components - we can interepret our tensor factorization for looking for
+patterns among these correlations.</p>
+<p>For example, we can see that bivalent mutants generally have higher correlations with
+component two, as do regulatory T cells. Thus we can infer that bivalent ligands
+activate regulatory T cells more than monovalent ligands. We also see that this
+relationship is strengthened by the availability of IL2Rα, one subunit of the IL-2 receptor.</p>
+<p>This is just one example of an insight we can make using tensor factorization.
+By plotting the correlations which time and dose have with each component, we
+could additionally make inferences as to the dynamics and dose dependence of how mutations
+affect IL-2 signaling in immune cells.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.293 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-il2-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/979a176afc5b35664fe7ea5c86b1532a/plot_IL2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_IL2.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/468942bd78c2647648843aeda5b2ab0c/plot_IL2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_IL2.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+      </div>
+
+      
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button pagination-previous" href="plot_image_compression.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Image compression via tensor decomposition</span>
+    </a>
+    
+    
+    <a class="button pagination-next" href="plot_covid.html" title="next page" accesskey="n">
+        <span>COVID-19 Serology Dataset Analysis with CP </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+    
+
+  
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

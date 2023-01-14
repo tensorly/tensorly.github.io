@@ -24,9 +24,8 @@
 
   
     <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/jquery.js"></script>
-    <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
  <script src="../../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -39,6 +38,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -49,15 +49,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../../../index.html">
             <img src="../../../../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -71,44 +67,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../../../installation.html">
+            
+              <a class="navbar-item" href="../../../../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../../../../user_guide/index.html">
+              <a class="navbar-item" href="../../../../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../../../../modules/api.html">
+              <a class="navbar-item" href="../../../../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../../../../auto_examples/index.html">
+              <a class="navbar-item" href="../../../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../../../about.html">
+              <a class="navbar-item" href="../../../../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -116,32 +117,33 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
+      
+      
 
-        <div class="content main-content">
-          
+      <div class="container content main-content">
+        
   <h1>Source code for tensorly.tenalg.core_tenalg._batched_tensordot</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..tenalg_utils</span> <span class="kn">import</span> <span class="n">_validate_contraction_modes</span>
 <span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">prod</span>
@@ -149,8 +151,8 @@
 
 
 <div class="viewcode-block" id="tensordot"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.tensordot.html#tensorly.tenalg.tensordot">[docs]</a><span class="k">def</span> <span class="nf">tensordot</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">tensor2</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">batched_modes</span><span class="o">=</span><span class="p">()):</span>
-    <span class="sd">&quot;&quot;&quot;Batched tensor contraction between two tensors on specified modes</span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Batched tensor contraction between two tensors on specified modes</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor1 : tl.tensor</span>
@@ -164,12 +166,14 @@
 <span class="sd">    contraction : tensor1 contracted with tensor2 on the specified modes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">modes1</span><span class="p">,</span> <span class="n">modes2</span> <span class="o">=</span> <span class="n">_validate_contraction_modes</span><span class="p">(</span><span class="n">tensor1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tensor2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">modes</span><span class="p">)</span>
-    <span class="n">batch_modes1</span><span class="p">,</span> <span class="n">batch_modes2</span> <span class="o">=</span> <span class="n">_validate_contraction_modes</span><span class="p">(</span><span class="n">tensor1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tensor2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">batched_modes</span><span class="p">,</span> <span class="n">batched_modes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    
+    <span class="n">batch_modes1</span><span class="p">,</span> <span class="n">batch_modes2</span> <span class="o">=</span> <span class="n">_validate_contraction_modes</span><span class="p">(</span>
+        <span class="n">tensor1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tensor2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">batched_modes</span><span class="p">,</span> <span class="n">batched_modes</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
     <span class="n">contraction_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor1</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">modes1</span><span class="p">]</span>
     <span class="n">contraction_dim</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">contraction_shape</span><span class="p">)</span>
     <span class="n">batch_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor1</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">batch_modes1</span><span class="p">]</span>
-    
+
     <span class="c1"># Prepare to reorganize the modes afterwards by moving bactch size back to their place</span>
     <span class="c1"># (while ommiting modes contracted over)</span>
     <span class="n">final_modes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -183,54 +187,54 @@
             <span class="n">final_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_counter</span><span class="p">)</span>
             <span class="n">batch_counter</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">final_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">free_counter</span><span class="o">+</span><span class="n">n_batches</span><span class="p">)</span>
+            <span class="n">final_modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">free_counter</span> <span class="o">+</span> <span class="n">n_batches</span><span class="p">)</span>
             <span class="n">free_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="c1"># We will reorganize tensor1 to (batch_modes, new_modes1, contraction_modes)</span>
-    <span class="n">new_modes1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor1</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">batch_modes1</span><span class="o">+</span><span class="n">modes1</span><span class="p">]</span>
+    <span class="n">new_modes1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor1</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">batch_modes1</span> <span class="o">+</span> <span class="n">modes1</span><span class="p">]</span>
     <span class="n">new_shape1</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor1</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_modes1</span><span class="p">]</span>
     <span class="n">tensor1</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">batch_modes1</span> <span class="o">+</span> <span class="n">new_modes1</span> <span class="o">+</span> <span class="n">modes1</span><span class="p">)</span>
     <span class="n">tensor1</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">batch_shape</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">contraction_dim</span><span class="p">))</span>
-    
+
     <span class="c1"># Tensor2 will be (batch_modes, contraction_modes, new_modes2)</span>
-    <span class="n">new_modes2</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor2</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">batch_modes2</span><span class="o">+</span><span class="n">modes2</span><span class="p">]</span>
+    <span class="n">new_modes2</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor2</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">batch_modes2</span> <span class="o">+</span> <span class="n">modes2</span><span class="p">]</span>
     <span class="n">new_shape2</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor2</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_modes2</span><span class="p">]</span>
-    <span class="n">tensor2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor2</span><span class="p">,</span> <span class="n">batch_modes2</span><span class="o">+</span><span class="n">modes2</span><span class="o">+</span><span class="n">new_modes2</span><span class="p">)</span>
+    <span class="n">tensor2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor2</span><span class="p">,</span> <span class="n">batch_modes2</span> <span class="o">+</span> <span class="n">modes2</span> <span class="o">+</span> <span class="n">new_modes2</span><span class="p">)</span>
     <span class="n">tensor2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor2</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">batch_shape</span><span class="p">,</span> <span class="n">contraction_dim</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-    
+
     <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tensor1</span><span class="p">,</span> <span class="n">tensor2</span><span class="p">)</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="n">batch_shape</span><span class="p">,</span> <span class="o">*</span><span class="n">new_shape1</span><span class="p">,</span> <span class="o">*</span><span class="n">new_shape2</span><span class="p">))</span>
 
     <span class="n">final_modes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_modes</span><span class="p">]</span>
-    
+
     <span class="k">if</span> <span class="n">final_modes</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">final_modes</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
 </pre></div>
 
-        </div>
+      </div>
 
-		
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

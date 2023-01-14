@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>tensorly.contrib.sparse.decomposition.robust_pca &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -25,9 +25,8 @@
 
   
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -41,6 +40,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -51,15 +51,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../index.html">
             <img src="../../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -73,44 +69,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../installation.html">
+            
+              <a class="navbar-item" href="../../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../../user_guide/index.html">
+              <a class="navbar-item" href="../../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../api.html">
+              <a class="navbar-item" href="../api.html">
               API
             </a>
-            <a class="navbar-item" href="../../auto_examples/index.html">
+              <a class="navbar-item" href="../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../about.html">
+              <a class="navbar-item" href="../../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -118,61 +119,39 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -191,35 +170,35 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensorly-contrib-sparse-decomposition-robust-pca">
 <h1>tensorly.contrib.sparse.decomposition.robust_pca</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.contrib.sparse.decomposition.robust_pca">
-<span class="sig-name descname"><span class="pre">robust_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_J</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">robust_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_J</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Robust Tensor PCA via ALM with support for missing values</p>
 <blockquote>
 <div><p>Decomposes a tensor <cite>X</cite> into the sum of a low-rank component <cite>D</cite>
 and a sparse component <cite>E</cite>.</p>
 </div></blockquote>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS)</p>
 </dd>
@@ -240,17 +219,21 @@ should be zero where the values are missing and 1 everywhere else</p>
 </dd>
 <dt><strong>n_iter_max</strong><span class="classifier">int, optional, default is 100</span></dt><dd><p>maximum number of iteration</p>
 </dd>
+<dt><strong>return_errors</strong><span class="classifier">bool, default is False</span></dt><dd><p>if True, additionally returns the reconstruction errors</p>
+</dd>
 <dt><strong>verbose</strong><span class="classifier">int, default is 1</span></dt><dd><p>level of verbosity</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt>(D, E)</dt><dd><p>Robust decomposition of <cite>X</cite></p>
+<dt>(D, E) or (D, E, rec_errors)</dt><dd><p>Robust decomposition of <cite>X</cite></p>
 </dd>
 <dt><strong>D</strong><span class="classifier"><cite>X</cite>-like array</span></dt><dd><p>low-rank part</p>
 </dd>
 <dt><strong>E</strong><span class="classifier"><cite>X</cite>-like array</span></dt><dd><p>sparse error part</p>
+</dd>
+<dt><strong>rec_errors</strong><span class="classifier">list of errors</span></dt><dd><p>only returned if <cite>return_errors</cite> is True</p>
 </dd>
 </dl>
 </dd>
@@ -271,37 +254,58 @@ should be zero where the values are missing and 1 everywhere else</p>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
     
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
 
-  </div>
-  </div>
+        <div class="menu menu-list localtoc-list">
+        <ul>
+<li><a class="reference internal" href="#">tensorly.contrib.sparse.decomposition.robust_pca</a><ul>
+<li><a class="reference internal" href="#tensorly.contrib.sparse.decomposition.robust_pca"><code class="docutils literal notranslate"><span class="pre">robust_pca</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+        </div>
+    </aside>
+    </div>
+
+  
+
+  </div>  
+  </div> 
+
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

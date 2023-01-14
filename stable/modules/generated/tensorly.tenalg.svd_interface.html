@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>tensorly.tenalg.svd_interface &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tensorly.tenalg.khatri_rao" href="tensorly.tenalg.khatri_rao.html" />
+    <link rel="prev" title="tensorly.parafac2_tensor.parafac2_to_vec" href="tensorly.parafac2_tensor.parafac2_to_vec.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#plugin-functionalities-tensorly-plugins">Plugin functionalities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib">Experimental features (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
+        
+  <section id="tensorly-tenalg-svd-interface">
+<h1><a class="reference internal" href="../api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a>.svd_interface</h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tensorly.tenalg.svd_interface">
+<span class="sig-name descname"><span class="pre">svd_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eigenvecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_sign</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_based_flip_sign</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_mask_imputation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/tenalg/svd.html#svd_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Dispatching function to various SVD algorithms, alongside additional
+properties such as resolving sign invariance, imputation, and non-negativity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>matrix</strong><span class="classifier">tensor</span></dt><dd><p>A 2D tensor.</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>Function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS or a callable.</p>
+</dd>
+<dt><strong>n_eigenvecs</strong><span class="classifier">int, optional, default is None</span></dt><dd><p>If specified, number of eigen[vectors-values] to return.</p>
+</dd>
+<dt><strong>flip_sign</strong><span class="classifier">bool, optional, default is True</span></dt><dd><p>Whether to resolve the sign indeterminacy of SVD.</p>
+</dd>
+<dt><strong>u_based_flip_sign</strong><span class="classifier">bool, optional, default is True</span></dt><dd><p>Whether the sign indeterminacy should be resolved using U (vs. V).</p>
+</dd>
+<dt><strong>non_negative</strong><span class="classifier">bool, optional, default is False</span></dt><dd><p>Whether to make the SVD results non-negative.</p>
+</dd>
+<dt><strong>nn_type</strong><span class="classifier">str, default is ‘nndsvd’</span></dt><dd><p>Algorithm to use for converting U to be non-negative.</p>
+</dd>
+<dt><strong>mask</strong><span class="classifier">tensor, default is None.</span></dt><dd><p>Array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">matrix</span></code>. Should be 0 where
+the values are missing and 1 everywhere else. None if nothing is missing.</p>
+</dd>
+<dt><strong>n_iter_mask_imputation</strong><span class="classifier">int, default is 5</span></dt><dd><p>Number of repetitions to apply in missing value imputation.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">optional</span></dt><dd><p>Arguments passed along to individual SVD algorithms.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>U</strong><span class="classifier">2-D tensor, shape (matrix.shape[0], n_eigenvecs)</span></dt><dd><p>Contains the right singular vectors of <cite>matrix</cite></p>
+</dd>
+<dt><strong>S</strong><span class="classifier">1-D tensor, shape (n_eigenvecs, )</span></dt><dd><p>Contains the singular values of <cite>matrix</cite></p>
+</dd>
+<dt><strong>V</strong><span class="classifier">2-D tensor, shape (n_eigenvecs, matrix.shape[1])</span></dt><dd><p>Contains the left singular vectors of <cite>matrix</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="clearer"></div></section>
+
+
+      </div>
+
+      
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button pagination-previous" href="tensorly.parafac2_tensor.parafac2_to_vec.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>.parafac2_to_vec</span>
+    </a>
+    
+    
+    <a class="button pagination-next" href="tensorly.tenalg.khatri_rao.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.khatri_rao </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
+        <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>.svd_interface</a><ul>
+<li><a class="reference internal" href="#tensorly.tenalg.svd_interface"><code class="docutils literal notranslate"><span class="pre">svd_interface</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
+
+  
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

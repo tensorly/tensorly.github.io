@@ -24,9 +24,8 @@
 
   
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -39,6 +38,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -49,15 +49,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../index.html">
             <img src="../../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -71,44 +67,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../installation.html">
+            
+              <a class="navbar-item" href="../../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../../user_guide/index.html">
+              <a class="navbar-item" href="../../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../../modules/api.html">
+              <a class="navbar-item" href="../../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../../auto_examples/index.html">
+              <a class="navbar-item" href="../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../about.html">
+              <a class="navbar-item" href="../../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -116,32 +117,33 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
+      
+      
 
-        <div class="content main-content">
-          
+      <div class="container content main-content">
+        
   <h1>Source code for tensorly.cp_tensor</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Core operations on CP tensors.</span>
@@ -150,14 +152,15 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
-<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span>
+<span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">unfolding_dot_khatri_rao</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
-
+<span class="kn">from</span> <span class="nn">.metrics.factors</span> <span class="kn">import</span> <span class="n">congruence_coefficient</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
 <span class="c1"># License: BSD 3 clause</span>
+
 
 <span class="k">class</span> <span class="nc">CPTensor</span><span class="p">(</span><span class="n">FactorizedTensor</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">):</span>
@@ -175,36 +178,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
 
-    
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;You tried to access index </span><span class="si">{}</span><span class="s1"> of a CP tensor.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                             <span class="s1">&#39;You can only access index 0 and 1 of a CP tensor&#39;</span>
-                             <span class="s1">&#39;(corresponding respectively to the weights and factors)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-    
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;You tried to access index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of a CP tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;You can only access index 0 and 1 of a CP tensor&quot;</span>
+                <span class="s2">&quot;(corresponding respectively to the weights and factors)&quot;</span>
+            <span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">elif</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;You tried to set the value at index </span><span class="si">{}</span><span class="s1"> of a CP tensor.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                             <span class="s1">&#39;You can only set index 0 and 1 of a CP tensor&#39;</span>
-                             <span class="s1">&#39;(corresponding respectively to the weights and factors)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;You tried to set the value at index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> of a CP tensor.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;You can only set index 0 and 1 of a CP tensor&quot;</span>
+                <span class="s2">&quot;(corresponding respectively to the weights and factors)&quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
         <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span>
-        
+
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span>
-    
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;(weights, factors) : rank-</span><span class="si">{}</span><span class="s1"> CPTensor of shape </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;(weights, factors) : rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2"> CPTensor of shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">message</span>
 
     <span class="k">def</span> <span class="nf">to_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -212,17 +220,25 @@
 
     <span class="k">def</span> <span class="nf">to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp_to_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cp_to_unfolded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">cp_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">),</span>
+                <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factors</span><span class="p">))],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;n-mode product of a CP tensor and a matrix or vector at the specified mode</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;n-mode product of a CP tensor and a matrix or vector at the specified mode</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cp_tensor : tl.CPTensor or (core, factors)</span>
-<span class="sd">                        </span>
+
 <span class="sd">        matrix_or_vector : ndarray</span>
 <span class="sd">            1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
 <span class="sd">            matrix or vectors to which to n-mode multiply the tensor</span>
@@ -242,7 +258,7 @@
         <span class="k">return</span> <span class="n">cp_mode_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="n">keep_dim</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the l2 norm of a CP tensor</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the l2 norm of a CP tensor</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -254,15 +270,15 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This is ||cp_to_tensor(factors)||^2 </span>
-<span class="sd">        </span>
+<span class="sd">        This is ||cp_to_tensor(factors)||^2</span>
+
 <span class="sd">        You can see this using the fact that</span>
 <span class="sd">        khatria-rao(A, B)^T x khatri-rao(A, B) = A^T x A  * B^T x B</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cp_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Normalizes the factors to unit length</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalizes the factors to unit length</span>
 
 <span class="sd">        Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
 <span class="sd">        where the columns of each `V_k` are normalized to unit Euclidean length</span>
@@ -292,16 +308,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
-
 <span class="k">def</span> <span class="nf">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Validates a cp_tensor in the form (weights, factors)</span>
-<span class="sd">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates a cp_tensor in the form (weights, factors)</span>
+
 <span class="sd">        Returns the rank and shape of the validated tensor</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    cp_tensor : CPTensor or (weights, factors)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    (shape, rank) : (int tuple, int)</span>
@@ -310,64 +325,68 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">CPTensor</span><span class="p">):</span>
         <span class="c1"># it&#39;s already been validated at creation</span>
         <span class="k">return</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="o">.</span><span class="n">rank</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span> <span class="c1">#0-order tensor</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>  <span class="c1"># 0-order tensor</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
 
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-            
-    <span class="c1"># if len(factors) &lt; 2:</span>
-    <span class="c1">#     raise ValueError(&#39;A CP tensor should be composed of at least two factors.&#39;</span>
-    <span class="c1">#                      &#39;However, {} factor was given.&#39;.format(len(factors)))</span>
 
     <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Got a factor with 3 dimensions but CP factors should be at most 2D, of shape (size, rank).&quot;</span>
+        <span class="p">)</span>
+
     <span class="n">shape</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># The shape is just (size, ) if rank 1</span>
+            <span class="n">current_mode_size</span><span class="p">,</span> <span class="n">current_rank</span> <span class="o">=</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">current_rank</span> <span class="o">!=</span> <span class="n">rank</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All the factors of a CP tensor should have the same number of column.&#39;</span>
-                             <span class="s1">&#39;However, factors[0].shape[1]=</span><span class="si">{}</span><span class="s1"> but factors[</span><span class="si">{}</span><span class="s1">].shape[1]=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                 <span class="n">rank</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;All the factors of a CP tensor should have the same number of column.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;However, factors[0].shape[1]=</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> but factors[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">].shape[1]=</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">factor</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
         <span class="n">shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_mode_size</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given factors for a rank-</span><span class="si">{}</span><span class="s1"> CP tensor but len(weights)=</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">rank</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)))</span>
-        
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">rank</span><span class="p">,):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Given factors for a rank-</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2"> CP tensor but len(weights)=</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">rank</span>
 
+
 <span class="k">def</span> <span class="nf">_cp_n_param</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Number of parameters of a CP decomposition for a given `rank` and full `tensor_shape`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of parameters of a CP decomposition for a given `rank` and full `tensor_shape`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor_shape : int tuple</span>
 <span class="sd">        shape of the full tensor to decompose (or approximate)</span>
-<span class="sd">    </span>
+
 <span class="sd">    rank : tuple</span>
 <span class="sd">        rank of the CP decomposition</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    n_params : int</span>
 <span class="sd">        Number of parameters of a CP decomposition of rank `rank` of a full tensor of shape `tensor_shape`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">factors_params</span> <span class="o">=</span> <span class="n">rank</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
+    <span class="n">factors_params</span> <span class="o">=</span> <span class="n">rank</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">weights</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">factors_params</span> <span class="o">+</span> <span class="n">rank</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">factors_params</span>
 
 
-<span class="k">def</span> <span class="nf">validate_cp_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;round&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the rank of a CP Decomposition</span>
+<span class="k">def</span> <span class="nf">validate_cp_rank</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s2">&quot;round&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the rank of a CP Decomposition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -385,25 +404,27 @@
 <span class="sd">    rank : int</span>
 <span class="sd">        rank of the decomposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;ceil&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s2">&quot;ceil&quot;</span><span class="p">:</span>
         <span class="n">rounding_fun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span>
-    <span class="k">elif</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;floor&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s2">&quot;floor&quot;</span><span class="p">:</span>
         <span class="n">rounding_fun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span>
-    <span class="k">elif</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;round&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s2">&quot;round&quot;</span><span class="p">:</span>
         <span class="n">rounding_fun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Rounding should be of round, floor or ceil, but got </span><span class="si">{</span><span class="n">rounding</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="s1">&#39;same&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Rounding should be of round, floor or ceil, but got </span><span class="si">{</span><span class="n">rounding</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="s2">&quot;same&quot;</span><span class="p">:</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span><span class="o">*</span><span class="n">rank</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)))</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rounding_fun</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">rank</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">rank</span>
 
 
 <div class="viewcode-block" id="cp_normalize"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_normalize.html#tensorly.cp_tensor.cp_normalize">[docs]</a><span class="k">def</span> <span class="nf">cp_normalize</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns cp_tensor with factors normalised to unit length</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns cp_tensor with factors normalised to unit length</span>
 
 <span class="sd">    Turns ``factors = [|U_1, ... U_n|]`` into ``[weights; |V_1, ... V_n|]``,</span>
 <span class="sd">    where the columns of each `V_k` are normalized to unit Euclidean length</span>
@@ -416,7 +437,7 @@
 <span class="sd">    cp_tensor : CPTensor = (weight, factors)</span>
 <span class="sd">        factors is list of matrices, all with the same number of columns</span>
 <span class="sd">        i.e.::</span>
-<span class="sd">        </span>
+
 <span class="sd">            for u in U:</span>
 <span class="sd">                u[i].shape == (s_i, R)</span>
 
@@ -428,26 +449,28 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-    
+
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    
+
     <span class="n">normalized_factors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span><span class="o">*</span><span class="n">weights</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">weights</span>
             <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factor</span><span class="p">))</span>
-            
+
         <span class="n">scales</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scales</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factor</span><span class="p">)),</span> <span class="n">scales</span><span class="p">)</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">*</span><span class="n">scales</span>
+        <span class="n">scales_non_zero</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">scales</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">scales</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factor</span><span class="p">)),</span> <span class="n">scales</span>
+        <span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">scales</span>
         <span class="n">normalized_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">scales_non_zero</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">normalized_factors</span><span class="p">))</span></div>
 
 
 <span class="k">def</span> <span class="nf">cp_flip_sign</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns cp_tensor with factors flipped to have positive signs.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns cp_tensor with factors flipped to have positive signs.</span>
 <span class="sd">    The sign of a given column is determined by `func`, which is the mean</span>
 <span class="sd">    by default. Any negative signs are assigned to the mode indicated by `mode`.</span>
 
@@ -456,12 +479,12 @@
 <span class="sd">    cp_tensor : CPTensor = (weight, factors)</span>
 <span class="sd">        factors is list of matrices, all with the same number of columns</span>
 <span class="sd">        i.e.::</span>
-<span class="sd">        </span>
+
 <span class="sd">            for u in U:</span>
 <span class="sd">                u[i].shape == (s_i, R)</span>
 
 <span class="sd">        where `R` is fixed while `s_i` can vary with `i`</span>
-<span class="sd">    </span>
+
 <span class="sd">    mode: int</span>
 <span class="sd">        mode that should receive negative signs</span>
 
@@ -488,19 +511,19 @@
         <span class="n">column_signs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">jj</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 
         <span class="c1"># Update both the current and receiving factor</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">*</span><span class="n">column_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">factors</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">*</span><span class="n">column_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">column_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">*</span> <span class="n">column_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 
     <span class="c1"># Check the weight signs</span>
     <span class="n">weight_signs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
-    <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">*</span><span class="n">weight_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">weight_signs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">cp_lstsq_grad</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">return_loss</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This function computes (for a third-order tensor)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function computes (for a third-order tensor)</span>
 
 <span class="sd">    .. math::</span>
 
@@ -545,16 +568,18 @@
     <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">mask</span>
 
-    <span class="n">grad_fac</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))]</span>
+    <span class="n">grad_fac</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="o">-</span><span class="n">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">))</span>
+    <span class="p">]</span>
 
     <span class="k">if</span> <span class="n">return_loss</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad_fac</span><span class="p">)),</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad_fac</span><span class="p">)),</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad_fac</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="cp_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_to_tensor.html#tensorly.cp_tensor.cp_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">cp_to_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Turns the Khatri-product of matrices into a full tensor</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turns the Khatri-product of matrices into a full tensor</span>
 
 <span class="sd">        ``factor_matrices = [|U_1, ... U_n|]`` becomes</span>
 <span class="sd">        a tensor shape ``(U[1].shape[0], U[2].shape[0], ... U[-1].shape[0])``</span>
@@ -586,27 +611,30 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="p">:</span> <span class="c1"># 0-order tensor</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="p">:</span>  <span class="c1"># 0-order tensor</span>
         <span class="k">return</span> <span class="n">cp_tensor</span>
 
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># just a vector</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="o">*</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># just a vector</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span>
-                            <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span>
+        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+            <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">([</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">]</span><span class="o">+</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">full_tensor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">khatri_rao</span><span class="p">([</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">]</span> <span class="o">+</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">full_tensor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="cp_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_to_unfolded.html#tensorly.cp_tensor.cp_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">cp_to_unfolded</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into an unfolded tensor</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into an unfolded tensor</span>
 
 <span class="sd">        turns ``factors = [|U_1, ... U_n|]`` into a mode-`mode`</span>
 <span class="sd">        unfolding of the tensor</span>
@@ -634,13 +662,15 @@
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
 
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">))</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="cp_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_to_vec.html#tensorly.cp_tensor.cp_to_vec">[docs]</a><span class="k">def</span> <span class="nf">cp_to_vec</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into a vector</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turns the khatri-product of matrices into a vector</span>
 
 <span class="sd">        (the tensor ``factors = [|U_1, ... U_n|]``</span>
 <span class="sd">        is converted into a raveled mode-0 unfolding)</span>
@@ -665,148 +695,72 @@
 
 
 <div class="viewcode-block" id="cp_mode_dot"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_mode_dot.html#tensorly.cp_tensor.cp_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">cp_mode_dot</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;n-mode product of a CP tensor and a matrix or vector at the specified mode</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;n-mode product of a CP tensor and a matrix or vector at the specified mode</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        cp_tensor : tl.CPTensor or (core, factors)</span>
-<span class="sd">                        </span>
-<span class="sd">        matrix_or_vector : ndarray</span>
-<span class="sd">            1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
-<span class="sd">            matrix or vectors to which to n-mode multiply the tensor</span>
-<span class="sd">        mode : int</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        CPTensor = (core, factors)</span>
-<span class="sd">            `mode`-mode product of `tensor` by `matrix_or_vector`</span>
-<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
-<span class="sd">            * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
-
-<span class="sd">        See also</span>
-<span class="sd">        --------</span>
-<span class="sd">        kruskal_multi_mode_dot : chaining several mode_dot in one call</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
-        <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-        <span class="n">contract</span> <span class="o">=</span> <span class="kc">False</span>
-        
-        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
-            <span class="c1"># Test for the validity of the operation</span>
-            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned in mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (dim 1 of matrix)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="p">))</span>
-
-        <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
-            <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;shapes </span><span class="si">{0}</span><span class="s1"> and </span><span class="si">{1}</span><span class="s1"> not aligned for mode-</span><span class="si">{2}</span><span class="s1"> multiplication: </span><span class="si">{3}</span><span class="s1"> (mode </span><span class="si">{2}</span><span class="s1">) != </span><span class="si">{4}</span><span class="s1"> (vector size)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">shape</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="p">))</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_dim</span><span class="p">:</span>
-                <span class="n">contract</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># Contract over that mode</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Can only take n_mode_product with a vector or a matrix.&#39;</span><span class="p">)</span>
-                             
-        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
-            <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>   
-            
-        <span class="k">if</span> <span class="n">contract</span><span class="p">:</span>
-            <span class="n">factor</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-            <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mode</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
-        <span class="k">else</span><span class="p">:</span>
-             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
-
-        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">cp_tensor</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">cp_tensor</span></div>
-    
-
-<div class="viewcode-block" id="unfolding_dot_khatri_rao"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.unfolding_dot_khatri_rao.html#tensorly.cp_tensor.unfolding_dot_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
-<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    tensor : tl.tensor</span>
-<span class="sd">        tensor to unfold</span>
-<span class="sd">    factors : tl.tensor list</span>
-<span class="sd">        list of matrices of which to the khatri-rao product</span>
+<span class="sd">    cp_tensor : tl.CPTensor or (core, factors)</span>
+
+<span class="sd">    matrix_or_vector : ndarray</span>
+<span class="sd">        1D or 2D array of shape ``(J, i_k)`` or ``(i_k, )``</span>
+<span class="sd">        matrix or vectors to which to n-mode multiply the tensor</span>
 <span class="sd">    mode : int</span>
-<span class="sd">        mode on which to unfold `tensor`</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    mttkrp</span>
-<span class="sd">        dot(unfold(tensor, mode), khatri-rao(factors))</span>
+<span class="sd">    CPTensor = (core, factors)</span>
+<span class="sd">        `mode`-mode product of `tensor` by `matrix_or_vector`</span>
+<span class="sd">        * of shape :math:`(i_1, ..., i_{k-1}, J, i_{k+1}, ..., i_N)` if matrix_or_vector is a matrix</span>
+<span class="sd">        * of shape :math:`(i_1, ..., i_{k-1}, i_{k+1}, ..., i_N)` if matrix_or_vector is a vector</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This is a variant of::</span>
-<span class="sd">    </span>
-<span class="sd">        unfolded = unfold(tensor, mode)</span>
-<span class="sd">        kr_factors = khatri_rao(factors, skip_matrix=mode)</span>
-<span class="sd">        mttkrp2 = tl.dot(unfolded, kr_factors)</span>
-
-<span class="sd">    Multiplying with the Khatri-Rao product is equivalent to multiplying,</span>
-<span class="sd">    for each rank, with the kronecker product of each factor. </span>
-<span class="sd">    In code::</span>
-
-<span class="sd">        mttkrp_parts = []</span>
-<span class="sd">        for r in range(rank):</span>
-<span class="sd">            component = tl.tenalg.multi_mode_dot(tensor, [f[:, r] for f in factors], skip=mode)</span>
-<span class="sd">            mttkrp_parts.append(component)</span>
-<span class="sd">        mttkrp = tl.stack(mttkrp_parts, axis=1)</span>
-<span class="sd">        return mttkrp </span>
-
-<span class="sd">    This can be done by taking n-mode-product with the full factors </span>
-<span class="sd">    (faster but more memory consuming)::</span>
-
-<span class="sd">        projected = multi_mode_dot(tensor, factors, skip=mode, transpose=True)</span>
-<span class="sd">        ndims = T.ndim(tensor)</span>
-<span class="sd">        res = []</span>
-<span class="sd">        for i in range(factors[0].shape[1]):</span>
-<span class="sd">            index = tuple([slice(None) if k == mode  else i for k in range(ndims)])</span>
-<span class="sd">            res.append(projected[index])</span>
-<span class="sd">        return T.stack(res, axis=-1)</span>
-
-<span class="sd">    </span>
-<span class="sd">    The same idea could be expressed using einsum::</span>
-<span class="sd">    </span>
-<span class="sd">        ndims = tl.ndim(tensor)</span>
-<span class="sd">        tensor_idx = &#39;&#39;.join(chr(ord(&#39;a&#39;) + i) for i in range(ndims))</span>
-<span class="sd">        rank = chr(ord(&#39;a&#39;) + ndims + 1)</span>
-<span class="sd">        op = tensor_idx</span>
-<span class="sd">        for i in range(ndims):</span>
-<span class="sd">            if i != mode:</span>
-<span class="sd">                op += &#39;,&#39; + &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">            else:</span>
-<span class="sd">                result = &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">        op += &#39;-&gt;&#39; + result</span>
-<span class="sd">        factors = [f for (i, f) in enumerate(factors) if i != mode]</span>
-<span class="sd">        return tl_einsum(op, tensor, *factors)</span>
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    kruskal_multi_mode_dot : chaining several mode_dot in one call</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mttkrp_parts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
+    <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
-        <span class="n">component</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">[</span><span class="n">f</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">],</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
-        <span class="n">mttkrp_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+    <span class="n">contract</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Tensor times matrix</span>
+        <span class="c1"># Test for the validity of the operation</span>
+        <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;shapes </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> not aligned in mode-</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> multiplication: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="si">}</span><span class="s2"> (mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">) != </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (dim 1 of matrix)&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Tensor times vector</span>
+        <span class="k">if</span> <span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;shapes </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> not aligned for mode-</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> multiplication: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span><span class="si">}</span><span class="s2"> (mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">) != </span><span class="si">{</span><span class="n">matrix_or_vector</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> (vector size)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_dim</span><span class="p">:</span>
+            <span class="n">contract</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Contract over that mode</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only take n_mode_product with a vector or a matrix.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">contract</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mode</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">*=</span> <span class="n">factor</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cp_tensor</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cp_tensor</span></div>
 
 
 <div class="viewcode-block" id="cp_norm"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_norm.html#tensorly.cp_tensor.cp_norm">[docs]</a><span class="k">def</span> <span class="nf">cp_norm</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the l2 norm of a CP tensor</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the l2 norm of a CP tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -818,57 +772,112 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This is ||cp_to_tensor(factors)||^2 </span>
-<span class="sd">    </span>
+<span class="sd">    This is ||cp_to_tensor(factors)||^2</span>
+
 <span class="sd">    You can see this using the fact that</span>
 <span class="sd">    khatria-rao(A, B)^T x khatri-rao(A, B) = A^T x A  * B^T x B</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
-    <span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
-        <span class="n">norm</span> <span class="o">*=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">factor</span><span class="p">),</span> <span class="n">factor</span><span class="p">)</span>
-    
+
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1">#norm = T.dot(T.dot(weights, norm), weights)</span>
-        <span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="c1"># norm = T.dot(T.dot(weights, norm), weights)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
 
     <span class="c1"># We sum even if weigths is not None</span>
     <span class="c1"># as e.g. MXNet would return a 1D tensor, not a 0D tensor</span>
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="cp_permute_factors"><a class="viewcode-back" href="../../modules/generated/tensorly.cp_tensor.cp_permute_factors.html#tensorly.cp_tensor.cp_permute_factors">[docs]</a><span class="k">def</span> <span class="nf">cp_permute_factors</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="p">,</span> <span class="n">tensors_to_permute</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compares factors of a reference cp tensor with factors of other another tensor (or list of tensor) in order to match component order.</span>
+<span class="sd">    Permutation occurs on the columns of factors, minimizing the cosine distance to reference cp tensor with scipy</span>
+<span class="sd">    Linear Sum Assignment method. The permuted tensor (or list of tensors) and list of permutation for each permuted tensors are returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref_cp_tensor : cp tensor</span>
+<span class="sd">        The tensor that serves as a reference for permutation.</span>
+<span class="sd">    tensors_to_permute : cp tensor or list of cp tensors</span>
+<span class="sd">        The tensors to permute so that the order of components match the reference tensor. Number of components must match.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    permuted_tensors : permuted cp tensor or list of cp tensors</span>
+<span class="sd">    permutation : list</span>
+<span class="sd">        list of permuted indices. Lenght is equal to rank of cp_tensors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">permuted_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensors_to_permute</span><span class="o">.</span><span class="n">cp_copy</span><span class="p">()]</span>
+        <span class="n">tensors_to_permute</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensors_to_permute</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">permuted_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">)):</span>
+            <span class="n">permuted_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cp_copy</span><span class="p">())</span>
+            <span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">ref_cp_tensor</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="p">)</span>
+    <span class="n">n_tensors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">)</span>
+    <span class="n">n_factors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="o">.</span><span class="n">factors</span><span class="p">)</span>
+    <span class="n">permutation</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ref_factors</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">ref_cp_tensor</span><span class="o">.</span><span class="n">factors</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_tensors</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">congruence_coefficient</span><span class="p">(</span>
+            <span class="n">ref_factors</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">tensors_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">factors</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">T</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_factors</span><span class="p">):</span>
+            <span class="n">permuted_tensors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">permuted_tensors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="n">f</span><span class="p">][:,</span> <span class="n">col</span><span class="p">]</span>
+        <span class="n">permuted_tensors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">permuted_tensors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="n">permutation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">permuted_tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">permuted_tensors</span> <span class="o">=</span> <span class="n">permuted_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">permuted_tensors</span><span class="p">,</span> <span class="n">permutation</span></div>
+
+
 <span class="c1"># Deprecated classes and functions</span>
-<span class="n">KruskalTensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;KruskalTensor&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">CPTensor</span><span class="p">)</span>
-<span class="n">kruskal_norm</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;kruskal_norm&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_norm</span><span class="p">)</span>
-<span class="n">kruskal_mode_dot</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;kruskal_mode_dot&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_mode_dot</span><span class="p">)</span>
-<span class="n">kruskal_to_tensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;kruskal_to_tensor&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_tensor</span><span class="p">)</span>
-<span class="n">kruskal_to_unfolded</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;kruskal_to_unfolded&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_unfolded</span><span class="p">)</span>
-<span class="n">kruskal_to_vec</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s1">&#39;kruskal_to_vec&#39;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_vec</span><span class="p">)</span>
+<span class="n">KruskalTensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;KruskalTensor&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">CPTensor</span><span class="p">)</span>
+<span class="n">kruskal_norm</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_norm&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_norm</span><span class="p">)</span>
+<span class="n">kruskal_mode_dot</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
+    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_mode_dot&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_mode_dot</span>
+<span class="p">)</span>
+<span class="n">kruskal_to_tensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
+    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_tensor&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_tensor</span>
+<span class="p">)</span>
+<span class="n">kruskal_to_unfolded</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
+    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_unfolded&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_unfolded</span>
+<span class="p">)</span>
+<span class="n">kruskal_to_vec</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
+    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_vec&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_vec</span>
+<span class="p">)</span>
 </pre></div>
 
-        </div>
+      </div>
 
-		
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

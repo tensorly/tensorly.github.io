@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tensorly.tenalg.svd &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+
+  
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+ <script src="../../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../../index.html">
+            <img src="../../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../../../modules/api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../../../auto_examples/index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+
+      <div class="container content main-content">
+        
+  <h1>Source code for tensorly.tenalg.svd</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">.proximal</span> <span class="kn">import</span> <span class="n">soft_thresholding</span>
+
+<span class="c1"># Authors: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
+<span class="c1">#          Meraj Hashemizadeh &lt;merajhse@mila.quebec&gt;</span>
+<span class="c1">#          Aaron Meyer &lt;tensorly@ameyer.me&gt;</span>
+
+<span class="c1"># License: BSD 3 clause</span>
+
+
+<span class="k">def</span> <span class="nf">svd_flip</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">u_based_decision</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sign correction to ensure deterministic output from SVD.</span>
+<span class="sd">    Adjusts the columns of u and the rows of v such that the loadings in the</span>
+<span class="sd">    columns in u that are largest in absolute value are always positive.</span>
+<span class="sd">    This function is borrowed from scikit-learn/utils/extmath.py</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    U : ndarray</span>
+<span class="sd">        u and v are the output of SVD</span>
+<span class="sd">    V : ndarray</span>
+<span class="sd">        u and v are the output of SVD</span>
+<span class="sd">    u_based_decision : boolean, (default=True)</span>
+<span class="sd">        If True, use the columns of u as the basis for sign flipping.</span>
+<span class="sd">        Otherwise, use the rows of v. The choice of which variable to base the</span>
+<span class="sd">        decision on is generally algorithm dependent.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    u_adjusted, v_adjusted : arrays with the same dimensions as the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">u_based_decision</span><span class="p">:</span>
+        <span class="c1"># columns of U, rows of V</span>
+        <span class="n">max_abs_cols</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">signs</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">max_abs_cols</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))],</span>
+                <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">U</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">U</span> <span class="o">*</span> <span class="n">signs</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">signs</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">signs</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">])))</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">signs</span><span class="p">[:</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]][:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># rows of V, columns of U</span>
+        <span class="n">max_abs_rows</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">signs</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">max_abs_rows</span><span class="p">)],</span>
+                <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">V</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">signs</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">signs</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">signs</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">V</span><span class="p">)[</span><span class="mi">0</span><span class="p">])))</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">U</span> <span class="o">*</span> <span class="n">signs</span><span class="p">[:</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span>
+
+
+<span class="k">def</span> <span class="nf">make_svd_non_negative</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">nntype</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use NNDSVD method to transform SVD results into a non-negative form. This</span>
+<span class="sd">    method leads to more efficient solving with NNMF [1].</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tensor being decomposed</span>
+<span class="sd">    U, S, V: SVD factorization results</span>
+<span class="sd">    nntype : {&#39;nndsvd&#39;, &#39;nndsvda&#39;}</span>
+<span class="sd">        Whether to fill small values with 0.0 (nndsvd), or the tensor mean (nndsvda, default).</span>
+
+<span class="sd">    [1]: Boutsidis &amp; Gallopoulos. Pattern Recognition, 41(4): 1350-1362, 2008.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nntype</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">nntype</span> <span class="o">=</span> <span class="s2">&quot;nndsvda&quot;</span>
+
+    <span class="c1"># NNDSVD initialization</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+    <span class="c1"># The leading singular triplet is non-negative</span>
+    <span class="c1"># so it can be used as is for initialization.</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]))</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">U</span><span class="p">)[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">U</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># extract positive and negative parts of column vectors</span>
+        <span class="n">x_p</span><span class="p">,</span> <span class="n">y_p</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">x_n</span><span class="p">,</span> <span class="n">y_n</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)),</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">0.0</span><span class="p">))</span>
+
+        <span class="c1"># and their norms</span>
+        <span class="n">x_p_nrm</span><span class="p">,</span> <span class="n">y_p_nrm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_p</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_p</span><span class="p">)</span>
+        <span class="n">x_n_nrm</span><span class="p">,</span> <span class="n">y_n_nrm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_n</span><span class="p">),</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_n</span><span class="p">)</span>
+
+        <span class="n">m_p</span><span class="p">,</span> <span class="n">m_n</span> <span class="o">=</span> <span class="n">x_p_nrm</span> <span class="o">*</span> <span class="n">y_p_nrm</span><span class="p">,</span> <span class="n">x_n_nrm</span> <span class="o">*</span> <span class="n">y_n_nrm</span>
+
+        <span class="c1"># choose update</span>
+        <span class="k">if</span> <span class="n">m_p</span> <span class="o">&gt;</span> <span class="n">m_n</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">x_p</span> <span class="o">/</span> <span class="n">x_p_nrm</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">y_p</span> <span class="o">/</span> <span class="n">y_p_nrm</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">m_p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">x_n</span> <span class="o">/</span> <span class="n">x_n_nrm</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">y_n</span> <span class="o">/</span> <span class="n">y_n_nrm</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">m_n</span>
+
+        <span class="n">lbd</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">lbd</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:],</span> <span class="n">lbd</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># After this point we no longer need H</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nntype</span> <span class="o">==</span> <span class="s2">&quot;nndsvd&quot;</span><span class="p">:</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">soft_thresholding</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">nntype</span> <span class="o">==</span> <span class="s2">&quot;nndsvda&quot;</span><span class="p">:</span>
+        <span class="n">avg</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">W</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">W</span><span class="p">))</span> <span class="o">*</span> <span class="n">avg</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Invalid nntype parameter: got </span><span class="si">{</span><span class="n">nntype</span><span class="si">}</span><span class="s1"> instead of one of (&quot;nndsvd&quot;, &quot;nndsvda&quot;)&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">W</span>
+
+
+<span class="k">def</span> <span class="nf">randomized_range_finder</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">n_dims</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes an orthonormal matrix (Q) whose range approximates the range of A,  i.e., Q Q^H A ≈ A</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : 2D-array</span>
+<span class="sd">    n_dims : int, dimension of the returned subspace</span>
+<span class="sd">    n_iter : int, number of power iterations to conduct (default = 2)</span>
+<span class="sd">    random_state: {None, int, np.random.RandomState}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Q : 2D-array</span>
+<span class="sd">        of shape (A.shape[0], min(n_dims, A.shape[0], A.shape[1]))</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is implemented based on Algorith 4.4 in `Finding structure with randomness:</span>
+<span class="sd">    Probabilistic algorithms for constructing approximate matrix decompositions`</span>
+<span class="sd">    - Halko et al (2009)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dim_2</span><span class="p">,</span> <span class="n">n_dims</span><span class="p">)),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+    <span class="n">Q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+
+    <span class="c1"># Perform power iterations when spectrum decays slowly</span>
+    <span class="n">A_H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter</span><span class="p">):</span>
+        <span class="n">Q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A_H</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+        <span class="n">Q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">Q</span>
+
+
+<span class="k">def</span> <span class="nf">svd_checks</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs common checks to all of the SVD methods.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : 2D-array</span>
+<span class="sd">    n_eigenvecs : int, optional, default is None</span>
+<span class="sd">        if specified, number of eigen[vectors-values] to return</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    n_eigenvecs : int</span>
+<span class="sd">        the number of eigenvectors to solve for</span>
+<span class="sd">    min_dim : int</span>
+<span class="sd">        the minimum dimension of matrix</span>
+<span class="sd">    max_dim : int</span>
+<span class="sd">        the maximum dimension of matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check that matrix is... a matrix!</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;matrix be a matrix. matrix.ndim is </span><span class="si">{</span><span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span><span class="si">}</span><span class="s2"> != 2&quot;</span><span class="p">)</span>
+
+    <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">min_dim</span><span class="p">,</span> <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_eigenvecs</span> <span class="o">=</span> <span class="n">max_dim</span>
+
+    <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;</span> <span class="n">max_dim</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Trying to compute SVD with n_eigenvecs=</span><span class="si">{</span><span class="n">n_eigenvecs</span><span class="si">}</span><span class="s2">, which is larger &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;than max(matrix.shape)=</span><span class="si">{</span><span class="n">max_dim</span><span class="si">}</span><span class="s2">. Setting n_eigenvecs to </span><span class="si">{</span><span class="n">max_dim</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">n_eigenvecs</span> <span class="o">=</span> <span class="n">max_dim</span>
+
+    <span class="k">return</span> <span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">min_dim</span><span class="p">,</span> <span class="n">max_dim</span>
+
+
+<span class="k">def</span> <span class="nf">truncated_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes a truncated SVD on `matrix` using the backends&#39;s standard SVD</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : 2D-array</span>
+<span class="sd">    n_eigenvecs : int, optional, default is None</span>
+<span class="sd">        if specified, number of eigen[vectors-values] to return</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    U : 2D-array</span>
+<span class="sd">        of shape (matrix.shape[0], n_eigenvecs)</span>
+<span class="sd">        contains the right singular vectors</span>
+<span class="sd">    S : 1D-array</span>
+<span class="sd">        of shape (n_eigenvecs, )</span>
+<span class="sd">        contains the singular values of `matrix`</span>
+<span class="sd">    V : 2D-array</span>
+<span class="sd">        of shape (n_eigenvecs, matrix.shape[1])</span>
+<span class="sd">        contains the left singular vectors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">min_dim</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">svd_checks</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">)</span>
+    <span class="n">full_matrices</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;</span> <span class="n">min_dim</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="n">full_matrices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">S</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">],</span> <span class="n">V</span><span class="p">[:</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="p">:]</span>
+
+
+<span class="k">def</span> <span class="nf">symeig_svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes a truncated SVD on `matrix` using symeig</span>
+
+<span class="sd">        Uses symeig on matrix.T.dot(matrix) or its transpose</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : 2D-array</span>
+<span class="sd">    n_eigenvecs : int, optional, default is None</span>
+<span class="sd">        if specified, number of eigen[vectors-values] to return</span>
+<span class="sd">    **kwargs : optional</span>
+<span class="sd">        kwargs are used to absorb the difference of parameters among the other SVD functions</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    U : 2D-array</span>
+<span class="sd">        of shape (matrix.shape[0], n_eigenvecs)</span>
+<span class="sd">        contains the right singular vectors</span>
+<span class="sd">    S : 1D-array</span>
+<span class="sd">        of shape (n_eigenvecs, )</span>
+<span class="sd">        contains the singular values of `matrix`</span>
+<span class="sd">    V : 2D-array</span>
+<span class="sd">        of shape (n_eigenvecs, matrix.shape[1])</span>
+<span class="sd">        contains the left singular vectors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">svd_checks</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">)</span>
+
+    <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dim_1</span> <span class="o">&gt;</span> <span class="n">dim_2</span><span class="p">:</span>
+        <span class="n">S</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix</span><span class="p">)))</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">dtype</span><span class="p">)))</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">U</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">matrix</span><span class="p">))</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">dtype</span><span class="p">)))</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">S</span><span class="p">),</span>
+        <span class="n">tl</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">V</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">U</span><span class="p">[:,</span> <span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">dim_1</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="p">)],</span>
+        <span class="n">S</span><span class="p">[:</span> <span class="nb">min</span><span class="p">(</span><span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="p">)],</span>
+        <span class="n">V</span><span class="p">[:</span> <span class="nb">min</span><span class="p">(</span><span class="n">dim_2</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="p">),</span> <span class="p">:],</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">randomized_svd</span><span class="p">(</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_oversamples</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">n_iter</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes a truncated randomized SVD.</span>
+
+<span class="sd">    If `n_eigenvecs` is specified, sparse eigendecomposition is used on</span>
+<span class="sd">    either matrix.dot(matrix.T) or matrix.T.dot(matrix).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : tensor</span>
+<span class="sd">        A 2D tensor.</span>
+<span class="sd">    n_eigenvecs : int, optional, default is None</span>
+<span class="sd">        If specified, number of eigen[vectors-values] to return.</span>
+<span class="sd">    n_oversamples: int, optional, default = 5</span>
+<span class="sd">        rank overestimation value for finiding subspace with better allignment</span>
+<span class="sd">    n_iter: int, optional, default = 2</span>
+<span class="sd">        number of power iterations for the `randomized_range_finder` subroutine</span>
+<span class="sd">    random_state: {None, int, np.random.RandomState}</span>
+<span class="sd">    **kwargs : optional</span>
+<span class="sd">        kwargs are used to absorb the difference of parameters among the other SVD functions</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    U : 2-D tensor, shape (matrix.shape[0], n_eigenvecs)</span>
+<span class="sd">        Contains the right singular vectors</span>
+<span class="sd">    S : 1-D tensor, shape (n_eigenvecs, )</span>
+<span class="sd">        Contains the singular values of `matrix`</span>
+<span class="sd">    V : 2-D tensor, shape (n_eigenvecs, matrix.shape[1])</span>
+<span class="sd">        Contains the left singular vectors</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is implemented based on Algorith 5.1 in `Finding structure with randomness:</span>
+<span class="sd">    Probabilistic algorithms for constructing approximate matrix decompositions`</span>
+<span class="sd">    - Halko et al (2009)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_eigenvecs</span><span class="p">,</span> <span class="n">min_dim</span><span class="p">,</span> <span class="n">max_dim</span> <span class="o">=</span> <span class="n">svd_checks</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">)</span>
+
+    <span class="n">dim_1</span><span class="p">,</span> <span class="n">dim_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">n_dims</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_eigenvecs</span> <span class="o">+</span> <span class="n">n_oversamples</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">dim_1</span> <span class="o">&gt;</span> <span class="n">dim_2</span>
+        <span class="ow">and</span> <span class="n">n_eigenvecs</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_dim</span><span class="p">,</span> <span class="n">n_dims</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">dim_1</span> <span class="o">&lt;</span> <span class="n">dim_2</span>
+        <span class="ow">and</span> <span class="n">n_eigenvecs</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_dim</span><span class="p">,</span> <span class="n">n_dims</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="c1"># transpose matrix to keep the reduced matrix shape minimal</span>
+        <span class="n">matrix_T</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">randomized_range_finder</span><span class="p">(</span>
+            <span class="n">matrix_T</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="n">n_dims</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="p">)</span>
+        <span class="n">Q_H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span>
+        <span class="n">matrix_reduced</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q_H</span><span class="p">,</span> <span class="n">matrix_T</span><span class="p">))</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">truncated_svd</span><span class="p">(</span><span class="n">matrix_reduced</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">randomized_range_finder</span><span class="p">(</span>
+            <span class="n">matrix</span><span class="p">,</span> <span class="n">n_dims</span><span class="o">=</span><span class="n">n_dims</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+        <span class="p">)</span>
+        <span class="n">Q_H</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Q</span><span class="p">))</span>
+        <span class="n">matrix_reduced</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q_H</span><span class="p">,</span> <span class="n">matrix</span><span class="p">)</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">truncated_svd</span><span class="p">(</span><span class="n">matrix_reduced</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">)</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span>
+
+
+<span class="n">SVD_FUNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span> <span class="s2">&quot;symeig_svd&quot;</span><span class="p">,</span> <span class="s2">&quot;randomized_svd&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="svd_interface"><a class="viewcode-back" href="../../../modules/generated/tensorly.tenalg.svd_interface.html#tensorly.tenalg.svd_interface">[docs]</a><span class="k">def</span> <span class="nf">svd_interface</span><span class="p">(</span>
+    <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
+    <span class="n">n_eigenvecs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">flip_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">u_based_flip_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">non_negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_iter_mask_imputation</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dispatching function to various SVD algorithms, alongside additional</span>
+<span class="sd">    properties such as resolving sign invariance, imputation, and non-negativity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matrix : tensor</span>
+<span class="sd">        A 2D tensor.</span>
+<span class="sd">    method : str, default is &#39;truncated_svd&#39;</span>
+<span class="sd">        Function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS or a callable.</span>
+<span class="sd">    n_eigenvecs : int, optional, default is None</span>
+<span class="sd">        If specified, number of eigen[vectors-values] to return.</span>
+<span class="sd">    flip_sign : bool, optional, default is True</span>
+<span class="sd">        Whether to resolve the sign indeterminacy of SVD.</span>
+<span class="sd">    u_based_flip_sign : bool, optional, default is True</span>
+<span class="sd">        Whether the sign indeterminacy should be resolved using U (vs. V).</span>
+<span class="sd">    non_negative : bool, optional, default is False</span>
+<span class="sd">        Whether to make the SVD results non-negative.</span>
+<span class="sd">    nn_type : str, default is &#39;nndsvd&#39;</span>
+<span class="sd">        Algorithm to use for converting U to be non-negative.</span>
+<span class="sd">    mask : tensor, default is None.</span>
+<span class="sd">        Array of booleans with the same shape as ``matrix``. Should be 0 where</span>
+<span class="sd">        the values are missing and 1 everywhere else. None if nothing is missing.</span>
+<span class="sd">    n_iter_mask_imputation : int, default is 5</span>
+<span class="sd">        Number of repetitions to apply in missing value imputation.</span>
+<span class="sd">    **kwargs : optional</span>
+<span class="sd">        Arguments passed along to individual SVD algorithms.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    U : 2-D tensor, shape (matrix.shape[0], n_eigenvecs)</span>
+<span class="sd">        Contains the right singular vectors of `matrix`</span>
+<span class="sd">    S : 1-D tensor, shape (n_eigenvecs, )</span>
+<span class="sd">        Contains the singular values of `matrix`</span>
+<span class="sd">    V : 2-D tensor, shape (n_eigenvecs, matrix.shape[1])</span>
+<span class="sd">        Contains the left singular vectors of `matrix`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;truncated_svd&quot;</span><span class="p">:</span>
+        <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">truncated_svd</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;symeig_svd&quot;</span><span class="p">:</span>
+        <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">symeig_svd</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;randomized_svd&quot;</span><span class="p">:</span>
+        <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">randomized_svd</span>
+    <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+        <span class="n">svd_fun</span> <span class="o">=</span> <span class="n">method</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Got svd=</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">. However, the possible choices are </span><span class="si">{</span><span class="n">SVD_FUNS</span><span class="si">}</span><span class="s2"> or to pass a callable.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_mask_imputation</span><span class="p">):</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">*</span> <span class="n">mask</span> <span class="o">+</span> <span class="p">(</span><span class="n">U</span> <span class="o">@</span> <span class="n">tl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">V</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mask</span><span class="p">)</span>
+            <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">flip_sign</span><span class="p">:</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd_flip</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">u_based_decision</span><span class="o">=</span><span class="n">u_based_flip_sign</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">non_negative</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">non_negative</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">make_svd_non_negative</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">non_negative</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span></div>
+</pre></div>
+
+      </div>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

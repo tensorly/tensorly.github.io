@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>4. Tensor decomposition &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -25,9 +25,8 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -41,6 +40,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="5. Tensor regression" href="tensor_regression.html" />
     <link rel="prev" title="3. Tensor basics" href="tensor_basics.html" />
@@ -53,15 +53,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
             <img src="../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -75,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="index.html">
+              <a class="navbar-item" href="index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -120,61 +121,39 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -201,35 +180,35 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensor-decomposition">
 <h1><span class="section-number">4. </span>Tensor decomposition</h1>
 <p>One of the greatest features of tensors is that they can be represented compactly in decomposed forms and we have powerful methods with guarantees to obtain these decompositions.</p>
 <p>In this tutorial we will go over these decomposed forms and how to perform tensor decomposition.
-Refer to <a class="footnote-reference brackets" href="#id3" id="id1">1</a> for more information on tensor decomposition.</p>
+Refer to <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for more information on tensor decomposition.</p>
 <section id="cp-form-of-a-tensor">
 <h2><span class="section-number">4.1. </span>CP form of a tensor</h2>
 <p>The idea is to express the tensor as a sum of rank one tensors. That is, a sum of outer product of vectors.
 Such representation can be obtained by applying Canonical Polyadic Decomposition (also known as CANDECOMP-PARAFAC, CP, or PARAFAC decomposition).</p>
 <section id="candecomp-parafac-decomposition">
 <h3><span class="section-number">4.1.1. </span>CANDECOMP-PARAFAC decomposition</h3>
-<p>We demonstrate here how to perform a Canonical Polyadic Decomposition. A rank-r Parafac decomposes a tensor into a linear combination of r rank-1 tensors (See <a class="footnote-reference brackets" href="#id3" id="id2">1</a> for more details).</p>
+<p>We demonstrate here how to perform a Canonical Polyadic Decomposition. A rank-r Parafac decomposes a tensor into a linear combination of r rank-1 tensors (See <a class="footnote-reference brackets" href="#id3" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for more details).</p>
 <p>First, let’s create a second order tensor that is zero everywhere except in a swiss shape that is one.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -355,22 +334,24 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </section>
 <section id="references">
 <h2><span class="section-number">4.4. </span>References</h2>
-<dl class="footnote brackets">
-<dt class="label" id="id3"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
-</dd>
-</dl>
+</aside>
+</aside>
 </section>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensor_basics.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensor_basics.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -378,7 +359,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="tensor_regression.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="tensor_regression.html" title="next page" accesskey="n">
         <span><span class="section-number">5. </span>Tensor regression </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -387,27 +368,33 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">4. Tensor decomposition</a><ul>
 <li><a class="reference internal" href="#cp-form-of-a-tensor">4.1. CP form of a tensor</a><ul>
@@ -431,12 +418,12 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

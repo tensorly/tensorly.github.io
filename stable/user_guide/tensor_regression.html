@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>5. Tensor regression &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -25,9 +25,8 @@
 
   
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -41,6 +40,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="6. Sparse Backend" href="sparse_backend.html" />
     <link rel="prev" title="4. Tensor decomposition" href="tensor_decomposition.html" />
@@ -53,15 +53,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../index.html">
             <img src="../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -75,44 +71,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../installation.html">
+            
+              <a class="navbar-item" href="../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="index.html">
+              <a class="navbar-item" href="index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../modules/api.html">
+              <a class="navbar-item" href="../modules/api.html">
               API
             </a>
-            <a class="navbar-item" href="../auto_examples/index.html">
+              <a class="navbar-item" href="../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../about.html">
+              <a class="navbar-item" href="../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -120,61 +121,39 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../search.html" method="get">
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -201,23 +180,23 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensor-regression">
 <h1><span class="section-number">5. </span>Tensor regression</h1>
 <p>TensorLy also allows you to perform Tensor Regression.</p>
@@ -228,29 +207,30 @@
 <div class="math notranslate nohighlight">
 \[y_i = \langle \tilde X_i, \tilde W \rangle\]</div>
 <p>We additionally impose that <span class="math notranslate nohighlight">\(\tilde W\)</span> be a rank-r CP decomposition (CP regression) or a rank <span class="math notranslate nohighlight">\((r_1, \cdots, r_N)\)</span>-Tucker decomposition (Tucker regression).
-For a detailed explanation on tensor regression, please refer to <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+For a detailed explanation on tensor regression, please refer to <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
 <p>TensorLy implements both types of tensor regression as scikit-learn-like estimators.</p>
 <p>For instance, Krusal regression is available through the <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorly.regression.CPRegression</span></code> object. This implements a fit method that takes as parameters <cite>X</cite>, the data tensor which first dimension is the number of samples, and <cite>y</cite>, the corresponding vector of labels.</p>
 <p>Given a set of testing samples, you can use the predict method to obtain the corresponding predictions from the model.</p>
 </section>
 <section id="references">
 <h2><span class="section-number">5.2. </span>References</h2>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>W. Guo, I. Kotsia, and I. Patras. “Tensor Learning for Regression”,
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>W. Guo, I. Kotsia, and I. Patras. “Tensor Learning for Regression”,
 IEEE Transactions on Image Processing 21.2 (2012), pp. 816–827</p>
-</dd>
-</dl>
+</aside>
+</aside>
 </section>
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button is-medium pagination-previous" href="tensor_decomposition.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="tensor_decomposition.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
@@ -258,7 +238,7 @@ IEEE Transactions on Image Processing 21.2 (2012), pp. 816–827</p>
     </a>
     
     
-    <a class="button is-medium pagination-next" href="sparse_backend.html" title="next page" accesskey="n">
+    <a class="button pagination-next" href="sparse_backend.html" title="next page" accesskey="n">
         <span><span class="section-number">6. </span>Sparse Backend </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
@@ -267,27 +247,33 @@ IEEE Transactions on Image Processing 21.2 (2012), pp. 816–827</p>
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
     
     <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    <aside class="sticky-nav localtoc">  
-        <div class="menu menu-list">
-        <p class="menu-label">On this page</p>
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
         <ul>
 <li><a class="reference internal" href="#">5. Tensor regression</a><ul>
 <li><a class="reference internal" href="#setting">5.1. Setting</a></li>
@@ -300,12 +286,12 @@ IEEE Transactions on Image Processing 21.2 (2012), pp. 816–827</p>
     </aside>
     </div>
 
-    
+  
 
-  </div>
-  </div>
+  </div>  
+  </div> 
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");

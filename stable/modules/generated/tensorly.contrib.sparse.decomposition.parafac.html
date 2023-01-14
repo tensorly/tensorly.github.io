@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>tensorly.contrib.sparse.decomposition.parafac &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -25,9 +25,8 @@
 
   
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -40,6 +39,7 @@
   gtag('config', 'G-3V91QCZR03');
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -50,15 +50,11 @@
     <navbar>
       <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
         <div class="navbar-brand">
-        <!-- Always displayed, last item has to be navbar-burger -->
+        
 
           <a class="navbar-item" href="../../index.html">
             <img src="../../_static/logo_tensorly.png" height="28">
           </a>
-
-          <!-- <a class="navbar-item is-hidden-desktop" href="../../index.html">
-            <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-          </a> -->
           <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon"><i class="fab fa-github"></i></span>
           </a>
@@ -72,44 +68,49 @@
         </div>
         
         <div class="navbar-menu" id="top-nav-menu">
-        <!-- only on larger displays (> 1024px) -->
+        
 
           <div class="navbar-start">
-          <!-- RIGHT -->
-            <a class="navbar-item" href="../../installation.html">
+            
+              <a class="navbar-item" href="../../installation.html">
               Install
             </a>
-            <a class="navbar-item" href="../../user_guide/index.html">
+              <a class="navbar-item" href="../../user_guide/index.html">
               User Guide
             </a>
-            <a class="navbar-item" href="../api.html">
+              <a class="navbar-item" href="../api.html">
               API
             </a>
-            <a class="navbar-item" href="../../auto_examples/index.html">
+              <a class="navbar-item" href="../../auto_examples/index.html">
               Examples
             </a>
-            <a class="navbar-item" href="../../about.html">
+              <a class="navbar-item" href="../../about.html">
               About Us
             </a>
-            <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
-              Notebooks
-            </a>
-
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
           </div>
         
           <div class="navbar-end">
             <div class="navbar-item">
-            <!-- LEFT -->
-
-            <!-- <a class="navbar-item is-hidden-touch" href="../../index.html">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fa fa-home"></i>
-                </span>
-                <span>Home</span>
-              </span>
-              <span class="icon"><i class="fa fa-home" aria-hidden="true"></i></span>
-            </a> -->
+            
             <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
               <span class="icon-text">
                 <span class="icon is-large">
@@ -117,61 +118,39 @@
                 </span>
                 <span>Github</span>
               </span>
-                <!-- <span class="icon"><i class="fab fa-github"></i></span> -->
             </a>
 
-            </div> <!-- navbar item -->
-          </div> <!-- navbar end -->
-        </div> <!-- only large items -->
+            </div> 
+          </div> 
+        </div> 
 
       </nav>
       
     </navbar>
   </header>
 
+
   <div id="column-container">
   <div class="columns is-mobile is-centered">
 	
+  
       <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
-    <!-- Side menu  -->
+    
     <aside class="sticky-nav sidebar-menu">
 <div class="sidebar-search">
   <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
     <!-- <label class="label" id="searchlabel">Quick search</label> -->
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
       <div class="control">
         <input class="button is-info" type="submit" value="Go" />
       </div>
     </div>
   </form>
-  <script>$('#searchbox').show(0);</script>
-  <script>
-  $(document).ready(function() {
-    Document.highlightSearchWords = function() {
-      var params = $.getQueryParameters();
-      var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
-      if (terms.length) {
-        var body = $('div.body');
-        if (!body.length) {
-          body = $('body');
-        }
-        window.setTimeout(function() {
-          $.each(terms, function() {
-            body.highlightText(this.toLowerCase(), 'highlighted');
-          });
-        }, 10);
-        $('<p class="highlight-link"><a href="javascript:Documentation.' +
-          'hideSearchWords()">' + _('Hide All')
-          + '<span class="tag is-delete"></span>'
-          + '</a></p>')
-            .appendTo($('#searchbox'));
-      }
-    };
-  });
-  </script>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
 </div>
       
       <div class="sidebar-menu-toc">
@@ -190,35 +169,33 @@
   </div>
   
 
-    <div class="column main-column">
+  <div class="column main-column">
 
-      <!-- Main content  -->
-      <section class="main-section">
+    
+    <div class="main-section">
 
-        <!-- Toggle menu button -->
-		
-        <div class="side-menu-toggle">
-          <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
-            <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
-            <span>menu</span> 
-          </button>
-        </div>
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
         
-
-        <div class="content main-content">
-          
   <section id="tensorly-contrib-sparse-decomposition-parafac">
 <h1>tensorly.contrib.sparse.decomposition.parafac</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.contrib.sparse.decomposition.parafac">
-<span class="sig-name descname"><span class="pre">parafac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numpy_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthogonalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cvg_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abs_rec_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_mask_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">parafac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthogonalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l2_reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cvg_criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abs_rec_error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_mask_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>CANDECOMP/PARAFAC decomposition via alternating least squares (ALS)
 Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class="reference internal" href="#r8eaaee98a9c3-1" id="id1">[1]</a> such that:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span> <span class="o">=</span> <span class="p">[</span><span class="o">|</span><span class="n">weights</span><span class="p">;</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">...</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span><span class="p">]</span><span class="o">.</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">tensor</span> <span class="pre">=</span> <span class="pre">[|weights;</span> <span class="pre">factors[0],</span> <span class="pre">...,</span> <span class="pre">factors[-1]</span> <span class="pre">|]</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>tensor</strong><span class="classifier">ndarray</span></dt><dd></dd>
 <dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>Number of components.</p>
@@ -229,7 +206,7 @@ Computes a rank-<cite>rank</cite> decomposition of <cite>tensor</cite> <a class=
 If a CPTensor is passed, this is directly used for initalization.
 See <cite>initialize_factors</cite>.</p>
 </dd>
-<dt><strong>svd</strong><span class="classifier">str, default is ‘numpy_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
 <dt><strong>normalize_factors</strong><span class="classifier">if True, aggregate the weights of each factor in a 1D-tensor</span></dt><dd><p>of shape (rank, ), which will contain the norms of the factors</p>
 </dd>
@@ -247,7 +224,7 @@ the values are missing and 1 everywhere else. Note:  if tensor is
 sparse, then mask should also be sparse with a fill value of 1 (or
 True). Allows for missing values <a class="reference internal" href="#r8eaaee98a9c3-2" id="id2">[2]</a></p>
 </dd>
-<dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None. 
+<dt><strong>cvg_criterion</strong><span class="classifier">{‘abs_rec_error’, ‘rec_error’}, optional</span></dt><dd><p>Stopping criterion for ALS, works if <cite>tol</cite> is not None.
 If ‘rec_error’,  ALS stops at current iteration if <code class="docutils literal notranslate"><span class="pre">(previous</span> <span class="pre">rec_error</span> <span class="pre">-</span> <span class="pre">current</span> <span class="pre">rec_error)</span> <span class="pre">&lt;</span> <span class="pre">tol</span></code>.
 If ‘abs_rec_error’, ALS terminates when <cite>|previous rec_error - current rec_error| &lt; tol</cite>.</p>
 </dd>
@@ -263,7 +240,7 @@ remove the effect of these missing values on the initialization.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>CPTensor</strong><span class="classifier">(weight, factors)</span></dt><dd><ul class="simple">
 <li><p>weights : 1D array of shape (rank, )</p>
@@ -282,56 +259,80 @@ remove the effect of these missing values on the initialization.</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="r8eaaee98a9c3-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”, SIAM 
+<div role="list" class="citation-list">
+<div class="citation" id="r8eaaee98a9c3-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”, SIAM
 REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
-</dd>
-<dt class="label" id="r8eaaee98a9c3-2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.” 
+</div>
+<div class="citation" id="r8eaaee98a9c3-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Tomasi, Giorgio, and Rasmus Bro. “PARAFAC and missing values.”
 Chemometrics and Intelligent Laboratory Systems 75.2 (2005): 163-180.</p>
-</dd>
-<dt class="label" id="r8eaaee98a9c3-3"><span class="brackets">3</span></dt>
-<dd><p>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and 
+</div>
+<div class="citation" id="r8eaaee98a9c3-3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and
 Applications”, PhD., University of Amsterdam, 1998</p>
-</dd>
-</dl>
+</div>
+</div>
 </dd></dl>
 
 </section>
 
 
-        </div>
+      </div>
 
-		
+      
         <nav class="pagination" role="navigation" aria-label="pagination">
     
     
 </nav>
 
-        
-
-      </section>
+      
 
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2021, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
 
     </div>
 
+  </div>  
+
 	
     
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
 
-    
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
 
-  </div>
-  </div>
+        <div class="menu menu-list localtoc-list">
+        <ul>
+<li><a class="reference internal" href="#">tensorly.contrib.sparse.decomposition.parafac</a><ul>
+<li><a class="reference internal" href="#tensorly.contrib.sparse.decomposition.parafac"><code class="docutils literal notranslate"><span class="pre">parafac</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-  <!-- Include here scripts that need to be added after the page is loaded -->
+        </div>
+    </aside>
+    </div>
+
+  
+
+  </div>  
+  </div> 
+
+  
   <script>
     function toggle_sidebar() {
         var element = document.getElementById("sidebar");
