@@ -147,6 +147,7 @@
   <h1>Source code for tensorly.metrics.factors</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linear_sum_assignment</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="congruence_coefficient"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.factors.congruence_coefficient.html#tensorly.metrics.factors.congruence_coefficient">[docs]</a><span class="k">def</span> <span class="nf">congruence_coefficient</span><span class="p">(</span><span class="n">matrix1</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">,</span> <span class="n">absolute_value</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -161,12 +162,17 @@
 <span class="sd">        \\frac{\\mathbf{v}_1^T \\mathbf{v}_1^T}{\\|\\mathbf{v}_1^T\\| \\|\\mathbf{v}_1^T\\|}</span>
 
 <span class="sd">    When we compute the congruence between two matrices, we find the optimal permutation of</span>
-<span class="sd">    the columns and return the mean congruence and the permutation.</span>
+<span class="sd">    the columns and return the mean congruence and the permutation. The output permutation is the one</span>
+<span class="sd">    that permutes the columns of matrix2 onto the closest columns in matrix1.</span>
+
+<span class="sd">    If a list of matrices is provided for each input, we define the congruence coefficient as the</span>
+<span class="sd">    product of the absolute values of pairs of matrices. The lists must therefore have the same size.</span>
+<span class="sd">    The output permutation also applies to each matrix of the lists.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    matrix1 : tensorly.Tensor</span>
-<span class="sd">    matrix2 : tensorly.Tensor</span>
+<span class="sd">    matrix1 : tensorly.Tensor or list of tensorly.Tensor</span>
+<span class="sd">    matrix2 : tensorly.Tensor of list of tensorly.Tensor to permute.</span>
 <span class="sd">    absolute_value : bool</span>
 <span class="sd">        Whether to take the absolute value of all vector products before finding the optimal permutation.</span>
 
@@ -175,21 +181,38 @@
 <span class="sd">    congruence : float</span>
 <span class="sd">    permutation : list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_cols</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix1</span><span class="p">)</span> <span class="o">!=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix2</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Matrices must have same shape&quot;</span><span class="p">)</span>
-
-    <span class="n">matrix1</span> <span class="o">=</span> <span class="n">matrix1</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">matrix1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">matrix2</span> <span class="o">=</span> <span class="n">matrix2</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">matrix2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">all_congruences</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">matrix1</span><span class="p">),</span> <span class="n">matrix2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">absolute_value</span><span class="p">:</span>
-        <span class="n">all_congruences</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_congruences</span><span class="p">)</span>
-    <span class="n">all_congruences</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">all_congruences</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">matrix1</span><span class="p">):</span>
+        <span class="n">matrix1</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrix1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">matrix2</span><span class="p">):</span>
+        <span class="n">matrix2</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrix2</span><span class="p">]</span>
+    <span class="c1"># Check if matrix1 and matrix2 are lists of the same length</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input lists of matrices must have the same length&quot;</span><span class="p">)</span>
+    <span class="n">all_congruences_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Check if all matrices have the same number of columns</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrix1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">m</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">matrix2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All matrices must have the same number of columns&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">mat1</span><span class="p">,</span> <span class="n">mat2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">matrix1</span><span class="p">,</span> <span class="n">matrix2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">mat2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pairs of matrices must have the same number of rows&quot;</span><span class="p">)</span>
+        <span class="c1"># Check if any norm is exactly zero to avoid singularity</span>
+        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">T</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Columns of all matrices should have nonzero l2 norm&quot;</span><span class="p">)</span>
+        <span class="n">mat1</span> <span class="o">=</span> <span class="n">mat1</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">mat2</span> <span class="o">=</span> <span class="n">mat2</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">mat2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">all_congruences_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mat1</span><span class="p">),</span> <span class="n">mat2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">absolute_value</span><span class="p">:</span>
+            <span class="n">all_congruences_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">all_congruences_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">all_congruences_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">all_congruences_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">all_congruences</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">congruence</span> <span class="ow">in</span> <span class="n">all_congruences_list</span><span class="p">:</span>
+        <span class="n">all_congruences</span> <span class="o">*=</span> <span class="n">congruence</span>
     <span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span>
         <span class="o">-</span><span class="n">all_congruences</span>
     <span class="p">)</span>  <span class="c1"># Use -corr because scipy didn&#39;t doesn&#39;t support maximising prior to v1.4</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">))</span>
-    <span class="n">permutation</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">)]</span>
+    <span class="n">permutation</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">matrix1</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">])]</span>
     <span class="k">return</span> <span class="n">all_congruences</span><span class="p">[</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">permutation</span></div>
 </pre></div>
 
