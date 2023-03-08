@@ -217,12 +217,16 @@
 <div class="math notranslate nohighlight">
 \[\frac{\mathbf{v}_1^T \mathbf{v}_1^T}{\|\mathbf{v}_1^T\| \|\mathbf{v}_1^T\|}\]</div>
 <p>When we compute the congruence between two matrices, we find the optimal permutation of
-the columns and return the mean congruence and the permutation.</p>
+the columns and return the mean congruence and the permutation. The output permutation is the one
+that permutes the columns of matrix2 onto the closest columns in matrix1.</p>
+<p>If a list of matrices is provided for each input, we define the congruence coefficient as the
+product of the absolute values of pairs of matrices. The lists must therefore have the same size.
+The output permutation also applies to each matrix of the lists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>matrix1</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
-<dt><strong>matrix2</strong><span class="classifier">tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>matrix1</strong><span class="classifier">tensorly.Tensor or list of tensorly.Tensor</span></dt><dd></dd>
+<dt><strong>matrix2</strong><span class="classifier">tensorly.Tensor of list of tensorly.Tensor to permute.</span></dt><dd></dd>
 <dt><strong>absolute_value</strong><span class="classifier">bool</span></dt><dd><p>Whether to take the absolute value of all vector products before finding the optimal permutation.</p>
 </dd>
 </dl>
