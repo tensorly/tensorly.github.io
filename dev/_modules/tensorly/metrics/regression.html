@@ -185,6 +185,25 @@
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span></div>
 
 
+<span class="k">def</span> <span class="nf">R2_score</span><span class="p">(</span><span class="n">X_original</span><span class="p">,</span> <span class="n">X_predicted</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the R^2 (coefficient of determination) regression score function.</span>
+<span class="sd">    Best possible score is 1.0 and it can be negative (because prediction can be</span>
+<span class="sd">    arbitrarily worse).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X_original: array</span>
+<span class="sd">        The original array</span>
+<span class="sd">    X_predicted: array</span>
+<span class="sd">        Thre predicted array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_predicted</span> <span class="o">-</span> <span class="n">X_original</span><span class="p">)</span> <span class="o">**</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_original</span><span class="p">)</span> <span class="o">**</span> <span class="mf">2.0</span>
+
+
 <span class="k">def</span> <span class="nf">reflective_correlation_coefficient</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reflective variant of Pearson&#39;s product moment correlation coefficient</span>
 <span class="sd">    where the predictions are not centered around their mean values.</span>

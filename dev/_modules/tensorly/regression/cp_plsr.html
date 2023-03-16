@@ -145,10 +145,10 @@
       <div class="container content main-content">
         
   <h1>Source code for tensorly.regression.cp_plsr</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">multi_mode_dot</span>
-<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span>
+<span></span><span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">outer</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">cp_normalize</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">..decomposition._cp</span> <span class="kn">import</span> <span class="n">parafac</span>
 
 <span class="c1"># Author: Cyrillus Tan, Jackson Chin, Aaron Meyer</span>
@@ -210,6 +210,18 @@
 <span class="sd">        Y : 2D-array of shape (n_samples, n_predictions)</span>
 <span class="sd">            labels associated with each sample</span>
 
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X_factors : list of ndarray of shape (X.shape[i], n_components)</span>
+<span class="sd">            The factors of X tensor to approximate X. The first component, X_factors[0],</span>
+<span class="sd">            directs to the maximal covariance with Y_factors[0]</span>
+<span class="sd">        Y_factors : list of ndarray of shape (Y.shape[i], n_components)</span>
+<span class="sd">            The factors of Y matrix to approximate Y. The first component, Y_factors[0],</span>
+<span class="sd">            directs to the maximal covariance with X_factors[0]</span>
+<span class="sd">        coef_ : ndarray of shape (n_component, n_component)</span>
+<span class="sd">            The coefficients of the linear model such that `Y_factors[0]` is approximated as</span>
+<span class="sd">            `Y_factors[0] = X_factors[0] @ coef_`.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self</span>
@@ -233,6 +245,7 @@
         <span class="c1"># Mean center the data, record info the object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_shape_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y_shape_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">X_mean_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y_mean_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_mean_</span>
@@ -244,6 +257,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
         <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_r2</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y_r2</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
+
+        <span class="c1"># Coefficients of the linear model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
 
         <span class="c1">## FITTING EACH COMPONENT</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">):</span>
@@ -251,18 +269,24 @@
             <span class="n">comp_Y_factors_0</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
             <span class="n">old_comp_Y_factors_0</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">comp_Y_factors_0</span><span class="p">))</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">inf</span>
 
+            <span class="c1"># Store the CP result so that we are not starting from scratch</span>
+            <span class="n">Z_comp_CP</span> <span class="o">=</span> <span class="s2">&quot;svd&quot;</span>
+
             <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">):</span>
                 <span class="n">Z</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">comp_Y_factors_0</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)))</span>
 
                 <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">Z_comp</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span>
+                    <span class="n">Z_comp_CP</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span>
                         <span class="n">Z</span><span class="p">,</span>
                         <span class="mi">1</span><span class="p">,</span>
-                        <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
-                        <span class="n">init</span><span class="o">=</span><span class="s2">&quot;svd&quot;</span><span class="p">,</span>
-                        <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;randomized_svd&quot;</span><span class="p">,</span>
-                        <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">init</span><span class="o">=</span><span class="n">Z_comp_CP</span><span class="p">,</span>
+                        <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                    <span class="c1"># Normalize separately—this was profiling very slow in parafac</span>
+                    <span class="n">Z_comp</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">Z_comp_CP</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">Z_comp</span> <span class="o">=</span> <span class="p">[</span><span class="n">Z</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Z</span><span class="p">)]</span>
 
@@ -298,17 +322,22 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span> <span class="n">comp_Y_factors_1</span>
             <span class="p">)</span>
 
+            <span class="n">B</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">comp_Y_factors_0</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)),</span>
+            <span class="p">)</span>
+
             <span class="c1"># Deflation</span>
-            <span class="n">X</span> <span class="o">-=</span> <span class="n">CPTensor</span><span class="p">(</span>
-                <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ff</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="n">comp_X_factors</span><span class="p">])</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span>
+            <span class="n">X</span> <span class="o">-=</span> <span class="n">outer</span><span class="p">(</span><span class="n">comp_X_factors</span><span class="p">)</span>
             <span class="n">Y</span> <span class="o">-=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
                 <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">T</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">comp_Y_factors_0</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                 <span class="p">),</span>
                 <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">comp_Y_factors_1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
-            <span class="p">)</span>  <span class="c1"># Y -= T pinv(T) u q&#39;</span>
+            <span class="p">)</span>  <span class="c1"># Y -= T b q&#39; = T pinv(T) u q&#39;</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -324,15 +353,26 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Training X has shape </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">X_shape_</span><span class="si">}</span><span class="s2">, while the new X has shape </span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_mean_</span>
-        <span class="n">factors_kr</span> <span class="o">=</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">unfolded</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">scores</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">factors_kr</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">unfolded</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># = Tnew</span>
-        <span class="n">estimators</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span> <span class="n">estimators</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">X_projection</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">):</span>
+            <span class="n">X_projection</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span>
+                <span class="n">X_projection</span><span class="p">,</span>
+                <span class="n">T</span><span class="o">.</span><span class="n">index</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span>
+                <span class="n">multi_mode_dot</span><span class="p">(</span>
+                    <span class="n">X</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">factor</span><span class="p">[:,</span> <span class="n">component</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
+                    <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
+                <span class="p">),</span>
             <span class="p">)</span>
+            <span class="n">X</span> <span class="o">-=</span> <span class="n">outer</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">X_projection</span><span class="p">[:,</span> <span class="n">component</span><span class="p">]]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="n">factor</span><span class="p">[:,</span> <span class="n">component</span><span class="p">]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_projection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_mean_</span>
         <span class="p">)</span></div>
 
@@ -369,16 +409,10 @@
                     <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
                 <span class="p">),</span>
             <span class="p">)</span>
-            <span class="n">X</span> <span class="o">-=</span> <span class="n">CPTensor</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="kc">None</span><span class="p">,</span>
-                    <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_scores</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
-                    <span class="o">+</span> <span class="p">[</span>
-                        <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ff</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-                        <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-                    <span class="p">],</span>
-                <span class="p">)</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span>
+            <span class="n">X</span> <span class="o">-=</span> <span class="n">outer</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">X_scores</span><span class="p">[:,</span> <span class="n">component</span><span class="p">]]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="n">ff</span><span class="p">[:,</span> <span class="n">component</span><span class="p">]</span> <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">:]],</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">Y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
@@ -403,11 +437,11 @@
 
                 <span class="n">Y</span> <span class="o">-=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
                     <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                        <span class="n">T</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X_scores</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X_scores</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span>
-                        <span class="n">Y_scores</span><span class="p">[:,</span> <span class="p">[</span><span class="n">component</span><span class="p">]],</span>
+                        <span class="n">X_scores</span><span class="p">,</span>
+                        <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coef_</span><span class="p">[:,</span> <span class="n">component</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                     <span class="p">),</span>
-                    <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="p">[</span><span class="n">component</span><span class="p">]]),</span>
-                <span class="p">)</span>  <span class="c1"># Y -= T pinv(T) u q&#39;</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">component</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+                <span class="p">)</span>
             <span class="k">return</span> <span class="n">X_scores</span><span class="p">,</span> <span class="n">Y_scores</span>
 
         <span class="k">return</span> <span class="n">X_scores</span></div>
@@ -429,7 +463,22 @@
 <span class="sd">        self : ndarray of shape (n_samples, n_components)</span>
 <span class="sd">            Return `x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CP_PLSR.score"><a class="viewcode-back" href="../../../modules/generated/tensorly.regression.CP_PLSR.html#tensorly.regression.CP_PLSR.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the R^2 of prediction on X compared to the ground truth Y provided.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : ndarray</span>
+<span class="sd">            tensor data of shape (n_samples, N1, ..., NS), same dimension as the X</span>
+<span class="sd">            in self.fit() all except the first dimension</span>
+<span class="sd">        Y : 2D-array of shape (n_samples, n_predictions)</span>
+<span class="sd">            the ground truth labels associated with each sample</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">..metrics.regression</span> <span class="kn">import</span> <span class="n">R2_score</span>
+
+        <span class="k">return</span> <span class="n">R2_score</span><span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_mean_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y_mean_</span><span class="p">)</span></div></div>
 </pre></div>
 
       </div>
