@@ -153,7 +153,6 @@
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">fold</span><span class="p">,</span> <span class="n">tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">._factorized_tensor</span> <span class="kn">import</span> <span class="n">FactorizedTensor</span>
 <span class="kn">from</span> <span class="nn">.tenalg</span> <span class="kn">import</span> <span class="n">khatri_rao</span><span class="p">,</span> <span class="n">unfolding_dot_khatri_rao</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">DefineDeprecated</span>
 <span class="kn">from</span> <span class="nn">.metrics.factors</span> <span class="kn">import</span> <span class="n">congruence_coefficient</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -253,7 +252,7 @@
 
 <span class="sd">        See also</span>
 <span class="sd">        --------</span>
-<span class="sd">        kruskal_multi_mode_dot : chaining several mode_dot in one call</span>
+<span class="sd">        cp_mode_dot : chaining several mode_dot in one call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cp_mode_dot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="n">keep_dim</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
 
@@ -715,7 +714,7 @@
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
-<span class="sd">    kruskal_multi_mode_dot : chaining several mode_dot in one call</span>
+<span class="sd">    cp_multi_mode_dot : chaining several mode_dot in one call</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">shape</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_validate_cp_tensor</span><span class="p">(</span><span class="n">cp_tensor</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
@@ -836,23 +835,6 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">permuted_tensors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">permuted_tensors</span> <span class="o">=</span> <span class="n">permuted_tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">permuted_tensors</span><span class="p">,</span> <span class="n">permutation</span></div>
-
-
-<span class="c1"># Deprecated classes and functions</span>
-<span class="n">KruskalTensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;KruskalTensor&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">CPTensor</span><span class="p">)</span>
-<span class="n">kruskal_norm</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span><span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_norm&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_norm</span><span class="p">)</span>
-<span class="n">kruskal_mode_dot</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
-    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_mode_dot&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_mode_dot</span>
-<span class="p">)</span>
-<span class="n">kruskal_to_tensor</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
-    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_tensor&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_tensor</span>
-<span class="p">)</span>
-<span class="n">kruskal_to_unfolded</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
-    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_unfolded&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_unfolded</span>
-<span class="p">)</span>
-<span class="n">kruskal_to_vec</span> <span class="o">=</span> <span class="n">DefineDeprecated</span><span class="p">(</span>
-    <span class="n">deprecated_name</span><span class="o">=</span><span class="s2">&quot;kruskal_to_vec&quot;</span><span class="p">,</span> <span class="n">use_instead</span><span class="o">=</span><span class="n">cp_to_vec</span>
-<span class="p">)</span>
 </pre></div>
 
       </div>
