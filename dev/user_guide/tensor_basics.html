@@ -243,7 +243,7 @@
 <p>For a tensor of size <span class="math notranslate nohighlight">\((I_0, I_1, \cdots, I_N)\)</span>, the n-mode unfolding of this tensor will be of size <span class="math notranslate nohighlight">\((I_n, I_0 \times I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)\)</span>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for better performance.</p>
+<p>In TensorLy we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for better performance.</p>
 <p>Given a tensor <span class="math notranslate nohighlight">\(\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}\)</span>, the
 mode-n unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span> is a matrix <span class="math notranslate nohighlight">\(\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}\)</span>,
 with <span class="math notranslate nohighlight">\(M = \prod_{\substack{k=0,\\k \neq n}}^N I_k\)</span> and is defined by
@@ -255,7 +255,7 @@ the mapping from element <span class="math notranslate nohighlight">\((i_0, i_1,
 <p class="admonition-title">Warning</p>
 <p>Traditionally, mode-1 unfolding denotes the unfolding along the first dimension.
 However, to be consistent with the Python indexing that always starts at zero,
-in tensorly, unfolding also starts at zero!</p>
+in TensorLy, unfolding also starts at zero!</p>
 <p>Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
 </div>
 <p>For instance, using the <span class="math notranslate nohighlight">\(\tilde X\)</span> previously defined, the 0-mode unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span>:</p>
@@ -282,7 +282,7 @@ in tensorly, unfolding also starts at zero!</p>
    0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 &amp; 14 &amp; 16 &amp; 18 &amp; 20 &amp; 22\\
    1 &amp; 3 &amp; 5 &amp; 7 &amp; 9 &amp; 11 &amp; 13 &amp; 15 &amp; 17 &amp; 19 &amp; 21 &amp; 23\\
 \end{matrix} \right]\end{split}\]</div>
-<p>In tensorly:</p>
+<p>In TensorLy:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># mode-1 unfolding</span>
 <span class="go">array([[ 0,  1,  2,  3,  4,  5,  6,  7],</span>

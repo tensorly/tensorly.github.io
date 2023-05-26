@@ -195,7 +195,7 @@
   <section id="backend-system">
 <span id="id1"></span><h1>Backend System</h1>
 <p>The TensorLy backend system allows for switching between multiple backends in
-a thread-local way.  You can obtain the back that is currently being used with the
+a thread-local way.  You can obtain the backend that is currently being used with the
 <code class="docutils literal notranslate"><span class="pre">get_backend()</span></code> function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
@@ -214,7 +214,7 @@ operations over multiple backends, as needed. Threads inherit the backend
 from the thread that spawned them (which is typically the main thread).
 Globally setting the backend supports interactive usage.</p>
 <p>Additionally,  we provide a context manager <code class="docutils literal notranslate"><span class="pre">backend_context</span></code>
-for convenience, whcih may be used to
+for convenience, which may be used to
 safely use a backend only for limited context:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tl</span><span class="o">.</span><span class="n">backend_context</span><span class="p">(</span><span class="s1">&#39;pytorch&#39;</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">pass</span>
