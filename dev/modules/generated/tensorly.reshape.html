@@ -252,24 +252,8 @@ Fortran- contiguous) of the returned array.</p>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>It is not always possible to change the shape of an array without
-copying the data. If you want an error to be raised when the data is copied,
-you should assign the new shape to the shape attribute of the array:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-
-<span class="go"># A transpose makes the array non-contiguous</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span>
-
-<span class="go"># Taking a view makes it possible to modify the shape without modifying</span>
-<span class="go"># the initial object.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="w">   </span><span class="c">...</span>
-<span class="gr">AttributeError</span>: <span class="n">Incompatible shape for in-place modification. Use</span>
-<span class="x">`.reshape()` to make a copy with the desired shape.</span>
-</pre></div>
-</div>
+<p>It is not always possible to change the shape of an array without copying
+the data.</p>
 <p>The <cite>order</cite> keyword gives the index ordering both for <em>fetching</em> the values
 from <cite>a</cite>, and then <em>placing</em> the values into the output array.
 For example, let’s say you have an array:</p>

@@ -537,6 +537,8 @@
 <span class="sd">    mask : tensor, default is None.</span>
 <span class="sd">        Array of booleans with the same shape as ``matrix``. Should be 0 where</span>
 <span class="sd">        the values are missing and 1 everywhere else. None if nothing is missing.</span>
+<span class="sd">        Imputation is done by iterative low rank approximation, so n_eigenvecs should be provided</span>
+<span class="sd">        and be lower than the rank of the matrix.</span>
 <span class="sd">    n_iter_mask_imputation : int, default is 5</span>
 <span class="sd">        Number of repetitions to apply in missing value imputation.</span>
 <span class="sd">    **kwargs : optional</span>
@@ -567,7 +569,7 @@
 
     <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">n_eigenvecs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_mask_imputation</span><span class="p">):</span>
             <span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">*</span> <span class="n">mask</span> <span class="o">+</span> <span class="p">(</span><span class="n">U</span> <span class="o">@</span> <span class="n">tl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">V</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mask</span><span class="p">)</span>
             <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">svd_fun</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eigenvecs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

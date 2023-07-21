@@ -219,13 +219,9 @@ upper-triangular.</p>
 </dd>
 <dt><strong>mode</strong><span class="classifier">{‘reduced’, ‘complete’, ‘r’, ‘raw’}, optional</span></dt><dd><p>If K = min(M, N), then</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt>‘reduced’<span class="classifier">returns q, r with dimensions</span></dt><dd><p>(…, M, K), (…, K, N) (default)</p>
-</dd>
-</dl>
-</li>
-<li><p>‘complete’ : returns q, r with dimensions (…, M, M), (…, M, N)</p></li>
-<li><p>‘r’        : returns r only with dimensions (…, K, N)</p></li>
+<li><p>‘reduced’  : returns Q, R with dimensions (…, M, K), (…, K, N) (default)</p></li>
+<li><p>‘complete’ : returns Q, R with dimensions (…, M, M), (…, M, N)</p></li>
+<li><p>‘r’        : returns R only with dimensions (…, K, N)</p></li>
 <li><p>‘raw’      : returns h, tau with dimensions (…, N, M), (…, K,)</p></li>
 </ul>
 <p>The options ‘reduced’, ‘complete, and ‘raw’ are new in numpy 1.8,
@@ -242,14 +238,16 @@ explanation.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>q</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>A matrix with orthonormal columns. When mode = ‘complete’ the
+<dt>When mode is ‘reduced’ or ‘complete’, the result will be a namedtuple with</dt><dd></dd>
+<dt>the attributes <cite>Q</cite> and <cite>R</cite>.</dt><dd></dd>
+<dt><strong>Q</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>A matrix with orthonormal columns. When mode = ‘complete’ the
 result is an orthogonal/unitary matrix depending on whether or not
 a is real/complex. The determinant may be either +/- 1 in that
 case. In case the number of dimensions in the input array is
 greater than 2 then a stack of the matrices with above properties
 is returned.</p>
 </dd>
-<dt><strong>r</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>The upper-triangular matrix or a stack of upper-triangular
+<dt><strong>R</strong><span class="classifier">ndarray of float or complex, optional</span></dt><dd><p>The upper-triangular matrix or a stack of upper-triangular
 matrices if the number of dimensions in the input array is greater
 than 2.</p>
 </dd>
@@ -295,19 +293,19 @@ the ‘raw’ return are currently exposed by numpy, but some are available
 in lapack_lite and just await the necessary work.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>  <span class="c1"># a does equal qr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">))</span>  <span class="c1"># a does equal QR</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>  <span class="c1"># mode=&#39;r&#39; returns the same r as mode=&#39;full&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">R2</span><span class="p">)</span>  <span class="c1"># mode=&#39;r&#39; returns the same R as mode=&#39;full&#39;</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c1"># Stack of 2 x 2 matrices as input</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(3, 2, 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(3, 2, 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">))</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -322,8 +320,8 @@ by solving the over-determined matrix equation <code class="docutils literal not
 <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
 </pre></div>
 </div>
-<p>If A = qr such that q is orthonormal (which is always possible via
-Gram-Schmidt), then <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">inv(r)</span> <span class="pre">*</span> <span class="pre">(q.T)</span> <span class="pre">*</span> <span class="pre">b</span></code>.  (In numpy practice,
+<p>If A = QR such that Q is orthonormal (which is always possible via
+Gram-Schmidt), then <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">inv(R)</span> <span class="pre">*</span> <span class="pre">(Q.T)</span> <span class="pre">*</span> <span class="pre">b</span></code>.  (In numpy practice,
 however, we simply use <cite>lstsq</cite>.)</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
@@ -332,9 +330,9 @@ however, we simply use <cite>lstsq</cite>.)</p>
 <span class="go">       [1, 1],</span>
 <span class="go">       [2, 1]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">R</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
 <span class="go">array([  1.,   1.])</span>
 </pre></div>
 </div>

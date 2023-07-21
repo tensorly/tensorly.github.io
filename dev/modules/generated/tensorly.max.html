@@ -231,7 +231,7 @@ See <span class="xref std std-ref">ufuncs-output-type</span> for more details.</
 in the result as dimensions with size one. With this option,
 the result will broadcast correctly against the input array.</p>
 <p>If the default value is passed, then <cite>keepdims</cite> will not be
-passed through to the <cite>amax</cite> method of sub-classes of
+passed through to the <code class="docutils literal notranslate"><span class="pre">max</span></code> method of sub-classes of
 <cite>ndarray</cite>, however any non-default value will be.  If the
 sub-class’ method does not implement <cite>keepdims</cite> any
 exceptions will be raised.</p>
@@ -252,7 +252,7 @@ for details.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>amax</strong><span class="classifier">ndarray or scalar</span></dt><dd><p>Maximum of <cite>a</cite>. If <cite>axis</cite> is None, the result is a scalar value.
+<dt><strong>max</strong><span class="classifier">ndarray or scalar</span></dt><dd><p>Maximum of <cite>a</cite>. If <cite>axis</cite> is None, the result is a scalar value.
 If <cite>axis</cite> is an int, the result is an array of dimension
 <code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">1</span></code>. If <cite>axis</cite> is a tuple, the result is an array of 
 dimension <code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">len(axis)</span></code>.</p>
@@ -280,27 +280,27 @@ dimension <code class="docutils literal notranslate"><span class="pre">a.ndim</s
 <p>NaN values are propagated, that is if at least one item is NaN, the
 corresponding max value will be NaN as well. To ignore NaN values
 (MATLAB behavior), please use nanmax.</p>
-<p>Don’t use <cite>amax</cite> for element-wise comparison of 2 arrays; when
+<p>Don’t use <cite>~numpy.max</cite> for element-wise comparison of 2 arrays; when
 <code class="docutils literal notranslate"><span class="pre">a.shape[0]</span></code> is 2, <code class="docutils literal notranslate"><span class="pre">maximum(a[0],</span> <span class="pre">a[1])</span></code> is faster than
-<code class="docutils literal notranslate"><span class="pre">amax(a,</span> <span class="pre">axis=0)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">max(a,</span> <span class="pre">axis=0)</span></code>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
 <span class="go">array([[0, 1],</span>
 <span class="go">       [2, 3]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>           <span class="c1"># Maximum of the flattened array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>           <span class="c1"># Maximum of the flattened array</span>
 <span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># Maxima along the first axis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># Maxima along the first axis</span>
 <span class="go">array([2, 3])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># Maxima along the second axis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># Maxima along the second axis</span>
 <span class="go">array([1, 3])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">array([-1,  3])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="go">nan</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">where</span><span class="o">=~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">where</span><span class="o">=~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">4.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="go">4.0</span>
@@ -308,14 +308,14 @@ corresponding max value will be NaN as well. To ignore NaN values
 </div>
 <p>You can use an initial value to compute the maximum of an empty slice, or
 to initialize it to a different value:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([[</span><span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([[</span><span class="o">-</span><span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">array([ 0, 10])</span>
 </pre></div>
 </div>
 <p>Notice that the initial value is used as one of the elements for which the
 maximum is determined, unlike for the default argument Python’s max
 function, which is only used for empty iterables.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">6</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">([</span><span class="mi">5</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">5</span>

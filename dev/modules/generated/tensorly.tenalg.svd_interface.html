@@ -229,7 +229,9 @@ properties such as resolving sign invariance, imputation, and non-negativity.</p
 <dt><strong>nn_type</strong><span class="classifier">str, default is ‘nndsvd’</span></dt><dd><p>Algorithm to use for converting U to be non-negative.</p>
 </dd>
 <dt><strong>mask</strong><span class="classifier">tensor, default is None.</span></dt><dd><p>Array of booleans with the same shape as <code class="docutils literal notranslate"><span class="pre">matrix</span></code>. Should be 0 where
-the values are missing and 1 everywhere else. None if nothing is missing.</p>
+the values are missing and 1 everywhere else. None if nothing is missing.
+Imputation is done by iterative low rank approximation, so n_eigenvecs should be provided
+and be lower than the rank of the matrix.</p>
 </dd>
 <dt><strong>n_iter_mask_imputation</strong><span class="classifier">int, default is 5</span></dt><dd><p>Number of repetitions to apply in missing value imputation.</p>
 </dd>
