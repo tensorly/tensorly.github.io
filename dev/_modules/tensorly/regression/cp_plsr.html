@@ -14,17 +14,17 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=e5fbc548" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ce6c0465"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -145,10 +145,9 @@
         
   <h1>Source code for tensorly.regression.cp_plsr</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">multi_mode_dot</span><span class="p">,</span> <span class="n">outer</span>
-<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">cp_normalize</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">tensor_to_vec</span>
-<span class="kn">from</span> <span class="nn">..decomposition._cp</span> <span class="kn">import</span> <span class="n">parafac</span>
+<span class="kn">from</span> <span class="nn">..decomposition._cp</span> <span class="kn">import</span> <span class="n">initialize_cp</span>
 
 <span class="c1"># Author: Cyrillus Tan, Jackson Chin, Aaron Meyer</span>
 
@@ -268,24 +267,18 @@
             <span class="n">comp_Y_factors_0</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
             <span class="n">old_comp_Y_factors_0</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">comp_Y_factors_0</span><span class="p">))</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">inf</span>
 
-            <span class="c1"># Store the CP result so that we are not starting from scratch</span>
-            <span class="n">Z_comp_CP</span> <span class="o">=</span> <span class="s2">&quot;svd&quot;</span>
-
             <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span><span class="p">):</span>
                 <span class="n">Z</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">comp_Y_factors_0</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">((</span><span class="mi">0</span><span class="p">,),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)))</span>
 
-                <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">Z_comp_CP</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span>
-                        <span class="n">Z</span><span class="p">,</span>
-                        <span class="mi">1</span><span class="p">,</span>
-                        <span class="n">init</span><span class="o">=</span><span class="n">Z_comp_CP</span><span class="p">,</span>
-                        <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                    <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">iter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">Z_comp</span> <span class="o">=</span> <span class="n">initialize_cp</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">factors</span>
+                    <span class="n">Z_comp</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zz</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span> <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="n">Z_comp</span><span class="p">]</span>
 
-                    <span class="c1"># Normalize separately—this was profiling very slow in parafac</span>
-                    <span class="n">Z_comp</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">Z_comp_CP</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Z_comp</span><span class="p">)):</span>
+                        <span class="n">factor</span> <span class="o">=</span> <span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Z_comp</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+                        <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">Z_comp</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">Z_comp</span> <span class="o">=</span> <span class="p">[</span><span class="n">Z</span> <span class="o">/</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Z</span><span class="p">)]</span>
 
