@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ce6c0465"></script>
+    <script src="../../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -149,7 +149,9 @@
 <span class="c1"># Author: Jean Kossaifi &lt;jean.kossaifi+tensors@gmail.com&gt;</span>
 
 
-<div class="viewcode-block" id="MSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE">[docs]</a><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MSE">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.MSE.html#tensorly.metrics.regression.MSE">[docs]</a>
+<span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the mean squared error between the two predictions</span>
 
 <span class="sd">    Parameters</span>
@@ -166,7 +168,10 @@
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="RMSE"><a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE">[docs]</a><span class="k">def</span> <span class="nf">RMSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RMSE">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.metrics.regression.RMSE.html#tensorly.metrics.regression.RMSE">[docs]</a>
+<span class="k">def</span> <span class="nf">RMSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the regularised mean squared error between the two predictions</span>
 <span class="sd">    (the square-root is applied to the mean_squared_error)</span>
 
@@ -182,6 +187,7 @@
 <span class="sd">    float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">MSE</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">R2_score</span><span class="p">(</span><span class="n">X_original</span><span class="p">,</span> <span class="n">X_predicted</span><span class="p">):</span>

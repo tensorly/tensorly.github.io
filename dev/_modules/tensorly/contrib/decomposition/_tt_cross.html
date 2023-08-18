@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
 <link rel="shortcut icon" href="../../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ce6c0465"></script>
+    <script src="../../../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -149,7 +149,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="tensor_train_cross"><a class="viewcode-back" href="../../../../modules/generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross">[docs]</a><span class="k">def</span> <span class="nf">tensor_train_cross</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="tensor_train_cross">
+<a class="viewcode-back" href="../../../../modules/generated/tensorly.contrib.decomposition.tensor_train_cross.html#tensorly.contrib.decomposition.tensor_train_cross">[docs]</a>
+<span class="k">def</span> <span class="nf">tensor_train_cross</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TT (tensor-train) decomposition via cross-approximation (TTcross) [1]</span>
 
 <span class="sd">    Decomposes `input_tensor` into a sequence of order-3 tensors of given rank. (factors/cores)</span>
@@ -381,6 +383,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Low Rank Approximation algorithm did not converge.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">factor_new</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">left_right_ttcross_step</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">row_idx</span><span class="p">,</span> <span class="n">col_idx</span><span class="p">):</span>

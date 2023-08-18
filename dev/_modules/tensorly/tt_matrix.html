@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,7 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ce6c0465"></script>
+    <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -259,7 +259,9 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">),</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">in_shape</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="tt_matrix_to_unfolded"><a class="viewcode-back" href="../../modules/generated/tensorly.tt_matrix.tt_matrix_to_unfolded.html#tensorly.tt_matrix.tt_matrix_to_unfolded">[docs]</a><span class="k">def</span> <span class="nf">tt_matrix_to_unfolded</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<div class="viewcode-block" id="tt_matrix_to_unfolded">
+<a class="viewcode-back" href="../../modules/generated/tensorly.tt_matrix.tt_matrix_to_unfolded.html#tensorly.tt_matrix.tt_matrix_to_unfolded">[docs]</a>
+<span class="k">def</span> <span class="nf">tt_matrix_to_unfolded</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the unfolding matrix of a tensor given in TT-Matrix format</span>
 
 <span class="sd">    Reassembles a full tensor from &#39;factors&#39; and returns its unfolding matrix</span>
@@ -280,7 +282,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="tt_matrix_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.tt_matrix.tt_matrix_to_vec.html#tensorly.tt_matrix.tt_matrix_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tt_matrix_to_vec</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">):</span>
+
+<div class="viewcode-block" id="tt_matrix_to_vec">
+<a class="viewcode-back" href="../../modules/generated/tensorly.tt_matrix.tt_matrix_to_vec.html#tensorly.tt_matrix.tt_matrix_to_vec">[docs]</a>
+<span class="k">def</span> <span class="nf">tt_matrix_to_vec</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the tensor defined by its TT-Matrix format (&#39;factors&#39;) into</span>
 <span class="sd">       its vectorized format</span>
 
@@ -295,6 +300,7 @@
 <span class="sd">        format of tensor defined by &#39;factors&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">tt_matrix_to_tensor</span><span class="p">(</span><span class="n">tt_matrix</span><span class="p">))</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_validate_tt_matrix</span><span class="p">(</span><span class="n">tt_tensor</span><span class="p">):</span>
