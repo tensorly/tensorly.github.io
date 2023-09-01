@@ -239,7 +239,9 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_parafac2_reconstruction_error</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">norm_matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_parafac2_reconstruction_error</span><span class="p">(</span>
+    <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">norm_matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projected_tensor</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the reconstruction error of the PARAFAC2 decomposition. This implementation</span>
 <span class="sd">    uses the inner product with each matrix for efficiency, as this avoids needing to</span>
 <span class="sd">    reconstruct the tensor. This is based on the property that:</span>
@@ -261,6 +263,9 @@
 <span class="sd">        * projections : List of projection matrices used to create evolving factors.</span>
 <span class="sd">    norm_matrices : float, optional</span>
 <span class="sd">        The norm of the data. This can be optionally provided to avoid recalculating it.</span>
+<span class="sd">    projected_tensor : ndarray, optional</span>
+<span class="sd">        The projections of X into an aligned tensor for CP decomposition. This can be optionally</span>
+<span class="sd">        provided to avoid recalculating it.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -284,12 +289,13 @@
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_slice</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
         <span class="n">B_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">projections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">B_i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">C</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+
+        <span class="k">if</span> <span class="n">projected_tensor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">tmp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_i</span><span class="p">),</span> <span class="n">t_slice</span><span class="p">)</span>
-            <span class="n">inner_product</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">t_slice</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
-            <span class="n">inner_product</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_i</span><span class="p">),</span> <span class="n">tmp</span><span class="p">))</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">@</span> <span class="n">projected_tensor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">inner_product</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
 
         <span class="n">norm_cmf_sq</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_i</span><span class="p">)</span> <span class="o">@</span> <span class="n">B_i</span><span class="p">)</span> <span class="o">*</span> <span class="n">CtC</span><span class="p">)</span>
 
@@ -512,7 +518,10 @@
 
         <span class="k">if</span> <span class="n">tol</span><span class="p">:</span>
             <span class="n">rec_error</span> <span class="o">=</span> <span class="n">_parafac2_reconstruction_error</span><span class="p">(</span>
-                <span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">),</span> <span class="n">norm_tensor</span>
+                <span class="n">tensor_slices</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">),</span>
+                <span class="n">norm_tensor</span><span class="p">,</span>
+                <span class="n">projected_tensor</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">rec_error</span> <span class="o">/=</span> <span class="n">norm_tensor</span>
             <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
