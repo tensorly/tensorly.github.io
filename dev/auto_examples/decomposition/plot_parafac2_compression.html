@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Speeding up PARAFAC2 with SVD compression &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+    <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tensor regression with tensorly" href="../regression/index.html" />
+    <link rel="prev" title="Demonstration of PARAFAC2" href="plot_parafac2.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../../modules/api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/api.html">API reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#practical-applications-of-tensor-methods">Practical applications of tensor methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-decomposition">Tensor decomposition</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#tensor-regression-with-tensorly">Tensor regression with tensorly</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
+        
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-parafac2-compression-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="speeding-up-parafac2-with-svd-compression">
+<span id="sphx-glr-auto-examples-decomposition-plot-parafac2-compression-py"></span><h1>Speeding up PARAFAC2 with SVD compression</h1>
+<p>PARAFAC2 can be very time-consuming to fit. However, if the number of rows greatly
+exceeds the number of columns or the data matrices are approximately low-rank, we can
+compress the data before fitting the PARAFAC2 model to considerably speed up the fitting
+procedure.</p>
+<p>The compression works by first computing the SVD of the tensor slices and fitting the
+PARAFAC2 model to the right singular vectors multiplied by the singular values. Then,
+after we fit the model, we left-multiply the <span class="math notranslate nohighlight">\(B_i\)</span>-matrices with the left singular
+vectors to recover the decompressed model. Fitting to compressed data and then
+decompressing is mathematically equivalent to fitting to the original uncompressed data.</p>
+<p>For more information about why this works, see the documentation of
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">tensorly.decomposition.preprocessing.svd_compress_tensor_slices</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac2</span>
+<span class="kn">import</span> <span class="nn">tensorly.preprocessing</span> <span class="k">as</span> <span class="nn">preprocessing</span>
+</pre></div>
+</div>
+<section id="function-to-create-synthetic-data">
+<h2>Function to create synthetic data</h2>
+<p>Here, we create a function that constructs a random tensor from a PARAFAC2
+decomposition with noise</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_random_data</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="p">):</span>
+    <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shape</span>  <span class="c1"># noqa: E741</span>
+    <span class="n">pf2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_parafac2</span><span class="p">(</span>
+        <span class="p">[(</span><span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)],</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span>
+    <span class="p">)</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">pf2</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">()</span>
+    <span class="n">X_norm</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">Xi</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+
+    <span class="n">noise</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)]</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="p">[</span><span class="n">noise_level</span> <span class="o">*</span> <span class="n">X_norm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">E_i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">E_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">noise</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">X_i</span> <span class="o">+</span> <span class="n">E_i</span> <span class="k">for</span> <span class="n">X_i</span><span class="p">,</span> <span class="n">E_i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">noise</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+<section id="compressing-data-with-many-rows-and-few-columns">
+<h2>Compressing data with many rows and few columns</h2>
+<p>Here, we set up for a case where we have many rows compared to columns</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_inits</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>  <span class="c1"># 10 matrices/tensor slices, each of size 10_000 x 15.</span>
+<span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.33</span>
+
+<span class="n">uncompressed_data</span> <span class="o">=</span> <span class="n">create_random_data</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="n">noise_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="fitting-without-compression">
+<h3>Fitting without compression</h3>
+<p>As a baseline, we see how long time it takes to fit models without compression.
+Since PARAFAC2 is very prone to local minima, we fit five models and select the model
+with the lowest reconstruction error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">uncompressed_data</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_full</span><span class="p">,</span> <span class="n">errs_full</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;without compression&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
+It took 116.4s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) without compression
+</pre></div>
+</div>
+</section>
+<section id="fitting-with-lossless-compression">
+<h3>Fitting with lossless compression</h3>
+<p>Since the tensor slices have many rows compared to columns, we should be able to save
+a lot of time by compressing the data. By compressing the matrices, we only need to
+fit the PARAFAC2 model to a set of 10 matrices, each of size 15 x 15, not 10_000 x 15.</p>
+<p>The main bottleneck here is the SVD computation at the beginning of the fitting
+procedure, but luckily, this is independent of the initialisations, so we only need
+to compute this once. Also, if we are performing a grid search for the rank, then
+we just need to perform the compression once for the whole grid search as well.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">scores</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_compressed</span><span class="p">,</span> <span class="n">errs_compressed</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">pf2_decompressed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_decompress_parafac2_tensor</span><span class="p">(</span>
+    <span class="n">pf2_compressed</span><span class="p">,</span> <span class="n">loadings</span>
+<span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;with lossless SVD compression&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The compression took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s and the fitting took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
+It took 39.8s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossless SVD compression
+The compression took 0.0s and the fitting took 39.8s
+</pre></div>
+</div>
+<p>We see that we saved a lot of time by compressing the data before fitting the model.</p>
+</section>
+<section id="fitting-with-lossy-compression">
+<h3>Fitting with lossy compression</h3>
+<p>We can try to speed the process up even further by accepting a slight discrepancy
+between the model obtained from compressed data and a model obtained from uncompressed
+data. Specifically, we can truncate the singular values at some threshold, essentially
+removing the parts of the data matrices that have a very low “signal strength”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">scores</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_compressed_lossy</span><span class="p">,</span> <span class="n">errs_compressed_lossy</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">pf2_decompressed_lossy</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_decompress_parafac2_tensor</span><span class="p">(</span>
+    <span class="n">pf2_compressed_lossy</span><span class="p">,</span> <span class="n">loadings</span>
+<span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;with lossy SVD compression&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Of which the compression took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s and the fitting took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
+It took 38.8s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossy SVD compression
+Of which the compression took 0.0s and the fitting took 38.8s
+</pre></div>
+</div>
+<p>We see that we didn’t save much, if any, time in this case (compared to using
+lossless compression). This is because the main bottleneck now is the CP-part of
+the PARAFAC2 procedure, so reducing the tensor size from 10 x 15 x 15 to 10 x 4 x 15
+(which is typically what we would get here) will have a negligible effect.</p>
+</section>
+</section>
+<section id="compressing-data-that-is-approximately-low-rank">
+<h2>Compressing data that is approximately low-rank</h2>
+<p>Here, we simulate data with many rows and columns but an approximately low rank.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2_000</span><span class="p">,</span> <span class="mi">2_000</span><span class="p">)</span>
+<span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.33</span>
+
+<span class="n">uncompressed_data</span> <span class="o">=</span> <span class="n">create_random_data</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="o">=</span><span class="n">noise_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="id1">
+<h3>Fitting without compression</h3>
+<p>Again, we start by fitting without compression as a baseline.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">uncompressed_data</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_full</span><span class="p">,</span> <span class="n">errs_full</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;without compression&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
+It took 294.3s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) without compression
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Fitting with lossless compression</h3>
+<p>Next, we fit with lossless compression.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">scores</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_compressed</span><span class="p">,</span> <span class="n">errs_compressed</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">pf2_decompressed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_decompress_parafac2_tensor</span><span class="p">(</span>
+    <span class="n">pf2_compressed</span><span class="p">,</span> <span class="n">loadings</span>
+<span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;with lossless SVD compression&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Of which the compression took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s and the fitting took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
+It took 280.0s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossless SVD compression
+Of which the compression took 0.0s and the fitting took 280.0s
+</pre></div>
+</div>
+<p>We see that the lossless compression no effect for this data. This is because the
+number ofrows is equal to the number of columns, so we cannot compress the data
+losslessly with the SVD.</p>
+</section>
+<section id="id3">
+<h3>Fitting with lossy compression</h3>
+<p>Finally, we fit with lossy SVD compression.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
+    <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">scores</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lowest_error</span><span class="p">:</span>
+        <span class="n">pf2_compressed_lossy</span><span class="p">,</span> <span class="n">errs_compressed_lossy</span> <span class="o">=</span> <span class="n">pf2</span><span class="p">,</span> <span class="n">errs</span>
+<span class="n">pf2_decompressed_lossy</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_decompress_parafac2_tensor</span><span class="p">(</span>
+    <span class="n">pf2_compressed_lossy</span><span class="p">,</span> <span class="n">loadings</span>
+<span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;It took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s to fit a PARAFAC2 model a tensor of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="o">+</span> <span class="s2">&quot;with lossy SVD compression&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Of which the compression took </span><span class="si">{</span><span class="n">t2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t1</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s and the fitting took </span><span class="si">{</span><span class="n">t3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t2</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
+It took 69.7s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossy SVD compression
+Of which the compression took 22.6s and the fitting took 47.0s
+</pre></div>
+</div>
+<p>Here we see a large speedup. This is because the data is approximately low rank so
+the compressed tensor slices will have shape R x 2_000, where R is typically below 10
+in this example. If your tensor slices are large in both modes, you might want to plot
+the singular values of your dataset to see if lossy compression could speed up
+PARAFAC2.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (14 minutes 1.119 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-compression-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/f283605c95b45f5b3bbceeebb1a78c48/plot_parafac2_compression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2_compression.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/02911ae80224ade0c761c6cc5f2d7d69/plot_parafac2_compression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2_compression.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+      </div>
+
+      
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button pagination-previous" href="plot_parafac2.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span>Demonstration of PARAFAC2</span>
+    </a>
+    
+    
+    <a class="button pagination-next" href="../regression/index.html" title="next page" accesskey="n">
+        <span>Tensor regression with tensorly </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
+        <ul>
+<li><a class="reference internal" href="#">Speeding up PARAFAC2 with SVD compression</a><ul>
+<li><a class="reference internal" href="#function-to-create-synthetic-data">Function to create synthetic data</a></li>
+<li><a class="reference internal" href="#compressing-data-with-many-rows-and-few-columns">Compressing data with many rows and few columns</a><ul>
+<li><a class="reference internal" href="#fitting-without-compression">Fitting without compression</a></li>
+<li><a class="reference internal" href="#fitting-with-lossless-compression">Fitting with lossless compression</a></li>
+<li><a class="reference internal" href="#fitting-with-lossy-compression">Fitting with lossy compression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compressing-data-that-is-approximately-low-rank">Compressing data that is approximately low-rank</a><ul>
+<li><a class="reference internal" href="#id1">Fitting without compression</a></li>
+<li><a class="reference internal" href="#id2">Fitting with lossless compression</a></li>
+<li><a class="reference internal" href="#id3">Fitting with lossy compression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
+
+  
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>
