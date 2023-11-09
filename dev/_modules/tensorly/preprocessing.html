@@ -153,7 +153,7 @@
 <div class="viewcode-block" id="svd_compress_tensor_slices">
 <a class="viewcode-back" href="../../modules/generated/tensorly.preprocessing.svd_compress_tensor_slices.html#tensorly.preprocessing.svd_compress_tensor_slices">[docs]</a>
 <span class="k">def</span> <span class="nf">svd_compress_tensor_slices</span><span class="p">(</span>
-    <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">compression_threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span>
+    <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">compression_threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compress data with the SVD for running PARAFAC2.</span>
 
@@ -188,13 +188,17 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    tensor_slices : list of matrices</span>
-<span class="sd">        The data matrices to compress</span>
+<span class="sd">        The data matrices to compress.</span>
 <span class="sd">    compression_threshold : float (0 &lt;= compression_threshold &lt;= 1)</span>
 <span class="sd">        Threshold at which the singular values should be truncated. Any singular value less than</span>
 <span class="sd">        compression_threshold * s[0] is set to zero. Note that if this is nonzero, then the found</span>
 <span class="sd">        components will likely be affected.</span>
+<span class="sd">    max_rank : int</span>
+<span class="sd">        The maximum rank to allow in the datasets after compression. This also serves to speed up</span>
+<span class="sd">        the SVD calculation with matrices containing many rows and columns when paired with randomized</span>
+<span class="sd">        SVD solving.</span>
 <span class="sd">    svd : str, default is &#39;truncated_svd&#39;</span>
-<span class="sd">        function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        Function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -218,13 +222,21 @@
     <span class="n">loading_matrices</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">]</span>
     <span class="n">score_matrices</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">]</span>
 
+    <span class="n">_</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">max_rank</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rank_limit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">max_rank</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rank_limit</span> <span class="o">=</span> <span class="n">n_cols</span>
+
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
-        <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">n_rows</span> <span class="o">&lt;=</span> <span class="n">n_cols</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">compression_threshold</span><span class="p">:</span>
+        <span class="n">n_rows</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n_rows</span> <span class="o">&lt;=</span> <span class="n">rank_limit</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">compression_threshold</span><span class="p">:</span>
             <span class="n">score_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor_slice</span>
             <span class="k">continue</span>
 
-        <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">)</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank_limit</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">)</span>
 
         <span class="c1"># Threshold SVD, keeping only singular values that satisfy s_i &gt;= s_0 * epsilon</span>
         <span class="c1"># where epsilon is the compression threshold</span>
@@ -233,7 +245,7 @@
 
         <span class="c1"># Array broadcasting happens at the last dimension, since Vh is num_svds x n_cols</span>
         <span class="c1"># we need to transpose it, multiply in the singular values and then transpose</span>
-        <span class="c1"># it again. This is equivalen to writing diag(s) @ Vh. If we skip the</span>
+        <span class="c1"># it again. This is equivalent to writing diag(s) @ Vh. If we skip the</span>
         <span class="c1"># transposes, we would get Vh @ diag(s), which is wrong.</span>
         <span class="n">score_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">s</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Vh</span><span class="p">))</span>
         <span class="n">loading_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span>

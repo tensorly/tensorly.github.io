@@ -210,7 +210,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.preprocessing" title="tensorly.preprocessing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.preprocessing</span></code></a>.svd_compress_tensor_slices</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.preprocessing.svd_compress_tensor_slices">
-<span class="sig-name descname"><span class="pre">svd_compress_tensor_slices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor_slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compression_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/preprocessing.html#svd_compress_tensor_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">svd_compress_tensor_slices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor_slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compression_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/preprocessing.html#svd_compress_tensor_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compress data with the SVD for running PARAFAC2.</p>
 <p>PARAFAC2 can be sped up massively for data where the number of rows in the tensor slices
 is much greater than their rank. In that case, we can compress the data by computing the
@@ -240,13 +240,17 @@ which compresses all modes of <span class="math notranslate nohighlight">\(\math
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tensor_slices</strong><span class="classifier">list of matrices</span></dt><dd><p>The data matrices to compress</p>
+<dt><strong>tensor_slices</strong><span class="classifier">list of matrices</span></dt><dd><p>The data matrices to compress.</p>
 </dd>
 <dt><strong>compression_threshold</strong><span class="classifier">float (0 &lt;= compression_threshold &lt;= 1)</span></dt><dd><p>Threshold at which the singular values should be truncated. Any singular value less than
 compression_threshold * s[0] is set to zero. Note that if this is nonzero, then the found
 components will likely be affected.</p>
 </dd>
-<dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
+<dt><strong>max_rank</strong><span class="classifier">int</span></dt><dd><p>The maximum rank to allow in the datasets after compression. This also serves to speed up
+the SVD calculation with matrices containing many rows and columns when paired with randomized
+SVD solving.</p>
+</dd>
+<dt><strong>svd</strong><span class="classifier">str, default is ‘truncated_svd’</span></dt><dd><p>Function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</p>
 </dd>
 </dl>
 </dd>
