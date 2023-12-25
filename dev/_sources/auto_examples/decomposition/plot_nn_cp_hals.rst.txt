@@ -39,7 +39,7 @@ obtained from a non-negative tensor.
 
 .. GENERATED FROM PYTHON SOURCE LINES 20-29
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -66,7 +66,7 @@ Here we chose to generate a random from the sequence of integers from 1 to 24000
 
 .. GENERATED FROM PYTHON SOURCE LINES 34-38
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Tensor generation
@@ -93,7 +93,7 @@ an instance of the CPTensor class:
 
 .. GENERATED FROM PYTHON SOURCE LINES 48-53
 
-.. code-block:: default
+.. code-block:: Python
 
 
     weights_init, factors_init = initialize_cp(tensor, non_negative=True, init='random', rank=10)
@@ -117,7 +117,7 @@ Multiplicative Update, which can be called as follows:
 
 .. GENERATED FROM PYTHON SOURCE LINES 59-65
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
@@ -142,7 +142,7 @@ the case but the approximation is quite coarse.
 
 .. GENERATED FROM PYTHON SOURCE LINES 71-75
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print('reconstructed tensor\n', cp_reconstruction_mu[10:12, 10:12, 10:12], '\n')
@@ -157,11 +157,11 @@ the case but the approximation is quite coarse.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8239.07 8387.67]
-      [8430.87 8303.6 ]]
+     [[[8580.47 8393.67]
+      [8491.13 8256.98]]
 
-     [[9122.65 9210.8 ]
-      [9411.75 9202.43]]] 
+     [[9142.25 9072.19]
+      [9207.51 9138.73]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -182,7 +182,7 @@ used as follows:
 
 .. GENERATED FROM PYTHON SOURCE LINES 80-86
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
@@ -203,7 +203,7 @@ Again, we can look at the reconstructed tensor entries.
 
 .. GENERATED FROM PYTHON SOURCE LINES 88-92
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print('reconstructed tensor\n',cp_reconstruction_hals[10:12, 10:12, 10:12], '\n')
@@ -218,11 +218,11 @@ Again, we can look at the reconstructed tensor entries.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8227.4  8212.41]
-      [8239.07 8223.97]]
+     [[[8244.63 8241.67]
+      [8210.86 8221.76]]
 
-     [[9025.71 9012.34]
-      [9038.26 9024.55]]] 
+     [[9040.93 9038.42]
+      [9012.77 9022.67]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -249,7 +249,7 @@ in the function:
 
 .. GENERATED FROM PYTHON SOURCE LINES 103-109
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
@@ -272,7 +272,7 @@ First comparison option is processing time for each algorithm:
 
 .. GENERATED FROM PYTHON SOURCE LINES 113-118
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print(str("{:.2f}".format(time_mu)) + ' ' + 'seconds')
@@ -287,9 +287,9 @@ First comparison option is processing time for each algorithm:
 
  .. code-block:: none
 
-    0.16 seconds
-    0.37 seconds
-    328.93 seconds
+    0.21 seconds
+    0.20 seconds
+    118.48 seconds
 
 
 
@@ -306,7 +306,7 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
 .. GENERATED FROM PYTHON SOURCE LINES 126-132
 
-.. code-block:: default
+.. code-block:: Python
 
 
     from tensorly.metrics.regression import RMSE
@@ -322,9 +322,9 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
  .. code-block:: none
 
-    225.58467
-    23.997179
-    0.12845586
+    229.04341
+    33.125057
+    0.8711648
 
 
 
@@ -338,7 +338,7 @@ in convergence speed on the following error per iteration plot:
 
 .. GENERATED FROM PYTHON SOURCE LINES 137-151
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
@@ -386,7 +386,7 @@ Neural computation, 24(4), 1085-1105. (Link)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (5 minutes 29.548 seconds)
+   **Total running time of the script:** (1 minutes 58.978 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_nn_cp_hals.py:
@@ -395,16 +395,13 @@ Neural computation, 24(4), 1085-1105. (Link)
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_nn_cp_hals.ipynb <plot_nn_cp_hals.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_nn_cp_hals.py <plot_nn_cp_hals.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_nn_cp_hals.ipynb <plot_nn_cp_hals.ipynb>`
 
 
 .. only:: html

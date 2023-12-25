@@ -202,7 +202,7 @@ to download the full example code</p>
 <section class="sphx-glr-example-title" id="demonstration-of-parafac2">
 <span id="sphx-glr-auto-examples-decomposition-plot-parafac2-py"></span><h1>Demonstration of PARAFAC2</h1>
 <p>Example of how to use the PARAFAC2 algorithm.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -220,7 +220,7 @@ CP tensor, that is, a tensor on the form:</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{X}_{ijk} = \sum_{r=1}^R A_{ir} B_{\sigma_i(j) r} C_{kr},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is a cyclic permutation of <span class="math notranslate nohighlight">\(J\)</span> elements.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
 <span class="n">true_rank</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span>
 <span class="n">noise_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -255,7 +255,7 @@ CP tensor, that is, a tensor on the form:</p>
 <h2>Fit a PARAFAC2 tensor</h2>
 <p>To avoid local minima, we initialise and fit 10 models and choose the one
 with the lowest error</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">best_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">best_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="n">decomposition</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -277,15 +277,15 @@ Final error: 0.09204691256270857
 -------------------------------
 Training model 1...
 Number of iterations: 97
-Final error: 0.09204691443830686
+Final error: 0.09204691443830902
 -------------------------------
 Training model 2...
 Number of iterations: 126
-Final error: 0.09269641747989174
+Final error: 0.09269641747988852
 -------------------------------
 Training model 3...
 Number of iterations: 62
-Final error: 0.09204691834913839
+Final error: 0.09204691834914164
 -------------------------------
 Training model 4...
 Number of iterations: 68
@@ -297,21 +297,21 @@ Final error: 0.09290488334817881
 -------------------------------
 Training model 6...
 Number of iterations: 64
-Final error: 0.09204692065975076
+Final error: 0.09204692065975402
 -------------------------------
 Training model 7...
 Number of iterations: 66
-Final error: 0.09204691491864431
+Final error: 0.09204691491864322
 -------------------------------
 Training model 8...
 Number of iterations: 83
-Final error: 0.09204690965867436
+Final error: 0.09204690965867544
 -------------------------------
 Training model 9...
 Number of iterations: 117
-Final error: 0.09204691029003337
+Final error: 0.09204691029003553
 -------------------------------
-Best model error: 0.09204690965867436
+Best model error: 0.09204690965867544
 </pre></div>
 </div>
 <p>A decomposition is a wrapper object for three variables: the <em>weights</em>,
@@ -340,14 +340,14 @@ can use the <code class="docutils literal notranslate"><span class="pre">tensorl
 decomposed dataset consisted of uneven-length frontal slices, then we can
 use the <code class="docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor.parafac2_to_slices</span></code> function to get a
 list of frontal slices.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">est_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">est_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
 <span class="n">est_weights</span><span class="p">,</span> <span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">est_B</span><span class="p">,</span> <span class="n">est_C</span><span class="p">)</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="compute-performance-metrics">
 <h2>Compute performance metrics</h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_tensor</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_tensor</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
 <span class="n">recovery_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">reconstruction_error</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">recovery_rate</span><span class="si">:</span><span class="s1">2.0%</span><span class="si">}</span><span class="s1"> of the data is explained by the model, which is expected with noise rate: </span><span class="si">{</span><span class="n">noise_rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -377,13 +377,13 @@ list of frontal slices.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>91% of the data is explained by the model, which is expected with noise rate: 0.1
-Average tucker congruence coefficient: 0.9946799176083387
+Average tucker congruence coefficient: 0.9946799176083392
 </pre></div>
 </div>
 </section>
 <section id="visualize-the-components">
 <h2>Visualize the components</h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the best permutation so that we can plot the estimated components on top of the true components</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the best permutation so that we can plot the estimated components on top of the true components</span>
 <span class="n">permutation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A_corr</span><span class="o">*</span><span class="n">B_corr</span><span class="o">*</span><span class="n">C_corr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
@@ -425,7 +425,7 @@ Average tucker congruence coefficient: 0.9946799176083387
 <span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_parafac2_001.png" srcset="../../_images/sphx_glr_plot_parafac2_001.png" alt="A mode, B mode (slice 0), C mode" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7ff08444bbe0&gt;
+<img src="../../_images/sphx_glr_plot_parafac2_001.png" srcset="../../_images/sphx_glr_plot_parafac2_001.png" alt="A mode, B mode (slice 0), C mode" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f20058b2d10&gt;
 </pre></div>
 </div>
 </section>
@@ -435,7 +435,7 @@ Average tucker congruence coefficient: 0.9946799176083387
 converged to a stationary point. We skip the first iteration since the
 initial loss often dominate the rest of the plot, making it difficult
 to check for convergence.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fig</span><span class="p">,</span> <span class="n">loss_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="o">/</span><span class="mf">1.6</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fig</span><span class="p">,</span> <span class="n">loss_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="o">/</span><span class="mf">1.6</span><span class="p">))</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="p">)),</span> <span class="n">err</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration number&#39;</span><span class="p">)</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Relative reconstruction error&#39;</span><span class="p">)</span>
@@ -455,13 +455,13 @@ to check for convergence.</p>
 A direct fitting algorithm for the PARAFAC2 model.</em>
 <strong>Journal of Chemometrics: A Journal of the Chemometrics Society.</strong>
 1999 May;13(3‐4):275-94. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.226 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 16.927 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8c1716b060db83a5d0c4cf467673c021/plot_parafac2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

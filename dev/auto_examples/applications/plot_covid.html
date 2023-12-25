@@ -201,7 +201,7 @@ to download the full example code</p>
 <section class="sphx-glr-example-title" id="covid-19-serology-dataset-analysis-with-cp">
 <span id="sphx-glr-auto-examples-applications-plot-covid-py"></span><h1>COVID-19 Serology Dataset Analysis with CP</h1>
 <p>Apply CP decomposition to COVID-19 Serology Dataset</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
 </pre></div>
 </div>
 <section id="introduction">
@@ -222,7 +222,7 @@ labeled by the status of the patients.</p>
 <a class="reference external" href="https://www.embopress.org/doi/full/10.15252/msb.202110243">this work</a>. It also includes applying
 tensor methods to HIV systems serology measurements and using them to predict patient status.</p>
 <p>We first import this dataset of a panel of COVID-19 patients:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac</span>
 <span class="kn">from</span> <span class="nn">tensorly.datasets.data_imports</span> <span class="kn">import</span> <span class="n">load_covid19_serology</span>
@@ -236,14 +236,14 @@ tensor methods to HIV systems serology measurements and using them to predict pa
 <section id="apply-cp-decomposition-to-this-dataset-with-tensorly">
 <h2>Apply CP decomposition to this dataset with Tensorly</h2>
 <p>Now we apply CP decomposition to this dataset.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">comps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">comps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="n">CMTFfacs</span> <span class="o">=</span> <span class="p">[</span><span class="n">parafac</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                     <span class="n">linesearch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">orthogonalise</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>To evaluate how well CP decomposition explains the variance in the dataset, we plot the percent
 variance reconstructed (R2X) for a range of ranks.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reconstructed_variance</span><span class="p">(</span><span class="n">tFac</span><span class="p">,</span> <span class="n">tIn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reconstructed_variance</span><span class="p">(</span><span class="n">tFac</span><span class="p">,</span> <span class="n">tIn</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; This function calculates the amount of variance captured (R2X) by the tensor method. &quot;&quot;&quot;</span>
     <span class="n">tMask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">tIn</span><span class="p">)</span>
     <span class="n">vTop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">tFac</span><span class="p">)</span> <span class="o">*</span> <span class="n">tMask</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">tIn</span><span class="p">)))</span>
@@ -268,7 +268,7 @@ variance reconstructed (R2X) for a range of ranks.</p>
 <p>Eventually, we wish CP decomposition can bring insights to this dataset. For example, in this
 case, revealing the underlying trend of COVID-19 serum-level immunity. To do this, we can inspect
 how each component looks like on weights.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tfac</span> <span class="o">=</span> <span class="n">CMTFfacs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tfac</span> <span class="o">=</span> <span class="n">CMTFfacs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1"># Ensure that factors are negative on at most one direction.</span>
 <span class="n">tfac</span><span class="o">.</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
@@ -295,7 +295,7 @@ how each component looks like on weights.</p>
 <span class="n">fig2</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ScalarMappable</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;PiYG&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_covid_002.png" srcset="../../_images/sphx_glr_plot_covid_002.png" alt="samples, antigens, receptors" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar object at 0x7ff084460fa0&gt;
+<img src="../../_images/sphx_glr_plot_covid_002.png" srcset="../../_images/sphx_glr_plot_covid_002.png" alt="samples, antigens, receptors" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar object at 0x7f20056a1ea0&gt;
 </pre></div>
 </div>
 <p>From the results, we can see that serum COVID-19 immunity separates into two distinct signals,
@@ -314,13 +314,13 @@ significant signals.</p>
 <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0092867420314598">https://www.sciencedirect.com/science/article/pii/S0092867420314598</a></p>
 </dd>
 </dl>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.755 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.724 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-covid-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/2d1781e05b6ef942fb097ff181023668/plot_covid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_covid.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/2e3d154df5c15282f0c4a6209fe4ae14/plot_covid.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_covid.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/2d1781e05b6ef942fb097ff181023668/plot_covid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_covid.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

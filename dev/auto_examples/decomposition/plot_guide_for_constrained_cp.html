@@ -320,7 +320,7 @@ proximal operator. The proximal operator may therefore change according to the s
 input as its parameter or regularizer, boolean input could be enough
 for other constraints (1, 5, 7, 10, 11). Selection of one of these
 constraints for all mode (or factors) or using different constraints for different modes are both supported.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">constrained_parafac</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -341,22 +341,22 @@ of the user. If a user wants to use the same constraint for all modes, an
 input (bool or a scalar value or list of scalar values) should be given to this constraint.
 Assume, one wants to use unimodality constraint for all modes. Since it does not require
 any scalar input, unimodality can be imposed by writing <cite>True</cite> for <cite>unimodality</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unimodality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This constraint imposes that each column of all the factors in the CP decomposition are unimodal:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">i</span><span class="p">])</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;1. column&#39;</span><span class="p">,</span> <span class="s1">&#39;2. column&#39;</span><span class="p">,</span> <span class="s1">&#39;3. column&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_guide_for_constrained_cp_001.png" srcset="../../_images/sphx_glr_plot_guide_for_constrained_cp_001.png" alt="plot guide for constrained cp" class = "sphx-glr-single-img"/><p>Constraints requiring a scalar input can be used similarly as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The same regularization coefficient l1_reg is used for all the modes. Here the l1 penalization induces sparsity given that the regularization coefficient is large enough.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 1. factor&#39;</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
 
@@ -374,27 +374,27 @@ any scalar input, unimodality can be imposed by writing <cite>True</cite> for <c
 <h2>Using one constraint for some modes</h2>
 <p>As a second option, constraint can be used for only a few selected modes by using
 a python dictionary:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[3.46 0.   0.23]
- [6.72 2.75 1.84]
- [5.61 1.69 1.5 ]
- [5.48 1.94 1.66]
- [4.34 0.95 1.01]
- [4.06 0.   0.  ]]
+ [[5.15 0.49 0.77]
+ [3.79 0.95 0.33]
+ [5.65 0.37 1.17]
+ [3.23 1.14 0.42]
+ [4.5  0.81 0.99]
+ [3.25 1.47 0.27]]
 2. factor
- [[ 0.39 -0.37 -0.05]
- [ 0.4  -0.99  0.84]
- [ 0.43 -0.58  0.08]
- [ 0.38 -0.56  0.33]
- [ 0.43 -0.38 -0.04]
- [ 0.48  0.24 -0.98]
- [ 0.21 -0.23  0.49]
- [ 0.35 -0.09 -0.18]]
+ [[ 0.09  0.73  0.37]
+ [ 0.34  0.36 -0.26]
+ [ 0.49  0.2  -0.62]
+ [ 0.23  0.57  0.14]
+ [ 0.28  0.59 -0.37]
+ [ 0.22  0.57  0.11]
+ [ 0.6   0.28 -1.43]
+ [ 0.27  0.58  0.21]]
 </pre></div>
 </div>
 <p>Since only the first and last factors are chosen, entries on the second mode factor could be negative.</p>
@@ -403,7 +403,7 @@ a python dictionary:</p>
 <h2>Using a constraint with the different scalar inputs for each mode</h2>
 <p>One may prefer different scalar value for each mode. It is possible by
 using a list structure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histogram of 1. factor&#39;</span><span class="p">)</span>
@@ -428,44 +428,44 @@ using a list structure:</p>
 <h2>Using different constraints for each mode</h2>
 <p>To use different constraint for different modes, the dictionary structure
 should be preferred:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">constrained_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span> <span class="n">l1_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
                                  <span class="n">l2_square_reg</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>In the dictionary, <cite>key</cite> is the selected mode and <cite>value</cite> is a scalar value or
 only <cite>True</cite> depending on the selected constraint.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. factor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>1. factor
- [[ 11.71   0.06  -9.69]
- [ 14.79  -9.44   9.76]
- [ 13.15 -13.91  -2.29]
- [ 13.29   9.16   0.46]
- [ 12.88   3.3    1.47]
- [ 13.1   -0.81 -12.47]]
+ [[ 15.86 -13.66  -6.6 ]
+ [ 16.38  -6.96 -14.2 ]
+ [ 15.72 -11.05 -20.11]
+ [ 15.74  -5.49  -4.98]
+ [ 14.68 -16.82   3.63]
+ [ 19.49   3.73 -14.34]]
 2. factor
- [[0.34 0.   0.6 ]
- [0.38 0.24 0.9 ]
- [0.35 0.   0.61]
- [0.39 0.   0.  ]
- [0.39 0.46 0.57]
- [0.4  0.76 0.  ]
- [0.34 1.02 0.  ]
- [0.37 0.   0.  ]]
+ [[0.33 0.2  0.11]
+ [0.34 0.53 0.2 ]
+ [0.39 0.56 0.76]
+ [0.36 0.7  0.  ]
+ [0.37 0.05 0.3 ]
+ [0.39 0.05 0.76]
+ [0.42 0.01 0.9 ]
+ [0.4  0.67 0.33]]
 3. factor
- [[ 0.1  -0.    0.01]
- [ 0.1   0.04 -0.03]
- [ 0.08 -0.   -0.03]
- [ 0.11 -0.03  0.01]
- [ 0.08 -0.03 -0.05]
- [ 0.1  -0.01 -0.01]
+ [[ 0.1  -0.    0.03]
+ [ 0.07 -0.03 -0.  ]
+ [ 0.05 -0.04 -0.02]
+ [ 0.06 -0.03 -0.01]
  [ 0.1   0.02  0.02]
- [ 0.1  -0.01 -0.03]
- [ 0.11 -0.02 -0.01]
- [ 0.09 -0.02 -0.01]]
+ [ 0.1   0.01  0.02]
+ [ 0.05 -0.04 -0.  ]
+ [ 0.07 -0.01 -0.02]
+ [ 0.05 -0.02 -0.03]
+ [ 0.09  0.01 -0.  ]]
 </pre></div>
 </div>
 <p>Thus, first factor will be non-negative, second factor will be regularized
@@ -479,13 +479,13 @@ by <span class="math notranslate nohighlight">\(0.01\)</span> with <span class="
 matrix and tensor factorization.”
 IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
 <a class="reference external" href="https://ieeexplore.ieee.org/document/7484753">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.414 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.630 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-guide-for-constrained-cp-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/02fe230fcb90df96787f11e615bb0af8/plot_guide_for_constrained_cp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_guide_for_constrained_cp.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0d7c4ccdff2f531825995c8fa152400c/plot_guide_for_constrained_cp.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_guide_for_constrained_cp.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/02fe230fcb90df96787f11e615bb0af8/plot_guide_for_constrained_cp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_guide_for_constrained_cp.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

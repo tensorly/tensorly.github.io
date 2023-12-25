@@ -86,7 +86,7 @@ constraints for all mode (or factors) or using different constraints for differe
 
 .. GENERATED FROM PYTHON SOURCE LINES 67-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -120,7 +120,7 @@ any scalar input, unimodality can be imposed by writing `True` for `unimodality`
 
 .. GENERATED FROM PYTHON SOURCE LINES 88-91
 
-.. code-block:: default
+.. code-block:: Python
 
 
     _, factors = constrained_parafac(tensor, rank=rank, unimodality=True)
@@ -138,7 +138,7 @@ This constraint imposes that each column of all the factors in the CP decomposit
 
 .. GENERATED FROM PYTHON SOURCE LINES 93-99
 
-.. code-block:: default
+.. code-block:: Python
 
 
     fig = plt.figure()
@@ -164,7 +164,7 @@ Constraints requiring a scalar input can be used similarly as follows:
 
 .. GENERATED FROM PYTHON SOURCE LINES 101-103
 
-.. code-block:: default
+.. code-block:: Python
 
     _, factors = constrained_parafac(tensor, rank=rank, l1_reg=0.05)
 
@@ -181,7 +181,7 @@ The same regularization coefficient l1_reg is used for all the modes. Here the l
 
 .. GENERATED FROM PYTHON SOURCE LINES 105-113
 
-.. code-block:: default
+.. code-block:: Python
 
     fig = plt.figure()
     plt.title('Histogram of 1. factor')
@@ -224,7 +224,7 @@ a python dictionary:
 
 .. GENERATED FROM PYTHON SOURCE LINES 118-123
 
-.. code-block:: default
+.. code-block:: Python
 
 
     _, factors = constrained_parafac(tensor, rank=rank, non_negative={0: True, 2: True})
@@ -240,21 +240,21 @@ a python dictionary:
  .. code-block:: none
 
     1. factor
-     [[3.46 0.   0.23]
-     [6.72 2.75 1.84]
-     [5.61 1.69 1.5 ]
-     [5.48 1.94 1.66]
-     [4.34 0.95 1.01]
-     [4.06 0.   0.  ]]
+     [[5.15 0.49 0.77]
+     [3.79 0.95 0.33]
+     [5.65 0.37 1.17]
+     [3.23 1.14 0.42]
+     [4.5  0.81 0.99]
+     [3.25 1.47 0.27]]
     2. factor
-     [[ 0.39 -0.37 -0.05]
-     [ 0.4  -0.99  0.84]
-     [ 0.43 -0.58  0.08]
-     [ 0.38 -0.56  0.33]
-     [ 0.43 -0.38 -0.04]
-     [ 0.48  0.24 -0.98]
-     [ 0.21 -0.23  0.49]
-     [ 0.35 -0.09 -0.18]]
+     [[ 0.09  0.73  0.37]
+     [ 0.34  0.36 -0.26]
+     [ 0.49  0.2  -0.62]
+     [ 0.23  0.57  0.14]
+     [ 0.28  0.59 -0.37]
+     [ 0.22  0.57  0.11]
+     [ 0.6   0.28 -1.43]
+     [ 0.27  0.58  0.21]]
 
 
 
@@ -272,7 +272,7 @@ using a list structure:
 
 .. GENERATED FROM PYTHON SOURCE LINES 132-147
 
-.. code-block:: default
+.. code-block:: Python
 
 
     _, factors = constrained_parafac(tensor, rank=rank, l1_reg=[0.01, 0.02, 0.03])
@@ -329,7 +329,7 @@ should be preferred:
 
 .. GENERATED FROM PYTHON SOURCE LINES 152-156
 
-.. code-block:: default
+.. code-block:: Python
 
 
     _, factors = constrained_parafac(tensor, rank=rank, non_negative={1:True}, l1_reg={0: 0.01},
@@ -349,7 +349,7 @@ only `True` depending on the selected constraint.
 
 .. GENERATED FROM PYTHON SOURCE LINES 159-164
 
-.. code-block:: default
+.. code-block:: Python
 
 
     print("1. factor\n", factors[0])
@@ -365,32 +365,32 @@ only `True` depending on the selected constraint.
  .. code-block:: none
 
     1. factor
-     [[ 11.71   0.06  -9.69]
-     [ 14.79  -9.44   9.76]
-     [ 13.15 -13.91  -2.29]
-     [ 13.29   9.16   0.46]
-     [ 12.88   3.3    1.47]
-     [ 13.1   -0.81 -12.47]]
+     [[ 15.86 -13.66  -6.6 ]
+     [ 16.38  -6.96 -14.2 ]
+     [ 15.72 -11.05 -20.11]
+     [ 15.74  -5.49  -4.98]
+     [ 14.68 -16.82   3.63]
+     [ 19.49   3.73 -14.34]]
     2. factor
-     [[0.34 0.   0.6 ]
-     [0.38 0.24 0.9 ]
-     [0.35 0.   0.61]
-     [0.39 0.   0.  ]
-     [0.39 0.46 0.57]
-     [0.4  0.76 0.  ]
-     [0.34 1.02 0.  ]
-     [0.37 0.   0.  ]]
+     [[0.33 0.2  0.11]
+     [0.34 0.53 0.2 ]
+     [0.39 0.56 0.76]
+     [0.36 0.7  0.  ]
+     [0.37 0.05 0.3 ]
+     [0.39 0.05 0.76]
+     [0.42 0.01 0.9 ]
+     [0.4  0.67 0.33]]
     3. factor
-     [[ 0.1  -0.    0.01]
-     [ 0.1   0.04 -0.03]
-     [ 0.08 -0.   -0.03]
-     [ 0.11 -0.03  0.01]
-     [ 0.08 -0.03 -0.05]
-     [ 0.1  -0.01 -0.01]
+     [[ 0.1  -0.    0.03]
+     [ 0.07 -0.03 -0.  ]
+     [ 0.05 -0.04 -0.02]
+     [ 0.06 -0.03 -0.01]
      [ 0.1   0.02  0.02]
-     [ 0.1  -0.01 -0.03]
-     [ 0.11 -0.02 -0.01]
-     [ 0.09 -0.02 -0.01]]
+     [ 0.1   0.01  0.02]
+     [ 0.05 -0.04 -0.  ]
+     [ 0.07 -0.01 -0.02]
+     [ 0.05 -0.02 -0.03]
+     [ 0.09  0.01 -0.  ]]
 
 
 
@@ -416,7 +416,7 @@ IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.414 seconds)
+   **Total running time of the script:** (0 minutes 4.630 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_guide_for_constrained_cp.py:
@@ -425,16 +425,13 @@ IEEE Transactions on Signal Processing 64.19 (2016): 5052-5065.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_guide_for_constrained_cp.ipynb <plot_guide_for_constrained_cp.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_guide_for_constrained_cp.py <plot_guide_for_constrained_cp.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_guide_for_constrained_cp.ipynb <plot_guide_for_constrained_cp.ipynb>`
 
 
 .. only:: html

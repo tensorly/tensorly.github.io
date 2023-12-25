@@ -166,7 +166,23 @@
 <span class="k">def</span> <span class="nf">initialize_decomposition</span><span class="p">(</span>
     <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initiate a random PARAFAC2 decomposition given rank and tensor slices</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initiate a random PARAFAC2 decomposition given rank and tensor slices.</span>
+
+<span class="sd">    The SVD-based initialization is based on concatenation of all the tensor slices.</span>
+<span class="sd">    This concatenated matrix is used to derive the factor matrix corresponding to the</span>
+<span class="sd">    :math:`k` mode for an :math:`X_{ijk}` tensor. However, concatenating these slices</span>
+<span class="sd">    requires a new copy of the tensor. For tensors where the sum of the :math:`j` mode</span>
+<span class="sd">    along each slice is on average larger than the :math:`k` mode, an alternative</span>
+<span class="sd">    strategy is adding together the cross-product matrix of each slice:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        K = X_{1}^T X_{1} + X_{2}^T X_{2} + ...</span>
+
+<span class="sd">    The eigenvectors of this symmetric matrix are then equal to the right eigenvectors</span>
+<span class="sd">    of the concatenation matrix. This function automatically chooses between</span>
+<span class="sd">    concatenating or forming the cross-product, depending on which resulting matrix</span>
+<span class="sd">    is smaller.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -180,26 +196,35 @@
 <span class="sd">    parafac2_tensor : Parafac2Tensor</span>
 <span class="sd">        List of initialized factors of the CP decomposition where element `i`</span>
 <span class="sd">        is of shape (tensor.shape[i], rank)</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">]</span>
+    <span class="n">concat_shape</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">random_parafac2</span><span class="p">(</span>
             <span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
-
-        <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot perform SVD init if rank (</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">) is greater than the number of columns in each tensor slice (</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot perform SVD init if rank (</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">) is greater than the number of columns in each tensor slice (</span><span class="si">{</span><span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">concat_shape</span> <span class="o">&gt;</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># If the concatenated matrix would be larger than the cross-product, use the latter</span>
+            <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">@</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="nb">slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">unfolded_mode_2</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="nb">slice</span><span class="p">),</span> <span class="nb">slice</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
         <span class="n">C</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">B</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
         <span class="n">projections</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">svd</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="n">projections</span><span class="p">))</span>
 

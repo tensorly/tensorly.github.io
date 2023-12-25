@@ -30,7 +30,7 @@ To do this, we will work with a tensor of experimentally measured cell signaling
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-19
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -81,7 +81,7 @@ given cell population following stimulation with the specified IL-2 mutant.
 
 .. GENERATED FROM PYTHON SOURCE LINES 50-55
 
-.. code-block:: default
+.. code-block:: Python
 
 
     response_data = load_IL2data()
@@ -113,7 +113,7 @@ occur.
 
 .. GENERATED FROM PYTHON SOURCE LINES 63-66
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tensor_mask = np.isfinite(response_data.tensor)
@@ -132,7 +132,7 @@ tensor without including non-finite values, allowing it to be factorized.
 
 .. GENERATED FROM PYTHON SOURCE LINES 69-72
 
-.. code-block:: default
+.. code-block:: Python
 
 
     response_data_fin = np.nan_to_num(response_data.tensor)
@@ -152,7 +152,7 @@ comparisons to be made between the meanings, and magnitudes of our resulting com
 
 .. GENERATED FROM PYTHON SOURCE LINES 76-80
 
-.. code-block:: default
+.. code-block:: Python
 
 
     sig_tensor_fact = non_negative_parafac(response_data_fin, init='random', rank=3, mask=tensor_mask, n_iter_max=5000, tol=1e-9, random_state=1)
@@ -176,7 +176,7 @@ Finally, we label, plot, and analyze our factored tensor of data.
 
 .. GENERATED FROM PYTHON SOURCE LINES 87-120
 
-.. code-block:: default
+.. code-block:: Python
 
 
     f, ax = plt.subplots(1, 2, figsize=(9, 4.5))
@@ -242,7 +242,7 @@ affect IL-2 signaling in immune cells.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.838 seconds)
+   **Total running time of the script:** (0 minutes 1.716 seconds)
 
 
 .. _sphx_glr_download_auto_examples_applications_plot_IL2.py:
@@ -251,16 +251,13 @@ affect IL-2 signaling in immune cells.
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_IL2.ipynb <plot_IL2.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_IL2.py <plot_IL2.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_IL2.ipynb <plot_IL2.ipynb>`
 
 
 .. only:: html

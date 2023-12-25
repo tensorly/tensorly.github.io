@@ -212,7 +212,7 @@ vectors to recover the decompressed model. Fitting to compressed data and then
 decompressing is mathematically equivalent to fitting to the original uncompressed data.</p>
 <p>For more information about why this works, see the documentation of
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">tensorly.decomposition.preprocessing.svd_compress_tensor_slices</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">monotonic</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">parafac2</span>
 <span class="kn">import</span> <span class="nn">tensorly.preprocessing</span> <span class="k">as</span> <span class="nn">preprocessing</span>
@@ -222,7 +222,7 @@ decompressing is mathematically equivalent to fitting to the original uncompress
 <h2>Function to create synthetic data</h2>
 <p>Here, we create a function that constructs a random tensor from a PARAFAC2
 decomposition with noise</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">check_random_state</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">create_random_data</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">noise_level</span><span class="p">):</span>
@@ -243,7 +243,7 @@ decomposition with noise</p>
 <section id="compressing-data-with-many-rows-and-few-columns">
 <h2>Compressing data with many rows and few columns</h2>
 <p>Here, we set up for a case where we have many rows compared to columns</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_inits</span> <span class="o">=</span> <span class="mi">5</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">n_inits</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>  <span class="c1"># 10 matrices/tensor slices, each of size 10_000 x 15.</span>
 <span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.33</span>
@@ -256,7 +256,7 @@ decomposition with noise</p>
 <p>As a baseline, we see how long time it takes to fit models without compression.
 Since PARAFAC2 is very prone to local minima, we fit five models and select the model
 with the lowest reconstruction error.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
@@ -278,7 +278,7 @@ with the lowest reconstruction error.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
-It took 40.9s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) without compression
+It took 50.9s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) without compression
 </pre></div>
 </div>
 </section>
@@ -291,7 +291,7 @@ fit the PARAFAC2 model to a set of 10 matrices, each of size 15 x 15, not 10_000
 procedure, but luckily, this is independent of the initialisations, so we only need
 to compute this once. Also, if we are performing a grid search for the rank, then
 we just need to perform the compression once for the whole grid search as well.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">)</span>
@@ -319,8 +319,8 @@ we just need to perform the compression once for the whole grid search as well.<
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
-It took 26.8s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossless SVD compression
-The compression took 0.0s and the fitting took 26.8s
+It took 34.8s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossless SVD compression
+The compression took 0.0s and the fitting took 34.8s
 </pre></div>
 </div>
 <p>We see that we saved a lot of time by compressing the data before fitting the model.</p>
@@ -331,7 +331,7 @@ The compression took 0.0s and the fitting took 26.8s
 between the model obtained from compressed data and a model obtained from uncompressed
 data. Specifically, we can truncate the singular values at some threshold, essentially
 removing the parts of the data matrices that have a very low “signal strength”.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
@@ -361,8 +361,8 @@ removing the parts of the data matrices that have a very low “signal strength�
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
-It took 26.7s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossy SVD compression
-Of which the compression took 0.0s and the fitting took 26.7s
+It took 34.7s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossy SVD compression
+Of which the compression took 0.0s and the fitting took 34.6s
 </pre></div>
 </div>
 <p>We see that we didn’t save much, if any, time in this case (compared to using
@@ -374,7 +374,7 @@ the PARAFAC2 procedure, so reducing the tensor size from 10 x 15 x 15 to 10 x 4 
 <section id="compressing-data-that-is-approximately-low-rank">
 <h2>Compressing data that is approximately low-rank</h2>
 <p>Here, we simulate data with many rows and columns but an approximately low rank.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rank</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2_000</span><span class="p">,</span> <span class="mi">2_000</span><span class="p">)</span>
 <span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.33</span>
 
@@ -384,7 +384,7 @@ the PARAFAC2 procedure, so reducing the tensor size from 10 x 15 x 15 to 10 x 4 
 <section id="id1">
 <h3>Fitting without compression</h3>
 <p>Again, we start by fitting without compression as a baseline.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model without compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_inits</span><span class="p">):</span>
@@ -406,14 +406,14 @@ the PARAFAC2 procedure, so reducing the tensor size from 10 x 15 x 15 to 10 x 4 
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
-It took 148.3s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) without compression
+It took 110.1s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) without compression
 </pre></div>
 </div>
 </section>
 <section id="id2">
 <h3>Fitting with lossless compression</h3>
 <p>Next, we fit with lossless compression.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with SVD compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">)</span>
@@ -443,8 +443,8 @@ It took 148.3s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) withou
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
-It took 140.5s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossless SVD compression
-Of which the compression took 0.0s and the fitting took 140.5s
+It took 104.5s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossless SVD compression
+Of which the compression took 0.0s and the fitting took 104.5s
 </pre></div>
 </div>
 <p>We see that the lossless compression no effect for this data. This is because the
@@ -454,7 +454,7 @@ losslessly with the SVD.</p>
 <section id="id3">
 <h3>Fitting with lossy compression</h3>
 <p>Finally, we fit with lossy SVD compression.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fitting PARAFAC2 model with lossy SVD compression...&quot;</span><span class="p">)</span>
 <span class="n">t1</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
 <span class="n">lowest_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 <span class="n">scores</span><span class="p">,</span> <span class="n">loadings</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">svd_compress_tensor_slices</span><span class="p">(</span><span class="n">uncompressed_data</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">)</span>
@@ -484,8 +484,8 @@ losslessly with the SVD.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
-It took 32.0s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossy SVD compression
-Of which the compression took 16.9s and the fitting took 15.1s
+It took 30.5s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossy SVD compression
+Of which the compression took 11.9s and the fitting took 18.7s
 </pre></div>
 </div>
 <p>Here we see a large speedup. This is because the data is approximately low rank so
@@ -493,13 +493,13 @@ the compressed tensor slices will have shape R x 2_000, where R is typically bel
 in this example. If your tensor slices are large in both modes, you might want to plot
 the singular values of your dataset to see if lossy compression could speed up
 PARAFAC2.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (6 minutes 56.894 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (6 minutes 6.624 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-compression-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/f283605c95b45f5b3bbceeebb1a78c48/plot_parafac2_compression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2_compression.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/02911ae80224ade0c761c6cc5f2d7d69/plot_parafac2_compression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2_compression.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/f283605c95b45f5b3bbceeebb1a78c48/plot_parafac2_compression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2_compression.py</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
