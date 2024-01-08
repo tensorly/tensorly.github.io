@@ -200,19 +200,19 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In short, you can write your code using TensorLy and you can transparently combine it and execute with any of the backends.
-Currently we support NumPy PyTorch, MXNet, JAX, TensorFlow and CuPy as backends.</p>
+Currently we support NumPy PyTorch, JAX, TensorFlow and CuPy as backends.</p>
 </div>
 <section id="backend">
 <h2><span class="section-number">2.1. </span>Backend?</h2>
-<p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), MXNet, and PyTorch.
+<p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), JAX, and PyTorch.
 For the end user, the interface is exactly the same, but under the hood, a different library is used to represent multi-dimensional arrays and perform computations on these.</p>
-<p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or MXNet.</p>
+<p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or JAX.</p>
 </section>
 <section id="why-backends">
 <h2><span class="section-number">2.2. </span>Why backends?</h2>
 <p>The goal of TensorLy is to make tensor methods accessible.
-While NumPy needs no introduction, other backends such as MXNet and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
-Last but not least, using MXNet or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
+While NumPy needs no introduction, other backends such as JAX and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
+Last but not least, using JAX or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
 </section>
 <section id="how-do-i-change-the-backend">
 <h2><span class="section-number">2.3. </span>How do I change the backend?</h2>
@@ -221,11 +221,10 @@ Alternatively during the execution, assuming you have imported TensorLy as <code
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>NumPy is installed by default with TensorLy if you haven’t already installed it.
-However, to keep dependencies as minimal as possible, and to not complexify installation, neither MXNet nor PyTorch are installed.  If you want to use them as backend, you will have to install them first.
+However, to keep dependencies as minimal as possible, and to not complexify installation, no backend is installed.  If you want to use them as backend, you will have to install them first.
 It is easy however, simply refer to their respective installation instructions:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pytorch.org">PyTorch</a></p></li>
-<li><p><a class="reference external" href="https://mxnet.apache.org/install/index.html">MXNet</a></p></li>
 <li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/developer.html#building-or-installing-jaxlib">JAX</a></p></li>
 <li><p><a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">CuPy</a></p></li>
 <li><p><a class="reference external" href="https://www.tensorflow.org/install">TensorFlow</a></p></li>
@@ -235,7 +234,7 @@ It is easy however, simply refer to their respective installation instructions:<
 </section>
 <section id="context-of-a-tensor">
 <h2><span class="section-number">2.4. </span>Context of a tensor</h2>
-<p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
+<p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
 <p>For instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -367,7 +366,7 @@ However, if you only want to use one backend, you can first set it and then swit
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

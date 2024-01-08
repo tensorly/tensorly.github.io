@@ -590,7 +590,7 @@
         <span class="c1"># Compute the square of norm of each row</span>
         <span class="n">rows_norms</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A_new</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># If there is only one row of A left, let&#39;s just return it. MxNet is not robust about this case.</span>
+        <span class="c1"># If there is only one row of A left, let&#39;s just return it.</span>
         <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">rows_norms</span><span class="p">)</span> <span class="o">==</span> <span class="p">():</span>
             <span class="n">row_idx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rest_of_rows</span>
             <span class="k">break</span>
@@ -611,7 +611,7 @@
         <span class="c1"># projection a to b is computed as: &lt;a,b&gt; / sqrt(|a|*|b|)</span>
         <span class="n">projection</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A_new</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">max_row</span><span class="p">))</span>
         <span class="n">normalization</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rows_norms</span><span class="p">[</span><span class="n">max_row_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows_norms</span><span class="p">)</span>
-        <span class="c1"># make sure normalization vector is of the same shape of projection (causing bugs for MxNet)</span>
+        <span class="c1"># make sure normalization vector is of the same shape of projection</span>
         <span class="n">normalization</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">normalization</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">projection</span><span class="p">))</span>
         <span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span> <span class="o">/</span> <span class="n">normalization</span>
 
@@ -643,7 +643,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

@@ -256,15 +256,15 @@
 <section id="tensorly-backend">
 <h2><span class="section-number">1.2. </span>TensorLy Backend</h2>
 <p>Earlier, we mentioned that all function for manipulating arrays can be accessed through <a class="reference internal" href="../modules/api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a> or <cite>tensorly.backend</cite>.</p>
-<p>For instance, if you have a tensor <code class="docutils literal notranslate"><span class="pre">t</span></code>, to take its mean, you should use <code class="docutils literal notranslate"><span class="pre">tensorly.mean(t)</span></code>, <strong>not</strong>, for instance, <code class="docutils literal notranslate"><span class="pre">numpy.mean(t)</span></code> (or torch, mxnet, etc).
+<p>For instance, if you have a tensor <code class="docutils literal notranslate"><span class="pre">t</span></code>, to take its mean, you should use <code class="docutils literal notranslate"><span class="pre">tensorly.mean(t)</span></code>, <strong>not</strong>, for instance, <code class="docutils literal notranslate"><span class="pre">numpy.mean(t)</span></code> (or torch, JAX, etc).
 Why is that?</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>This is because we support several backends: the code you write in TensorLy can be <em>transparently</em> executed with several frameworks, without having to change anything in your code!
-For instance, you can execute your code normally using NumPy, but you can also have it run on GPU or multiple machines, using PyTorch, TensorFlow, CuPy, MXNet or JAX. Without having to adapt your code!</p>
+For instance, you can execute your code normally using NumPy, but you can also have it run on GPU or multiple machines, using PyTorch, TensorFlow, CuPy, or JAX. Without having to adapt your code!</p>
 </div>
 <p>This is why you should always manipulate tensors using tensorly backend functions only.
-For instance, <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch version depending on the backend you selected. There are other subtleties that are handled by the backend to allow a common API regardless of the backend use.</p>
+For instance, <cite>tensorly.max</cite> calls either the NumPy or PyTorch version depending on the backend you selected. There are other subtleties that are handled by the backend to allow a common API regardless of the backend use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>By default, the backend is set to NumPy. You can change the backend using <code class="docutils literal notranslate"><span class="pre">tensorly.set_backend</span></code>.
@@ -423,7 +423,7 @@ for testing tensor methods.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
