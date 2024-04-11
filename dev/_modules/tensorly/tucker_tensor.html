@@ -464,6 +464,13 @@
             <span class="bp">self</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">keep_dim</span><span class="o">=</span><span class="n">keep_dim</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span>
         <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the tucker_tensor with `self.factors` normalised to unit length.</span>
+<span class="sd">        The normalizing constants absorbed into `self.core`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factors</span> <span class="o">=</span> <span class="n">tucker_normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">_tucker_n_param</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="n">rank</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of parameters of a Tucker decomposition for a given `rank` and full `tensor_shape`.</span>
