@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
@@ -248,17 +248,15 @@ second to <cite>b</cite>. Both elements array_like must be of the same length.</
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<dl class="simple">
-<dt>Three common use cases are:</dt><dd><ul class="simple">
+<p>Three common use cases are:</p>
+<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">0</span></code> : tensor product <span class="math notranslate nohighlight">\(a\otimes b\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">1</span></code> : tensor dot product <span class="math notranslate nohighlight">\(a\cdot b\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">2</span></code> : (default) tensor double contraction <span class="math notranslate nohighlight">\(a:b\)</span></p></li>
 </ul>
-</dd>
-</dl>
-<p>When <cite>axes</cite> is integer_like, the sequence for evaluation will be: first
-the -Nth axis in <cite>a</cite> and 0th axis in <cite>b</cite>, and the -1th axis in <cite>a</cite> and
-Nth axis in <cite>b</cite> last.</p>
+<p>When <cite>axes</cite> is a positive integer <code class="docutils literal notranslate"><span class="pre">N</span></code>, the operation starts with
+axis <code class="docutils literal notranslate"><span class="pre">-N</span></code> of <cite>a</cite> and axis <code class="docutils literal notranslate"><span class="pre">0</span></code> of <cite>b</cite>, and it continues through
+axis <code class="docutils literal notranslate"><span class="pre">-1</span></code> of <cite>a</cite> and axis <code class="docutils literal notranslate"><span class="pre">N-1</span></code> of <cite>b</cite> (inclusive).</p>
 <p>When there is more than one axis to sum over - and they are not the last
 (first) axes of <cite>a</cite> (<cite>b</cite>) - the argument <cite>axes</cite> should consist of
 two sequences of the same length, with the first axis to sum over given

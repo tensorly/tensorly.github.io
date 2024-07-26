@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.sort</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.sort">
-<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Return a sorted copy of an array.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -220,9 +220,9 @@
 sorting. The default is -1, which sorts along the last axis.</p>
 </dd>
 <dt><strong>kind</strong><span class="classifier">{‘quicksort’, ‘mergesort’, ‘heapsort’, ‘stable’}, optional</span></dt><dd><p>Sorting algorithm. The default is ‘quicksort’. Note that both ‘stable’
-and ‘mergesort’ use timsort or radix sort under the covers and, in general,
-the actual implementation will vary with data type. The ‘mergesort’ option
-is retained for backwards compatibility.</p>
+and ‘mergesort’ use timsort or radix sort under the covers and,
+in general, the actual implementation will vary with data type.
+The ‘mergesort’ option is retained for backwards compatibility.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.15.0.: </span>The ‘stable’ option was added.</p>
 </div>
@@ -232,6 +232,14 @@ which fields to compare first, second, etc.  A single field can
 be specified as a string, and not all fields need be specified,
 but unspecified fields will still be used, in the order in which
 they come up in the dtype, to break ties.</p>
+</dd>
+<dt><strong>stable</strong><span class="classifier">bool, optional</span></dt><dd><p>Sort stability. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the returned array will maintain
+the relative order of <code class="docutils literal notranslate"><span class="pre">a</span></code> values which compare as equal.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>, this is not guaranteed. Internally,
+this option selects <code class="docutils literal notranslate"><span class="pre">kind='stable'</span></code>. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.0.0.</span></p>
+</div>
 </dd>
 </dl>
 </dd>
@@ -305,10 +313,11 @@ properties:</p>
 is actually used, even if ‘mergesort’ is specified. User selection
 at a finer scale is not currently available.</p>
 </div>
-<p>All the sort algorithms make temporary copies of the data when
-sorting along any but the last axis.  Consequently, sorting along
-the last axis is faster and uses less space than sorting along
-any other axis.</p>
+<p>For performance, <code class="docutils literal notranslate"><span class="pre">sort</span></code> makes a temporary copy if needed to make the data
+<a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-contiguous">contiguous</a>
+in memory along the sort axis. For even better performance and reduced
+memory consumption, ensure that the array is already contiguous along the
+sort axis.</p>
 <p>The sort order for complex numbers is lexicographic. If both the real
 and imaginary parts are non-nan then the order is determined by the
 real parts except when they are equal, in which case the order is
@@ -326,9 +335,10 @@ values are sorted to the end. The extended sort order is:</p>
 placements are sorted according to the non-nan part if it exists.
 Non-nan values are sorted as before.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.12.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.12.0.</span></p>
 </div>
-<p>quicksort has been changed to <a class="reference external" href="https://en.wikipedia.org/wiki/Introsort">introsort</a>.
+<p>quicksort has been changed to:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Introsort">introsort</a>.
 When sorting does not make enough progress it switches to
 <a class="reference external" href="https://en.wikipedia.org/wiki/Heapsort">heapsort</a>.
 This implementation makes quicksort O(n*log(n)) in the worst case.</p>
@@ -342,15 +352,15 @@ API forward compatibility currently limits the
 ability to select the implementation and it is hardwired for the different
 data types.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.17.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.17.0.</span></p>
 </div>
 <p>Timsort is added for better performance on already or nearly
 sorted data. On random data timsort is almost identical to
 mergesort. It is now used for stable sort while quicksort is still the
 default sort if none is chosen. For timsort details, refer to
-<a class="reference external" href="https://github.com/python/cpython/blob/3.7/Objects/listsort.txt">CPython listsort.txt</a>.
-‘mergesort’ and ‘stable’ are mapped to radix sort for integer data types. Radix sort is an
-O(n) sort instead of O(n log n).</p>
+<a class="reference external" href="https://github.com/python/cpython/blob/3.7/Objects/listsort.txt">CPython listsort.txt</a>
+‘mergesort’ and ‘stable’ are mapped to radix sort for integer data types.
+Radix sort is an O(n) sort instead of O(n log n).</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.18.0.</span></p>
 </div>

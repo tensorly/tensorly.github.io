@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -218,13 +218,15 @@ rank, linear matrix equation <cite>ax = b</cite>.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>a</strong><span class="classifier">(…, M, M) array_like</span></dt><dd><p>Coefficient matrix.</p>
 </dd>
-<dt><strong>b</strong><span class="classifier">{(…, M,), (…, M, K)}, array_like</span></dt><dd><p>Ordinate or “dependent variable” values.</p>
+<dt><strong>b</strong><span class="classifier">{(M,), (…, M, K)}, array_like</span></dt><dd><p>Ordinate or “dependent variable” values.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">{(…, M,), (…, M, K)} ndarray</span></dt><dd><p>Solution to the system a x = b.  Returned shape is identical to <cite>b</cite>.</p>
+<dt><strong>x</strong><span class="classifier">{(…, M,), (…, M, K)} ndarray</span></dt><dd><p>Solution to the system a x = b.  Returned shape is (…, M) if b is
+shape (M,) and (…, M, K) if b is (…, M, K), where the “…” part is
+broadcasted between a and b.</p>
 </dd>
 </dl>
 </dd>
@@ -244,7 +246,7 @@ rank, linear matrix equation <cite>ax = b</cite>.</p>
 </div>
 <p class="rubric">Notes</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.8.0.</span></p>
 </div>
 <p>Broadcasting rules apply, see the <cite>numpy.linalg</cite> documentation for
 details.</p>
@@ -253,6 +255,12 @@ details.</p>
 columns) must be linearly independent; if either is not true, use
 <cite>lstsq</cite> for the least-squares best “solution” of the
 system/equation.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.0: </span>The b array is only treated as a shape (M,) column vector if it is
+exactly 1-dimensional. In all other instances it is treated as a stack
+of (M, K) matrices. Previously b would be treated as a stack of (M,)
+vectors if b.ndim was equal to a.ndim - 1.</p>
+</div>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
 <div class="citation" id="r48422ad687d3-1" role="doc-biblioentry">
@@ -262,7 +270,9 @@ FL, Academic Press, Inc., 1980, pg. 22.</p>
 </div>
 </div>
 <p class="rubric">Examples</p>
-<p>Solve the system of equations <code class="docutils literal notranslate"><span class="pre">x0</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">x0</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">2</span></code>:</p>
+<p>Solve the system of equations:
+<code class="docutils literal notranslate"><span class="pre">x0</span> <span class="pre">+</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">1</span></code> and
+<code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">x0</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">*</span> <span class="pre">x1</span> <span class="pre">=</span> <span class="pre">2</span></code>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>

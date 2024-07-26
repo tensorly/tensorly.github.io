@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -219,7 +219,7 @@
 <dt><strong>axis</strong><span class="classifier">None or int or tuple of ints, optional</span></dt><dd><p>Axis or axes along which to operate.  By default, flattened input is
 used.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.7.0.</span></p>
 </div>
 <p>If this is a tuple of ints, the maximum is selected over multiple axes,
 instead of a single axis or all the axes as before.</p>
@@ -240,13 +240,13 @@ exceptions will be raised.</p>
 <dt><strong>initial</strong><span class="classifier">scalar, optional</span></dt><dd><p>The minimum value of an output element. Must be present to allow
 computation on empty slice. See <cite>~numpy.ufunc.reduce</cite> for details.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.15.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.15.0.</span></p>
 </div>
 </dd>
 <dt><strong>where</strong><span class="classifier">array_like of bool, optional</span></dt><dd><p>Elements to compare for the maximum. See <cite>~numpy.ufunc.reduce</cite>
 for details.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.17.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.17.0.</span></p>
 </div>
 </dd>
 </dl>
@@ -255,7 +255,7 @@ for details.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>max</strong><span class="classifier">ndarray or scalar</span></dt><dd><p>Maximum of <cite>a</cite>. If <cite>axis</cite> is None, the result is a scalar value.
 If <cite>axis</cite> is an int, the result is an array of dimension
-<code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">1</span></code>. If <cite>axis</cite> is a tuple, the result is an array of 
+<code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">1</span></code>. If <cite>axis</cite> is a tuple, the result is an array of
 dimension <code class="docutils literal notranslate"><span class="pre">a.ndim</span> <span class="pre">-</span> <span class="pre">len(axis)</span></code>.</p>
 </dd>
 </dl>
@@ -298,9 +298,9 @@ corresponding max value will be NaN as well. To ignore NaN values
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">array([-1,  3])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-<span class="go">nan</span>
+<span class="go">np.float64(nan)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">where</span><span class="o">=~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">initial</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">4.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>

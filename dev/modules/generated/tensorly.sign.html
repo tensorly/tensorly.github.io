@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
@@ -210,13 +210,15 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.sign</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.sign">
-<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting='same_kind'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order='K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok=True</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extobj</span></span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting='same_kind'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order='K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok=True</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">signature</span></span></em><span class="optional">]</span><span class="sig-paren">)</span></dt>
 <dd><p>Returns an element-wise indication of the sign of a number.</p>
 <p>The <cite>sign</cite> function returns <code class="docutils literal notranslate"><span class="pre">-1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0,</span> <span class="pre">0</span> <span class="pre">if</span> <span class="pre">x==0,</span> <span class="pre">1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>.  nan
 is returned for nan inputs.</p>
-<p>For complex inputs, the <cite>sign</cite> function returns
-<code class="docutils literal notranslate"><span class="pre">sign(x.real)</span> <span class="pre">+</span> <span class="pre">0j</span> <span class="pre">if</span> <span class="pre">x.real</span> <span class="pre">!=</span> <span class="pre">0</span> <span class="pre">else</span> <span class="pre">sign(x.imag)</span> <span class="pre">+</span> <span class="pre">0j</span></code>.</p>
-<p>complex(nan, 0) is returned for complex nan inputs.</p>
+<p>For complex inputs, the <cite>sign</cite> function returns <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">/</span> <span class="pre">abs(x)</span></code>, the
+generalization of the above (and <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">if</span> <span class="pre">x==0</span></code>).</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.0.0: </span>Definition of complex sign changed to follow the Array API standard.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -249,15 +251,17 @@ This is a scalar if <cite>x</cite> is a scalar.</p>
 </dl>
 <p class="rubric">Notes</p>
 <p>There is more than one definition of sign in common use for complex
-numbers.  The definition used here is equivalent to <span class="math notranslate nohighlight">\(x/\sqrt{x*x}\)</span>
-which is different from a common alternative, <span class="math notranslate nohighlight">\(x/|x|\)</span>.</p>
+numbers.  The definition used here, <span class="math notranslate nohighlight">\(x/|x|\)</span>, is the more common
+and useful one, but is different from the one used in numpy prior to
+version 2.0, <span class="math notranslate nohighlight">\(x/\sqrt{x*x}\)</span>, which is equivalent to 
+<code class="docutils literal notranslate"><span class="pre">sign(x.real)</span> <span class="pre">+</span> <span class="pre">0j</span> <span class="pre">if</span> <span class="pre">x.real</span> <span class="pre">!=</span> <span class="pre">0</span> <span class="pre">else</span> <span class="pre">sign(x.imag)</span> <span class="pre">+</span> <span class="pre">0j</span></code>.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">([</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
 <span class="go">array([-1.,  1.])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">5</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">)</span>
-<span class="go">(1+0j)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">([</span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="n">j</span><span class="p">,</span> <span class="mi">8</span><span class="n">j</span><span class="p">])</span>
+<span class="go">array([0.6-0.8j, 0. +1.j ])</span>
 </pre></div>
 </div>
 </dd></dl>

@@ -17,14 +17,14 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
     <script src="../../_static/documentation_options.js?v=ec16d22d"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -189,7 +189,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.eye</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.eye">
-<span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'float'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order='C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">like=None</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">eye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'float'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order='C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">like=None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Return a 2-D array with ones on the diagonal and zeros elsewhere.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -207,7 +207,13 @@ to a lower diagonal.</p>
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’}, optional</span></dt><dd><p>Whether the output should be stored in row-major (C-style) or
 column-major (Fortran-style) order in memory.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.14.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.14.0.</span></p>
+</div>
+</dd>
+<dt><strong>device</strong><span class="classifier">str, optional</span></dt><dd><p>The device on which to place the created array. Default: None.
+For Array-API interoperability only, so must be <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> if passed.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.0.0.</span></p>
 </div>
 </dd>
 <dt><strong>like</strong><span class="classifier">array_like, optional</span></dt><dd><p>Reference object to allow the creation of arrays which are not
@@ -216,7 +222,7 @@ the <code class="docutils literal notranslate"><span class="pre">__array_functio
 by it. In this case, it ensures the creation of an array object
 compatible with that passed in via this argument.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.20.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.20.0.</span></p>
 </div>
 </dd>
 </dl>
