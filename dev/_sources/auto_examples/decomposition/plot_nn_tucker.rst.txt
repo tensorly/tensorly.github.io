@@ -98,7 +98,7 @@ Here we chose to generate a random tensor from the sequence of integers from
 
     # tensor generation
     array = np.random.randint(1000, size=(10, 30, 40))
-    tensor = tl.tensor(array, dtype='float')
+    tensor = tl.tensor(array, dtype="float")
 
 
 
@@ -113,15 +113,17 @@ Non-negative Tucker
 -----------------------
 First, multiplicative update can be implemented as:
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-75
+.. GENERATED FROM PYTHON SOURCE LINES 69-77
 
 .. code-block:: Python
 
 
     tic = time.time()
-    tensor_mu, error_mu = non_negative_tucker(tensor, rank=[5, 5, 5], tol=1e-12, n_iter_max=100, return_errors=True)
+    tensor_mu, error_mu = non_negative_tucker(
+        tensor, rank=[5, 5, 5], tol=1e-12, n_iter_max=100, return_errors=True
+    )
     tucker_reconstruction_mu = tl.tucker_to_tensor(tensor_mu)
-    time_mu = time.time()-tic
+    time_mu = time.time() - tic
 
 
 
@@ -130,27 +132,29 @@ First, multiplicative update can be implemented as:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-79
+.. GENERATED FROM PYTHON SOURCE LINES 78-81
 
 Here, we also compute the output tensor from the decomposed factors by using
 the ``tucker_to_tensor`` function. The tensor ``tucker_reconstruction_mu`` is
 therefore a low-rank non-negative approximation of the input tensor ``tensor``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-84
+.. GENERATED FROM PYTHON SOURCE LINES 83-86
 
 Non-negative Tucker with HALS and FISTA
 ---------------------------------------
 HALS algorithm with FISTA can be calculated as:
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-90
+.. GENERATED FROM PYTHON SOURCE LINES 86-94
 
 .. code-block:: Python
 
 
     ticnew = time.time()
-    tensor_hals_fista, error_fista = non_negative_tucker_hals(tensor, rank=[5, 5, 5], algorithm='fista', return_errors=True)
+    tensor_hals_fista, error_fista = non_negative_tucker_hals(
+        tensor, rank=[5, 5, 5], algorithm="fista", return_errors=True
+    )
     tucker_reconstruction_fista = tl.tucker_to_tensor(tensor_hals_fista)
-    time_fista = time.time()-ticnew
+    time_fista = time.time() - ticnew
 
 
 
@@ -159,21 +163,23 @@ HALS algorithm with FISTA can be calculated as:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-94
+.. GENERATED FROM PYTHON SOURCE LINES 95-98
 
 Non-negative Tucker with HALS and Active Set
 --------------------------------------------
 As a second option, HALS algorithm with Active Set can be called as follows:
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-100
+.. GENERATED FROM PYTHON SOURCE LINES 98-106
 
 .. code-block:: Python
 
 
     ticnew = time.time()
-    tensor_hals_as, error_as = non_negative_tucker_hals(tensor, rank=[5, 5, 5], algorithm='active_set', return_errors=True)
+    tensor_hals_as, error_as = non_negative_tucker_hals(
+        tensor, rank=[5, 5, 5], algorithm="active_set", return_errors=True
+    )
     tucker_reconstruction_as = tl.tucker_to_tensor(tensor_hals_as)
-    time_as = time.time()-ticnew
+    time_as = time.time() - ticnew
 
 
 
@@ -182,21 +188,21 @@ As a second option, HALS algorithm with Active Set can be called as follows:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-105
+.. GENERATED FROM PYTHON SOURCE LINES 107-111
 
 Comparison
 -----------------------
 To compare the various methods, first we may look at each algorithm
 processing time:
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-110
+.. GENERATED FROM PYTHON SOURCE LINES 111-116
 
 .. code-block:: Python
 
 
-    print('time for tensorly nntucker:'+' ' + str("{:.2f}".format(time_mu)))
-    print('time for HALS with fista:'+' ' + str("{:.2f}".format(time_fista)))
-    print('time for HALS with as:'+' ' + str("{:.2f}".format(time_as)))
+    print("time for tensorly nntucker:" + " " + str("{:.2f}".format(time_mu)))
+    print("time for HALS with fista:" + " " + str("{:.2f}".format(time_fista)))
+    print("time for HALS with as:" + " " + str("{:.2f}".format(time_as)))
 
 
 
@@ -208,12 +214,12 @@ processing time:
 
     time for tensorly nntucker: 0.09
     time for HALS with fista: 1.26
-    time for HALS with as: 0.24
+    time for HALS with as: 0.26
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-116
+.. GENERATED FROM PYTHON SOURCE LINES 117-122
 
 All algorithms should run with about the same number of iterations on our
 example, so at first glance the MU algorithm is faster (i.e. has lower
@@ -221,14 +227,16 @@ per-iteration complexity). A second way to compare methods is to compute
 the error between the output and input tensor. In Tensorly, there is a function
 to compute Root Mean Square Error (RMSE):
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-121
+.. GENERATED FROM PYTHON SOURCE LINES 122-129
 
 .. code-block:: Python
 
 
-    print('RMSE tensorly nntucker:'+' ' + str(RMSE(tensor, tucker_reconstruction_mu)))
-    print('RMSE for hals with fista:'+' ' + str(RMSE(tensor, tucker_reconstruction_fista)))
-    print('RMSE for hals with as:'+' ' + str(RMSE(tensor, tucker_reconstruction_as)))
+    print("RMSE tensorly nntucker:" + " " + str(RMSE(tensor, tucker_reconstruction_mu)))
+    print(
+        "RMSE for hals with fista:" + " " + str(RMSE(tensor, tucker_reconstruction_fista))
+    )
+    print("RMSE for hals with as:" + " " + str(RMSE(tensor, tucker_reconstruction_as)))
 
 
 
@@ -238,36 +246,36 @@ to compute Root Mean Square Error (RMSE):
 
  .. code-block:: none
 
-    RMSE tensorly nntucker: 285.9957719359606
-    RMSE for hals with fista: 282.48335860978983
-    RMSE for hals with as: 283.72503226397833
+    RMSE tensorly nntucker: 286.626873838224
+    RMSE for hals with fista: 283.31942375720564
+    RMSE for hals with as: 283.1474616656402
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-125
+.. GENERATED FROM PYTHON SOURCE LINES 130-133
 
 According to the RMSE results, HALS is better than the multiplicative update
 with both FISTA and active set core update options. We can better appreciate
 the difference in convergence speed on the following error per iteration plot:
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-139
+.. GENERATED FROM PYTHON SOURCE LINES 133-147
 
 .. code-block:: Python
 
 
 
-    def each_iteration(a,b,c,title):
-        fig=plt.figure()
+    def each_iteration(a, b, c, title):
+        fig = plt.figure()
         fig.set_size_inches(10, fig.get_figheight(), forward=True)
         plt.plot(a)
         plt.plot(b)
         plt.plot(c)
         plt.title(str(title))
-        plt.legend(['MU', 'HALS + Fista', 'HALS + AS'], loc='upper right')
+        plt.legend(["MU", "HALS + Fista", "HALS + AS"], loc="upper right")
 
 
-    each_iteration(error_mu, error_fista, error_as, 'Error for each iteration')
+    each_iteration(error_mu, error_fista, error_as, "Error for each iteration")
 
 
 
@@ -281,7 +289,7 @@ the difference in convergence speed on the following error per iteration plot:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-147
+.. GENERATED FROM PYTHON SOURCE LINES 148-155
 
 In conclusion, on this quick test, it appears that the HALS algorithm gives
 much better results than the MU original Tensorly methods. Our recommendation
@@ -291,20 +299,20 @@ FISTA and active set give very similar results, however active set may last
 longer when it is used with higher ranks according to our experience.
 Therefore, we recommend to use FISTA with high rank decomposition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-155
+.. GENERATED FROM PYTHON SOURCE LINES 157-164
 
 References
 ----------
 
 Gillis, N., & Glineur, F. (2012). Accelerated multiplicative updates and
 hierarchical ALS algorithms for nonnegative matrix factorization.
-Neural computation, 24(4), 1085-1105. 
+Neural computation, 24(4), 1085-1105.
 `(Link) https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and>`_
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.664 seconds)
+   **Total running time of the script:** (0 minutes 1.683 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_nn_tucker.py:

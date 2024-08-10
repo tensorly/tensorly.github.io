@@ -214,7 +214,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>backend</strong><span class="classifier">{‘numpy’, ‘pytorch’, ‘tensorflow’, ‘cupy’}</span></dt><dd><p>The name of the backend to use. Default is ‘numpy’.</p>
+<dt><strong>backend</strong><span class="classifier">{‘numpy’, ‘pytorch’, ‘tensorflow’, ‘cupy’, ‘paddle’}</span></dt><dd><p>The name of the backend to use. Default is ‘numpy’.</p>
 </dd>
 <dt><strong>local_threadsafe</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the backend will not become the default backend for all threads.
 Note that this only affects threads where the backend hasn’t already
@@ -229,6 +229,8 @@ entire session.</p>
 &gt;&gt;&gt; import tensorly as tl
 &gt;&gt;&gt; tl.set_backend(‘numpy’)
 &gt;&gt;&gt; with tl.backend_context(‘pytorch’):
+…     pass
+&gt;&gt;&gt; with tl.backend_context(‘paddle’):
 …     pass</p>
 </dd></dl>
 

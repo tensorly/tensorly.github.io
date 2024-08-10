@@ -201,10 +201,10 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="image-compression-via-tensor-decomposition">
 <span id="sphx-glr-auto-examples-applications-plot-image-compression-py"></span><h1>Image compression via tensor decomposition</h1>
 <p>Example on how to use <a class="reference internal" href="../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac" title="tensorly.decomposition.parafac"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.parafac</span></code></a> and <a class="reference internal" href="../../modules/generated/tucker-function.html#tensorly.decomposition.tucker" title="tensorly.decomposition.tucker"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.tucker</span></code></a> on images.</p>
-<img src="../../_images/sphx_glr_plot_image_compression_001.png" srcset="../../_images/sphx_glr_plot_image_compression_001.png" alt="original, CP, Tucker" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/tensorly/tensorly/examples/applications/plot_image_compression.py:21: DeprecationWarning: scipy.misc.face has been deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. Dataset methods have moved into the scipy.datasets module. Use scipy.datasets.face instead.
+<img src="../../_images/sphx_glr_plot_image_compression_001.png" srcset="../../_images/sphx_glr_plot_image_compression_001.png" alt="original, CP, Tucker" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/tensorly/tensorly/examples/applications/plot_image_compression.py:20: DeprecationWarning: scipy.misc.face has been deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. Dataset methods have moved into the scipy.datasets module. Use scipy.datasets.face instead.
   image = face()
-/home/runner/work/tensorly/tensorly/examples/applications/plot_image_compression.py:22: DeprecationWarning: scipy.misc.face has been deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. Dataset methods have moved into the scipy.datasets module. Use scipy.datasets.face instead.
-  image = tl.tensor(zoom(face(), (0.3, 0.3, 1)), dtype=&#39;float64&#39;)
+/home/runner/work/tensorly/tensorly/examples/applications/plot_image_compression.py:21: DeprecationWarning: scipy.misc.face has been deprecated in SciPy v1.10.0; and will be completely removed in SciPy v1.12.0. Dataset methods have moved into the scipy.datasets module. Use scipy.datasets.face instead.
+  image = tl.tensor(zoom(face(), (0.3, 0.3, 1)), dtype=&quot;float64&quot;)
 </pre></div>
 </div>
 <div class="line-block">
@@ -223,7 +223,8 @@ to download the full example code.</p>
 <span class="n">random_state</span> <span class="o">=</span> <span class="mi">12345</span>
 
 <span class="n">image</span> <span class="o">=</span> <span class="n">face</span><span class="p">()</span>
-<span class="n">image</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">zoom</span><span class="p">(</span><span class="n">face</span><span class="p">(),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">zoom</span><span class="p">(</span><span class="n">face</span><span class="p">(),</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A convenience function to convert from a float dtype back to uint8&quot;&quot;&quot;</span>
@@ -233,18 +234,21 @@ to download the full example code.</p>
     <span class="n">im</span> <span class="o">*=</span> <span class="mi">255</span>
     <span class="k">return</span> <span class="n">im</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
+
 <span class="c1"># Rank of the CP decomposition</span>
 <span class="n">cp_rank</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="c1"># Rank of the Tucker decomposition</span>
 <span class="n">tucker_rank</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 
 <span class="c1"># Perform the CP decomposition</span>
-<span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">cp_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-6</span><span class="p">)</span>
+<span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">cp_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-6</span><span class="p">)</span>
 <span class="c1"># Reconstruct the image from the factors</span>
 <span class="n">cp_reconstruction</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
 <span class="c1"># Tucker decomposition</span>
-<span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">tucker_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span> <span class="o">=</span> <span class="n">tucker</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">tucker_rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
+<span class="p">)</span>
 <span class="n">tucker_reconstruction</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">((</span><span class="n">core</span><span class="p">,</span> <span class="n">tucker_factors</span><span class="p">))</span>
 
 <span class="c1"># Plotting the original and reconstruction from the decompositions</span>
@@ -252,23 +256,23 @@ to download the full example code.</p>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">to_image</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;original&quot;</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">to_image</span><span class="p">(</span><span class="n">cp_reconstruction</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;CP&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CP&quot;</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">to_image</span><span class="p">(</span><span class="n">tucker_reconstruction</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Tucker&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Tucker&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.295 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.426 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-image-compression-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c6b629fdc27c337322799c80254dc184/plot_image_compression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_image_compression.ipynb</span></code></a></p>

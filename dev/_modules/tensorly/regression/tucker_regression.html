@@ -144,7 +144,8 @@
       <div class="container content main-content">
         
   <h1>Source code for tensorly.regression.tucker_regression</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">partial_tensor_to_vec</span><span class="p">,</span> <span class="n">partial_unfold</span>
 <span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">kronecker</span>
@@ -279,7 +280,7 @@
 
             <span class="c1"># Convergence check</span>
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">weight_evolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">weight_evolution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">norm_W</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
                 <span class="k">if</span> <span class="n">weight_evolution</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
