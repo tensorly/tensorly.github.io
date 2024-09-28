@@ -278,7 +278,7 @@ with the lowest reconstruction error.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
-It took 47.4s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) without compression
+It took 47.6s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) without compression
 </pre></div>
 </div>
 </section>
@@ -319,8 +319,8 @@ we just need to perform the compression once for the whole grid search as well.<
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
-It took 19.9s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossless SVD compression
-The compression took 0.0s and the fitting took 19.8s
+It took 20.1s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossless SVD compression
+The compression took 0.0s and the fitting took 20.1s
 </pre></div>
 </div>
 <p>We see that we saved a lot of time by compressing the data before fitting the model.</p>
@@ -361,8 +361,8 @@ removing the parts of the data matrices that have a very low “signal strength�
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
-It took 19.5s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossy SVD compression
-Of which the compression took 0.0s and the fitting took 19.5s
+It took 19.9s to fit a PARAFAC2 model a tensor of shape (10, 10000, 15) with lossy SVD compression
+Of which the compression took 0.0s and the fitting took 19.9s
 </pre></div>
 </div>
 <p>We see that we didn’t save much, if any, time in this case (compared to using
@@ -406,7 +406,7 @@ the PARAFAC2 procedure, so reducing the tensor size from 10 x 15 x 15 to 10 x 4 
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model without compression...
-It took 114.1s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) without compression
+It took 113.7s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) without compression
 </pre></div>
 </div>
 </section>
@@ -443,8 +443,8 @@ It took 114.1s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) withou
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with SVD compression...
-It took 109.2s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossless SVD compression
-Of which the compression took 0.0s and the fitting took 109.2s
+It took 108.8s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossless SVD compression
+Of which the compression took 0.0s and the fitting took 108.8s
 </pre></div>
 </div>
 <p>We see that the lossless compression no effect for this data. This is because the
@@ -484,8 +484,8 @@ losslessly with the SVD.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting PARAFAC2 model with lossy SVD compression...
-It took 28.1s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossy SVD compression
-Of which the compression took 13.9s and the fitting took 14.1s
+It took 27.3s to fit a PARAFAC2 model a tensor of shape (10, 2000, 2000) with lossy SVD compression
+Of which the compression took 13.1s and the fitting took 14.3s
 </pre></div>
 </div>
 <p>Here we see a large speedup. This is because the data is approximately low rank so
@@ -493,7 +493,7 @@ the compressed tensor slices will have shape R x 2_000, where R is typically bel
 in this example. If your tensor slices are large in both modes, you might want to plot
 the singular values of your dataset to see if lossy compression could speed up
 PARAFAC2.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (5 minutes 39.316 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (5 minutes 38.603 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-compression-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/02911ae80224ade0c761c6cc5f2d7d69/plot_parafac2_compression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2_compression.ipynb</span></code></a></p>
