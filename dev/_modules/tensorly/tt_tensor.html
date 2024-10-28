@@ -415,14 +415,10 @@
 
         <span class="c1"># Initialization</span>
         <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[0] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Provided rank[0] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Provided rank[-1] == </span><span class="si">{}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Provided rank[-1] == </span><span class="si">{</span><span class="n">rank</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> but boundary conditions dictate rank[0] == rank[-1] == 1.&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">allow_overparametrization</span><span class="p">:</span>
