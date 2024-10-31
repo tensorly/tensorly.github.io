@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tensorly.solvers.nnls &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+    <script src="../../../_static/documentation_options.js?v=ec16d22d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+ <script src="../../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../../index.html">
+            <img src="../../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../../../modules/api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../../../auto_examples/index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+
+      <div class="container content main-content">
+        
+  <h1>Source code for tensorly.solvers.nnls</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+
+
+<div class="viewcode-block" id="hals_nnls">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.solvers.nnls.hals_nnls.html#tensorly.solvers.nnls.hals_nnls">[docs]</a>
+<span class="k">def</span> <span class="nf">hals_nnls</span><span class="p">(</span>
+    <span class="n">UtM</span><span class="p">,</span>
+    <span class="n">UtU</span><span class="p">,</span>
+    <span class="n">V</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">sparsity_coefficient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ridge_coefficient</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">nonzero_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Non Negative Least Squares (NNLS)</span>
+
+<span class="sd">    Computes an approximate solution of a nonnegative least</span>
+<span class="sd">    squares problem (NNLS) with an exact block-coordinate descent scheme.</span>
+<span class="sd">    M is m by n, U is m by r, V is r by n.</span>
+<span class="sd">    All matrices are nonnegative componentwise.</span>
+
+<span class="sd">    This algorithm is a simplified implementation of the accelerated HALS defined in [1]. It features an early stop stopping criterion. It is simplified to ensure reproducibility and expose a simple API to control the number of inner iterations.</span>
+
+<span class="sd">    This function is made for being used repetively inside an</span>
+<span class="sd">    outer-loop alternating algorithm, for instance for computing nonnegative</span>
+<span class="sd">    matrix Factorization or tensor factorization. To use as a stand-alone solver, set the exact flag to True.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM: r-by-n array</span>
+<span class="sd">        Pre-computed product of the transposed of U and M, used in the update rule</span>
+<span class="sd">    UtU: r-by-r array</span>
+<span class="sd">        Pre-computed product of the transposed of U and U, used in the update rule</span>
+<span class="sd">    V: r-by-n initialization matrix (mutable)</span>
+<span class="sd">        Initialized V array</span>
+<span class="sd">        By default, is initialized with one non-zero entry per column</span>
+<span class="sd">        corresponding to the closest column of U of the corresponding column of M.</span>
+<span class="sd">    n_iter_max: Positive integer</span>
+<span class="sd">        Upper bound on the number of iterations</span>
+<span class="sd">        Default: 500</span>
+<span class="sd">    tol : float in [0,1]</span>
+<span class="sd">        early stop criterion, while err_k &gt; delta*err_0. Set small for</span>
+<span class="sd">        almost exact nnls solution, or larger (e.g. 1e-2) for inner loops</span>
+<span class="sd">        of a PARAFAC computation.</span>
+<span class="sd">        Default: 10e-8</span>
+<span class="sd">    sparsity_coefficient: float or None</span>
+<span class="sd">        The coefficient controling the sparisty level in the objective function.</span>
+<span class="sd">        If set to None, the problem is solved unconstrained.</span>
+<span class="sd">        Default: None</span>
+<span class="sd">    ridge_coefficient: float or None</span>
+<span class="sd">        The coefficient controling the ridge (l2) penalty in the objective function.</span>
+<span class="sd">        If set to None, no ridge penalty is imposed.</span>
+<span class="sd">        Default: None</span>
+<span class="sd">    nonzero_rows: boolean</span>
+<span class="sd">        True if the lines of the V matrix can&#39;t be zero,</span>
+<span class="sd">        False if they can be zero</span>
+<span class="sd">        Default: False</span>
+<span class="sd">    exact: If it is True, the algorithm gives a results with high precision but it needs high computational cost.</span>
+<span class="sd">        If it is False, the algorithm gives an approximate solution</span>
+<span class="sd">        Default: False</span>
+<span class="sd">    epsilon: float</span>
+<span class="sd">        Small constant such that V&gt;=epsilon instead of V&gt;=0.</span>
+<span class="sd">        Required to ensure convergence, avoids division by zero and reset.</span>
+<span class="sd">        Default: 0</span>
+<span class="sd">    callback: callable, optional</span>
+<span class="sd">        A callable called after each iteration. The supported signature is</span>
+
+<span class="sd">            callback(V: tensor, error: float)</span>
+
+<span class="sd">        where V is the last estimated nonnegative least squares solution, and error is the squared Euclidean norm of the difference between V at the current iteration k, and V at iteration k-1 (therefore error is not the loss function which is costly to compute).</span>
+<span class="sd">        Moreover, the algorithm will also terminate if the callback callable returns True.</span>
+<span class="sd">        Default: None</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    V: array</span>
+<span class="sd">        a r-by-n nonnegative matrix, see notes.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We solve the following problem</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\min_{V &gt;= \\epsilon} ||M-UV||_F^2</span>
+
+<span class="sd">    The matrix V is updated linewise. The update rule for this resolution is</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\begin{equation}</span>
+<span class="sd">                V[k,:]_{(j+1)} = V[k,:]_{(j)} + (UtM[k,:] - UtU[k,:]\\times V_{(j)})/UtU[k,k]</span>
+<span class="sd">            \\end{equation}</span>
+
+<span class="sd">    with j the update iteration index. V is then thresholded to be larger than epsilon.</span>
+
+<span class="sd">    This problem can also be defined by adding respectively a sparsity coefficient and a ridge coefficients</span>
+
+<span class="sd">    .. math:: \lambda_s, \lambda_r</span>
+
+<span class="sd">    enhancing sparsity or smoothness in the solution [2]. In this sparse/ridge version, the update rule becomes</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\begin{equation}</span>
+<span class="sd">                V[k,:]_{(j+1)} = V[k,:]_{(j)} + (UtM[k,:] - UtU[k,:]\\times V_{(j)} - \lambda_s)/(UtU[k,k]+2\lambda_r)</span>
+<span class="sd">            \\end{equation}</span>
+
+<span class="sd">    Note that the data fitting is halved but not the ridge penalization.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] N. Gillis and F. Glineur, Accelerated Multiplicative Updates and</span>
+<span class="sd">       Hierarchical ALS Algorithms for Nonnegative Matrix Factorization,</span>
+<span class="sd">       Neural Computation 24 (4): 1085-1105, 2012.</span>
+
+<span class="sd">    .. [2] J. Eggert, and E. Korner. &quot;Sparse coding and NMF.&quot;</span>
+<span class="sd">       2004 IEEE International Joint Conference on Neural Networks</span>
+<span class="sd">       (IEEE Cat. No. 04CH37541). Vol. 4. IEEE, 2004.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rank</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtM</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">UtM</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Scaling</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">UtM</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span> <span class="o">/</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">UtU</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">V</span><span class="p">)))</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">scale</span>
+
+    <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+        <span class="n">n_iter_max</span> <span class="o">=</span> <span class="mi">50000</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-16</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="n">rec_error</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rank</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]:</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="n">UtM</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">V</span><span class="p">)</span> <span class="o">+</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">den</span> <span class="o">=</span> <span class="n">UtU</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">sparsity_coefficient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">num</span> <span class="o">-=</span> <span class="n">sparsity_coefficient</span>
+                <span class="k">if</span> <span class="n">ridge_coefficient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">den</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ridge_coefficient</span>
+
+                <span class="n">newV</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="n">den</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
+                <span class="n">rec_error</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">V</span> <span class="o">-</span> <span class="n">newV</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="n">V</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">newV</span><span class="p">)</span>
+
+                <span class="c1"># Safety procedure, if columns aren&#39;t allow to be zero</span>
+                <span class="k">if</span> <span class="n">nonzero_rows</span> <span class="ow">and</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">V</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">nonzero_rows</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Column &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; of U is zero with nonzero condition&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">retVal</span> <span class="o">=</span> <span class="n">callback</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">rec_error</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">retVal</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Received True from callback function. Exiting.&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">rec_error0</span> <span class="o">=</span> <span class="n">rec_error</span>
+        <span class="k">if</span> <span class="n">rec_error</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">rec_error0</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">V</span></div>
+
+
+
+<div class="viewcode-block" id="fista">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.solvers.nnls.fista.html#tensorly.solvers.nnls.fista">[docs]</a>
+<span class="k">def</span> <span class="nf">fista</span><span class="p">(</span>
+    <span class="n">UtM</span><span class="p">,</span>
+    <span class="n">UtU</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">sparsity_coef</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ridge_coef</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fast Iterative Shrinkage Thresholding Algorithm (FISTA), see [1]_</span>
+
+<span class="sd">    Computes an approximate (nonnegative) solution for Ux=M linear system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    UtM : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and M</span>
+<span class="sd">    UtU : ndarray</span>
+<span class="sd">        Pre-computed product of the transposed of U and U</span>
+<span class="sd">    x : init</span>
+<span class="sd">       Default: None</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">        Default: 100</span>
+<span class="sd">    non_negative : bool, default is False</span>
+<span class="sd">                   if True, result will be non-negative</span>
+<span class="sd">    lr : float</span>
+<span class="sd">        learning rate</span>
+<span class="sd">        Default : None</span>
+<span class="sd">    sparsity_coef : float or None</span>
+<span class="sd">    ridge_coef : float or None</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        stopping criterion for the l1 error decrease relative to the first iteration error</span>
+<span class="sd">    epsilon : float</span>
+<span class="sd">        Small constant such that the solution is greater than epsilon instead of zero.</span>
+<span class="sd">        Required to ensure convergence, avoids division by zero and reset.</span>
+<span class="sd">        Default: 1e-8</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : approximate solution such that Ux = M</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    We solve the following problem</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\frac{1}{2} \\|m - Ux \\|_2^2 + \\lambda_1 \\|x\\|_1 + \\lambda_2 \\|x\\|_2^2</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Beck, A., &amp; Teboulle, M. (2009). A fast iterative</span>
+<span class="sd">       shrinkage-thresholding algorithm for linear inverse problems.</span>
+<span class="sd">       SIAM journal on imaging sciences, 2(1), 183-202.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sparsity_coef</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sparsity_coef</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtM</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtM</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">lr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">truncated_svd</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ridge_coef</span><span class="p">)</span>
+    <span class="c1"># Parameters</span>
+    <span class="n">momentum_old</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># tl.tensor(1.0)</span>
+    <span class="n">norm_0</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">x_update</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">-</span><span class="n">UtM</span>
+                <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">multi_mode_dot</span><span class="p">(</span><span class="n">x_update</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">sparsity_coef</span>
+                <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ridge_coef</span> <span class="o">*</span> <span class="n">x_update</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_gradient</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">-</span><span class="n">UtM</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_update</span><span class="p">)</span> <span class="o">+</span> <span class="n">sparsity_coef</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ridge_coef</span> <span class="o">*</span> <span class="n">x_update</span>
+            <span class="p">)</span>
+
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">x_update</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">x_gradient</span>
+        <span class="k">if</span> <span class="n">non_negative</span><span class="p">:</span>
+            <span class="n">x_new</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x_new</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">x_new</span><span class="p">)</span>
+        <span class="n">momentum</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">momentum_old</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">x_update</span> <span class="o">=</span> <span class="n">x_new</span> <span class="o">+</span> <span class="p">((</span><span class="n">momentum_old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">momentum</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">momentum_old</span> <span class="o">=</span> <span class="n">momentum</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_new</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># for tracking loss decrease, l2 has square overflow issues</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x_new</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">norm_0</span> <span class="o">=</span> <span class="n">norm</span>
+        <span class="k">if</span> <span class="n">norm</span> <span class="o">&lt;</span> <span class="n">tol</span> <span class="o">*</span> <span class="n">norm_0</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+
+<div class="viewcode-block" id="active_set_nnls">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.solvers.nnls.active_set_nnls.html#tensorly.solvers.nnls.active_set_nnls">[docs]</a>
+<span class="k">def</span> <span class="nf">active_set_nnls</span><span class="p">(</span><span class="n">Utm</span><span class="p">,</span> <span class="n">UtU</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-8</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Active set algorithm for non-negative least square solution, see [1]_</span>
+
+<span class="sd">    Computes an approximate non-negative solution for Ux=m linear system.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Utm : vectorized ndarray</span>
+<span class="sd">       Pre-computed product of the transposed of U and m</span>
+<span class="sd">    UtU : ndarray</span>
+<span class="sd">       Pre-computed Kronecker product of the transposed of U and U</span>
+<span class="sd">    x : init</span>
+<span class="sd">       Default: None</span>
+<span class="sd">    n_iter_max : int</span>
+<span class="sd">        Maximum number of iteration</span>
+<span class="sd">        Default: 100</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        Early stopping criterion</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : ndarray</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function solves following problem:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\begin{equation}</span>
+<span class="sd">                    \\min_{x} \\|Ux - m\\|^2</span>
+<span class="sd">            \\end{equation}</span>
+
+<span class="sd">    According to [1], non-negativity-constrained least square estimation problem becomes:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">            \\begin{equation}</span>
+<span class="sd">                    x&#39; = Utm - UtU x</span>
+<span class="sd">            \\end{equation}</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Bro, R., &amp; De Jong, S. (1997). A fast non‐negativity‐constrained</span>
+<span class="sd">       least squares algorithm. Journal of Chemometrics: A Journal of</span>
+<span class="sd">       the Chemometrics Society, 11(5), 393-401.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Active set is not supported with the tensorflow backend. Consider using fista method with tensorflow.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">UtU</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+    <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x_vec</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># To avoid singularity error when initial x exists</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span>
+                        <span class="n">support_vec</span><span class="p">,</span>
+                        <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span>
+                        <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Start from zeros if solve is not achieved</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">UtU</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x_vec</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">x_vec</span><span class="p">))</span>
+            <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">):</span>
+                <span class="n">indice</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">)</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">passive_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">active_set</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indice</span><span class="p">],</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span>
+                        <span class="n">support_vec</span><span class="p">,</span>
+                        <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span>
+                        <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># update support vector if it is necessary</span>
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)):</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span>
+                    <span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="o">/</span> <span class="p">(</span>
+                        <span class="n">x_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span>
+                        <span class="o">-</span> <span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">][</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">update</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">support_vec</span> <span class="o">-</span> <span class="n">x_vec</span><span class="p">)</span>
+                <span class="n">x_vec</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">+</span> <span class="n">update</span>
+                <span class="n">passive_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="n">active_set</span> <span class="o">=</span> <span class="n">x_vec</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+                <span class="n">passive_solution</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                    <span class="n">UtU</span><span class="p">[</span><span class="n">passive_set</span><span class="p">,</span> <span class="p">:][:,</span> <span class="n">passive_set</span><span class="p">],</span> <span class="n">Utm</span><span class="p">[</span><span class="n">passive_set</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">indice_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">support_vec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">passive_set</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                        <span class="n">indice_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span>
+                            <span class="n">support_vec</span><span class="p">,</span>
+                            <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span>
+                            <span class="n">passive_solution</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">indice_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">support_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="mi">0</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">passive_set</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">support_vec</span><span class="p">[</span><span class="n">passive_set</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+        <span class="c1"># set x to s</span>
+        <span class="n">x_vec</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">support_vec</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">support_vec</span><span class="p">))</span>
+
+        <span class="c1"># gradient update</span>
+        <span class="n">x_gradient</span> <span class="o">=</span> <span class="n">Utm</span> <span class="o">-</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">UtU</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">active_set</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">tl</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_gradient</span><span class="p">[</span><span class="n">active_set</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">x_vec</span></div>
+
+</pre></div>
+
+      </div>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>
