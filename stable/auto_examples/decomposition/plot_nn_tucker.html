@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Non-negative Tucker decomposition &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -197,8 +196,8 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-nn-tucker-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-nn-tucker-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="non-negative-tucker-decomposition">
 <span id="sphx-glr-auto-examples-decomposition-plot-nn-tucker-py"></span><h1>Non-negative Tucker decomposition</h1>
@@ -232,7 +231,7 @@ non-negative or unconstrained problems, AS is the widely used non-negative
 least square solution proposed by Lawson and Hanson in 1974. Both algorithms
 return non-negative core and FISTA is the default algorithm for HALS Tucker
 decomposition in Tensorly.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_tucker</span><span class="p">,</span> <span class="n">non_negative_tucker_hals</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -246,19 +245,21 @@ decomposition in Tensorly.</p>
 <p>There are several ways to create a tensor with non-negative entries in Tensorly.
 Here we chose to generate a random tensor from the sequence of integers from
 1 to 1000.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># tensor generation</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># tensor generation</span>
 <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="non-negative-tucker">
 <h2>Non-negative Tucker</h2>
 <p>First, multiplicative update can be implemented as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensor_mu</span><span class="p">,</span> <span class="n">error_mu</span> <span class="o">=</span> <span class="n">non_negative_tucker</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensor_mu</span><span class="p">,</span> <span class="n">error_mu</span> <span class="o">=</span> <span class="n">non_negative_tucker</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">tucker_reconstruction_mu</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tensor_mu</span><span class="p">)</span>
-<span class="n">time_mu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span>
+<span class="n">time_mu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span>
 </pre></div>
 </div>
 <p>Here, we also compute the output tensor from the decomposed factors by using
@@ -268,20 +269,24 @@ therefore a low-rank non-negative approximation of the input tensor <code class=
 <section id="non-negative-tucker-with-hals-and-fista">
 <h2>Non-negative Tucker with HALS and FISTA</h2>
 <p>HALS algorithm with FISTA can be calculated as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ticnew</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensor_hals_fista</span><span class="p">,</span> <span class="n">error_fista</span> <span class="o">=</span> <span class="n">non_negative_tucker_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;fista&#39;</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">ticnew</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensor_hals_fista</span><span class="p">,</span> <span class="n">error_fista</span> <span class="o">=</span> <span class="n">non_negative_tucker_hals</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;fista&quot;</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">tucker_reconstruction_fista</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tensor_hals_fista</span><span class="p">)</span>
-<span class="n">time_fista</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ticnew</span>
+<span class="n">time_fista</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">ticnew</span>
 </pre></div>
 </div>
 </section>
 <section id="non-negative-tucker-with-hals-and-active-set">
 <h2>Non-negative Tucker with HALS and Active Set</h2>
 <p>As a second option, HALS algorithm with Active Set can be called as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ticnew</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensor_hals_as</span><span class="p">,</span> <span class="n">error_as</span> <span class="o">=</span> <span class="n">non_negative_tucker_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;active_set&#39;</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">ticnew</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensor_hals_as</span><span class="p">,</span> <span class="n">error_as</span> <span class="o">=</span> <span class="n">non_negative_tucker_hals</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;active_set&quot;</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">tucker_reconstruction_as</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tucker_to_tensor</span><span class="p">(</span><span class="n">tensor_hals_as</span><span class="p">)</span>
-<span class="n">time_as</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">ticnew</span>
+<span class="n">time_as</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">ticnew</span>
 </pre></div>
 </div>
 </section>
@@ -289,14 +294,14 @@ therefore a low-rank non-negative approximation of the input tensor <code class=
 <h2>Comparison</h2>
 <p>To compare the various methods, first we may look at each algorithm
 processing time:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time for tensorly nntucker:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_mu</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time for HALS with fista:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_fista</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time for HALS with as:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_as</span><span class="p">)))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time for tensorly nntucker:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_mu</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time for HALS with fista:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_fista</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time for HALS with as:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_as</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>time for tensorly nntucker: 0.08
-time for HALS with fista: 1.56
-time for HALS with as: 0.37
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>time for tensorly nntucker: 0.09
+time for HALS with fista: 4.55
+time for HALS with as: 3.65
 </pre></div>
 </div>
 <p>All algorithms should run with about the same number of iterations on our
@@ -304,30 +309,32 @@ example, so at first glance the MU algorithm is faster (i.e. has lower
 per-iteration complexity). A second way to compare methods is to compute
 the error between the output and input tensor. In Tensorly, there is a function
 to compute Root Mean Square Error (RMSE):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RMSE tensorly nntucker:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_mu</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RMSE for hals with fista:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_fista</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RMSE for hals with as:&#39;</span><span class="o">+</span><span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_as</span><span class="p">)))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RMSE tensorly nntucker:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_mu</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;RMSE for hals with fista:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_fista</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RMSE for hals with as:&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">tucker_reconstruction_as</span><span class="p">)))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RMSE tensorly nntucker: 286.13168034349553
-RMSE for hals with fista: 282.8068342601711
-RMSE for hals with as: 283.59144315085064
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RMSE tensorly nntucker: 286.4866417762188
+RMSE for hals with fista: 281.96963702154653
+RMSE for hals with as: 280.74724069116087
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
 with both FISTA and active set core update options. We can better appreciate
 the difference in convergence speed on the following error per iteration plot:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">each_iteration</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">title</span><span class="p">):</span>
-    <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">each_iteration</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">(),</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;MU&#39;</span><span class="p">,</span> <span class="s1">&#39;HALS + Fista&#39;</span><span class="p">,</span> <span class="s1">&#39;HALS + AS&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;MU&quot;</span><span class="p">,</span> <span class="s2">&quot;HALS + Fista&quot;</span><span class="p">,</span> <span class="s2">&quot;HALS + AS&quot;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
 
 
-<span class="n">each_iteration</span><span class="p">(</span><span class="n">error_mu</span><span class="p">,</span> <span class="n">error_fista</span><span class="p">,</span> <span class="n">error_as</span><span class="p">,</span> <span class="s1">&#39;Error for each iteration&#39;</span><span class="p">)</span>
+<span class="n">each_iteration</span><span class="p">(</span><span class="n">error_mu</span><span class="p">,</span> <span class="n">error_fista</span><span class="p">,</span> <span class="n">error_as</span><span class="p">,</span> <span class="s2">&quot;Error for each iteration&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_nn_tucker_001.png" srcset="../../_images/sphx_glr_plot_nn_tucker_001.png" alt="Error for each iteration" class = "sphx-glr-single-img"/><p>In conclusion, on this quick test, it appears that the HALS algorithm gives
@@ -344,13 +351,16 @@ Therefore, we recommend to use FISTA with high rank decomposition.</p>
 hierarchical ALS algorithms for nonnegative matrix factorization.
 Neural computation, 24(4), 1085-1105.
 <a href="#id1"><span class="problematic" id="id2">`(Link) https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and&gt;`_</span></a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.098 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.372 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-tucker-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cdde43113b9e6de785a08675bf643a4d/plot_nn_tucker.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_tucker.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5a995fc29a1b64970094cc40854ffae2/plot_nn_tucker.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_tucker.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/cdde43113b9e6de785a08675bf643a4d/plot_nn_tucker.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_tucker.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/43729c3dc12e8eff64285b0fa0df2e01/plot_nn_tucker.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_nn_tucker.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -385,7 +395,7 @@ Neural computation, 24(4), 1085-1105.
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

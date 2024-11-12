@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Demonstration of PARAFAC2 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -43,7 +42,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Tensor regression with tensorly" href="../regression/index.html" />
-    <link rel="prev" title="Non-negative CP decomposition in Tensorly &gt;=0.6" href="plot_nn_cp_hals.html" />
+    <link rel="prev" title="Speeding up PARAFAC2 with SVD compression" href="plot_parafac2_compression.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   </head>
@@ -197,13 +196,13 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-parafac2-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-parafac2-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="demonstration-of-parafac2">
 <span id="sphx-glr-auto-examples-decomposition-plot-parafac2-py"></span><h1>Demonstration of PARAFAC2</h1>
 <p>Example of how to use the PARAFAC2 algorithm.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -214,14 +213,14 @@ to download the full example code</p>
 <section id="create-synthetic-tensor">
 <h2>Create synthetic tensor</h2>
 <p>Here, we create a random tensor that follows the PARAFAC2 constraints found
-inx <a class="reference internal" href="#kiers-et-al-1999">(Kiers et al 1999)</a>.</p>
+in <a class="reference internal" href="#kiers-et-al-1999">(Kiers et al 1999)</a>.</p>
 <p>This particular tensor,
 <span class="math notranslate nohighlight">\(\mathcal{X} \in \mathbb{R}^{I\times J \times K}\)</span>, is a shifted
 CP tensor, that is, a tensor on the form:</p>
 <div class="math notranslate nohighlight">
 \[\mathcal{X}_{ijk} = \sum_{r=1}^R A_{ir} B_{\sigma_i(j) r} C_{kr},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma_i\)</span> is a cyclic permutation of <span class="math notranslate nohighlight">\(J\)</span> elements.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parameters</span>
 <span class="n">true_rank</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span>
 <span class="n">noise_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -233,21 +232,23 @@ CP tensor, that is, a tensor on the form:</p>
 <span class="n">C_factor_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">))</span>
 
 <span class="c1"># Normalised factor matrices</span>
-<span class="n">A_normalised</span> <span class="o">=</span> <span class="n">A_factor_matrix</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">B_normalised</span> <span class="o">=</span> <span class="n">B_factor_matrix</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">B_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">C_normalised</span> <span class="o">=</span> <span class="n">C_factor_matrix</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">C_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">A_normalised</span> <span class="o">=</span> <span class="n">A_factor_matrix</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">A_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">B_normalised</span> <span class="o">=</span> <span class="n">B_factor_matrix</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">B_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">C_normalised</span> <span class="o">=</span> <span class="n">C_factor_matrix</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">C_factor_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Generate the shifted factor matrix</span>
 <span class="n">B_factor_matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">B_factor_matrix</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)]</span>
 <span class="n">Bs_normalised</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">B_normalised</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">I</span><span class="p">)]</span>
 
 <span class="c1"># Construct the tensor</span>
-<span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ir,ijr,kr-&gt;ijk&#39;</span><span class="p">,</span> <span class="n">A_factor_matrix</span><span class="p">,</span> <span class="n">B_factor_matrices</span><span class="p">,</span> <span class="n">C_factor_matrix</span><span class="p">)</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+    <span class="s2">&quot;ir,ijr,kr-&gt;ijk&quot;</span><span class="p">,</span> <span class="n">A_factor_matrix</span><span class="p">,</span> <span class="n">B_factor_matrices</span><span class="p">,</span> <span class="n">C_factor_matrix</span>
+<span class="p">)</span>
 
 <span class="c1"># Add noise</span>
 <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">noise</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
-<span class="n">noise</span> <span class="o">*=</span> <span class="n">noise_rate</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">*=</span> <span class="n">noise_rate</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 <span class="n">tensor</span> <span class="o">+=</span> <span class="n">noise</span>
 </pre></div>
 </div>
@@ -256,63 +257,70 @@ CP tensor, that is, a tensor on the form:</p>
 <h2>Fit a PARAFAC2 tensor</h2>
 <p>To avoid local minima, we initialise and fit 10 models and choose the one
 with the lowest error</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">best_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">best_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 <span class="n">decomposition</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Training model </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
-    <span class="n">trial_decomposition</span><span class="p">,</span> <span class="n">trial_errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">,</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">run</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of iterations: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">trial_errs</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Final error: </span><span class="si">{</span><span class="n">trial_errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training model </span><span class="si">{</span><span class="n">run</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="n">trial_decomposition</span><span class="p">,</span> <span class="n">trial_errs</span> <span class="o">=</span> <span class="n">parafac2</span><span class="p">(</span>
+        <span class="n">tensor</span><span class="p">,</span>
+        <span class="n">true_rank</span><span class="p">,</span>
+        <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+        <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">run</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of iterations: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">trial_errs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final error: </span><span class="si">{</span><span class="n">trial_errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">best_err</span> <span class="o">&gt;</span> <span class="n">trial_errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="n">best_err</span> <span class="o">=</span> <span class="n">trial_errs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">trial_errs</span>
         <span class="n">decomposition</span> <span class="o">=</span> <span class="n">trial_decomposition</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best model error: </span><span class="si">{</span><span class="n">best_err</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best model error: </span><span class="si">{</span><span class="n">best_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training model 0...
-Number of iterations: 500
-Final error: 0.09204720575424472
+Number of iterations: 80
+Final error: 0.09204695261872768
 -------------------------------
 Training model 1...
-Number of iterations: 500
-Final error: 0.09204726856012718
+Number of iterations: 81
+Final error: 0.09204698427747768
 -------------------------------
 Training model 2...
-Number of iterations: 500
-Final error: 0.09269711804187236
+Number of iterations: 70
+Final error: 0.092697248568492
 -------------------------------
 Training model 3...
-Number of iterations: 392
-Final error: 0.09204692795621944
+Number of iterations: 44
+Final error: 0.09204719323465736
 -------------------------------
 Training model 4...
-Number of iterations: 415
-Final error: 0.09204692959223097
+Number of iterations: 46
+Final error: 0.09204725131428858
 -------------------------------
 Training model 5...
-Number of iterations: 500
-Final error: 0.09291065541285955
+Number of iterations: 129
+Final error: 0.09290580705038641
 -------------------------------
 Training model 6...
-Number of iterations: 364
-Final error: 0.09204692769766268
+Number of iterations: 47
+Final error: 0.09204716605012422
 -------------------------------
 Training model 7...
-Number of iterations: 424
-Final error: 0.09204692883956121
+Number of iterations: 47
+Final error: 0.09204714361493882
 -------------------------------
 Training model 8...
-Number of iterations: 481
-Final error: 0.09204693125447479
+Number of iterations: 47
+Final error: 0.0920475342964699
 -------------------------------
 Training model 9...
-Number of iterations: 500
-Final error: 0.0920563578975846
+Number of iterations: 98
+Final error: 0.09204700880318421
 -------------------------------
-Best model error: 0.09204692769766268
+Best model error: 0.09204695261872768
 </pre></div>
 </div>
 <p>A decomposition is a wrapper object for three variables: the <em>weights</em>,
@@ -341,71 +349,83 @@ can use the <code class="docutils literal notranslate"><span class="pre">tensorl
 decomposed dataset consisted of uneven-length frontal slices, then we can
 use the <code class="docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor.parafac2_to_slices</span></code> function to get a
 list of frontal slices.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">est_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
-<span class="n">est_weights</span><span class="p">,</span> <span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">est_B</span><span class="p">,</span> <span class="n">est_C</span><span class="p">)</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">est_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">parafac2_to_tensor</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
+<span class="n">est_weights</span><span class="p">,</span> <span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">est_B</span><span class="p">,</span> <span class="n">est_C</span><span class="p">)</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span>
+    <span class="n">decomposition</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="compute-performance-metrics">
 <h2>Compute performance metrics</h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_tensor</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
-<span class="n">recovery_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">reconstruction_error</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_tensor</span> <span class="o">-</span> <span class="n">tensor</span><span class="p">)</span>
+<span class="n">recovery_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">reconstruction_error</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">recovery_rate</span><span class="si">:</span><span class="s1">2.0%</span><span class="si">}</span><span class="s1"> of the data is explained by the model, which is expected with noise rate: </span><span class="si">{</span><span class="n">noise_rate</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">recovery_rate</span><span class="si">:</span><span class="s2">2.0%</span><span class="si">}</span><span class="s2"> of the data is explained by the model, which is expected with noise rate: </span><span class="si">{</span><span class="n">noise_rate</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
 
 
 <span class="c1"># To evaluate how well the original structure is recovered, we calculate the tucker congruence coefficient.</span>
 
-<span class="n">est_A</span><span class="p">,</span> <span class="n">est_projected_Bs</span><span class="p">,</span> <span class="n">est_C</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">est_A</span><span class="p">,</span> <span class="n">est_projected_Bs</span><span class="p">,</span> <span class="n">est_C</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">parafac2_tensor</span><span class="o">.</span><span class="n">apply_parafac2_projections</span><span class="p">(</span>
+    <span class="n">decomposition</span>
+<span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">est_A</span><span class="p">)</span>
 <span class="n">est_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">est_A</span><span class="p">)</span>
-<span class="n">est_projected_Bs</span> <span class="o">=</span> <span class="n">sign</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="n">est_projected_Bs</span>
+<span class="n">est_projected_Bs</span> <span class="o">=</span> <span class="n">sign</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">est_projected_Bs</span>
 
-<span class="n">est_A_normalised</span> <span class="o">=</span> <span class="n">est_A</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">est_Bs_normalised</span> <span class="o">=</span> <span class="p">[</span><span class="n">est_B</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_B</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">est_B</span> <span class="ow">in</span> <span class="n">est_projected_Bs</span><span class="p">]</span>
-<span class="n">est_C_normalised</span> <span class="o">=</span> <span class="n">est_C</span><span class="o">/</span><span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_C</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">est_A_normalised</span> <span class="o">=</span> <span class="n">est_A</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">est_Bs_normalised</span> <span class="o">=</span> <span class="p">[</span><span class="n">est_B</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_B</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">est_B</span> <span class="ow">in</span> <span class="n">est_projected_Bs</span><span class="p">]</span>
+<span class="n">est_C_normalised</span> <span class="o">=</span> <span class="n">est_C</span> <span class="o">/</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">est_C</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="n">B_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">est_Bs_normalised</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="nd">@np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Bs_normalised</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">est_Bs_normalised</span><span class="p">)</span>
-<span class="n">A_corr</span> <span class="o">=</span> <span class="n">est_A_normalised</span><span class="o">.</span><span class="n">T</span><span class="nd">@A_normalised</span>
-<span class="n">C_corr</span> <span class="o">=</span> <span class="n">est_C_normalised</span><span class="o">.</span><span class="n">T</span><span class="nd">@C_normalised</span>
+<span class="n">B_corr</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">est_Bs_normalised</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Bs_normalised</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">true_rank</span><span class="p">)</span>
+    <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">est_Bs_normalised</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">A_corr</span> <span class="o">=</span> <span class="n">est_A_normalised</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A_normalised</span>
+<span class="n">C_corr</span> <span class="o">=</span> <span class="n">est_C_normalised</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">C_normalised</span>
 
-<span class="n">corr</span> <span class="o">=</span> <span class="n">A_corr</span><span class="o">*</span><span class="n">B_corr</span><span class="o">*</span><span class="n">C_corr</span>
-<span class="n">permutation</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="o">-</span><span class="n">corr</span><span class="p">)</span>  <span class="c1"># Old versions of scipy does not support maximising, from scipy v1.4, you can pass `corr` and `maximize=True` instead of `-corr` to maximise the sum.</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">A_corr</span> <span class="o">*</span> <span class="n">B_corr</span> <span class="o">*</span> <span class="n">C_corr</span>
+<span class="n">permutation</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span>
+    <span class="o">-</span><span class="n">corr</span>
+<span class="p">)</span>  <span class="c1"># Old versions of scipy does not support maximising, from scipy v1.4, you can pass `corr` and `maximize=True` instead of `-corr` to maximise the sum.</span>
 
 <span class="n">congruence_coefficient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">corr</span><span class="p">[</span><span class="n">permutation</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average tucker congruence coefficient: </span><span class="si">{</span><span class="n">congruence_coefficient</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average tucker congruence coefficient: </span><span class="si">{</span><span class="n">congruence_coefficient</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>91% of the data is explained by the model, which is expected with noise rate: 0.1
-Average tucker congruence coefficient: 0.9947046512423608
+Average tucker congruence coefficient: 0.9945618721597652
 </pre></div>
 </div>
 </section>
 <section id="visualize-the-components">
 <h2>Visualize the components</h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the best permutation so that we can plot the estimated components on top of the true components</span>
-<span class="n">permutation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A_corr</span><span class="o">*</span><span class="n">B_corr</span><span class="o">*</span><span class="n">C_corr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the best permutation so that we can plot the estimated components on top of the true components</span>
+<span class="n">permutation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A_corr</span> <span class="o">*</span> <span class="n">B_corr</span> <span class="o">*</span> <span class="n">C_corr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
 <span class="c1"># Create plots of each component vector for each mode</span>
 <span class="c1"># (We just look at one of the B_i matrices)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">true_rank</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">true_rank</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># What slice, B_i, we look at for the B mode</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">true_rank</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">true_rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># What slice, B_i, we look at for the B mode</span>
 
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">true_rank</span><span class="p">):</span>
 
     <span class="c1"># Plot true and estimated components for mode A</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">A_normalised</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">est_A_normalised</span><span class="p">[:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]]),</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Estimated&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">A_normalised</span><span class="p">[:,</span> <span class="n">r</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">est_A_normalised</span><span class="p">[:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]]),</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Estimated&quot;</span><span class="p">)</span>
 
     <span class="c1"># Labels for the different components</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Component </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Plot true and estimated components for mode C</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C_normalised</span><span class="p">[:,</span> <span class="n">r</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">est_C_normalised</span><span class="p">[:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]],</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">est_C_normalised</span><span class="p">[:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]],</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
     <span class="c1"># Plot true components for mode B</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Bs_normalised</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">r</span><span class="p">])</span>
@@ -414,19 +434,19 @@ Average tucker congruence coefficient: 0.9947046512423608
     <span class="n">A_sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">est_A_normalised</span><span class="p">)</span>
 
     <span class="c1"># Plot estimated components for mode B (after sign correction)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A_sign</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span><span class="o">*</span><span class="n">est_Bs_normalised</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]],</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A_sign</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">est_Bs_normalised</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">permutation</span><span class="p">[</span><span class="n">r</span><span class="p">]],</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
 <span class="c1"># Titles for the different modes</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;A mode&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;C mode&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;B mode (slice </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;A mode&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;C mode&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;B mode (slice </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create a legend for the entire figure</span>
-<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span>  <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_parafac2_001.png" srcset="../../_images/sphx_glr_plot_parafac2_001.png" alt="A mode, B mode (slice 0), C mode" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f60dcf476a0&gt;
+<img src="../../_images/sphx_glr_plot_parafac2_001.png" srcset="../../_images/sphx_glr_plot_parafac2_001.png" alt="A mode, B mode (slice 0), C mode" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fc17de98080&gt;
 </pre></div>
 </div>
 </section>
@@ -436,12 +456,15 @@ Average tucker congruence coefficient: 0.9947046512423608
 converged to a stationary point. We skip the first iteration since the
 initial loss often dominate the rest of the plot, making it difficult
 to check for convergence.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fig</span><span class="p">,</span> <span class="n">loss_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="o">/</span><span class="mf">1.6</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">loss_fig</span><span class="p">,</span> <span class="n">loss_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span> <span class="o">/</span> <span class="mf">1.6</span><span class="p">))</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="p">)),</span> <span class="n">err</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration number&#39;</span><span class="p">)</span>
-<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Relative reconstruction error&#39;</span><span class="p">)</span>
+<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration number&quot;</span><span class="p">)</span>
+<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Relative reconstruction error&quot;</span><span class="p">)</span>
 <span class="n">mathematical_expression_of_loss</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\frac{\left|\left|\hat{\mathcal</span><span class="si">{X}</span><span class="s2">}\right|\right|_F}{\left|\left|\mathcal</span><span class="si">{X}</span><span class="s2">\right|\right|_F}$&quot;</span>
-<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Loss plot: </span><span class="si">{</span><span class="n">mathematical_expression_of_loss</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1"> (starting after first iteration)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">loss_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Loss plot: </span><span class="si">{</span><span class="n">mathematical_expression_of_loss</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> (starting after first iteration)&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">xticks</span> <span class="o">=</span> <span class="n">loss_ax</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">xticks</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 <span class="n">loss_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
@@ -456,13 +479,16 @@ to check for convergence.</p>
 A direct fitting algorithm for the PARAFAC2 model.</em>
 <strong>Journal of Chemometrics: A Journal of the Chemometrics Society.</strong>
 1999 May;13(3‐4):275-94. <a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/(SICI)1099-128X(199905/08)13:3/4%3C275::AID-CEM543%3E3.0.CO;2-B">(Online version)</a></p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  34.545 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.688 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-parafac2-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8c1716b060db83a5d0c4cf467673c021/plot_parafac2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/32f8d624f9d1f7b561ad62798d8861ca/plot_parafac2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_parafac2.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/8c1716b060db83a5d0c4cf467673c021/plot_parafac2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_parafac2.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b099986e302d05c170b2103cc56235d8/plot_parafac2.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_parafac2.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -475,11 +501,11 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
       
         <nav class="pagination" role="navigation" aria-label="pagination">
     
-    <a class="button pagination-previous" href="plot_nn_cp_hals.html" title="previous page" accesskey="p">
+    <a class="button pagination-previous" href="plot_parafac2_compression.html" title="previous page" accesskey="p">
         <span class="icon">
             <i class="fa fa-arrow-circle-left"></i>
         </span>
-        <span>Non-negative CP decomposition in Tensorly &gt;=0.6</span>
+        <span>Speeding up PARAFAC2 with SVD compression</span>
     </a>
     
     
@@ -497,7 +523,7 @@ A direct fitting algorithm for the PARAFAC2 model.</em>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

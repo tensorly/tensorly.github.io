@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>tensorly.reshape &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -169,7 +168,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.preprocessing">Preprocessing (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.preprocessing</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#solvers-tensorly-solvers">Solvers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
@@ -209,20 +210,20 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a>.reshape</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.reshape">
-<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newshape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newshape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Gives a new shape to an array without changing its data.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>a</strong><span class="classifier">array_like</span></dt><dd><p>Array to be reshaped.</p>
 </dd>
-<dt><strong>newshape</strong><span class="classifier">int or tuple of ints</span></dt><dd><p>The new shape should be compatible with the original shape. If
+<dt><strong>shape</strong><span class="classifier">int or tuple of ints</span></dt><dd><p>The new shape should be compatible with the original shape. If
 an integer, then the result will be a 1-D array of that length.
 One shape dimension can be -1. In this case, the value is
 inferred from the length of the array and remaining dimensions.</p>
 </dd>
-<dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’}, optional</span></dt><dd><p>Read the elements of <cite>a</cite> using this index order, and place the
-elements into the reshaped array using this index order.  ‘C’
+<dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’}, optional</span></dt><dd><p>Read the elements of <code class="docutils literal notranslate"><span class="pre">a</span></code> using this index order, and place the
+elements into the reshaped array using this index order. ‘C’
 means to read / write the elements using C-like index order,
 with the last axis index changing fastest, back to the first
 axis index changing slowest. ‘F’ means to read / write the
@@ -231,8 +232,17 @@ changing fastest, and the last index changing slowest. Note that
 the ‘C’ and ‘F’ options take no account of the memory layout of
 the underlying array, and only refer to the order of indexing.
 ‘A’ means to read / write the elements in Fortran-like index
-order if <cite>a</cite> is Fortran <em>contiguous</em> in memory, C-like order
+order if <code class="docutils literal notranslate"><span class="pre">a</span></code> is Fortran <em>contiguous</em> in memory, C-like order
 otherwise.</p>
+</dd>
+<dt><strong>newshape</strong><span class="classifier">int or tuple of ints</span></dt><dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 2.1: </span>Replaced by <code class="docutils literal notranslate"><span class="pre">shape</span></code> argument. Retained for backward
+compatibility.</p>
+</div>
+</dd>
+<dt><strong>copy</strong><span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then the array data is copied. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a copy will
+only be made if it’s required by <code class="docutils literal notranslate"><span class="pre">order</span></code>. For <code class="docutils literal notranslate"><span class="pre">False</span></code> it raises
+a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if a copy cannot be avoided. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -253,27 +263,11 @@ Fortran- contiguous) of the returned array.</p>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>It is not always possible to change the shape of an array without
-copying the data. If you want an error to be raised when the data is copied,
-you should assign the new shape to the shape attribute of the array:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-
-<span class="go"># A transpose makes the array non-contiguous</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span>
-
-<span class="go"># Taking a view makes it possible to modify the shape without modifying</span>
-<span class="go"># the initial object.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="w">   </span><span class="c">...</span>
-<span class="gr">AttributeError</span>: <span class="n">Incompatible shape for in-place modification. Use</span>
-<span class="go">`.reshape()` to make a copy with the desired shape.</span>
-</pre></div>
-</div>
-<p>The <cite>order</cite> keyword gives the index ordering both for <em>fetching</em> the values
-from <cite>a</cite>, and then <em>placing</em> the values into the output array.
-For example, let’s say you have an array:</p>
+<p>It is not always possible to change the shape of an array without copying
+the data.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">order</span></code> keyword gives the index ordering both for <em>fetching</em>
+the values from <code class="docutils literal notranslate"><span class="pre">a</span></code>, and then <em>placing</em> the values into the output
+array. For example, let’s say you have an array:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
 <span class="go">array([[0, 1],</span>
@@ -300,7 +294,8 @@ raveling.</p>
 </pre></div>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="go">array([1, 2, 3, 4, 5, 6])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
@@ -345,7 +340,7 @@ raveling.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

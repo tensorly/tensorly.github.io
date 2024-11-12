@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Non-negative PARAFAC Decomposition of IL-2 Response Data &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -196,8 +195,8 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-applications-plot-il2-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-applications-plot-il2-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="non-negative-parafac-decomposition-of-il-2-response-data">
 <span id="sphx-glr-auto-examples-applications-plot-il2-py"></span><h1>Non-negative PARAFAC Decomposition of IL-2 Response Data</h1>
@@ -206,7 +205,7 @@ decomposition (<a class="reference internal" href="../../modules/generated/tenso
 of a tensor of experimental data, and then make insights about the underlying structure
 of that data.</p>
 <p>To do this, we will work with a tensor of experimentally measured cell signaling data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.datasets</span> <span class="kn">import</span> <span class="n">load_IL2data</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac</span>
@@ -241,7 +240,7 @@ Therefore, our tensor will have shape (13 x 4 x 12 x 8), with dimensions
 representing IL-2 mutant, stimulation time, dose, and cell type respectively. Each
 measured quantity represents the amount of phosphorlyated STAT5 (pSTAT5) in a
 given cell population following stimulation with the specified IL-2 mutant.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response_data</span> <span class="o">=</span> <span class="n">load_IL2data</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">response_data</span> <span class="o">=</span> <span class="n">load_IL2data</span><span class="p">()</span>
 <span class="n">IL2mutants</span><span class="p">,</span> <span class="n">cells</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">response_data</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">response_data</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
 </pre></div>
@@ -255,18 +254,26 @@ future comparisons of correlations across components.</p>
 <p>First we must preprocess our tensor to ready it for factorization. Our data has a
 few missing values, and so we must first generate a mask to mark where those values
 occur.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tensor_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now that we’ve marked where those non-finite values occur, we can regenerate our
 tensor without including non-finite values, allowing it to be factorized.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">response_data_fin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">response_data_fin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">response_data</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using this mask, and finite-value only tensor, we can decompose our signaling data into
 three components. We will also normalize this tensor, which will allow for easier
 comparisons to be made between the meanings, and magnitudes of our resulting components.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sig_tensor_fact</span> <span class="o">=</span> <span class="n">non_negative_parafac</span><span class="p">(</span><span class="n">response_data_fin</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">tensor_mask</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sig_tensor_fact</span> <span class="o">=</span> <span class="n">non_negative_parafac</span><span class="p">(</span>
+    <span class="n">response_data_fin</span><span class="p">,</span>
+    <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span>
+    <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="n">tensor_mask</span><span class="p">,</span>
+    <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">sig_tensor_fact</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">(</span><span class="n">sig_tensor_fact</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -275,7 +282,7 @@ they are present in our original tensor. IL-2 mutant names refer to the specific
 mutations made to their amino acid sequence, as well as their valency
 format (monovalent or bivalent).</p>
 <p>Finally, we label, plot, and analyze our factored tensor of data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
 
 <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mf">0.25</span>
@@ -284,9 +291,9 @@ format (monovalent or bivalent).</p>
 <span class="n">ligands</span> <span class="o">=</span> <span class="n">IL2mutants</span>
 <span class="n">x_lig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ligands</span><span class="p">))</span>
 
-<span class="n">lig_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 1&#39;</span><span class="p">)</span>
-<span class="n">lig_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 2&#39;</span><span class="p">)</span>
-<span class="n">lig_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 3&#39;</span><span class="p">)</span>
+<span class="n">lig_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 1&quot;</span><span class="p">)</span>
+<span class="n">lig_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 2&quot;</span><span class="p">)</span>
+<span class="n">lig_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_lig</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">lig_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 3&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Ligand&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Component Weight&quot;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x_lig</span><span class="p">,</span> <span class="n">ligands</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
@@ -296,9 +303,13 @@ format (monovalent or bivalent).</p>
 <span class="n">cell_facs</span> <span class="o">=</span> <span class="n">sig_tensor_fact</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">x_cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">))</span>
 
-<span class="n">cell_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 1&#39;</span><span class="p">)</span>
-<span class="n">cell_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 2&#39;</span><span class="p">)</span>
-<span class="n">cell_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Component 3&#39;</span><span class="p">)</span>
+<span class="n">cell_rects_comp1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="n">x_cell</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 1&quot;</span>
+<span class="p">)</span>
+<span class="n">cell_rects_comp2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x_cell</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 2&quot;</span><span class="p">)</span>
+<span class="n">cell_rects_comp3</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="n">x_cell</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="n">cell_facs</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Component 3&quot;</span>
+<span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Cell&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Component Weight&quot;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x_cell</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
@@ -319,13 +330,16 @@ relationship is strengthened by the availability of IL2Rα, one subunit of the I
 By plotting the correlations which time and dose have with each component, we
 could additionally make inferences as to the dynamics and dose dependence of how mutations
 affect IL-2 signaling in immune cells.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.337 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.412 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-il2-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/468942bd78c2647648843aeda5b2ab0c/plot_IL2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_IL2.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/979a176afc5b35664fe7ea5c86b1532a/plot_IL2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_IL2.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/468942bd78c2647648843aeda5b2ab0c/plot_IL2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_IL2.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/31ebe5f65fa406fbccca74ea8deb8a69/plot_IL2.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_IL2.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -359,7 +373,7 @@ affect IL-2 signaling in immune cells.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

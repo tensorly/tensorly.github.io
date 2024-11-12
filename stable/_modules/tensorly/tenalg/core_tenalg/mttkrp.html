@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -146,12 +145,16 @@
         
   <h1>Source code for tensorly.tenalg.core_tenalg.mttkrp</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">.n_mode_product</span> <span class="kn">import</span> <span class="n">multi_mode_dot</span>
+<span class="kn">from</span> <span class="nn">._khatri_rao</span> <span class="kn">import</span> <span class="n">khatri_rao</span>
 <span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
+<span class="kn">from</span> <span class="nn">...base</span> <span class="kn">import</span> <span class="n">unfold</span>
 
 <span class="c1"># Author: Jean Kossaifi</span>
 
 
-<div class="viewcode-block" id="unfolding_dot_khatri_rao"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.unfolding_dot_khatri_rao.html#tensorly.tenalg.unfolding_dot_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<div class="viewcode-block" id="unfolding_dot_khatri_rao">
+<a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.unfolding_dot_khatri_rao.html#tensorly.tenalg.unfolding_dot_khatri_rao">[docs]</a>
+<span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
 
 <span class="sd">    Parameters</span>
@@ -170,24 +173,61 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This is a variant of::</span>
+<span class="sd">    Default unfolding_dot_khatri_rao implementation.</span>
 
-<span class="sd">        unfolded = unfold(tensor, mode)</span>
-<span class="sd">        kr_factors = khatri_rao(factors, skip_matrix=mode)</span>
-<span class="sd">        mttkrp2 = tl.dot(unfolded, kr_factors)</span>
+<span class="sd">    Implemented as the product between an unfolded tensor</span>
+<span class="sd">    and a Khatri-Rao product explicitly formed. Due to matrix-matrix</span>
+<span class="sd">    products being extremely efficient operations, this is a</span>
+<span class="sd">    simple yet hard-to-beat implementation of MTTKRP.</span>
 
-<span class="sd">    Multiplying with the Khatri-Rao product is equivalent to multiplying,</span>
-<span class="sd">    for each rank, with the kronecker product of each factor.</span>
-<span class="sd">    In code::</span>
+<span class="sd">    If working with sparse tensors, or when the CP-rank of the CP-tensor is comparable to, or larger than,</span>
+<span class="sd">    the dimensions of the input tensor, however, this method requires a lot</span>
+<span class="sd">    of memory, which can be harmful when dealing with large tensors. In this</span>
+<span class="sd">    case, please use the memory-efficient version of MTTKRP.</span>
 
-<span class="sd">        mttkrp_parts = []</span>
-<span class="sd">        for r in range(rank):</span>
-<span class="sd">            component = tl.tenalg.multi_mode_dot(tensor, [f[:, r] for f in factors], skip=mode)</span>
-<span class="sd">            mttkrp_parts.append(component)</span>
-<span class="sd">        mttkrp = tl.stack(mttkrp_parts, axis=1)</span>
-<span class="sd">        return mttkrp</span>
+<span class="sd">    To use the slower memory efficient version, run</span>
 
-<span class="sd">    This can be done by taking n-mode-product with the full factors</span>
+<span class="sd">    &gt;&gt;&gt; from tensorly.tenalg.core_tenalg.mttkrp import unfolding_dot_khatri_rao_memory</span>
+<span class="sd">    &gt;&gt;&gt; tl.tenalg.register_backend_method(&quot;unfolding_dot_khatri_rao&quot;, unfolding_dot_khatri_rao_memory)</span>
+<span class="sd">    &gt;&gt;&gt; tl.tenalg.use_dynamic_dispatch()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
+    <span class="n">kr_factors</span> <span class="o">=</span> <span class="n">khatri_rao</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">skip_matrix</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="n">mttkrp</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">),</span> <span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">kr_factors</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mttkrp</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">unfolding_dot_khatri_rao_memory</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;mode-n unfolding times khatri-rao product of factors</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor : tl.tensor</span>
+<span class="sd">        tensor to unfold</span>
+<span class="sd">    factors : tl.tensor list</span>
+<span class="sd">        list of matrices of which to the khatri-rao product</span>
+<span class="sd">    mode : int</span>
+<span class="sd">        mode on which to unfold `tensor`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mttkrp</span>
+<span class="sd">        dot(unfold(tensor, mode), khatri-rao(factors))</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Implemented as a sequence of Tensor-times-vectors products between a tensor</span>
+<span class="sd">    and a Khatri-Rao product. The Khatri-Rao product is never computed explicitly,</span>
+<span class="sd">    rather each column in the Khatri-Rao product is contracted with the tensor. This</span>
+<span class="sd">    operation is implemented in Python and without making of use of parallelism, and it</span>
+<span class="sd">    is therefore in general slower than the naive MTTKRP product.</span>
+<span class="sd">    When the CP-rank of the CP-tensor is comparable to, or larger than,</span>
+<span class="sd">    the dimensions of the input tensor, this method however requires much less</span>
+<span class="sd">    memory.</span>
+
+<span class="sd">    This method can also be implemented by taking n-mode-product with the full factors</span>
 <span class="sd">    (faster but more memory consuming)::</span>
 
 <span class="sd">        projected = multi_mode_dot(tensor, factors, skip=mode, transpose=True)</span>
@@ -197,22 +237,6 @@
 <span class="sd">            index = tuple([slice(None) if k == mode  else i for k in range(ndims)])</span>
 <span class="sd">            res.append(projected[index])</span>
 <span class="sd">        return T.stack(res, axis=-1)</span>
-
-
-<span class="sd">    The same idea could be expressed using einsum::</span>
-
-<span class="sd">        ndims = tl.ndim(tensor)</span>
-<span class="sd">        tensor_idx = &#39;&#39;.join(chr(ord(&#39;a&#39;) + i) for i in range(ndims))</span>
-<span class="sd">        rank = chr(ord(&#39;a&#39;) + ndims + 1)</span>
-<span class="sd">        op = tensor_idx</span>
-<span class="sd">        for i in range(ndims):</span>
-<span class="sd">            if i != mode:</span>
-<span class="sd">                op += &#39;,&#39; + &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">            else:</span>
-<span class="sd">                result = &#39;&#39;.join([tensor_idx[i], rank])</span>
-<span class="sd">        op += &#39;-&gt;&#39; + result</span>
-<span class="sd">        factors = [f for (i, f) in enumerate(factors) if i != mode]</span>
-<span class="sd">        return tl_einsum(op, tensor, *factors)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mttkrp_parts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_tensor</span>
@@ -226,7 +250,7 @@
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">T</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mttkrp_parts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 
       </div>
@@ -236,7 +260,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

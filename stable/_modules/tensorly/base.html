@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -145,11 +144,13 @@
       <div class="container content main-content">
         
   <h1>Source code for tensorly.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">tl</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">prod</span>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">tl</span>
 
 
-<div class="viewcode-block" id="tensor_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.base.tensor_to_vec.html#tensorly.base.tensor_to_vec">[docs]</a><span class="k">def</span> <span class="nf">tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="tensor_to_vec">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.tensor_to_vec.html#tensorly.base.tensor_to_vec">[docs]</a>
+<span class="k">def</span> <span class="nf">tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Vectorises a tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -165,7 +166,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span></div>
 
 
-<div class="viewcode-block" id="vec_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.base.vec_to_tensor.html#tensorly.base.vec_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">vec_to_tensor</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+
+<div class="viewcode-block" id="vec_to_tensor">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.vec_to_tensor.html#tensorly.base.vec_to_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">vec_to_tensor</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Folds a vectorised tensor back into a tensor of shape `shape`</span>
 
 <span class="sd">    Parameters</span>
@@ -183,7 +187,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="unfold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold">[docs]</a><span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+
+<div class="viewcode-block" id="unfold">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.unfold.html#tensorly.base.unfold">[docs]</a>
+<span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the mode-`mode` unfolding of `tensor` with modes starting at `0`.</span>
 
 <span class="sd">    Parameters</span>
@@ -200,7 +207,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">mode</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="fold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.fold.html#tensorly.base.fold">[docs]</a><span class="k">def</span> <span class="nf">fold</span><span class="p">(</span><span class="n">unfolded_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+
+<div class="viewcode-block" id="fold">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.fold.html#tensorly.base.fold">[docs]</a>
+<span class="k">def</span> <span class="nf">fold</span><span class="p">(</span><span class="n">unfolded_tensor</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Refolds the mode-`mode` unfolding into a tensor of shape `shape`</span>
 
 <span class="sd">        In other words, refolds the n-mode unfolded tensor</span>
@@ -226,7 +236,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">unfolded_tensor</span><span class="p">,</span> <span class="n">full_shape</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="partial_unfold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold">[docs]</a><span class="k">def</span> <span class="nf">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="partial_unfold">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_unfold.html#tensorly.base.partial_unfold">[docs]</a>
+<span class="k">def</span> <span class="nf">partial_unfold</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ravel_tensors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Partially unfolds a tensor while ignoring the specified number of dimensions at the beginning and the end.</span>
 
 <span class="sd">        For instance, if the first dimension of the tensor is the number of samples, to unfold each sample,</span>
@@ -265,7 +278,10 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">mode</span> <span class="o">+</span> <span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_begin</span><span class="p">),</span> <span class="n">new_shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="partial_fold"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_fold.html#tensorly.base.partial_fold">[docs]</a><span class="k">def</span> <span class="nf">partial_fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="partial_fold">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_fold.html#tensorly.base.partial_fold">[docs]</a>
+<span class="k">def</span> <span class="nf">partial_fold</span><span class="p">(</span><span class="n">unfolded</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Re-folds a partially unfolded tensor</span>
 
 <span class="sd">    Parameters</span>
@@ -294,7 +310,10 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="partial_tensor_to_vec"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec">[docs]</a><span class="k">def</span> <span class="nf">partial_tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="partial_tensor_to_vec">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_tensor_to_vec.html#tensorly.base.partial_tensor_to_vec">[docs]</a>
+<span class="k">def</span> <span class="nf">partial_tensor_to_vec</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Partially vectorises a tensor</span>
 
 <span class="sd">        Partially vectorises a tensor while ignoring the specified dimension at the beginning and the end</span>
@@ -318,7 +337,10 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="partial_vec_to_tensor"><a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_vec_to_tensor.html#tensorly.base.partial_vec_to_tensor">[docs]</a><span class="k">def</span> <span class="nf">partial_vec_to_tensor</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="partial_vec_to_tensor">
+<a class="viewcode-back" href="../../modules/generated/tensorly.base.partial_vec_to_tensor.html#tensorly.base.partial_vec_to_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">partial_vec_to_tensor</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Refolds a partially vectorised tensor into a full one</span>
 
 <span class="sd">    Parameters</span>
@@ -340,6 +362,7 @@
     <span class="k">return</span> <span class="n">partial_fold</span><span class="p">(</span>
         <span class="n">matrix</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="n">skip_begin</span><span class="p">,</span> <span class="n">skip_end</span><span class="o">=</span><span class="n">skip_end</span>
     <span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">matricize</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">row_modes</span><span class="p">,</span> <span class="n">column_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -393,7 +416,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

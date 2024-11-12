@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -153,7 +152,8 @@
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span><span class="p">,</span> <span class="n">cp_norm</span><span class="p">,</span> <span class="n">validate_cp_rank</span>
-<span class="kn">from</span> <span class="nn">..tenalg.proximal</span> <span class="kn">import</span> <span class="n">admm</span><span class="p">,</span> <span class="n">proximal_operator</span><span class="p">,</span> <span class="n">validate_constraints</span>
+<span class="kn">from</span> <span class="nn">..solvers.admm</span> <span class="kn">import</span> <span class="n">admm</span>
+<span class="kn">from</span> <span class="nn">..tenalg.proximal</span> <span class="kn">import</span> <span class="n">proximal_operator</span><span class="p">,</span> <span class="n">validate_constraints</span>
 <span class="kn">from</span> <span class="nn">..tenalg.svd</span> <span class="kn">import</span> <span class="n">svd_interface</span>
 <span class="kn">from</span> <span class="nn">..tenalg</span> <span class="kn">import</span> <span class="n">unfolding_dot_khatri_rao</span>
 
@@ -309,7 +309,9 @@
     <span class="k">return</span> <span class="n">kt</span>
 
 
-<div class="viewcode-block" id="constrained_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac">[docs]</a><span class="k">def</span> <span class="nf">constrained_parafac</span><span class="p">(</span>
+<div class="viewcode-block" id="constrained_parafac">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.constrained_parafac.html#tensorly.decomposition.constrained_parafac">[docs]</a>
+<span class="k">def</span> <span class="nf">constrained_parafac</span><span class="p">(</span>
     <span class="n">tensor</span><span class="p">,</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -526,8 +528,7 @@
         <span class="n">factors_norm</span> <span class="o">=</span> <span class="n">cp_norm</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
         <span class="n">iprod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mttkrp</span> <span class="o">*</span> <span class="n">factors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span>
         <span class="n">rec_error</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">iprod</span><span class="p">))</span>
-            <span class="o">/</span> <span class="n">norm_tensor</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norm_tensor</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">factors_norm</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">iprod</span><span class="p">))</span> <span class="o">/</span> <span class="n">norm_tensor</span>
         <span class="p">)</span>
         <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
         <span class="n">constraint_error</span> <span class="o">=</span> <span class="mi">0</span>
@@ -547,7 +548,7 @@
                 <span class="k">if</span> <span class="n">constraint_error</span> <span class="o">&lt;</span> <span class="n">tol_outer</span><span class="p">:</span>
                     <span class="k">break</span>
                 <span class="k">if</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;abs_rec_error&quot;</span><span class="p">:</span>
-                    <span class="n">stop_flag</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_error_decrease</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol_outer</span>
+                    <span class="n">stop_flag</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rec_error_decrease</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol_outer</span>
                 <span class="k">elif</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;rec_error&quot;</span><span class="p">:</span>
                     <span class="n">stop_flag</span> <span class="o">=</span> <span class="n">rec_error_decrease</span> <span class="o">&lt;</span> <span class="n">tol_outer</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -570,7 +571,10 @@
         <span class="k">return</span> <span class="n">cp_tensor</span></div>
 
 
-<div class="viewcode-block" id="ConstrainedCP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP">[docs]</a><span class="k">class</span> <span class="nc">ConstrainedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ConstrainedCP">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstrainedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;CANDECOMP/PARAFAC decomposition via alternating optimization of</span>
 <span class="sd">    alternating direction method of multipliers (AO-ADMM):</span>
 
@@ -714,7 +718,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">monotonicity</span> <span class="o">=</span> <span class="n">monotonicity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hard_sparsity</span> <span class="o">=</span> <span class="n">hard_sparsity</span>
 
-<div class="viewcode-block" id="ConstrainedCP.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="ConstrainedCP.fit_transform">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.ConstrainedCP.html#tensorly.decomposition.ConstrainedCP.fit_transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
 
 <span class="sd">        Parameters</span>
@@ -756,7 +762,9 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span> <span class="o">=</span> <span class="n">cp_tensor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
+</div>
+
 </pre></div>
 
       </div>
@@ -766,7 +774,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

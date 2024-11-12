@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -374,7 +373,9 @@
     <span class="k">return</span> <span class="n">unnorml_rec_error</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">norm_tensor</span>
 
 
-<div class="viewcode-block" id="parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a><span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span>
+<div class="viewcode-block" id="parafac">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.parafac.html#tensorly.decomposition.parafac">[docs]</a>
+<span class="k">def</span> <span class="nf">parafac</span><span class="p">(</span>
     <span class="n">tensor</span><span class="p">,</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -555,7 +556,7 @@
             <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
 
-            <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">)),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
+            <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rank</span><span class="p">,</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">factor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
                     <span class="n">pseudo_inverse</span> <span class="o">=</span> <span class="n">pseudo_inverse</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
@@ -573,8 +574,6 @@
                 <span class="n">tl</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">pseudo_inverse</span><span class="p">)),</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mttkrp</span><span class="p">))</span>
             <span class="p">)</span>
             <span class="n">factors</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">factor</span>
-            <span class="k">if</span> <span class="n">normalize_factors</span> <span class="ow">and</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">modes_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
         <span class="c1"># Will we be performing a line search iteration</span>
         <span class="k">if</span> <span class="n">linesearch</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
@@ -661,7 +660,7 @@
                     <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;abs_rec_error&quot;</span><span class="p">:</span>
-                    <span class="n">stop_flag</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_error_decrease</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
+                    <span class="n">stop_flag</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rec_error_decrease</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span>
                 <span class="k">elif</span> <span class="n">cvg_criterion</span> <span class="o">==</span> <span class="s2">&quot;rec_error&quot;</span><span class="p">:</span>
                     <span class="n">stop_flag</span> <span class="o">=</span> <span class="n">rec_error_decrease</span> <span class="o">&lt;</span> <span class="n">tol</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -692,7 +691,10 @@
         <span class="k">return</span> <span class="n">cp_tensor</span></div>
 
 
-<div class="viewcode-block" id="sample_khatri_rao"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a><span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span>
+
+<div class="viewcode-block" id="sample_khatri_rao">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.sample_khatri_rao.html#tensorly.decomposition.sample_khatri_rao">[docs]</a>
+<span class="k">def</span> <span class="nf">sample_khatri_rao</span><span class="p">(</span>
     <span class="n">matrices</span><span class="p">,</span>
     <span class="n">n_samples</span><span class="p">,</span>
     <span class="n">skip_matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -779,7 +781,10 @@
         <span class="k">return</span> <span class="n">sampled_kr</span><span class="p">,</span> <span class="n">indices_list</span></div>
 
 
-<div class="viewcode-block" id="randomised_parafac"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac">[docs]</a><span class="k">def</span> <span class="nf">randomised_parafac</span><span class="p">(</span>
+
+<div class="viewcode-block" id="randomised_parafac">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.randomised_parafac.html#tensorly.decomposition.randomised_parafac">[docs]</a>
+<span class="k">def</span> <span class="nf">randomised_parafac</span><span class="p">(</span>
     <span class="n">tensor</span><span class="p">,</span>
     <span class="n">rank</span><span class="p">,</span>
     <span class="n">n_samples</span><span class="p">,</span>
@@ -861,7 +866,6 @@
             <span class="n">indices_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices_list</span><span class="p">]</span>
             <span class="c1"># Keep all the elements of the currently considered mode</span>
             <span class="n">indices_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-            <span class="c1"># MXNet will not be happy if this is a list instead of a tuple</span>
             <span class="n">indices_list</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">indices_list</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
                 <span class="n">sampled_unfolding</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">[</span><span class="n">indices_list</span><span class="p">]</span>
@@ -899,7 +903,7 @@
                         <span class="sa">f</span><span class="s2">&quot;reconstruction error=</span><span class="si">{</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, variation=</span><span class="si">{</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
                     <span class="p">)</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="n">tol</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">tol</span> <span class="ow">and</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
                     <span class="n">stagnation</span> <span class="ow">and</span> <span class="p">(</span><span class="n">stagnation</span> <span class="o">&gt;</span> <span class="n">max_stagnation</span><span class="p">)</span>
                 <span class="p">):</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -912,7 +916,10 @@
         <span class="k">return</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="CP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP">[docs]</a><span class="k">class</span> <span class="nc">CP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CP">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP">[docs]</a>
+<span class="k">class</span> <span class="nc">CP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Candecomp-Parafac decomposition via Alternating-Least Square</span>
 
 <span class="sd">    Computes a rank-`rank` decomposition of `tensor` [1]_ such that::</span>
@@ -1024,7 +1031,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span> <span class="o">=</span> <span class="n">linesearch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
 
-<div class="viewcode-block" id="CP.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="CP.fit_transform">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.CP.html#tensorly.decomposition.CP.fit_transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
 
 <span class="sd">        Parameters</span>
@@ -1062,11 +1071,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">errors_</span> <span class="o">=</span> <span class="n">errors</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
 
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Rank-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2"> CP decomposition.&quot;</span></div>
 
 
-<div class="viewcode-block" id="RandomizedCP"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.RandomizedCP.html#tensorly.decomposition.RandomizedCP">[docs]</a><span class="k">class</span> <span class="nc">RandomizedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RandomizedCP">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.RandomizedCP.html#tensorly.decomposition.RandomizedCP">[docs]</a>
+<span class="k">class</span> <span class="nc">RandomizedCP</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Randomised CP decomposition via sampled ALS</span>
 
 <span class="sd">    Parameters</span>
@@ -1143,6 +1156,7 @@
             <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
+
 </pre></div>
 
       </div>
@@ -1152,7 +1166,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-    <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -149,7 +148,9 @@
 <span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">unfold</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="n">vec_to_tensor</span>
 
 
-<div class="viewcode-block" id="mode_dot"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot">[docs]</a><span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="mode_dot">
+<a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.mode_dot.html#tensorly.tenalg.mode_dot">[docs]</a>
+<span class="k">def</span> <span class="nf">mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vector</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;n-mode product of a tensor and a matrix or vector at the specified mode</span>
 
 <span class="sd">    Mathematically: :math:`\\text{tensor} \\times_{\\text{mode}} \\text{matrix or vector}`</span>
@@ -206,9 +207,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">new_shape</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Ideally this should be (), i.e. order-0 tensors</span>
-            <span class="c1"># MXNet currently doesn&#39;t support this though..</span>
-            <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">new_shape</span> <span class="o">=</span> <span class="p">()</span>
         <span class="n">vec</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">else</span><span class="p">:</span>
@@ -225,7 +224,10 @@
         <span class="k">return</span> <span class="n">fold</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">fold_mode</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="multi_mode_dot"><a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot">[docs]</a><span class="k">def</span> <span class="nf">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="multi_mode_dot">
+<a class="viewcode-back" href="../../../../modules/generated/tensorly.tenalg.multi_mode_dot.html#tensorly.tenalg.multi_mode_dot">[docs]</a>
+<span class="k">def</span> <span class="nf">multi_mode_dot</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">matrix_or_vec_list</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;n-mode product of a tensor and several matrices or vectors over several modes</span>
 
 <span class="sd">    Parameters</span>
@@ -282,6 +284,7 @@
             <span class="n">decrement</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">res</span></div>
+
 </pre></div>
 
       </div>
@@ -291,7 +294,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

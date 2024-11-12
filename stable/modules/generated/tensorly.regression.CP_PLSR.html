@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>tensorly.regression.CP_PLSR &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -41,7 +40,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="tensorly.metrics.regression.MSE" href="tensorly.metrics.regression.MSE.html" />
+    <link rel="next" title="tensorly.solvers.nnls.hals_nnls" href="tensorly.solvers.nnls.hals_nnls.html" />
     <link rel="prev" title="tensorly.regression.cp_regression.CPRegressor" href="tensorly.regression.cp_regression.CPRegressor.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -169,7 +168,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.preprocessing">Preprocessing (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.preprocessing</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#solvers-tensorly-solvers">Solvers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
@@ -249,8 +250,21 @@ the covariance between them.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
+<dt><strong>X_factors</strong><span class="classifier">list of ndarray of shape (X.shape[i], n_components)</span></dt><dd><p>The factors of X tensor to approximate X. The first component, X_factors[0],
+directs to the maximal covariance with Y_factors[0]</p>
+</dd>
+<dt><strong>Y_factors</strong><span class="classifier">list of ndarray of shape (Y.shape[i], n_components)</span></dt><dd><p>The factors of Y matrix to approximate Y. The first component, Y_factors[0],
+directs to the maximal covariance with X_factors[0]</p>
+</dd>
+<dt><strong>coef_</strong><span class="classifier">ndarray of shape (n_component, n_component)</span></dt><dd><p>The coefficients of the linear model such that <cite>Y_factors[0]</cite> is approximated as
+<cite>Y_factors[0] = X_factors[0] &#64; coef_</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>self</dt><dd></dd>
 </dl>
 </dd>
@@ -295,6 +309,23 @@ the covariance between them.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tensorly.regression.CP_PLSR.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/regression/cp_plsr.html#CP_PLSR.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculate the R^2 of prediction on X compared to the ground truth Y provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">ndarray</span></dt><dd><p>tensor data of shape (n_samples, N1, …, NS), same dimension as the X
+in self.fit() all except the first dimension</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">2D-array of shape (n_samples, n_predictions)</span></dt><dd><p>the ground truth labels associated with each sample</p>
 </dd>
 </dl>
 </dd>
@@ -347,8 +378,8 @@ the covariance between them.</p>
     </a>
     
     
-    <a class="button pagination-next" href="tensorly.metrics.regression.MSE.html" title="next page" accesskey="n">
-        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics.regression</span></code>.MSE </span>
+    <a class="button pagination-next" href="tensorly.solvers.nnls.hals_nnls.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers.nnls</span></code>.hals_nnls </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -361,7 +392,7 @@ the covariance between them.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
@@ -390,6 +421,7 @@ the covariance between them.</p>
 <li><a class="reference internal" href="#tensorly.regression.CP_PLSR.fit_transform"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.fit_transform</span></code></a></li>
 <li><a class="reference internal" href="#tensorly.regression.CP_PLSR.get_params"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.get_params</span></code></a></li>
 <li><a class="reference internal" href="#tensorly.regression.CP_PLSR.predict"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.predict</span></code></a></li>
+<li><a class="reference internal" href="#tensorly.regression.CP_PLSR.score"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.score</span></code></a></li>
 <li><a class="reference internal" href="#tensorly.regression.CP_PLSR.set_params"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.set_params</span></code></a></li>
 <li><a class="reference internal" href="#tensorly.regression.CP_PLSR.transform"><code class="docutils literal notranslate"><span class="pre">CP_PLSR.transform</span></code></a></li>
 </ul>

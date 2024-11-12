@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Non-negative CP decomposition in Tensorly &gt;=0.6 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -41,7 +40,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Demonstration of PARAFAC2" href="plot_parafac2.html" />
+    <link rel="next" title="Speeding up PARAFAC2 with SVD compression" href="plot_parafac2_compression.html" />
     <link rel="prev" title="Non-negative Tucker decomposition" href="plot_nn_tucker.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -196,8 +195,8 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="non-negative-cp-decomposition-in-tensorly-0-6">
 <span id="sphx-glr-auto-examples-decomposition-plot-nn-cp-hals-py"></span><h1>Non-negative CP decomposition in Tensorly &gt;=0.6</h1>
@@ -214,7 +213,7 @@ algorithms:</p>
 <p>Non-negativity is an important constraint to handle for tensor decompositions.
 One could expect that factors must have only non-negative values after it is
 obtained from a non-negative tensor.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">non_negative_parafac</span><span class="p">,</span> <span class="n">non_negative_parafac_hals</span>
 <span class="kn">from</span> <span class="nn">tensorly.decomposition._cp</span> <span class="kn">import</span> <span class="n">initialize_cp</span>
@@ -228,7 +227,7 @@ obtained from a non-negative tensor.</p>
 <h2>Create synthetic tensor</h2>
 <p>There are several ways to create a tensor with non-negative entries in Tensorly.
 Here we chose to generate a random from the sequence of integers from 1 to 24000.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor generation</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor generation</span>
 <span class="n">tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tl</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -241,7 +240,9 @@ algorithms. We make use of the <code class="docutils literal notranslate"><span 
 factors of the NCP (setting the <code class="docutils literal notranslate"><span class="pre">non_negative</span></code> option to <cite>True</cite>)
 and transform these factors (and factors weights) into
 an instance of the CPTensor class:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span> <span class="o">=</span> <span class="n">initialize_cp</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span> <span class="o">=</span> <span class="n">initialize_cp</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
 
 <span class="n">cp_init</span> <span class="o">=</span> <span class="n">CPTensor</span><span class="p">((</span><span class="n">weights_init</span><span class="p">,</span> <span class="n">factors_init</span><span class="p">))</span>
 </pre></div>
@@ -252,10 +253,12 @@ an instance of the CPTensor class:</p>
 <p>From now on, we can use the same <code class="docutils literal notranslate"><span class="pre">cp_init</span></code> tensor as the initial tensor when
 we use decomposition functions. Now let us first use the algorithm based on
 Multiplicative Update, which can be called as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensor_mu</span><span class="p">,</span> <span class="n">errors_mu</span> <span class="o">=</span> <span class="n">non_negative_parafac</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensor_mu</span><span class="p">,</span> <span class="n">errors_mu</span> <span class="o">=</span> <span class="n">non_negative_parafac</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">cp_reconstruction_mu</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">tensor_mu</span><span class="p">)</span>
-<span class="n">time_mu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span>
+<span class="n">time_mu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span>
 </pre></div>
 </div>
 <p>Here, we also compute the output tensor from the decomposed factors by using
@@ -263,16 +266,16 @@ the cp_to_tensor function. The tensor cp_reconstruction_mu is therefore a
 low-rank non-negative approximation of the input tensor; looking at the
 first few values of both tensors shows that this is indeed
 the case but the approximation is quite coarse.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstructed tensor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">cp_reconstruction_mu</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input data tensor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reconstructed tensor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cp_reconstruction_mu</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input data tensor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8254.52 8207.2 ]
-  [8318.66 8264.93]]
+ [[[8237.63 8286.92]
+  [8336.44 8180.15]]
 
- [[9098.08 9131.76]
-  [9117.1  9137.99]]]
+ [[9057.33 9233.85]
+  [9068.9  8992.75]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -287,23 +290,25 @@ input data tensor
 <h2>Non-negative Parafac with HALS</h2>
 <p>Our second (new) option to compute NCP is the HALS algorithm, which can be
 used as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensor_hals</span><span class="p">,</span> <span class="n">errors_hals</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensor_hals</span><span class="p">,</span> <span class="n">errors_hals</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">cp_reconstruction_hals</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">tensor_hals</span><span class="p">)</span>
-<span class="n">time_hals</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span>
+<span class="n">time_hals</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span>
 </pre></div>
 </div>
 <p>Again, we can look at the reconstructed tensor entries.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reconstructed tensor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">cp_reconstruction_hals</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;input data tensor</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reconstructed tensor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cp_reconstruction_hals</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;input data tensor</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tensor</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reconstructed tensor
- [[[8180.72 8216.15]
-  [8216.23 8245.29]]
+ [[[8210.48 8210.36]
+  [8230.42 8230.47]]
 
- [[8983.51 9015.66]
-  [9017.52 9043.95]]]
+ [[9010.47 9010.4 ]
+  [9030.41 9030.5 ]]]
 
 input data tensor
  [[[8210. 8211.]
@@ -324,24 +329,26 @@ Note that the overall HALS algorithm will still provide an approximation of
 the input data, but will need longer to reach convergence.
 Exact subroutine solution option can be used simply choosing exact as True
 in the function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">tensorhals_exact</span><span class="p">,</span> <span class="n">errors_exact</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">tensorhals_exact</span><span class="p">,</span> <span class="n">errors_exact</span> <span class="o">=</span> <span class="n">non_negative_parafac_hals</span><span class="p">(</span>
+    <span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cp_init</span><span class="p">),</span> <span class="n">return_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 <span class="n">cp_reconstruction_exact_hals</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">cp_to_tensor</span><span class="p">(</span><span class="n">tensorhals_exact</span><span class="p">)</span>
-<span class="n">time_exact_hals</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">tic</span>
+<span class="n">time_exact_hals</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span>
 </pre></div>
 </div>
 </section>
 <section id="comparison">
 <h2>Comparison</h2>
 <p>First comparison option is processing time for each algorithm:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_mu</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_hals</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_exact_hals</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="s1">&#39;seconds&#39;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_mu</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_hals</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_exact_hals</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.19 seconds
-0.26 seconds
-535.92 seconds
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.04 seconds
+0.56 seconds
+199.95 seconds
 </pre></div>
 </div>
 <p>As it is expected, the exact solution takes much longer than the approximate
@@ -351,33 +358,36 @@ Also note that on appearance, both MU and HALS have similar runtimes.
 However, a closer look suggest they are indeed behaving quite differently.
 Computing the error between the output and the input tensor tells that story better.
 In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.metrics.regression</span> <span class="kn">import</span> <span class="n">RMSE</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.metrics.regression</span> <span class="kn">import</span> <span class="n">RMSE</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_reconstruction_mu</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_reconstruction_hals</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">RMSE</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">cp_reconstruction_exact_hals</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>215.7982
-42.694946
-0.33535954
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>220.3588
+3.8795087
+1.2040633
 </pre></div>
 </div>
 <p>According to the RMSE results, HALS is better than the multiplicative update
 with both exact and approximate solution. In particular, HALS converged to a
 much lower reconstruction error than MU. We can better appreciate the difference
 in convergence speed on the following error per iteration plot:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="k">def</span> <span class="nf">each_iteration</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">title</span><span class="p">):</span>
-    <span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="k">def</span> <span class="nf">each_iteration</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">fig</span><span class="o">.</span><span class="n">get_figheight</span><span class="p">(),</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;MU&#39;</span><span class="p">,</span> <span class="s1">&#39;HALS&#39;</span><span class="p">,</span> <span class="s1">&#39;Exact HALS&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;MU&quot;</span><span class="p">,</span> <span class="s2">&quot;HALS&quot;</span><span class="p">,</span> <span class="s2">&quot;Exact HALS&quot;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
 
 
-<span class="n">each_iteration</span><span class="p">(</span><span class="n">errors_mu</span><span class="p">,</span> <span class="n">errors_hals</span><span class="p">,</span> <span class="n">errors_exact</span><span class="p">,</span> <span class="s1">&#39;Error for each iteration&#39;</span><span class="p">)</span>
+<span class="n">each_iteration</span><span class="p">(</span><span class="n">errors_mu</span><span class="p">,</span> <span class="n">errors_hals</span><span class="p">,</span> <span class="n">errors_exact</span><span class="p">,</span> <span class="s2">&quot;Error for each iteration&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_plot_nn_cp_hals_001.png" srcset="../../_images/sphx_glr_plot_nn_cp_hals_001.png" alt="Error for each iteration" class = "sphx-glr-single-img"/><p>In conclusion, on this quick test, it appears that the HALS algorithm gives
@@ -391,13 +401,16 @@ encountered by expert users most likely).</p>
 hierarchical ALS algorithms for nonnegative matrix factorization.
 Neural computation, 24(4), 1085-1105. (Link)
 &lt;<a class="reference external" href="https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and">https://direct.mit.edu/neco/article/24/4/1085/7755/Accelerated-Multiplicative-Updates-and</a>&gt;</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 8 minutes  56.458 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (3 minutes 20.624 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-nn-cp-hals-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/963a65841fc063b51ab7dcf8ecab1001/plot_nn_cp_hals.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_cp_hals.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c50dd76f48de56cb97a914c7c62591e6/plot_nn_cp_hals.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_cp_hals.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/963a65841fc063b51ab7dcf8ecab1001/plot_nn_cp_hals.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_cp_hals.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cad167cb142025226f5b9454cd0abb41/plot_nn_cp_hals.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_nn_cp_hals.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -418,8 +431,8 @@ Neural computation, 24(4), 1085-1105. (Link)
     </a>
     
     
-    <a class="button pagination-next" href="plot_parafac2.html" title="next page" accesskey="n">
-        <span>Demonstration of PARAFAC2 </span>
+    <a class="button pagination-next" href="plot_parafac2_compression.html" title="next page" accesskey="n">
+        <span>Speeding up PARAFAC2 with SVD compression </span>
         <span class="icon">
             <i class="fa fa-arrow-circle-right"></i>
         </span>
@@ -432,7 +445,7 @@ Neural computation, 24(4), 1085-1105. (Link)
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

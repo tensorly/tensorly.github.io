@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>1. Quick-Start &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -198,10 +197,10 @@
         
   <section id="quick-start">
 <h1><span class="section-number">1. </span>Quick-Start</h1>
-<p>A short overview of TensorLy to get started quickly and get familiar with the organization of TensorLY.</p>
+<p>A short overview of TensorLy to get started quickly and get familiar with the organization of TensorLy.</p>
 <section id="organization-of-tensorly">
 <h2><span class="section-number">1.1. </span>Organization of TensorLy</h2>
-<p>TensorLy is organized in several submodule:</p>
+<p>TensorLy is organized in several submodules:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Module</p></th>
@@ -257,19 +256,19 @@
 <section id="tensorly-backend">
 <h2><span class="section-number">1.2. </span>TensorLy Backend</h2>
 <p>Earlier, we mentioned that all function for manipulating arrays can be accessed through <a class="reference internal" href="../modules/api.html#module-tensorly" title="tensorly"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code></a> or <cite>tensorly.backend</cite>.</p>
-<p>For instance, if you have a tensor <code class="docutils literal notranslate"><span class="pre">t</span></code>, to take its mean, you should use <code class="docutils literal notranslate"><span class="pre">tensorly.mean(t)</span></code>, <strong>not</strong>, for instance, <code class="docutils literal notranslate"><span class="pre">numpy.mean(t)</span></code> (or torch, mxnet, etc).
+<p>For instance, if you have a tensor <code class="docutils literal notranslate"><span class="pre">t</span></code>, to take its mean, you should use <code class="docutils literal notranslate"><span class="pre">tensorly.mean(t)</span></code>, <strong>not</strong>, for instance, <code class="docutils literal notranslate"><span class="pre">numpy.mean(t)</span></code> (or torch, JAX, etc).
 Why is that?</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>This is because we support several backends: the code you write in TensorLy can be <em>transparently</em> executed with several frameworks, without having to change anything in your code!
-For instance, you can execute your code normally using NumPy, but you can also have it run on GPU or multiple machines, using PyTorch, TensorFlow, CuPy, MXNet or JAX. Without having to adapt your code!</p>
+For instance, you can execute your code normally using NumPy, but you can also have it run on GPU or multiple machines, using PyTorch, TensorFlow, CuPy, JAX or Paddle. Without having to adapt your code!</p>
 </div>
 <p>This is why you should always manipulate tensors using tensorly backend functions only.
-For instance, <cite>tensorly.max</cite> calls either the MXNet, NumPy or PyTorch version depending on the backend you selected. There are other subtlties that are handled by the backend to allow a common API regardless of the backend use.</p>
+For instance, <cite>tensorly.max</cite> calls either the NumPy or PyTorch version depending on the backend you selected. There are other subtleties that are handled by the backend to allow a common API regardless of the backend use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>By default, the backend is set to NumPy. You can change the backend using <code class="docutils literal notranslate"><span class="pre">tensorly.set_backend</span></code>.
-For instance, to switch to pytorch, simply type <code class="docutils literal notranslate"><span class="pre">tensorly.set_backend('pytorch')</span></code>.
+For instance, to switch to PyTorch, simply type <code class="docutils literal notranslate"><span class="pre">tensorly.set_backend('pytorch')</span></code>.
 For more information on the backend, refer to <a class="reference internal" href="backend.html"><span class="doc">TensorLy’s backend system</span></a>.</p>
 </div>
 <p>Tensors can be created, e.g. from numpy arrays:</p>
@@ -329,7 +328,7 @@ For more information on the backend, refer to <a class="reference internal" href
 <section id="tensor-algebra">
 <h2><span class="section-number">1.4. </span>Tensor algebra</h2>
 <p>More ‘<em>advanced</em>’ tensor algebra functions are located in the aptly named <a class="reference internal" href="../modules/api.html#module-tensorly.tenalg" title="tensorly.tenalg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code></a> module.
-This includes for instance, n-mode product, kronecker product, etc.</p>
+This includes for instance, n-mode product, Kronecker product, etc.</p>
 <p>We now provide a backend system for tensor algebra, which allows to either use our “hand-crafter” implementations
 or to dispatch all the operations to einsum. By default, we use the hand-crafted implementations. To switch to einsum, or change the tenalg backend:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly.tenalg</span> <span class="k">as</span> <span class="nn">tg</span>
@@ -424,7 +423,7 @@ for testing tensor methods.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

@@ -1,7 +1,6 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,17 +14,17 @@
 <link rel="shortcut icon" href="../../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -146,6 +145,7 @@
         
   <h1>Source code for tensorly.decomposition._parafac2</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 <span class="kn">from</span> <span class="nn">._base_decomposition</span> <span class="kn">import</span> <span class="n">DecompositionMixin</span>
@@ -153,13 +153,11 @@
 <span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">T</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parafac</span><span class="p">,</span> <span class="n">non_negative_parafac_hals</span>
 <span class="kn">from</span> <span class="nn">..parafac2_tensor</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">parafac2_to_slice</span><span class="p">,</span>
     <span class="n">Parafac2Tensor</span><span class="p">,</span>
     <span class="n">_validate_parafac2_tensor</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">unfold</span>
-<span class="kn">from</span> <span class="nn">..tenalg.svd</span> <span class="kn">import</span> <span class="n">svd_interface</span>
+<span class="kn">from</span> <span class="nn">..cp_tensor</span> <span class="kn">import</span> <span class="n">CPTensor</span><span class="p">,</span> <span class="n">cp_normalize</span>
+<span class="kn">from</span> <span class="nn">..tenalg.svd</span> <span class="kn">import</span> <span class="n">svd_interface</span><span class="p">,</span> <span class="n">SVD_TYPES</span>
 
 <span class="c1"># Authors: Marie Roald</span>
 <span class="c1">#          Yngve Mardal Moe</span>
@@ -168,7 +166,23 @@
 <span class="k">def</span> <span class="nf">initialize_decomposition</span><span class="p">(</span>
     <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initiate a random PARAFAC2 decomposition given rank and tensor slices</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initiate a random PARAFAC2 decomposition given rank and tensor slices.</span>
+
+<span class="sd">    The SVD-based initialization is based on concatenation of all the tensor slices.</span>
+<span class="sd">    This concatenated matrix is used to derive the factor matrix corresponding to the</span>
+<span class="sd">    :math:`k` mode for an :math:`X_{ijk}` tensor. However, concatenating these slices</span>
+<span class="sd">    requires a new copy of the tensor. For tensors where the sum of the :math:`j` mode</span>
+<span class="sd">    along each slice is on average larger than the :math:`k` mode, an alternative</span>
+<span class="sd">    strategy is adding together the cross-product matrix of each slice:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        K = X_{1}^T X_{1} + X_{2}^T X_{2} + ...</span>
+
+<span class="sd">    The eigenvectors of this symmetric matrix are then equal to the right eigenvectors</span>
+<span class="sd">    of the concatenation matrix. This function automatically chooses between</span>
+<span class="sd">    concatenating or forming the cross-product, depending on which resulting matrix</span>
+<span class="sd">    is smaller.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -182,26 +196,35 @@
 <span class="sd">    parafac2_tensor : Parafac2Tensor</span>
 <span class="sd">        List of initialized factors of the CP decomposition where element `i`</span>
 <span class="sd">        is of shape (tensor.shape[i], rank)</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">context</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">]</span>
+    <span class="n">concat_shape</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">random_parafac2</span><span class="p">(</span>
             <span class="n">shapes</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">init</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>
-        <span class="n">padded_tensor</span> <span class="o">=</span> <span class="n">_pad_by_zeros</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">)</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">padded_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
-
-        <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">unfold</span><span class="p">(</span><span class="n">padded_tensor</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot perform SVD init if rank (</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">) is greater than the number of columns in each tensor slice (</span><span class="si">{</span><span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot perform SVD init if rank (</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">) is greater than the number of columns in each tensor slice (</span><span class="si">{</span><span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">rank</span><span class="p">),</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">concat_shape</span> <span class="o">&gt;</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># If the concatenated matrix would be larger than the cross-product, use the latter</span>
+            <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">@</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="nb">slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">unfolded_mode_2</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="nb">slice</span><span class="p">),</span> <span class="nb">slice</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unfolded_mode_2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
         <span class="n">C</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span><span class="n">unfolded_mode_2</span><span class="p">,</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="n">B</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
         <span class="n">projections</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">svd</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Parafac2Tensor</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="n">projections</span><span class="p">))</span>
 
@@ -219,20 +242,6 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Initialization method &quot;</span><span class="si">{</span><span class="n">init</span><span class="si">}</span><span class="s1">&quot; not recognized&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_pad_by_zeros</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return zero-padded full tensor.&quot;&quot;&quot;</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">)</span>
-    <span class="n">J</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">tensor_slice</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">)</span>
-    <span class="n">K</span> <span class="o">=</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">padded</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span> <span class="o">**</span><span class="n">T</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
-        <span class="n">J_i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">)</span>
-
-        <span class="n">padded</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">index_update</span><span class="p">(</span><span class="n">padded</span><span class="p">,</span> <span class="n">tl</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">J_i</span><span class="p">],</span> <span class="n">tensor_slice</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">padded</span>
-
-
 <span class="k">def</span> <span class="nf">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">svd</span><span class="p">):</span>
     <span class="n">n_eig</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -240,7 +249,9 @@
     <span class="k">for</span> <span class="n">A</span><span class="p">,</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tensor_slices</span><span class="p">):</span>
         <span class="n">lhs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">factors</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
         <span class="n">rhs</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">)</span>
-        <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eig</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">)</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">svd_interface</span><span class="p">(</span>
+            <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">),</span> <span class="n">n_eigenvecs</span><span class="o">=</span><span class="n">n_eig</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">flip_sign</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
 
         <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">Vh</span><span class="p">)))</span>
 
@@ -256,29 +267,214 @@
     <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_parafac2_reconstruction_error</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_BroThesisLineSearch</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">norm_tensor</span><span class="p">,</span>
+        <span class="n">svd</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">acc_pow</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">max_fail</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The line search strategy defined within Rasmus Bro&#39;s thesis [1, 2].</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        norm_tensor : int</span>
+<span class="sd">            Sum of the matrix norms for each slice.</span>
+<span class="sd">        svd : str</span>
+<span class="sd">            The function to use to compute the SVD, acceptable values in tensorly.SVD_FUNS</span>
+<span class="sd">        verbose : bool</span>
+<span class="sd">            Optionally provide output about each step.</span>
+<span class="sd">        nn_modes: None, &#39;all&#39; or array of integers</span>
+<span class="sd">            (Default: None) Used to specify which modes to impose non-negativity constraints on.</span>
+<span class="sd">            We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS</span>
+<span class="sd">            algorithm, so if this mode is among the constrained modes, then a warning will be shown</span>
+<span class="sd">            (see notes for more info).</span>
+<span class="sd">        acc_pow : int</span>
+<span class="sd">            Line search steps are defined as `iteration ** (1.0 / acc_pow)`.</span>
+<span class="sd">        max_fail : int</span>
+<span class="sd">            The number of line search failures before increasing `acc_pow`.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and</span>
+<span class="sd">            Applications&quot;, PhD., University of Amsterdam, 1998</span>
+<span class="sd">        .. [2] H. Yu, D. Augustijn, R. Bro, &quot;Accelerating PARAFAC2 algorithms for non-negative</span>
+<span class="sd">            complex tensor decomposition.&quot; Chemometrics and Intelligent Laboratory Systems 214</span>
+<span class="sd">            (2021): 104312.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">norm_tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc_pow</span> <span class="o">=</span> <span class="n">acc_pow</span>  <span class="c1"># Extrapolate to the iteration^(1/acc_pow) ahead</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_fail</span> <span class="o">=</span> <span class="n">max_fail</span>  <span class="c1"># Increase acc_pow with one after max_fail failure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acc_fail</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># How many times acceleration have failed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span> <span class="o">=</span> <span class="n">nn_modes</span>
+
+    <span class="k">def</span> <span class="nf">line_step</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">iteration</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">tensor_slices</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">,</span>
+        <span class="n">factors_last</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">,</span>
+        <span class="n">factors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">projections</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">rec_error</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform one line search step.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        iteration : int</span>
+<span class="sd">            The current iteration number.</span>
+<span class="sd">        tensor_slices : ndarray or list of ndarrays</span>
+<span class="sd">            The data itself. Either a third order tensor or a list of second order tensors that</span>
+<span class="sd">            may have different number of rows.</span>
+<span class="sd">        factors_last : list of ndarrays</span>
+<span class="sd">            The CP factors from the previous iteration.</span>
+<span class="sd">        weights : ndarrays</span>
+<span class="sd">            The normalization weights for the current factors.</span>
+<span class="sd">        factors : list of ndarrays</span>
+<span class="sd">            The CP factors from the current iteration.</span>
+<span class="sd">        projections : list of ndarrays</span>
+<span class="sd">            The projection matrices from the current iteration.</span>
+<span class="sd">        rec_error : float</span>
+<span class="sd">            The reconstruction error from the current iteration.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        factors : list</span>
+<span class="sd">            List of factors for the accepted step.</span>
+<span class="sd">        projections : list</span>
+<span class="sd">            List of projection matrices from the accepted step.</span>
+<span class="sd">        rec_error : float</span>
+<span class="sd">            Reconstruction error of the accepted step.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jump</span> <span class="o">=</span> <span class="n">iteration</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">acc_pow</span><span class="p">)</span>
+
+        <span class="n">factors_ls</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">factors_last</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">-</span> <span class="n">factors_last</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="o">*</span> <span class="n">jump</span>
+            <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Clip if the mode should be non-negative</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span><span class="p">:</span>
+                <span class="n">factors_ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">factors_ls</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="mi">2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span><span class="p">:</span>
+                <span class="n">factors_ls</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">factors_ls</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">projections_ls</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">factors_ls</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">)</span>
+
+        <span class="n">ls_rec_error</span> <span class="o">=</span> <span class="n">_parafac2_reconstruction_error</span><span class="p">(</span>
+            <span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors_ls</span><span class="p">,</span> <span class="n">projections_ls</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_tensor</span>
+        <span class="p">)</span>
+        <span class="n">ls_rec_error</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_tensor</span>
+
+        <span class="k">if</span> <span class="n">ls_rec_error</span> <span class="o">&lt;</span> <span class="n">rec_error</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc_fail</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accepted line search jump of </span><span class="si">{</span><span class="n">jump</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">factors_ls</span><span class="p">,</span> <span class="n">projections_ls</span><span class="p">,</span> <span class="n">ls_rec_error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acc_fail</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line search failed for jump of </span><span class="si">{</span><span class="n">jump</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">acc_fail</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_fail</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">acc_pow</span> <span class="o">+=</span> <span class="mf">1.0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">acc_fail</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reducing acceleration.&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">,</span> <span class="n">rec_error</span>
+
+
+<span class="k">def</span> <span class="nf">_parafac2_reconstruction_error</span><span class="p">(</span>
+    <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">norm_matrices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projected_tensor</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the reconstruction error of the PARAFAC2 decomposition. This implementation</span>
+<span class="sd">    uses the inner product with each matrix for efficiency, as this avoids needing to</span>
+<span class="sd">    reconstruct the tensor. This is based on the property that:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        ||tensor - rec||^2 = ||tensor||^2 + ||rec||^2 - 2*&lt;tensor, rec&gt;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tensor_slices : ndarray or list of ndarrays</span>
+<span class="sd">        The data itself. Either a third order tensor or a list of second order tensors that</span>
+<span class="sd">        may have different number of rows.</span>
+<span class="sd">    decomposition : (weight, factors, projection_matrices)</span>
+<span class="sd">        * weights : 1D array of shape (rank, )</span>
+<span class="sd">            weights of the (normalized) factors</span>
+<span class="sd">        * factors : List of factors of the CP decomposition element `i` is of shape</span>
+<span class="sd">            (tensor.shape[i], rank)</span>
+<span class="sd">        * projections : List of projection matrices used to create evolving factors.</span>
+<span class="sd">    norm_matrices : float, optional</span>
+<span class="sd">        The norm of the data. This can be optionally provided to avoid recalculating it.</span>
+<span class="sd">    projected_tensor : ndarray, optional</span>
+<span class="sd">        The projections of X into an aligned tensor for CP decomposition. This can be optionally</span>
+<span class="sd">        provided to avoid recalculating it.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    error : float</span>
+<span class="sd">        The norm of the reconstruction error of the PARAFAC2 decomposition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_validate_parafac2_tensor</span><span class="p">(</span><span class="n">decomposition</span><span class="p">)</span>
-    <span class="n">squared_error</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
-        <span class="n">reconstruction</span> <span class="o">=</span> <span class="n">parafac2_to_slice</span><span class="p">(</span><span class="n">decomposition</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">squared_error</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">tensor_slice</span> <span class="o">-</span> <span class="n">reconstruction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">squared_error</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">norm_matrices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">norm_X_sq</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">t_slice</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">t_slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm_X_sq</span> <span class="o">=</span> <span class="n">norm_matrices</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">decomposition</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">weights</span>
+
+    <span class="n">norm_cmf_sq</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">inner_product</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">CtC</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">C</span><span class="p">),</span> <span class="n">C</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t_slice</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">):</span>
+        <span class="n">B_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">projections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">projected_tensor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_i</span><span class="p">),</span> <span class="n">t_slice</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">)</span> <span class="o">@</span> <span class="n">projected_tensor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">inner_product</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">C</span><span class="p">))</span>
+
+        <span class="n">norm_cmf_sq</span> <span class="o">+=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">tl</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_i</span><span class="p">)</span> <span class="o">@</span> <span class="n">B_i</span><span class="p">)</span> <span class="o">*</span> <span class="n">CtC</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">norm_X_sq</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">inner_product</span> <span class="o">+</span> <span class="n">norm_cmf_sq</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="parafac2"><a class="viewcode-back" href="../../../modules/generated/parafac2-function.html#tensorly.decomposition.parafac2">[docs]</a><span class="k">def</span> <span class="nf">parafac2</span><span class="p">(</span>
+<div class="viewcode-block" id="parafac2">
+<a class="viewcode-back" href="../../../modules/generated/parafac2-function.html#tensorly.decomposition.parafac2">[docs]</a>
+<span class="k">def</span> <span class="nf">parafac2</span><span class="p">(</span>
     <span class="n">tensor_slices</span><span class="p">,</span>
-    <span class="n">rank</span><span class="p">,</span>
-    <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+    <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">n_iter_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span>
     <span class="n">init</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span>
-    <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
-    <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
-    <span class="n">absolute_tol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span>
-    <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">svd</span><span class="p">:</span> <span class="n">SVD_TYPES</span> <span class="o">=</span> <span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
+    <span class="n">normalize_factors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-8</span><span class="p">,</span>
+    <span class="n">nn_modes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_iter_parafac</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">linesearch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;PARAFAC2 decomposition [1]_ of a third order tensor via alternating least squares (ALS)</span>
 
@@ -309,7 +505,7 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
 
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
@@ -347,15 +543,6 @@
 
 <span class="sd">            Previously, the stopping condition was</span>
 <span class="sd">            :math:`\left|\| X - \hat{X}_{n-1} \| - \| X - \hat{X}_{n} \|\right| &lt; \epsilon`.</span>
-<span class="sd">    absolute_tol : float, optional</span>
-<span class="sd">        (Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm</span>
-<span class="sd">        is considered to have converged when</span>
-<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}`.</span>
-<span class="sd">        That is, when the relative sum of squared error is less than the specified tolerance.</span>
-<span class="sd">        The absolute tolerance is necessary for stopping the algorithm when used on noise-free</span>
-<span class="sd">        data that follows the PARAFAC2 constraint.</span>
-
-<span class="sd">        If None, then the machine precision + 1000 will be used.</span>
 <span class="sd">    nn_modes: None, &#39;all&#39; or array of integers</span>
 <span class="sd">        (Default: None) Used to specify which modes to impose non-negativity constraints on.</span>
 <span class="sd">        We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS</span>
@@ -368,6 +555,9 @@
 <span class="sd">        Activate return of iteration errors</span>
 <span class="sd">    n_iter_parafac : int, optional</span>
 <span class="sd">        Number of PARAFAC iterations to perform for each PARAFAC2 iteration</span>
+<span class="sd">    linesearch : bool, default is False</span>
+<span class="sd">        Whether to perform line search as proposed by Bro in his PhD dissertation [2]_</span>
+<span class="sd">        (similar to the PLSToolbox line search described in [3]_).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -388,31 +578,47 @@
 <span class="sd">    .. [1] Kiers, H.A.L., ten Berge, J.M.F. and Bro, R. (1999),</span>
 <span class="sd">            PARAFAC2—Part I. A direct fitting algorithm for the PARAFAC2 model.</span>
 <span class="sd">            J. Chemometrics, 13: 275-294.</span>
+<span class="sd">    .. [2] R. Bro, &quot;Multi-Way Analysis in the Food Industry: Models, Algorithms, and</span>
+<span class="sd">            Applications&quot;, PhD., University of Amsterdam, 1998</span>
+<span class="sd">    .. [3] H. Yu, D. Augustijn, R. Bro, &quot;Accelerating PARAFAC2 algorithms for non-negative</span>
+<span class="sd">            complex tensor decomposition.&quot; Chemometrics and Intelligent Laboratory Systems 214</span>
+<span class="sd">            (2021): 104312.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This formulation of the PARAFAC2 decomposition is slightly different from the one in [1]_.</span>
-<span class="sd">    The difference lies in that here, the second mode changes over the first mode, whereas in</span>
-<span class="sd">    [1]_, the second mode changes over the third mode. We made this change since that means</span>
-<span class="sd">    that the function accept both lists of matrices and a single nd-array as input without</span>
-<span class="sd">    any reordering of the modes.</span>
+<span class="sd">    The difference lies in that, here, the second mode changes over the first mode, whereas in</span>
+<span class="sd">    [1]_, the second mode changes over the third mode. This change allows the function to accept</span>
+<span class="sd">    both lists of matrices and a single nd-array as input without any mode reordering.</span>
 
 <span class="sd">    Because of the reformulation above, :math:`B_i = P_i B`, the :math:`B_i` matrices</span>
 <span class="sd">    cannot be constrained to be non-negative with ALS. If this mode is constrained to be</span>
 <span class="sd">    non-negative, then :math:`B` will be non-negative, but not the orthogonal `P_i` matrices.</span>
 <span class="sd">    Consequently, the `B_i` matrices are unlikely to be non-negative.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">rank</span> <span class="o">&lt;=</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;PARAFAC2 rank (</span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">) cannot be greater than the number of columns in each tensor slice (</span><span class="si">{</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">).&quot;</span>
+
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">)):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">tensor_slices</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">),</span> <span class="s2">&quot;All tensor slices must have the same number of columns.&quot;</span>
+
     <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span> <span class="o">=</span> <span class="n">initialize_decomposition</span><span class="p">(</span>
         <span class="n">tensor_slices</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">svd</span><span class="o">=</span><span class="n">svd</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span>
     <span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span>
 
     <span class="n">rec_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">norm_tensor</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
         <span class="nb">sum</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tensor_slice</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">tensor_slice</span> <span class="ow">in</span> <span class="n">tensor_slices</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">absolute_tol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">absolute_tol</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="k">if</span> <span class="n">linesearch</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">linesearch</span><span class="p">,</span> <span class="n">_BroThesisLineSearch</span><span class="p">):</span>
+        <span class="n">linesearch</span> <span class="o">=</span> <span class="n">_BroThesisLineSearch</span><span class="p">(</span>
+            <span class="n">norm_tensor</span><span class="p">,</span> <span class="n">svd</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">nn_modes</span><span class="o">=</span><span class="n">nn_modes</span>
+        <span class="p">)</span>
 
     <span class="c1"># If nn_modes is set, we use HALS, otherwise, we use the standard parafac implementation.</span>
     <span class="k">if</span> <span class="n">nn_modes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -455,46 +661,54 @@
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iter_max</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting iteration&quot;</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
+
         <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c1"># Will we be performing a line search iteration?</span>
+        <span class="k">if</span> <span class="n">linesearch</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">line_iter</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">factors_last</span> <span class="o">=</span> <span class="p">[</span><span class="n">tl</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">line_iter</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">projections</span> <span class="o">=</span> <span class="n">_compute_projections</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">svd</span><span class="p">)</span>
         <span class="n">projected_tensor</span> <span class="o">=</span> <span class="n">_project_tensor_slices</span><span class="p">(</span><span class="n">tensor_slices</span><span class="p">,</span> <span class="n">projections</span><span class="p">)</span>
         <span class="n">factors</span> <span class="o">=</span> <span class="n">parafac_updates</span><span class="p">(</span><span class="n">projected_tensor</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span>
 
+        <span class="c1"># Start line search if requested.</span>
+        <span class="k">if</span> <span class="n">line_iter</span><span class="p">:</span>
+            <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">,</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">linesearch</span><span class="o">.</span><span class="n">line_step</span><span class="p">(</span>
+                <span class="n">iteration</span><span class="p">,</span>
+                <span class="n">tensor_slices</span><span class="p">,</span>
+                <span class="n">factors_last</span><span class="p">,</span>
+                <span class="n">weights</span><span class="p">,</span>
+                <span class="n">factors</span><span class="p">,</span>
+                <span class="n">projections</span><span class="p">,</span>
+                <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">normalize_factors</span><span class="p">:</span>
-            <span class="n">new_factors</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">factors</span><span class="p">:</span>
-                <span class="n">norms</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">norms</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-                    <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">norms</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tl</span><span class="o">.</span><span class="n">eps</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
-                    <span class="n">tl</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">norms</span><span class="p">),</span> <span class="o">**</span><span class="n">tl</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
-                    <span class="n">norms</span><span class="p">,</span>
-                <span class="p">)</span>
+            <span class="n">weights</span><span class="p">,</span> <span class="n">factors</span> <span class="o">=</span> <span class="n">cp_normalize</span><span class="p">((</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">))</span>
 
-                <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">norms</span>
-                <span class="n">new_factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factor</span> <span class="o">/</span> <span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">norms</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))))</span>
-
-            <span class="n">factors</span> <span class="o">=</span> <span class="n">new_factors</span>
-
-        <span class="k">if</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line_iter</span><span class="p">:</span>
             <span class="n">rec_error</span> <span class="o">=</span> <span class="n">_parafac2_reconstruction_error</span><span class="p">(</span>
-                <span class="n">tensor_slices</span><span class="p">,</span> <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">)</span>
+                <span class="n">tensor_slices</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">projections</span><span class="p">),</span>
+                <span class="n">norm_tensor</span><span class="p">,</span>
+                <span class="n">projected_tensor</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">rec_error</span> <span class="o">/=</span> <span class="n">norm_tensor</span>
             <span class="n">rec_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_error</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;PARAFAC2 reconstruction error=</span><span class="si">{</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, variation=</span><span class="si">{</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
                     <span class="p">)</span>
 
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="nb">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-                    <span class="o">&lt;</span> <span class="p">(</span><span class="n">tol</span> <span class="o">*</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">absolute_tol</span>
-                <span class="p">):</span>
+                <span class="k">if</span> <span class="n">tl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec_errors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;converged in </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
                     <span class="k">break</span>
@@ -510,7 +724,10 @@
         <span class="k">return</span> <span class="n">parafac2_tensor</span></div>
 
 
-<div class="viewcode-block" id="Parafac2"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2">[docs]</a><span class="k">class</span> <span class="nc">Parafac2</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Parafac2">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2">[docs]</a>
+<span class="k">class</span> <span class="nc">Parafac2</span><span class="p">(</span><span class="n">DecompositionMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;PARAFAC2 decomposition [1]_ of a third order tensor via alternating least squares (ALS)</span>
 
 <span class="sd">    Computes a rank-`rank` PARAFAC2 decomposition of the third-order tensor defined by</span>
@@ -539,7 +756,7 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
+<span class="sd">        X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},</span>
 
 <span class="sd">    with the same constraints hold for :math:`B_i` as above.</span>
 
@@ -573,16 +790,6 @@
 
 <span class="sd">            Previously, the stopping condition was</span>
 <span class="sd">            :math:`\left|\| X - \hat{X}_{n-1} \| - \| X - \hat{X}_{n} \|\right| &lt; \epsilon`.</span>
-
-<span class="sd">    absolute_tol : float, optional</span>
-<span class="sd">        (Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm</span>
-<span class="sd">        is considered to have converged when</span>
-<span class="sd">        :math:`\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}`.</span>
-<span class="sd">        That is, when the relative sum of squared error is less than the specified tolerance.</span>
-<span class="sd">        The absolute tolerance is necessary for stopping the algorithm when used on noise-free</span>
-<span class="sd">        data that follows the PARAFAC2 constraint.</span>
-
-<span class="sd">        If None, then the machine precision + 1000 will be used.</span>
 <span class="sd">    nn_modes: None, &#39;all&#39; or array of integers</span>
 <span class="sd">        (Default: None) Used to specify which modes to impose non-negativity constraints on.</span>
 <span class="sd">        We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS</span>
@@ -616,10 +823,9 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This formulation of the PARAFAC2 decomposition is slightly different from the one in [1]_.</span>
-<span class="sd">    The difference lies in that here, the second mode changes over the first mode, whereas in</span>
-<span class="sd">    [1]_, the second mode changes over the third mode. We made this change since that means</span>
-<span class="sd">    that the function accept both lists of matrices and a single nd-array as input without</span>
-<span class="sd">    any reordering of the modes.</span>
+<span class="sd">    The difference lies in that, here, the second mode changes over the first mode, whereas in</span>
+<span class="sd">    [1]_, the second mode changes over the third mode. This change allows the function to accept</span>
+<span class="sd">    both lists of matrices and a single nd-array as input without any mode reordering.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -630,12 +836,12 @@
         <span class="n">svd</span><span class="o">=</span><span class="s2">&quot;truncated_svd&quot;</span><span class="p">,</span>
         <span class="n">normalize_factors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
-        <span class="n">absolute_tol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span>
         <span class="n">nn_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">return_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">n_iter_parafac</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">linesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_max</span> <span class="o">=</span> <span class="n">n_iter_max</span>
@@ -643,14 +849,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="n">svd</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span> <span class="o">=</span> <span class="n">normalize_factors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="n">tol</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">absolute_tol</span> <span class="o">=</span> <span class="n">absolute_tol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span> <span class="o">=</span> <span class="n">nn_modes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">return_errors</span> <span class="o">=</span> <span class="n">return_errors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span> <span class="o">=</span> <span class="n">n_iter_parafac</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span> <span class="o">=</span> <span class="n">linesearch</span>
 
-<div class="viewcode-block" id="Parafac2.fit_transform"><a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<div class="viewcode-block" id="Parafac2.fit_transform">
+<a class="viewcode-back" href="../../../modules/generated/tensorly.decomposition.Parafac2.html#tensorly.decomposition.Parafac2.fit_transform">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Decompose an input tensor</span>
 
 <span class="sd">        Parameters</span>
@@ -669,14 +877,16 @@
             <span class="n">svd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">,</span>
             <span class="n">normalize_factors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">normalize_factors</span><span class="p">,</span>
             <span class="n">tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>
-            <span class="n">absolute_tol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">absolute_tol</span><span class="p">,</span>
             <span class="n">nn_modes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nn_modes</span><span class="p">,</span>
             <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
             <span class="n">return_errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">return_errors</span><span class="p">,</span>
             <span class="n">n_iter_parafac</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter_parafac</span><span class="p">,</span>
+            <span class="n">linesearch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decomposition_</span></div>
+</div>
+
 </pre></div>
 
       </div>
@@ -686,7 +896,7 @@
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

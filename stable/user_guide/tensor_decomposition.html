@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4. Tensor decomposition &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -204,7 +203,7 @@
 Refer to <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for more information on tensor decomposition.</p>
 <section id="cp-form-of-a-tensor">
 <h2><span class="section-number">4.1. </span>CP form of a tensor</h2>
-<p>The idea is to express the tensor as a sum of rank one tensors. That is, a sum of outer product of vectors.
+<p>The idea is to express the tensor as a sum of rank one tensors. That is, a sum of outer products of vectors.
 Such representation can be obtained by applying Canonical Polyadic Decomposition (also known as CANDECOMP-PARAFAC, CP, or PARAFAC decomposition).</p>
 <section id="candecomp-parafac-decomposition">
 <h3><span class="section-number">4.1.1. </span>CANDECOMP-PARAFAC decomposition</h3>
@@ -297,13 +296,13 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 </section>
 <section id="matrix-product-state-tensor-train-decomposition">
 <h2><span class="section-number">4.3. </span>Matrix-Product-State / Tensor-Train Decomposition</h2>
-<p>The tensor-train decomposition, also known as matrix product state in physics community, is a way of decompositing high order tensors into third order ones. For a order d tensor A[i1,…,id], it splits each dimension into a order 3 sub-tensor, which we called factors or cores. One of the dimension of the sub-tensor is the real physical dimension, while the other two are edges connecting the cores before and after it.</p>
+<p>The tensor-train decomposition, also known as matrix product state in physics community, is a way of decompositing high order tensors into third order ones. For an order d tensor A[i1,…,id], it splits each dimension into an order 3 sub-tensor, which we called factors or cores. One of the dimension of the sub-tensor is the real physical dimension, while the other two are edges connecting the cores before and after it.</p>
 <div class="math notranslate nohighlight">
 \[A[i_1, \ldots, i_d] \approx \sum_{\alpha_1}\cdots\sum_{\alpha_{d-1}}G_1(i_1, \alpha_1)G_2(\alpha_1, i_2, \alpha_2)G_3(\alpha_2, i_3, \alpha_3)\cdots G_d(\alpha_{d-1},i_d)\]</div>
 <p>The advantage of the TT/tensor-train decomposition is that both of its number of entries (storage) and computational time is linear in the number of dimensions, making high dimensional problem more easily addressable.</p>
 <section id="implementations">
 <h3><span class="section-number">4.3.1. </span>Implementations</h3>
-<p>Two versions tensor train decompositions are available in TensorLy: and SVD-based decomposition method (<code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.mps_decomposition</span></code> and a cross approximation-based method <code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.contrib.mps_decomposition_cross</span></code>).</p>
+<p>Two versions tensor train decompositions are available in TensorLy: and SVD-based decomposition method (<a class="reference internal" href="../modules/generated/tensorly.decomposition.tensor_train.html#tensorly.decomposition.tensor_train" title="tensorly.decomposition.tensor_train"><code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.decomposition.tensor_train</span></code></a> and a cross approximation-based method <code class="xref py py-func docutils literal notranslate"><span class="pre">tensorly.contrib.tensor_train_cross</span></code>).</p>
 <p>Using the same tensor as previously, we will perform a rank [1,2,1]-decomposition of the shape (12,12) <cite>tensor</cite> meaning the first core has shape (1,12,2) and the second has (2,12,1).:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">matrix_product_state</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">factors</span> <span class="o">=</span> <span class="n">matrix_product_state</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
@@ -335,7 +334,7 @@ The <code class="xref py py-func docutils literal notranslate"><span class="pre"
 <section id="references">
 <h2><span class="section-number">4.4. </span>References</h2>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="note">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
 <p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
@@ -373,7 +372,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

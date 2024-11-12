@@ -10,8 +10,8 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_decomposition_plot_nn_cp_hals.py>`
-        to download the full example code
+        :ref:`Go to the end <sphx_glr_download_auto_examples_decomposition_plot_nn_cp_hals.py>`
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -39,7 +39,7 @@ obtained from a non-negative tensor.
 
 .. GENERATED FROM PYTHON SOURCE LINES 20-29
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import numpy as np
@@ -66,7 +66,7 @@ Here we chose to generate a random from the sequence of integers from 1 to 24000
 
 .. GENERATED FROM PYTHON SOURCE LINES 34-38
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Tensor generation
@@ -87,16 +87,18 @@ using these algorithms, we can use Tensorly to produce a good initial guess
 for our NCP. In fact, in order to compare both algorithmic options in a
 fair way, it is a good idea to use same initialized factors in decomposition
 algorithms. We make use of the ``initialize_cp`` function to initialize the
-factors of the NCP (setting the ``non_negative`` option to `True`) 
+factors of the NCP (setting the ``non_negative`` option to `True`)
 and transform these factors (and factors weights) into
 an instance of the CPTensor class:
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-53
+.. GENERATED FROM PYTHON SOURCE LINES 48-55
 
-.. code-block:: default
+.. code-block:: Python
 
 
-    weights_init, factors_init = initialize_cp(tensor, non_negative=True, init='random', rank=10)
+    weights_init, factors_init = initialize_cp(
+        tensor, non_negative=True, init="random", rank=10
+    )
 
     cp_init = CPTensor((weights_init, factors_init))
 
@@ -107,7 +109,7 @@ an instance of the CPTensor class:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-59
+.. GENERATED FROM PYTHON SOURCE LINES 56-61
 
 Non-negative Parafac
 -----------------------
@@ -115,15 +117,17 @@ From now on, we can use the same ``cp_init`` tensor as the initial tensor when
 we use decomposition functions. Now let us first use the algorithm based on
 Multiplicative Update, which can be called as follows:
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-65
+.. GENERATED FROM PYTHON SOURCE LINES 61-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
-    tensor_mu, errors_mu = non_negative_parafac(tensor, rank=10, init=deepcopy(cp_init), return_errors=True)
+    tensor_mu, errors_mu = non_negative_parafac(
+        tensor, rank=10, init=deepcopy(cp_init), return_errors=True
+    )
     cp_reconstruction_mu = tl.cp_to_tensor(tensor_mu)
-    time_mu = time.time()-tic
+    time_mu = time.time() - tic
 
 
 
@@ -132,7 +136,7 @@ Multiplicative Update, which can be called as follows:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-71
+.. GENERATED FROM PYTHON SOURCE LINES 70-75
 
 Here, we also compute the output tensor from the decomposed factors by using
 the cp_to_tensor function. The tensor cp_reconstruction_mu is therefore a
@@ -140,13 +144,13 @@ low-rank non-negative approximation of the input tensor; looking at the
 first few values of both tensors shows that this is indeed
 the case but the approximation is quite coarse.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-75
+.. GENERATED FROM PYTHON SOURCE LINES 75-79
 
-.. code-block:: default
+.. code-block:: Python
 
 
-    print('reconstructed tensor\n', cp_reconstruction_mu[10:12, 10:12, 10:12], '\n')
-    print('input data tensor\n', tensor[10:12, 10:12, 10:12])
+    print("reconstructed tensor\n", cp_reconstruction_mu[10:12, 10:12, 10:12], "\n")
+    print("input data tensor\n", tensor[10:12, 10:12, 10:12])
 
 
 
@@ -157,11 +161,11 @@ the case but the approximation is quite coarse.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8254.52 8207.2 ]
-      [8318.66 8264.93]]
+     [[[8237.63 8286.92]
+      [8336.44 8180.15]]
 
-     [[9098.08 9131.76]
-      [9117.1  9137.99]]] 
+     [[9057.33 9233.85]
+      [9068.9  8992.75]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -173,22 +177,24 @@ the case but the approximation is quite coarse.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-80
+.. GENERATED FROM PYTHON SOURCE LINES 80-84
 
 Non-negative Parafac with HALS
 ------------------------------
 Our second (new) option to compute NCP is the HALS algorithm, which can be
 used as follows:
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-86
+.. GENERATED FROM PYTHON SOURCE LINES 84-92
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
-    tensor_hals, errors_hals = non_negative_parafac_hals(tensor, rank=10, init=deepcopy(cp_init), return_errors=True)
+    tensor_hals, errors_hals = non_negative_parafac_hals(
+        tensor, rank=10, init=deepcopy(cp_init), return_errors=True
+    )
     cp_reconstruction_hals = tl.cp_to_tensor(tensor_hals)
-    time_hals = time.time()-tic
+    time_hals = time.time() - tic
 
 
 
@@ -197,17 +203,17 @@ used as follows:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-88
+.. GENERATED FROM PYTHON SOURCE LINES 93-94
 
 Again, we can look at the reconstructed tensor entries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-92
+.. GENERATED FROM PYTHON SOURCE LINES 94-98
 
-.. code-block:: default
+.. code-block:: Python
 
 
-    print('reconstructed tensor\n',cp_reconstruction_hals[10:12, 10:12, 10:12], '\n')
-    print('input data tensor\n', tensor[10:12, 10:12, 10:12])
+    print("reconstructed tensor\n", cp_reconstruction_hals[10:12, 10:12, 10:12], "\n")
+    print("input data tensor\n", tensor[10:12, 10:12, 10:12])
 
 
 
@@ -218,11 +224,11 @@ Again, we can look at the reconstructed tensor entries.
  .. code-block:: none
 
     reconstructed tensor
-     [[[8180.72 8216.15]
-      [8216.23 8245.29]]
+     [[[8210.48 8210.36]
+      [8230.42 8230.47]]
 
-     [[8983.51 9015.66]
-      [9017.52 9043.95]]] 
+     [[9010.47 9010.4 ]
+      [9030.41 9030.5 ]]] 
 
     input data tensor
      [[[8210. 8211.]
@@ -234,7 +240,7 @@ Again, we can look at the reconstructed tensor entries.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-103
+.. GENERATED FROM PYTHON SOURCE LINES 99-109
 
 Non-negative Parafac with Exact HALS
 ------------------------------------
@@ -247,15 +253,17 @@ the input data, but will need longer to reach convergence.
 Exact subroutine solution option can be used simply choosing exact as True
 in the function:
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-109
+.. GENERATED FROM PYTHON SOURCE LINES 109-117
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tic = time.time()
-    tensorhals_exact, errors_exact = non_negative_parafac_hals(tensor, rank=10, init=deepcopy(cp_init), return_errors=True, exact=True)
+    tensorhals_exact, errors_exact = non_negative_parafac_hals(
+        tensor, rank=10, init=deepcopy(cp_init), return_errors=True, exact=True
+    )
     cp_reconstruction_exact_hals = tl.cp_to_tensor(tensorhals_exact)
-    time_exact_hals = time.time()-tic
+    time_exact_hals = time.time() - tic
 
 
 
@@ -264,20 +272,20 @@ in the function:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-113
+.. GENERATED FROM PYTHON SOURCE LINES 118-121
 
 Comparison
 -----------------------
 First comparison option is processing time for each algorithm:
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-118
+.. GENERATED FROM PYTHON SOURCE LINES 121-126
 
-.. code-block:: default
+.. code-block:: Python
 
 
-    print(str("{:.2f}".format(time_mu)) + ' ' + 'seconds')
-    print(str("{:.2f}".format(time_hals)) + ' ' + 'seconds')
-    print(str("{:.2f}".format(time_exact_hals)) + ' ' + 'seconds')
+    print(str(f"{time_mu:.2f}") + " " + "seconds")
+    print(str(f"{time_hals:.2f}") + " " + "seconds")
+    print(str(f"{time_exact_hals:.2f}") + " " + "seconds")
 
 
 
@@ -287,14 +295,14 @@ First comparison option is processing time for each algorithm:
 
  .. code-block:: none
 
-    0.19 seconds
-    0.26 seconds
-    535.92 seconds
+    0.04 seconds
+    0.56 seconds
+    199.95 seconds
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-126
+.. GENERATED FROM PYTHON SOURCE LINES 127-134
 
 As it is expected, the exact solution takes much longer than the approximate
 solution, while the gain in performance is often void. Therefore we recommend
@@ -304,12 +312,13 @@ However, a closer look suggest they are indeed behaving quite differently.
 Computing the error between the output and the input tensor tells that story better.
 In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-132
+.. GENERATED FROM PYTHON SOURCE LINES 134-141
 
-.. code-block:: default
+.. code-block:: Python
 
 
     from tensorly.metrics.regression import RMSE
+
     print(RMSE(tensor, cp_reconstruction_mu))
     print(RMSE(tensor, cp_reconstruction_hals))
     print(RMSE(tensor, cp_reconstruction_exact_hals))
@@ -322,37 +331,39 @@ In Tensorly, we provide a function to calculate Root Mean Square Error (RMSE):
 
  .. code-block:: none
 
-    215.7982
-    42.694946
-    0.33535954
+    220.3588
+    3.8795087
+    1.2040633
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-137
+.. GENERATED FROM PYTHON SOURCE LINES 142-146
 
 According to the RMSE results, HALS is better than the multiplicative update
 with both exact and approximate solution. In particular, HALS converged to a
 much lower reconstruction error than MU. We can better appreciate the difference
 in convergence speed on the following error per iteration plot:
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-151
+.. GENERATED FROM PYTHON SOURCE LINES 146-162
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import matplotlib.pyplot as plt
-    def each_iteration(a,b,c,title):
-        fig=plt.figure()
+
+
+    def each_iteration(a, b, c, title):
+        fig = plt.figure()
         fig.set_size_inches(10, fig.get_figheight(), forward=True)
         plt.plot(a)
         plt.plot(b)
         plt.plot(c)
         plt.title(str(title))
-        plt.legend(['MU', 'HALS', 'Exact HALS'], loc='upper left')
+        plt.legend(["MU", "HALS", "Exact HALS"], loc="upper left")
 
 
-    each_iteration(errors_mu, errors_hals, errors_exact, 'Error for each iteration')
+    each_iteration(errors_mu, errors_hals, errors_exact, "Error for each iteration")
 
 
 
@@ -366,14 +377,14 @@ in convergence speed on the following error per iteration plot:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-156
+.. GENERATED FROM PYTHON SOURCE LINES 163-167
 
 In conclusion, on this quick test, it appears that the HALS algorithm gives
 much better results than the MU original Tensorly methods. Our recommendation
 is to use HALS as a default, and only resort to MU in specific cases (only
 encountered by expert users most likely).
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-165
+.. GENERATED FROM PYTHON SOURCE LINES 169-176
 
 References
 ----------
@@ -386,7 +397,7 @@ Neural computation, 24(4), 1085-1105. (Link)
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 8 minutes  56.458 seconds)
+   **Total running time of the script:** (3 minutes 20.624 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_nn_cp_hals.py:
@@ -395,14 +406,17 @@ Neural computation, 24(4), 1085-1105. (Link)
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download Jupyter notebook: plot_nn_cp_hals.ipynb <plot_nn_cp_hals.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_nn_cp_hals.py <plot_nn_cp_hals.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-zip
 
-      :download:`Download Jupyter notebook: plot_nn_cp_hals.ipynb <plot_nn_cp_hals.ipynb>`
+      :download:`Download zipped: plot_nn_cp_hals.zip <plot_nn_cp_hals.zip>`
 
 
 .. only:: html

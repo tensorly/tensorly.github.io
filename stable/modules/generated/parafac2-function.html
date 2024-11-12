@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>tensorly.decomposition.parafac2 &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -170,7 +169,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.preprocessing">Preprocessing (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.preprocessing</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#solvers-tensorly-solvers">Solvers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
@@ -210,7 +211,7 @@
 <h1><a class="reference internal" href="../api.html#module-tensorly.decomposition" title="tensorly.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code></a>.parafac2</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="tensorly.decomposition.parafac2">
-<span class="sig-name descname"><span class="pre">parafac2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor_slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn_modes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_parafac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_parafac2.html#parafac2"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">parafac2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor_slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'truncated_svd'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'symeig_svd'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'randomized_svd'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'truncated_svd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_factors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn_modes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'all'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_parafac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/decomposition/_parafac2.html#parafac2"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>PARAFAC2 decomposition <a class="reference internal" href="#ra07d22ce3f71-1" id="id1">[1]</a> of a third order tensor via alternating least squares (ALS)</p>
 <p>Computes a rank-<cite>rank</cite> PARAFAC2 decomposition of the third-order tensor defined by
 <cite>tensor_slices</cite>. The decomposition is on the form <span class="math notranslate nohighlight">\((A [B_i] C)\)</span> such that the
@@ -229,7 +230,7 @@ To compute this decomposition, we reformulate the expression for <span class="ma
 <p>An alternative formulation of the PARAFAC2 decomposition is that the tensor element
 <span class="math notranslate nohighlight">\(X_{ijk}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
-\[X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},\]</div>
+\[X_{ijk} = \sum_{r=1}^R A_{ir} B_{ijr} C_{kr},\]</div>
 <p>with the same constraints hold for <span class="math notranslate nohighlight">\(B_i\)</span> as above.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -263,14 +264,6 @@ than the tolerance.</p>
 <span class="math notranslate nohighlight">\(\left|\| X - \hat{X}_{n-1} \| - \| X - \hat{X}_{n} \|\right| &lt; \epsilon\)</span>.</p>
 </div>
 </dd>
-<dt><strong>absolute_tol</strong><span class="classifier">float, optional</span></dt><dd><p>(Default: 1e-13) Absolute reconstruction error tolearnce. The algorithm
-is considered to have converged when
-<span class="math notranslate nohighlight">\(\left|\| X - \hat{X}_{n-1} \|^2 - \| X - \hat{X}_{n} \|^2\right| &lt; \epsilon_\text{abs}\)</span>.
-That is, when the relative sum of squared error is less than the specified tolerance.
-The absolute tolerance is necessary for stopping the algorithm when used on noise-free
-data that follows the PARAFAC2 constraint.</p>
-<p>If None, then the machine precision + 1000 will be used.</p>
-</dd>
 <dt><strong>nn_modes: None, ‘all’ or array of integers</strong></dt><dd><p>(Default: None) Used to specify which modes to impose non-negativity constraints on.
 We cannot impose non-negativity constraints on the the B-mode (mode 1) with the ALS
 algorithm, so if this mode is among the constrained modes, then a warning will be shown
@@ -282,6 +275,9 @@ algorithm, so if this mode is among the constrained modes, then a warning will b
 <dt><strong>return_errors</strong><span class="classifier">bool, optional</span></dt><dd><p>Activate return of iteration errors</p>
 </dd>
 <dt><strong>n_iter_parafac</strong><span class="classifier">int, optional</span></dt><dd><p>Number of PARAFAC iterations to perform for each PARAFAC2 iteration</p>
+</dd>
+<dt><strong>linesearch</strong><span class="classifier">bool, default is False</span></dt><dd><p>Whether to perform line search as proposed by Bro in his PhD dissertation <a class="reference internal" href="#ra07d22ce3f71-2" id="id2">[2]</a>
+(similar to the PLSToolbox line search described in <a class="reference internal" href="#ra07d22ce3f71-3" id="id3">[3]</a>).</p>
 </dd>
 </dl>
 </dd>
@@ -312,11 +308,10 @@ weights of the (normalized) factors otherwise</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This formulation of the PARAFAC2 decomposition is slightly different from the one in <a class="reference internal" href="#ra07d22ce3f71-1" id="id2">[1]</a>.
-The difference lies in that here, the second mode changes over the first mode, whereas in
-<a class="reference internal" href="#ra07d22ce3f71-1" id="id3">[1]</a>, the second mode changes over the third mode. We made this change since that means
-that the function accept both lists of matrices and a single nd-array as input without
-any reordering of the modes.</p>
+<p>This formulation of the PARAFAC2 decomposition is slightly different from the one in <a class="reference internal" href="#ra07d22ce3f71-1" id="id4">[1]</a>.
+The difference lies in that, here, the second mode changes over the first mode, whereas in
+<a class="reference internal" href="#ra07d22ce3f71-1" id="id5">[1]</a>, the second mode changes over the third mode. This change allows the function to accept
+both lists of matrices and a single nd-array as input without any mode reordering.</p>
 <p>Because of the reformulation above, <span class="math notranslate nohighlight">\(B_i = P_i B\)</span>, the <span class="math notranslate nohighlight">\(B_i\)</span> matrices
 cannot be constrained to be non-negative with ALS. If this mode is constrained to be
 non-negative, then <span class="math notranslate nohighlight">\(B\)</span> will be non-negative, but not the orthogonal <cite>P_i</cite> matrices.
@@ -325,10 +320,21 @@ Consequently, the <cite>B_i</cite> matrices are unlikely to be non-negative.</p>
 <div role="list" class="citation-list">
 <div class="citation" id="ra07d22ce3f71-1" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>,<a role="doc-backlink" href="#id5">3</a>)</span>
 <p>Kiers, H.A.L., ten Berge, J.M.F. and Bro, R. (1999),
 PARAFAC2—Part I. A direct fitting algorithm for the PARAFAC2 model.
 J. Chemometrics, 13: 275-294.</p>
+</div>
+<div class="citation" id="ra07d22ce3f71-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>R. Bro, “Multi-Way Analysis in the Food Industry: Models, Algorithms, and
+Applications”, PhD., University of Amsterdam, 1998</p>
+</div>
+<div class="citation" id="ra07d22ce3f71-3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>H. Yu, D. Augustijn, R. Bro, “Accelerating PARAFAC2 algorithms for non-negative
+complex tensor decomposition.” Chemometrics and Intelligent Laboratory Systems 214
+(2021): 104312.</p>
 </div>
 </div>
 </dd></dl>
@@ -363,7 +369,7 @@ J. Chemometrics, 13: 275-294.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

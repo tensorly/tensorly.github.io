@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>2. TensorLy’s backend system &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -201,19 +200,19 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In short, you can write your code using TensorLy and you can transparently combine it and execute with any of the backends.
-Currently we support NumPy PyTorch, MXNet, JAX, TensorFlow and CuPy as backends.</p>
+Currently we support NumPy PyTorch, JAX, TensorFlow, CuPy and Paddle as backends.</p>
 </div>
 <section id="backend">
 <h2><span class="section-number">2.1. </span>Backend?</h2>
-<p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), MXNet, and PyTorch.
+<p>To represent tensors and for numerical computation, TensorLy supports several backends transparently: the ubiquitous NumPy (the default), JAX, PyTorch and Paddle.
 For the end user, the interface is exactly the same, but under the hood, a different library is used to represent multi-dimensional arrays and perform computations on these.</p>
-<p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch or MXNet.</p>
+<p>In other words, you write your code using TensorLy and can then decide whether the computation is done using NumPy, PyTorch, JAX or Paddle.</p>
 </section>
 <section id="why-backends">
 <h2><span class="section-number">2.2. </span>Why backends?</h2>
 <p>The goal of TensorLy is to make tensor methods accessible.
-While NumPy needs no introduction, other backends such as MXNet and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
-Last but not least, using MXNet or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
+While NumPy needs no introduction, other backends such as JAX and PyTorch backends are especially useful as they allows to perform transparently computation on CPU or GPU.
+Last but not least, using JAX or PyTorch as a backend, we are able to combine tensor methods and deep learning easily!</p>
 </section>
 <section id="how-do-i-change-the-backend">
 <h2><span class="section-number">2.3. </span>How do I change the backend?</h2>
@@ -222,21 +221,21 @@ Alternatively during the execution, assuming you have imported TensorLy as <code
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>NumPy is installed by default with TensorLy if you haven’t already installed it.
-However, to keep dependencies as minimal as possible, and to not complexify installation, neither MXNet nor PyTorch are installed.  If you want to use them as backend, you will have to install them first.
+However, to keep dependencies as minimal as possible, and to not complexify installation, no backend is installed.  If you want to use them as backend, you will have to install them first.
 It is easy however, simply refer to their respective installation instructions:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://pytorch.org">PyTorch</a></p></li>
-<li><p><a class="reference external" href="https://mxnet.apache.org/install/index.html">MXNet</a></p></li>
 <li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/developer.html#building-or-installing-jaxlib">JAX</a></p></li>
 <li><p><a class="reference external" href="https://docs.cupy.dev/en/stable/install.html">CuPy</a></p></li>
 <li><p><a class="reference external" href="https://www.tensorflow.org/install">TensorFlow</a></p></li>
+<li><p><cite>Paddle</cite> &lt;<a class="reference external" href="https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html">https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html</a>&gt;`_</p></li>
 </ul>
 </div>
 <p>Once you change the backend, all the computation is done using that backend.</p>
 </section>
 <section id="context-of-a-tensor">
 <h2><span class="section-number">2.4. </span>Context of a tensor</h2>
-<p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray, while in mxnet we also have to change the <em>context</em> (GPU or CPU), with the <cite>ctx</cite> argument. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
+<p>Different backends have different parameters associated with the tensors. For instance, in NumPy we traditionally set the dtype when creating an ndarray. Similarly, in PyTorch, we might want to create a FloatTensor for CPU and a cuda.FloatTensor for GPU.</p>
 <p>To handle this difference, we implemented a <cite>context</cite> function, that, given a tensor, returns a dictionary of values characterising that tensor. A function getting a tensor as input and creating a new tensor should use that context to create the new tensor.</p>
 <p>For instance:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
@@ -291,7 +290,7 @@ In practice, this means that function like <cite>min</cite>, <cite>max</cite>, <
 </pre></div>
 </div>
 <p>We can decompose it easily, here using a Tucker decomposition:
-First, we reate a decomposition instance, which keeps the number of parameters the same
+First, we create a decomposition instance, which keeps the number of parameters the same
 and with a random initialization. We then fit it to our tensor.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorly.decomposition</span> <span class="kn">import</span> <span class="n">Tucker</span>
 
@@ -328,12 +327,12 @@ or you use pytorch tensors’ properties to send them to the desired device post
 </section>
 <section id="using-static-dispatching">
 <h2><span class="section-number">2.7. </span>Using static dispatching</h2>
-<p>We optimized the dynammical dispatch so the overhead is negligeable.
+<p>We optimized the dynamical dispatch so the overhead is negligeable.
 However, if you only want to use one backend, you can first set it and then switch to static dispatching:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tl</span><span class="o">.</span><span class="n">use_static_dispatch</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>And you can switch back to dynammical dispatching just as easily:</p>
+<p>And you can switch back to dynamical dispatching just as easily:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tl</span><span class="o">.</span><span class="n">use_dynamic_dispatch</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -368,7 +367,7 @@ However, if you only want to use one backend, you can first set it and then swit
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

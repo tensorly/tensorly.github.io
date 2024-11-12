@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>3. Tensor basics &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
  <script src="../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
@@ -244,7 +243,7 @@
 <p>For a tensor of size <span class="math notranslate nohighlight">\((I_0, I_1, \cdots, I_N)\)</span>, the n-mode unfolding of this tensor will be of size <span class="math notranslate nohighlight">\((I_n, I_0 \times I_1 \times \cdots \times I_{n-1} \times I_{n+1} \cdots \times I_N)\)</span>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>In tensorly we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for better performance.</p>
+<p>In TensorLy we use an unfolding different from the classical one as defined in <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for better performance.</p>
 <p>Given a tensor <span class="math notranslate nohighlight">\(\tilde X \in \mathbb{R}^{I_0, I_1 \times I_2 \times \cdots \times I_N}\)</span>, the
 mode-n unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span> is a matrix <span class="math notranslate nohighlight">\(\mathbf{X}_{[n]} \in \mathbb{R}^{I_n, I_M}\)</span>,
 with <span class="math notranslate nohighlight">\(M = \prod_{\substack{k=0,\\k \neq n}}^N I_k\)</span> and is defined by
@@ -256,7 +255,7 @@ the mapping from element <span class="math notranslate nohighlight">\((i_0, i_1,
 <p class="admonition-title">Warning</p>
 <p>Traditionally, mode-1 unfolding denotes the unfolding along the first dimension.
 However, to be consistent with the Python indexing that always starts at zero,
-in tensorly, unfolding also starts at zero!</p>
+in TensorLy, unfolding also starts at zero!</p>
 <p>Therefore <code class="docutils literal notranslate"><span class="pre">unfold(tensor,</span> <span class="pre">0)</span></code> will unfold said tensor along its first dimension!</p>
 </div>
 <p>For instance, using the <span class="math notranslate nohighlight">\(\tilde X\)</span> previously defined, the 0-mode unfolding of <span class="math notranslate nohighlight">\(\tilde X\)</span>:</p>
@@ -283,7 +282,7 @@ in tensorly, unfolding also starts at zero!</p>
    0 &amp; 2 &amp; 4 &amp; 6 &amp; 8 &amp; 10 &amp; 12 &amp; 14 &amp; 16 &amp; 18 &amp; 20 &amp; 22\\
    1 &amp; 3 &amp; 5 &amp; 7 &amp; 9 &amp; 11 &amp; 13 &amp; 15 &amp; 17 &amp; 19 &amp; 21 &amp; 23\\
 \end{matrix} \right]\end{split}\]</div>
-<p>In tensorly:</p>
+<p>In TensorLy:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tensorly</span> <span class="kn">import</span> <span class="n">unfold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unfold</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># mode-1 unfolding</span>
 <span class="go">array([[ 0,  1,  2,  3,  4,  5,  6,  7],</span>
@@ -329,7 +328,7 @@ in tensorly, unfolding also starts at zero!</p>
 <section id="references">
 <h2><span class="section-number">3.4. </span>References</h2>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id2" role="note">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>T.G.Kolda and B.W.Bader, “Tensor Decompositions and Applications”,
 SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
@@ -366,7 +365,7 @@ SIAM REVIEW, vol. 51, n. 3, pp. 455-500, 2009.</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>

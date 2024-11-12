@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>tensorly.solvers.nnls.hals_nnls &#8212; TensorLy: Tensor Learning in Python</title> 
+<link rel="stylesheet" href="../../_static/tensorly_style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="../../_static/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../_static/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../_static/favicon/favicon-16x16.png">
+<link rel="manifest" href="../../_static/favicon/site.webmanifest">
+<link rel="mask-icon" href="../../_static/favicon/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+
+  
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ <script src="../../_static/navbar_burger.js"></script>
+ <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+ 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3V91QCZR03"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3V91QCZR03');
+</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tensorly.solvers.nnls.fista" href="tensorly.solvers.nnls.fista.html" />
+    <link rel="prev" title="tensorly.regression.CP_PLSR" href="tensorly.regression.CP_PLSR.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  </head>
+<body  class="has-navbar-fixed-top">
+
+  <header>
+    <navbar>
+      <nav class="navbar top-navbar is-fixed-top has-shadow is-flex-wrap-wrap" role="navigation" aria-label="main top navigation">
+        <div class="navbar-brand">
+        
+
+          <a class="navbar-item" href="../../index.html">
+            <img src="../../_static/logo_tensorly.png" height="28">
+          </a>
+          <a class="navbar-item is-hidden-desktop" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon"><i class="fab fa-github"></i></span>
+          </a>
+
+          <a role="button" class="navbar-burger" data-target="top-nav-menu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+
+        </div>
+        
+        <div class="navbar-menu" id="top-nav-menu">
+        
+
+          <div class="navbar-start">
+            
+              <a class="navbar-item" href="../../installation.html">
+              Install
+            </a>
+              <a class="navbar-item" href="../../user_guide/index.html">
+              User Guide
+            </a>
+              <a class="navbar-item" href="../api.html">
+              API
+            </a>
+              <a class="navbar-item" href="../../auto_examples/index.html">
+              Examples
+            </a>
+              <a class="navbar-item" href="../../about.html">
+              About Us
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable is-boxed">
+              <a class="navbar-link">
+                Ecosystem
+              </a>
+              <div class="navbar-dropdown top-navbar">
+                <a class="navbar-item" href="http://tensorly.org/torch" target="_blank">
+                  TensorLy-Torch
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/quantum" target="_blank">
+                  TensorLy-Quantum
+                </a>
+                <a class="navbar-item" href="http://tensorly.org/viz" target="_blank">
+                  TensorLy-Viz
+                </a>
+                <a class="navbar-item" href="https://github.com/JeanKossaifi/tensorly-notebooks" target="_blank">
+                  Notebooks
+                </a>
+              </div>
+            </div>
+          </div>
+        
+          <div class="navbar-end">
+            <div class="navbar-item">
+            
+            <a class="button is-hidden-touch is-dark" href="https://github.com/tensorly/tensorly" target="_blank">
+              <span class="icon-text">
+                <span class="icon is-large">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Github</span>
+              </span>
+            </a>
+
+            </div> 
+          </div> 
+        </div> 
+
+      </nav>
+      
+    </navbar>
+  </header>
+
+
+  <div id="column-container">
+  <div class="columns is-mobile is-centered">
+	
+  
+      <div class="column is-10-mobile is-one-third-tablet is-3-desktop is-hidden-mobile" id="sidebar">
+    
+    <aside class="sticky-nav sidebar-menu">
+<div class="sidebar-search">
+  <form class="field" id="searchbox" role="search" action="../../search.html" method="get">
+    <!-- <label class="label" id="searchlabel">Quick search</label> -->
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input class="input" type="text" placeholder="Search in TensorLy" name="q" aria-labelledby="searchlabel autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      </div>
+      <div class="control">
+        <input class="button is-info" type="submit" value="Go" />
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById('searchbox').style.display = "block"</script>
+
+</div>
+      
+      <div class="sidebar-menu-toc">
+      <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installing tensorly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide/index.html">User guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#unified-backend-interface-tensorly">Unified backend interface (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.base">Core functions (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.base</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.cp_tensor">Tensors in CP form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.cp_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tucker_tensor">Tensors in Tucker form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tucker_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_tensor">Tensors in TT (MPS) form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.tt_matrix">Matrices in TT form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tt_matrix</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.parafac2_tensor">Tensors in PARAFAC2 form (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.parafac2_tensor</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#tensor-algebra-tensorly-tenalg">Tensor Algebra (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.tenalg</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.decomposition">Tensor Decomposition (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.decomposition</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.preprocessing">Preprocessing (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.preprocessing</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.regression">Tensor Regression (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#solvers-tensorly-solvers">Solvers (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.metrics">Performance measures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.metrics</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.random">Sampling tensors (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.random</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.datasets">Datasets (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.datasets</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#plugin-functionalities-tensorly-plugins">Plugin functionalities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.plugins</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-tensorly.contrib">Experimental features (<code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.contrib</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development_guide/index.html">Development guide</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/JeanKossaifi/tensorly-notebooks">Notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+</ul>
+ 
+      </div>
+    </aside>
+  </div>
+  
+
+  <div class="column main-column">
+
+    
+    <div class="main-section">
+
+      
+      
+      <div class="side-menu-toggle">
+        <button class="button" id="toggle-sidebar" onclick="toggle_sidebar()">
+          <span class="icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+          <span>menu</span> 
+        </button>
+      </div>
+      
+
+      <div class="container content main-content">
+        
+  <section id="tensorly-solvers-nnls-hals-nnls">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers.nnls</span></code>.hals_nnls</h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="tensorly.solvers.nnls.hals_nnls">
+<span class="sig-name descname"><span class="pre">hals_nnls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">UtM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UtU</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iter_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ridge_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonzero_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tensorly/solvers/nnls.html#hals_nnls"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Non Negative Least Squares (NNLS)</p>
+<p>Computes an approximate solution of a nonnegative least
+squares problem (NNLS) with an exact block-coordinate descent scheme.
+M is m by n, U is m by r, V is r by n.
+All matrices are nonnegative componentwise.</p>
+<p>This algorithm is a simplified implementation of the accelerated HALS defined in [1]. It features an early stop stopping criterion. It is simplified to ensure reproducibility and expose a simple API to control the number of inner iterations.</p>
+<p>This function is made for being used repetively inside an
+outer-loop alternating algorithm, for instance for computing nonnegative
+matrix Factorization or tensor factorization. To use as a stand-alone solver, set the exact flag to True.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>UtM: r-by-n array</strong></dt><dd><p>Pre-computed product of the transposed of U and M, used in the update rule</p>
+</dd>
+<dt><strong>UtU: r-by-r array</strong></dt><dd><p>Pre-computed product of the transposed of U and U, used in the update rule</p>
+</dd>
+<dt><strong>V: r-by-n initialization matrix (mutable)</strong></dt><dd><p>Initialized V array
+By default, is initialized with one non-zero entry per column
+corresponding to the closest column of U of the corresponding column of M.</p>
+</dd>
+<dt><strong>n_iter_max: Positive integer</strong></dt><dd><p>Upper bound on the number of iterations
+Default: 500</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float in [0,1]</span></dt><dd><p>early stop criterion, while err_k &gt; delta*err_0. Set small for
+almost exact nnls solution, or larger (e.g. 1e-2) for inner loops
+of a PARAFAC computation.
+Default: 10e-8</p>
+</dd>
+<dt><strong>sparsity_coefficient: float or None</strong></dt><dd><p>The coefficient controling the sparisty level in the objective function.
+If set to None, the problem is solved unconstrained.
+Default: None</p>
+</dd>
+<dt><strong>ridge_coefficient: float or None</strong></dt><dd><p>The coefficient controling the ridge (l2) penalty in the objective function.
+If set to None, no ridge penalty is imposed.
+Default: None</p>
+</dd>
+<dt><strong>nonzero_rows: boolean</strong></dt><dd><p>True if the lines of the V matrix can’t be zero,
+False if they can be zero
+Default: False</p>
+</dd>
+<dt><strong>exact: If it is True, the algorithm gives a results with high precision but it needs high computational cost.</strong></dt><dd><p>If it is False, the algorithm gives an approximate solution
+Default: False</p>
+</dd>
+<dt><strong>epsilon: float</strong></dt><dd><p>Small constant such that V&gt;=epsilon instead of V&gt;=0.
+Required to ensure convergence, avoids division by zero and reset.
+Default: 0</p>
+</dd>
+<dt><strong>callback: callable, optional</strong></dt><dd><p>A callable called after each iteration. The supported signature is</p>
+<blockquote>
+<div><p>callback(V: tensor, error: float)</p>
+</div></blockquote>
+<p>where V is the last estimated nonnegative least squares solution, and error is the squared Euclidean norm of the difference between V at the current iteration k, and V at iteration k-1 (therefore error is not the loss function which is costly to compute).
+Moreover, the algorithm will also terminate if the callback callable returns True.
+Default: None</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>V: array</dt><dd><p>a r-by-n nonnegative matrix, see notes.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>We solve the following problem</p>
+<div class="math notranslate nohighlight">
+\[\min_{V &gt;= \epsilon} ||M-UV||_F^2\]</div>
+<p>The matrix V is updated linewise. The update rule for this resolution is</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+    V[k,:]_{(j+1)} = V[k,:]_{(j)} + (UtM[k,:] - UtU[k,:]\times V_{(j)})/UtU[k,k]
+\end{equation}\]</div>
+<p>with j the update iteration index. V is then thresholded to be larger than epsilon.</p>
+<p>This problem can also be defined by adding respectively a sparsity coefficient and a ridge coefficients</p>
+<div class="math notranslate nohighlight">
+\[\lambda_s, \lambda_r\]</div>
+<p>enhancing sparsity or smoothness in the solution [2]. In this sparse/ridge version, the update rule becomes</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+    V[k,:]_{(j+1)} = V[k,:]_{(j)} + (UtM[k,:] - UtU[k,:]\times V_{(j)} - \lambda_s)/(UtU[k,k]+2\lambda_r)
+\end{equation}\]</div>
+<p>Note that the data fitting is halved but not the ridge penalization.</p>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="ra1c62e4c615f-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>N. Gillis and F. Glineur, Accelerated Multiplicative Updates and
+Hierarchical ALS Algorithms for Nonnegative Matrix Factorization,
+Neural Computation 24 (4): 1085-1105, 2012.</p>
+</div>
+<div class="citation" id="ra1c62e4c615f-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>J. Eggert, and E. Korner. “Sparse coding and NMF.”
+2004 IEEE International Joint Conference on Neural Networks
+(IEEE Cat. No. 04CH37541). Vol. 4. IEEE, 2004.</p>
+</div>
+</div>
+</dd></dl>
+
+<div class="clearer"></div></section>
+
+
+      </div>
+
+      
+        <nav class="pagination" role="navigation" aria-label="pagination">
+    
+    <a class="button pagination-previous" href="tensorly.regression.CP_PLSR.html" title="previous page" accesskey="p">
+        <span class="icon">
+            <i class="fa fa-arrow-circle-left"></i>
+        </span>
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.regression</span></code>.CP_PLSR</span>
+    </a>
+    
+    
+    <a class="button pagination-next" href="tensorly.solvers.nnls.fista.html" title="next page" accesskey="n">
+        <span><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers.nnls</span></code>.fista </span>
+        <span class="icon">
+            <i class="fa fa-arrow-circle-right"></i>
+        </span>
+    </a>
+    
+</nav>
+
+      
+
+        <footer class="footer">
+    <div class="content has-text-centered">
+        <div class="block">
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
+        </div>
+    </div>
+  </footer>
+
+    </div>
+
+  </div>  
+
+	
+    
+    <div class="column is-hidden-touch is-2-desktop is-one-fifth-widescreen" id="localtoc-column">
+
+    <aside class="sticky-nav localtoc"> 
+        <p class="menu-label"> 
+            <span class="icon-text">
+                <span class="icon"><i class="fas fa-duotone fa-list"></i></span>
+                <span> On this page </span>
+            </span>
+        </p>
+
+        <div class="menu menu-list localtoc-list">
+        <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensorly.solvers.nnls</span></code>.hals_nnls</a><ul>
+<li><a class="reference internal" href="#tensorly.solvers.nnls.hals_nnls"><code class="docutils literal notranslate"><span class="pre">hals_nnls</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </aside>
+    </div>
+
+  
+
+  </div>  
+  </div> 
+
+  
+  <script>
+    function toggle_sidebar() {
+        var element = document.getElementById("sidebar");
+        var container = document.getElementById("column-container");
+        var localtoccolumn = document.getElementById("localtoc-column");
+        element.classList.toggle("hide-tablet");
+        element.classList.toggle("is-hidden-mobile");
+        container.classList.toggle("sidemenu-hidden");
+        localtoccolumn.classList.toggle("is-one-fifth-widescreen");
+        localtoccolumn.classList.toggle("is-2-desktop");
+        localtoccolumn.classList.toggle("is-3-desktop");
+    }
+  </script> 
+
+
+
+  </body>
+</html>

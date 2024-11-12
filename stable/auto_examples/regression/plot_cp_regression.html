@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>CP tensor regression &#8212; TensorLy: Tensor Learning in Python</title> 
 <link rel="stylesheet" href="../../_static/tensorly_style.css">
@@ -16,17 +15,17 @@
 <link rel="shortcut icon" href="../../_static/favicon/favicon.ico">
 <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tensorly_style.css?v=a02e9698" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
  <script src="../../_static/navbar_burger.js"></script>
  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
  
@@ -196,13 +195,13 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-regression-plot-cp-regression-py"><span class="std std-ref">here</span></a>
-to download the full example code</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-regression-plot-cp-regression-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="cp-tensor-regression">
 <span id="sphx-glr-auto-examples-regression-plot-cp-regression-py"></span><h1>CP tensor regression</h1>
 <p>Example on how to use <a class="reference internal" href="../../modules/generated/tensorly.regression.cp_regression.CPRegressor.html#tensorly.regression.cp_regression.CPRegressor" title="tensorly.regression.cp_regression.CPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensorly.regression.cp_regression.CPRegressor</span></code></a> to perform tensor regression.</p>
-<img src="../../_images/sphx_glr_plot_cp_regression_001.png" srcset="../../_images/sphx_glr_plot_cp_regression_001.png" alt="CP tensor regression, Original weights, Learned rank = 1, Learned rank = 2, Learned rank = 3, Learned rank = 4, Learned rank = 5" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<img src="../../_images/sphx_glr_plot_cp_regression_001.png" srcset="../../_images/sphx_glr_plot_cp_regression_001.png" alt="CP tensor regression, Original weights, Learned rank = 1, Learned rank = 2, Learned rank = 3, Learned rank = 4, Learned rank = 5" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorly.base</span> <span class="kn">import</span> <span class="n">tensor_to_vec</span><span class="p">,</span> <span class="n">partial_tensor_to_vec</span>
 <span class="kn">from</span> <span class="nn">tensorly.datasets.synthetic</span> <span class="kn">import</span> <span class="n">gen_image</span>
 <span class="kn">from</span> <span class="nn">tensorly.regression.cp_regression</span> <span class="kn">import</span> <span class="n">CPRegressor</span>
@@ -212,7 +211,7 @@ to download the full example code</p>
 <span class="n">image_height</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="n">image_width</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="c1"># shape of the images</span>
-<span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rectangle&#39;</span><span class="p">,</span> <span class="s1">&#39;swiss&#39;</span><span class="p">,</span> <span class="s1">&#39;circle&#39;</span><span class="p">]</span>
+<span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rectangle&quot;</span><span class="p">,</span> <span class="s2">&quot;swiss&quot;</span><span class="p">,</span> <span class="s2">&quot;circle&quot;</span><span class="p">]</span>
 <span class="c1"># ranks to test</span>
 <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 
@@ -230,45 +229,56 @@ to download the full example code</p>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">patterns</span><span class="p">):</span>
 
     <span class="c1"># Generate the original image</span>
-    <span class="n">weight_img</span> <span class="o">=</span> <span class="n">gen_image</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">image_height</span><span class="o">=</span><span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="o">=</span><span class="n">image_width</span><span class="p">)</span>
+    <span class="n">weight_img</span> <span class="o">=</span> <span class="n">gen_image</span><span class="p">(</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">pattern</span><span class="p">,</span> <span class="n">image_height</span><span class="o">=</span><span class="n">image_height</span><span class="p">,</span> <span class="n">image_width</span><span class="o">=</span><span class="n">image_width</span>
+    <span class="p">)</span>
     <span class="n">weight_img</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">weight_img</span><span class="p">)</span>
 
     <span class="c1"># Generate the labels</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">partial_tensor_to_vec</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">skip_begin</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">tensor_to_vec</span><span class="p">(</span><span class="n">weight_img</span><span class="p">))</span>
 
     <span class="c1"># Plot the original weights</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">weight_img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n_columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">weight_img</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Original</span><span class="se">\n</span><span class="s1">weights&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original</span><span class="se">\n</span><span class="s2">weights&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranks</span><span class="p">):</span>
 
         <span class="c1"># Create a tensor Regressor estimator</span>
-        <span class="n">estimator</span> <span class="o">=</span> <span class="n">CPRegressor</span><span class="p">(</span><span class="n">weight_rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">estimator</span> <span class="o">=</span> <span class="n">CPRegressor</span><span class="p">(</span>
+            <span class="n">weight_rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-7</span><span class="p">,</span> <span class="n">n_iter_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">reg_W</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
 
         <span class="c1"># Fit the estimator to the data</span>
         <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">n_columns</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_columns</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n_columns</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">weight_tensor_</span><span class="p">),</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">OrRd</span><span class="p">,</span>
+            <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Learned</span><span class="se">\n</span><span class="s1">rank = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Learned</span><span class="se">\n</span><span class="s2">rank = </span><span class="si">{</span><span class="n">rank</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;CP tensor regression&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.491 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.573 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-regression-plot-cp-regression-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/4646f2ed882fdbd7317db8bc1eb3916e/plot_cp_regression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_cp_regression.ipynb</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/42966e24b5f81902fc31165ec0d52e6c/plot_cp_regression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_cp_regression.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/4646f2ed882fdbd7317db8bc1eb3916e/plot_cp_regression.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_cp_regression.ipynb</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/f0754cb6f49432e87378932ce6ee13bb/plot_cp_regression.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_cp_regression.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -302,7 +312,7 @@ to download the full example code</p>
         <footer class="footer">
     <div class="content has-text-centered">
         <div class="block">
-          &copy; Copyright 2016 - 2023, TensorLy Developers.<br/>
+          &copy; Copyright 2016 - 2024, TensorLy Developers.<br/>
         </div>
     </div>
   </footer>
