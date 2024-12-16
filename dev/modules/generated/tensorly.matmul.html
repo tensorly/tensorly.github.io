@@ -214,7 +214,7 @@
 <dd><p>Matrix product of two arrays.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>x1, x2</strong><span class="classifier">array_like</span></dt><dd><p>Input arrays, scalars not allowed.</p>
 </dd>
 <dt><strong>out</strong><span class="classifier">ndarray, optional</span></dt><dd><p>A location into which the result is stored. If provided, it must have
@@ -223,9 +223,6 @@ provided or None, a freshly-allocated array is returned.</p>
 </dd>
 <dt><strong>**kwargs</strong></dt><dd><p>For other keyword-only arguments, see the
 <span class="xref std std-ref">ufunc docs</span>.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.16: </span>Now handles ufunc kwargs</p>
-</div>
 </dd>
 </dl>
 </dd>
@@ -248,7 +245,11 @@ the second-to-last dimension of <cite>x2</cite>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vdot</span></code></dt><dd><p>Complex-conjugating dot product.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vecdot</span></code></dt><dd><p>Complex-conjugating dot product for stacks of vectors.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">matvec</span></code></dt><dd><p>Matrix-vector product for stacks of matrices and vectors.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">vecmat</span></code></dt><dd><p>Vector-matrix product for stacks of vectors and matrices.</p>
 </dd>
 <dt><a class="reference internal" href="tensorly.tensordot.html#tensorly.tensordot" title="tensorly.tensordot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tensordot</span></code></a></dt><dd><p>Sum products over arbitrary axes.</p>
 </dd>
@@ -267,10 +268,10 @@ matrices.</p></li>
 matrices residing in the last two indexes and broadcast accordingly.</p></li>
 <li><p>If the first argument is 1-D, it is promoted to a matrix by
 prepending a 1 to its dimensions. After matrix multiplication
-the prepended 1 is removed.</p></li>
+the prepended 1 is removed. (For stacks of vectors, use <code class="docutils literal notranslate"><span class="pre">vecmat</span></code>.)</p></li>
 <li><p>If the second argument is 1-D, it is promoted to a matrix by
 appending a 1 to its dimensions. After matrix multiplication
-the appended 1 is removed.</p></li>
+the appended 1 is removed. (For stacks of vectors, use <code class="docutils literal notranslate"><span class="pre">matvec</span></code>.)</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">matmul</span></code> differs from <code class="docutils literal notranslate"><span class="pre">dot</span></code> in two important ways:</p>
 <ul>
@@ -346,9 +347,6 @@ ndarrays.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">@</span> <span class="n">x2</span>
 <span class="go">(-13+0j)</span>
 </pre></div>
-</div>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.10.0.</span></p>
 </div>
 </dd></dl>
 

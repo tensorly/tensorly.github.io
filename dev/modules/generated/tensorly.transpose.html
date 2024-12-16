@@ -227,10 +227,11 @@ axes are permuted (see Examples). If axes are not provided, then
 <dt><strong>a</strong><span class="classifier">array_like</span></dt><dd><p>Input array.</p>
 </dd>
 <dt><strong>axes</strong><span class="classifier">tuple or list of ints, optional</span></dt><dd><p>If specified, it must be a tuple or list which contains a permutation
-of [0,1,…,N-1] where N is the number of axes of <cite>a</cite>. The <cite>i</cite>’th axis
-of the returned array will correspond to the axis numbered <code class="docutils literal notranslate"><span class="pre">axes[i]</span></code>
-of the input. If not specified, defaults to <code class="docutils literal notranslate"><span class="pre">range(a.ndim)[::-1]</span></code>,
-which reverses the order of the axes.</p>
+of [0, 1, …, N-1] where N is the number of axes of <cite>a</cite>. Negative
+indices can also be used to specify axes. The i-th axis of the returned
+array will correspond to the axis numbered <code class="docutils literal notranslate"><span class="pre">axes[i]</span></code> of the input.
+If not specified, defaults to <code class="docutils literal notranslate"><span class="pre">range(a.ndim)[::-1]</span></code>, which reverses
+the order of the axes.</p>
 </dd>
 </dl>
 </dd>
@@ -281,6 +282,11 @@ when using the <cite>axes</cite> keyword argument.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(5, 4, 3, 2)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(5, 3, 4)</span>
 </pre></div>
 </div>
 </dd></dl>

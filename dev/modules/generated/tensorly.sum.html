@@ -219,11 +219,8 @@
 </dd>
 <dt><strong>axis</strong><span class="classifier">None or int or tuple of ints, optional</span></dt><dd><p>Axis or axes along which a sum is performed.  The default,
 axis=None, will sum all of the elements of the input array.  If
-axis is negative it counts from the last to the first axis.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.7.0.</span></p>
-</div>
-<p>If axis is a tuple of ints, a sum is performed on all of the axes
+axis is negative it counts from the last to the first axis. If
+axis is a tuple of ints, a sum is performed on all of the axes
 specified in the tuple instead of a single axis or all the axes as
 before.</p>
 </dd>
@@ -248,14 +245,8 @@ sub-class’ method does not implement <cite>keepdims</cite> any
 exceptions will be raised.</p>
 </dd>
 <dt><strong>initial</strong><span class="classifier">scalar, optional</span></dt><dd><p>Starting value for the sum. See <cite>~numpy.ufunc.reduce</cite> for details.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.15.0.</span></p>
-</div>
 </dd>
 <dt><strong>where</strong><span class="classifier">array_like of bool, optional</span></dt><dd><p>Elements to include in the sum. See <cite>~numpy.ufunc.reduce</cite> for details.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.17.0.</span></p>
-</div>
 </dd>
 </dl>
 </dd>
@@ -312,7 +303,7 @@ precision for the output.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
 <span class="go">2.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-<span class="go">1</span>
+<span class="go">np.int32(1)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
 <span class="go">6</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -325,7 +316,7 @@ precision for the output.</p>
 </div>
 <p>If the accumulator is too small, overflow occurs:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
-<span class="go">-128</span>
+<span class="go">np.int8(-128)</span>
 </pre></div>
 </div>
 <p>You can also start the sum with a value other than zero:</p>

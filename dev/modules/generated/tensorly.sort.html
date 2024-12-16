@@ -224,9 +224,6 @@ sorting. The default is -1, which sorts along the last axis.</p>
 and ‘mergesort’ use timsort or radix sort under the covers and,
 in general, the actual implementation will vary with data type.
 The ‘mergesort’ option is retained for backwards compatibility.</p>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.15.0.: </span>The ‘stable’ option was added.</p>
-</div>
 </dd>
 <dt><strong>order</strong><span class="classifier">str or list of str, optional</span></dt><dd><p>When <cite>a</cite> is an array with fields defined, this argument specifies
 which fields to compare first, second, etc.  A single field can
@@ -335,9 +332,6 @@ values are sorted to the end. The extended sort order is:</p>
 <p>where R is a non-nan real value. Complex values with the same nan
 placements are sorted according to the non-nan part if it exists.
 Non-nan values are sorted as before.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.12.0.</span></p>
-</div>
 <p>quicksort has been changed to:
 <a class="reference external" href="https://en.wikipedia.org/wiki/Introsort">introsort</a>.
 When sorting does not make enough progress it switches to
@@ -352,9 +346,6 @@ depending on the data type.
 API forward compatibility currently limits the
 ability to select the implementation and it is hardwired for the different
 data types.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.17.0.</span></p>
-</div>
 <p>Timsort is added for better performance on already or nearly
 sorted data. On random data timsort is almost identical to
 mergesort. It is now used for stable sort while quicksort is still the
@@ -362,9 +353,6 @@ default sort if none is chosen. For timsort details, refer to
 <a class="reference external" href="https://github.com/python/cpython/blob/3.7/Objects/listsort.txt">CPython listsort.txt</a>
 ‘mergesort’ and ‘stable’ are mapped to radix sort for integer data types.
 Radix sort is an O(n) sort instead of O(n log n).</p>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.18.0.</span></p>
-</div>
 <p>NaT now sorts to the end of arrays for consistency with NaN.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

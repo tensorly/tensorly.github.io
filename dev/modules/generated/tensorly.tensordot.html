@@ -249,25 +249,48 @@ second to <cite>b</cite>. Both elements array_like must be of the same length.</
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>Three common use cases are:</p>
-<ul class="simple">
+<dl class="simple">
+<dt>Three common use cases are:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">0</span></code> : tensor product <span class="math notranslate nohighlight">\(a\otimes b\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">1</span></code> : tensor dot product <span class="math notranslate nohighlight">\(a\cdot b\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">2</span></code> : (default) tensor double contraction <span class="math notranslate nohighlight">\(a:b\)</span></p></li>
 </ul>
-<p>When <cite>axes</cite> is a positive integer <code class="docutils literal notranslate"><span class="pre">N</span></code>, the operation starts with
-axis <code class="docutils literal notranslate"><span class="pre">-N</span></code> of <cite>a</cite> and axis <code class="docutils literal notranslate"><span class="pre">0</span></code> of <cite>b</cite>, and it continues through
-axis <code class="docutils literal notranslate"><span class="pre">-1</span></code> of <cite>a</cite> and axis <code class="docutils literal notranslate"><span class="pre">N-1</span></code> of <cite>b</cite> (inclusive).</p>
+</dd>
+</dl>
+<p>When <cite>axes</cite> is integer_like, the sequence of axes for evaluation
+will be: from the -Nth axis to the -1th axis in <cite>a</cite>,
+and from the 0th axis to (N-1)th axis in <cite>b</cite>.
+For example, <code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">2</span></code> is the equal to
+<code class="docutils literal notranslate"><span class="pre">axes</span> <span class="pre">=</span> <span class="pre">[[-2,</span> <span class="pre">-1],</span> <span class="pre">[0,</span> <span class="pre">1]]</span></code>.
+When N-1 is smaller than 0, or when -N is larger than -1,
+the element of <cite>a</cite> and <cite>b</cite> are defined as the <cite>axes</cite>.</p>
 <p>When there is more than one axis to sum over - and they are not the last
 (first) axes of <cite>a</cite> (<cite>b</cite>) - the argument <cite>axes</cite> should consist of
 two sequences of the same length, with the first axis to sum over given
-first in both sequences, the second axis second, and so forth.</p>
+first in both sequences, the second axis second, and so forth.
+The calculation can be referred to <code class="docutils literal notranslate"><span class="pre">numpy.einsum</span></code>.</p>
 <p>The shape of the result consists of the non-contracted axes of the
 first tensor, followed by the non-contracted axes of the second.</p>
 <p class="rubric">Examples</p>
-<p>A “traditional” example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">60.</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<p>An example on integer_like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">a_0</span><span class="p">,</span> <span class="n">b_0</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c_0</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 2, 2, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c_0</span>
+<span class="go">array([[[[ 5,  6],</span>
+<span class="go">         [ 7,  8]],</span>
+<span class="go">        [[10, 12],</span>
+<span class="go">         [14, 16]]],</span>
+<span class="go">       [[[15, 18],</span>
+<span class="go">         [21, 24]],</span>
+<span class="go">        [[20, 24],</span>
+<span class="go">         [28, 32]]]])</span>
+</pre></div>
+</div>
+<p>An example on array_like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">60.</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">24.</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">shape</span>
@@ -278,8 +301,10 @@ first tensor, followed by the non-contracted axes of the second.</p>
 <span class="go">       [4664., 5018.],</span>
 <span class="go">       [4796., 5162.],</span>
 <span class="go">       [4928., 5306.]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A slower but equivalent way of computing the same...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>A slower but equivalent way of computing the same…</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
